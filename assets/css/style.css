@@ -7,6 +7,10 @@ html{
 body{
     margin:0
 }
+h1, h2, h3, h4 ,h5, h6 {
+    font-family: inherit !important;
+    color: #27272A !important;
+}
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{
     display:block
 }
@@ -161,21 +165,41 @@ td,th{
     --color-content-main: #E1E3E6;
     --color-content-secondary: #909499
 }
-@media (prefers-color-scheme: dark){
-    html:not(.theme-light):root{
+
+@media (prefers-color-scheme: light) {
+    body {
+        color: #374151 !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        color: #27272A !important;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        color: #E5E7EB !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        color: #F9FAFB !important;
+    }
+
+    html:not(.theme-light):root {
         --color-background-main: #222426;
         --color-background-secondary: #1D1F20;
         --color-background-contrast: #3B3D40;
         --color-background-overlay: rgba(9,10,13,0.9);
         --color-content-lead: #FFF;
         --color-content-main: #E1E3E6;
-        --color-content-secondary: #909499
+        --color-content-secondary: #909499;
     }
 }
-@font-face{
-    font-family:'Libre Baskerville';
-    font-style:italic;
-    font-weight:400;
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    font-style: italic;
+    font-weight: 400;
     font-display:swap;
     src:local("Libre Baskerville Italic"),local("LibreBaskerville-Italic"),url(https://fonts.gstatic.com/s/librebaskerville/v7/kmKhZrc3Hgbbcjq75U4uslyuy4kn0qNcWx8QDO-WyrubOA.woff2) format("woff2");
     unicode-range:U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF
@@ -957,7 +981,7 @@ button,input,select,textarea{
 .blog-header .blog-box{
     position:relative;
     z-index:10;
-    padding-bottom:calc(4rem + 2vw);
+    padding-bottom:calc(1rem + 1vw);
     text-align:center;
     border-bottom:1px solid var(--color-background-contrast)
 }
@@ -1014,9 +1038,9 @@ button,input,select,textarea{
 .blog-description{
     font-family:var(--font-secondary);
     display:block;
-    margin-top:1rem;
+    margin-top:1rem auto;
     padding:0;
-    font-size:3em;
+    font-size:2em;
     line-height:1.33334em;
     color:var(--color-content-secondary)
 }
@@ -1743,6 +1767,9 @@ button,input,select,textarea{
 .post-meta a:focus,.post-meta a:hover{
     text-decoration:underline
 }
+.post-meta img {
+    margin-right: 10px;
+}
 .post-header .post-meta{
     position:relative;
     padding-bottom:4rem;
@@ -2174,41 +2201,6 @@ button,input,select,textarea{
 }
 .paged .extra-pagination .pagination-box{
     border-bottom:1px solid var(--color-background-contrast)
-}
-
-
-h1, h2, h3, h4 ,h5, h6 {
-    font-family: inherit !important;
-    color: #27272A !important;
-}
-
-@media (prefers-color-scheme: light) {
-    body {
-        color: #374151 !important;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-        color: #27272A !important;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        color: #E5E7EB !important;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-        color: #F9FAFB !important;
-    }
-}
-.post-meta {
-    margin: 0.5rem 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.post-meta img {
-    margin-right: 10px;
 }
 .time {
     margin-left: 5px;
