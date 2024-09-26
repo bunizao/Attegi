@@ -7,7 +7,7 @@
 
 ## Features
  - **Smaller** font size than Attila's, allowing more content to be displayed on mobile devices.
- - **Slimmer** and **cleaner** design than Attila's, with a focus on readability with a more modern font family.
+ - **Slimmer** and **cleaner** design than Attila's, with a focus on readability and a more modern font family.
  - **Dark Mode** support and a more comfortable background and font color.
  - *( Optional )* Hide unnecessary page elements to simplify the pages. (e.g. `.post-comments`、.`nav-credits` or `.nav-copy` etc.)
  - And we also support all functions of Attila, see its original [README.md](https://github.com/zutrinken/attila/blob/main/README.md) for more details.
