@@ -981,7 +981,7 @@ button,input,select,textarea{
 .blog-header .blog-box{
     position:relative;
     z-index:10;
-    padding-bottom:calc(1rem + 1vw);
+    padding-bottom:calc(2rem + 2vw);
     text-align:center;
     border-bottom:1px solid var(--color-background-contrast)
 }
