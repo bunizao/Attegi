@@ -7,8 +7,10 @@
 
 ## Features
  - **Smaller** font size than Attila's, allowing more content to be displayed on mobile devices.
+    - **Adaptive** font size on different screen sizes.
  - **Slimmer** and **cleaner** design than Attila's, with a focus on readability and a more modern font family.
  - **Dark Mode** support and a more comfortable background and font color.
+ - **Image caption** style changed. (Maybe a bug fixed)
  - *( Optional )* Hide unnecessary page elements to simplify the pages. (e.g. `.post-comments`、.`nav-credits` or `.nav-copy` etc.)
  - And we also support all functions of Attila, see its original [README.md](https://github.com/zutrinken/attila/blob/main/README.md) for more details.
   
@@ -50,7 +52,7 @@ span.nav-copy {
 | `span.nav-copy`        | Global | Hide the copyright information and social media links in the footer.              |
 
 ### Change something
-- `Accent color` can be changed in `Site` —> `Design & Branding` —> `Brand` _> `Accent color`.
+- `Accent color` can be changed in `Site` —> `Design & Branding` —> `Brand` -> `Accent color`.
   - you can also select another color for dark mode.
 - `Code Injection` can almost change anything, if you are familiar with CSS.
 

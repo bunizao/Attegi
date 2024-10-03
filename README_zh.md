@@ -1,14 +1,18 @@
 # Attila-Opt
-### 这是一个针对移动设备优化的 Ghost 主题，基于 [*Attila*](https://github.com/zutrinken/attila)，风格灵感来源于 [*Moegi*](https://github.com/moegi-design/ghost-theme-Moegi)。
+### 这是一个基于 [*Attila*](https://github.com/zutrinken/attila) 并参考了 [*Moegi*](https://github.com/moegi-design/ghost-theme-Moegi) 风格的移动设备优化 Ghost 主题。
+
+### [**English Doc**](https://github.com/bunizao/attila-opt/blob/master/README.md)
 
 ---
 
-## 功能
- - 字体大小比 Attila 更小，可以在移动设备上显示更多内容。
- - 比 Attila 更纤细、简洁的设计，注重可读性，采用更现代的字体系列。
- - 支持 **深色模式**，提供更舒适的背景和字体颜色。
- - **（可选）** 隐藏不必要的页面元素以简化页面（例如：`.post-comments`、`.nav-credits` 或 `.nav-copy` 等）。
- - 并且支持 Attila 的所有功能，详情请参阅原始 [README.md](https://github.com/zutrinken/attila/blob/main/README.md)。
+## 特点
+- 比原版 Attila 字体更小，可以在移动设备上显示更多内容。
+  - 不同屏幕尺寸自适应字体大小。
+- 比原版 Attila 更加精简和整洁，注重可读性并采用更现代的字体。
+- 支持**暗黑模式**，并提供更舒适的背景和字体颜色。
+- 更改了**图片描述**的样式。（可能还修复了一个错误）
+- *(可选)* 隐藏不必要的页面元素以简化页面显示。（例如：`.post-comments`、`.nav-credits` 或 `.nav-copy` 等）
+- 此外，主题还支持 Attila 的所有功能，详细信息请参见其原始 [README.md](https://github.com/zutrinken/attila/blob/main/README.md)。
 
 ---
 

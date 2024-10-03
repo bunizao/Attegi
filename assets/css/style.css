@@ -9,7 +9,7 @@ body{
 }
 h1, h2, h3, h4 ,h5, h6 {
     font-family: inherit !important;
-    color: #27272A !important;
+    color: #27272A;
 }
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{
     display:block
@@ -168,11 +168,11 @@ td,th{
 
 @media (prefers-color-scheme: light) {
     body {
-        color: #374151 !important;
+        color: #374151;
     }
 
     h1, h2, h3, h4, h5, h6 {
-        color: #27272A !important;
+        color: #27272A;
     }
 }
 
@@ -310,10 +310,15 @@ body{
 button,input,select,textarea{
     transition:all ease-out 0.2s
 }
-.post-content{
-    font-size: 1.5em;
+.post-content {
+    font-size: 1.6em;
     line-height: 1.7em;
-    font-weight: 400
+    font-weight: 425
+}
+@media only screen and (min-width: 640px){
+    .post-content {
+        font-size: 1.8em;
+    }
 }
 .post-content a:not([class]){
     color:inherit;
@@ -630,22 +635,18 @@ button,input,select,textarea{
     cursor:pointer
 }
 .post-content figure figcaption{
-    position:relative;
-    color:var(--color-content-secondary);
-    max-width:calc(64rem + 8vw);
-    margin:auto;
-    font-size:0.75em;
-    line-height:2em;
-    padding:2rem 0
+    position: relative;
+    color: var(--color-content-secondary);
+    max-width: 100%;
+    margin: auto;
+    font-size: 1em;
+    line-height: 2em;
+    text-align: center;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--color-background-contrast);
 }
-.post-content figure figcaption:after{
-    content:'';
-    position:absolute;
-    left:0;
-    bottom:0;
-    width:8rem;
-    height:1px;
-    background:var(--color-background-contrast)
+.post-content figure figcaption::after {
+    background: transparent !important;
 }
 .post-content figure figcaption a{
     box-shadow:inset 0 -1px 0 var(--color-background-contrast)
@@ -1745,9 +1746,6 @@ button,input,select,textarea{
     margin: 0 0 1rem;
     font-size: 2.8em;
     line-height: 1.2em
-}
-.has-cover .post-title{
-    color:white
 }
 .post-meta{
     font-weight:400;
