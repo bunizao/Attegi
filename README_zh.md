@@ -1,7 +1,7 @@
-# Attila-Opt
+# Attegi
 ### 这是一个基于 [*Attila*](https://github.com/zutrinken/attila) 并参考了 [*Moegi*](https://github.com/moegi-design/ghost-theme-Moegi) 风格的移动设备优化 Ghost 主题。
 
-### [**English Doc**](https://github.com/bunizao/attila-opt/blob/master/README.md)
+### [**English Doc**](https://github.com/bunizao/Attegi/blob/master/README.md)
 
 ---
 
@@ -17,12 +17,12 @@
 ---
 
 ## 示例
-你可以在 **https://attila-opt.tutuis.me** 查看示例。
+你可以在 **https://Attegi.tutuis.me** 查看示例。
 
 ---
 
 ## 安装
-1. 直接从[链接](https://github.com/bunizao/attila-opt/archive/refs/heads/master.zip)下载主题，将自动下载 master 分支下的最新主题。
+1. 直接从[链接](https://github.com/bunizao/Attegi/archive/refs/heads/master.zip)下载主题，将自动下载 master 分支下的最新主题。
 2. 将 ZIP 文件上传到你的 Ghost 管理后台。
 ---
 
@@ -49,7 +49,7 @@ span.nav-copy {
 | `section.post-comments`| 文章   | 隐藏评论部分。                                                                  |
 | `post-share`           | 文章   | 隐藏文章分享选项。                                                              |
 | `nav-footer ul`        | 全局   | 隐藏页脚中的 `注册` 按钮。                                                      |
-| `span.nav-credits`     | 全局   | 隐藏页脚中的版权信息，包括 `Published with Ghost`、`Theme Attila-Opt` 及主题切换按钮。|
+| `span.nav-credits`     | 全局   | 隐藏页脚中的版权信息，包括 `Published with Ghost`、`Theme Attegi` 及主题切换按钮。|
 | `span.nav-copy`        | 全局   | 隐藏页脚中的版权信息和社交媒体链接。                                            |
 
 ### 修改某些元素
