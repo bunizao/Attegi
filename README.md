@@ -1,7 +1,7 @@
-# Attila-Opt
+# Attegi
 ### Here is a Ghost theme optimized for mobile devices based on [*Attila*](https://github.com/zutrinken/attila), with a style inspired by [*Moegi*](https://github.com/moegi-design/ghost-theme-Moegi). 
 
-### [**中文文档**](https://github.com/bunizao/attila-opt/blob/master/README_zh.md)
+### [**中文文档**](https://github.com/bunizao/Attegi/blob/master/README_zh.md)
 
 ---
 
@@ -17,12 +17,12 @@
 ---
 
 ## Demo
-You can see the demo at **https://attila-opt.tutuis.me**.
+You can see the demo at **https://Attegi.tutuis.me**.
 
 ---
 
 ## Installation
-1. Download the theme directly from the [link](https://github.com/bunizao/attila-opt/archive/refs/heads/master.zip), it will automatically download the latest theme under the master branch.
+1. Download the theme directly from the [link](https://github.com/bunizao/Attegi/archive/refs/heads/master.zip), it will automatically download the latest theme under the master branch.
 2. Upload the ZIP file to your Ghost Admin Portal.
 ---
 ## Customization
@@ -48,7 +48,7 @@ span.nav-copy {
 | `section.post-comments`| Post   | Hide the comment section.                                                         |
 | `post-share`           | Post   | Hide the post sharing options.                                                    |
 | `nav-footer ul`        | Global | Hide the `Sign up` button in the footer.                                          |
-| `span.nav-credits`     | Global | Hide the credits including `Published with Ghost`, `Theme Attila-Opt`, and the theme change button in the footer. |
+| `span.nav-credits`     | Global | Hide the credits including `Published with Ghost`, `Theme Attegi`, and the theme change button in the footer. |
 | `span.nav-copy`        | Global | Hide the copyright information and social media links in the footer.              |
 
 ### Change something
