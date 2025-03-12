@@ -19,7 +19,7 @@
 	</script>
 
 	<script>
-			var localTheme = localStorage.getItem('attila_theme');
+			var localTheme = localStorage.getItem('attegi_theme');
 			switch (localTheme) {
 					case 'dark':
 							document.documentElement.classList.add('theme-dark');
@@ -33,17 +33,17 @@
 	</script>
 
 	{{#match @custom.color_scheme "Dark"}}
-		<script>localStorage.setItem('attila_theme', 'dark');</script>
+		<script>localStorage.setItem('attegi_theme', 'dark');</script>
 		<style>.js-theme {display:none!important;}</style>
 	{{/match}}
 
 	{{#match @custom.color_scheme "Light"}}
-		<script>localStorage.setItem('attila_theme', 'light');</script>
+		<script>localStorage.setItem('attegi_theme', 'light');</script>
 		<style>.js-theme {display:none!important;}</style>
 	{{/match}}
 
 	{{#match @custom.color_scheme "System"}}
-		<script>localStorage.setItem('attila_theme', 'system');</script>
+		<script>localStorage.setItem('attegi_theme', 'system');</script>
 	{{/match}}
 
 	{{#match @custom.color_scheme "!=" "Light"}}
@@ -103,7 +103,7 @@
 					{{#if @site.secondary_navigation}}
 					{{navigation type="secondary"}}
 					{{/if}}
-					<span class="nav-credits">{{t "Published with"}} <a href="https://ghost.org">Ghost</a> &bull; {{t "Theme" }} <a href="https://github.com/bunizao/attila-opt">Attila-Opt</a> &bull; <a class="menu-item js-theme" href="#" data-system="System theme" data-dark="Dark theme" data-light="Light theme"><span class="theme-icon"></span><span class="theme-text">System theme</span> </a> </span>
+					<span class="nav-credits">{{t "Published with"}} <a href="https://ghost.org">Ghost</a> &bull; {{t "Theme" }} <a href="https://github.com/bunizao/attegi">Attegi</a> &bull; <a class="menu-item js-theme" href="#" data-system="System" data-dark="Dark" data-light="Light"><span class="theme-icon"></span><span class="theme-text">System</span> </a> </span>
 				</nav>
 			</div>
 
