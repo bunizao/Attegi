@@ -1,8 +1,8 @@
 {
-  "name": "attila",
-  "description": "Ghost Theme",
-  "demo": "https://attila.peteramende.de",
-  "version": "3.8.0",
+  "name": "Attegi",
+  "description": "Ghost Theme Attila with Moegi style, optimized for mobile readers.",
+  "demo": "https://attegi.tutuis.me",
+  "version": "5.2.0",
   "engines": {
     "ghost": ">=5.0.0"
   },
@@ -12,9 +12,9 @@
     "mobile": "src/screenshot-mobile.jpg"
   },
   "author": {
-    "name": "Peter Amende",
-    "email": "hey@peteramende.de",
-    "url": "https://peteramende.de"
+    "name": "Bunizao",
+    "email": "me@tutuis.me",
+    "url": "https://tutuis.me"
   },
   "gpm": {
     "type": "theme",
@@ -30,7 +30,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/zutrinken/attila.git"
+    "url": "https://github.com/bunizao/Attegi.git"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.2",
