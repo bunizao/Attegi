@@ -1,5 +1,5 @@
 # Attegi
-### Here is a Ghost theme optimized for mobile devices based on [*Attila*](https://github.com/zutrinken/attila), with a style inspired by [*Moegi*](https://github.com/moegi-design/ghost-theme-Moegi). 
+### Here is a [**Ghost**](https://ghost.org) theme optimized for mobile devices based on [*Attila*](https://github.com/zutrinken/attila), with a style inspired by [*Moegi*](https://github.com/moegi-design/ghost-theme-Moegi). 
 
 ### [**中文文档**](https://github.com/bunizao/Attegi/blob/master/README_zh.md)
 
