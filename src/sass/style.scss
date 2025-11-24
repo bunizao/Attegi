@@ -1,10 +1,10 @@
 /* ==========================================================================
    Includes
    ========================================================================== */
-@import "normalize";
-@import "colors";
-@import "fonts";
-@import "highlight";
+@use "normalize";
+@use "colors";
+@use "fonts";
+@use "highlight";
 $breakpoint-large: 960px;
 $breakpoint-medium: 640px;
 $breakpoint-small: 480px;
@@ -12,10 +12,6 @@ $inner: calc(64rem + 8vw);
 /* ==========================================================================
    Basics
    ========================================================================== */
-:root {
-	--font-primary: 'Fira Sans', sans-serif;
-	--font-secondary: 'Libre Baskerville', serif;
-}
 
 html {
 	font-size: 62.5%;
@@ -28,7 +24,7 @@ html.menu-active {
 }
 
 body {
-	font-family: var(--font-primary);
+	font-family: var(--gh-font-body);
 	font-size: 1em;
 	line-height: 1.75em;
 	font-weight: 400;
@@ -70,8 +66,9 @@ textarea {
 	h4,
 	h5,
 	h6 {
-		line-height: 1.25em;
 		margin: 0 0 4rem;
+		line-height: 1.25em;
+		font-family: var(--gh-font-heading);
 		text-rendering: optimizeLegibility;
 		color: var(--color-content-lead);
 	}
@@ -110,13 +107,11 @@ textarea {
 	}
 
 	p {
-		font-family: var(--font-secondary);
 		margin: 0 0 4rem;
 	}
 
 	ol,
 	ul {
-		font-family: var(--font-secondary);
 		margin: 0 0 4rem;
 		padding-left: 2em;
 		box-sizing: border-box;
@@ -145,7 +140,6 @@ textarea {
 		line-height: 2em;
 		text-align: right;
 		color: var(--ghost-accent-color);
-		font-family: var(--font-primary);
 	}
 
 	ul > li:before {
@@ -176,7 +170,6 @@ textarea {
 	}
 
 	blockquote {
-		font-family: var(--font-secondary);
 		margin: 0 0 4rem;
 		padding: 0.25em 1em;
 		-moz-box-sizing: border-box;
@@ -216,7 +209,6 @@ textarea {
 	}
 
 	dl {
-		font-family: var(--font-secondary);
 		margin: 0 0 4rem;
 		padding-left: 30px;
 	}
@@ -227,7 +219,6 @@ textarea {
 		line-height: 1.25em;
 		font-weight: 700;
 		margin-bottom: 0.33334em;
-		font-family: var(--font-primary);
 	}
 
 	dl dt:before {
@@ -375,6 +366,61 @@ textarea {
 		margin: 0 0 4rem;
 	}
 
+	/* Enhanced Video Responsive Support (Reframe-style) */
+	.js-reframe {
+		position: relative;
+		width: 100%;
+		height: 0;
+		padding-bottom: 56.25%; /* 16:9 aspect ratio */
+		overflow: hidden;
+		margin: 0 0 4rem;
+
+		iframe,
+		object,
+		embed,
+		video {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border: 0;
+		}
+	}
+
+	/* Responsive embeds for various aspect ratios */
+	.video-responsive {
+		position: relative;
+		width: 100%;
+		height: 0;
+		margin: 0 0 4rem;
+		overflow: hidden;
+
+		&.ratio-16-9 {
+			padding-bottom: 56.25%;
+		}
+
+		&.ratio-4-3 {
+			padding-bottom: 75%;
+		}
+
+		&.ratio-21-9 {
+			padding-bottom: 42.857%;
+		}
+
+		iframe,
+		object,
+		embed,
+		video {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border: 0;
+		}
+	}
+
 	form {
 
 		p {
@@ -391,7 +437,7 @@ textarea {
 	label {
 		display: block;
 		margin-bottom: 0.5rem;
-		font-family: var(--font-primary);
+		font-family: var(--gh-font-heading);
 		font-weight: 500;
 		color: var(--color-content-main);
 	}
@@ -474,7 +520,9 @@ textarea {
 	input[type="button"]:hover,
 	.kg-btn:hover,
 	.button:hover {
-
+		opacity: 0.9;
+		transform: translateY(-1px);
+		box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 	}
 
 	input[type="reset"]:focus,
@@ -482,7 +530,9 @@ textarea {
 	input[type="button"]:focus,
 	.kg-btn:focus,
 	.button:focus {
-
+		outline: 2px solid var(--ghost-accent-color);
+		outline-offset: 2px;
+		box-shadow: 0 0 0 3px rgba(var(--ghost-accent-color), 0.2);
 	}
 }
 /* ==========================================================================
@@ -856,6 +906,59 @@ textarea {
 	}
 }
 
+/* Enhanced Social Media Icon Support */
+.social-icons {
+	display: flex;
+	gap: 1.5rem;
+	align-items: center;
+
+	.icon-link {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 50%;
+		color: var(--color-content-secondary);
+		background: var(--color-background-secondary);
+		border: 1px solid var(--color-background-contrast);
+		transition: all ease-out 0.2s;
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			color: var(--color-background-main);
+			background: var(--ghost-accent-color);
+			border-color: var(--ghost-accent-color);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+		}
+
+		.icon {
+			font-size: 1.2rem;
+		}
+	}
+
+	&.large .icon-link {
+		width: 3rem;
+		height: 3rem;
+
+		.icon {
+			font-size: 1.4rem;
+		}
+	}
+}
+
+/* Social Media Specific Icons */
+.icon-twitter,
+.icon-x { color: #1da1f2; }
+.icon-facebook { color: #3b5998; }
+.icon-instagram { color: #e4405f; }
+.icon-linkedin { color: #0077b5; }
+.icon-github { color: #333; }
+.icon-youtube { color: #ff0000; }
+.icon-rss { color: #ff6600; }
+
 @keyframes fadein {
 	0% {
 		opacity: 0.2;
@@ -976,6 +1079,7 @@ textarea {
 	display: block;
 	margin: 0;
 	padding: 0;
+	font-family: var(--gh-font-heading);
 	font-weight: 700;
 	font-size: 6em;
 	line-height: 1em;
@@ -988,7 +1092,6 @@ textarea {
 }
 
 .blog-description {
-	font-family: var(--font-secondary);
 	display: block;
 	margin-top: 1rem;
 	padding: 0;
@@ -1049,7 +1152,6 @@ textarea {
 		font-size: 2em;
 		line-height: 1.5em;
 		margin: 1rem 0;
-		font-family: var(--font-secondary);
 		color: var(--color-content-secondary);
 	}
 
@@ -1451,6 +1553,115 @@ textarea {
 		}
 	}
 }
+
+/* Navigation Button Enhancements */
+.nav-header .nav-wrapper-control a {
+	border-radius: 0.5rem;
+	transition: all ease-out 0.2s;
+
+	&:active {
+		transform: scale(0.98);
+	}
+}
+
+.nav-header li a {
+	position: relative;
+	transition: all ease-out 0.2s;
+
+	&:hover {
+		transform: translateX(2px);
+	}
+
+	@media only screen and (max-width: $breakpoint-medium) {
+		&:hover {
+			background: rgba(255,255,255,0.05);
+			border-radius: 0.5rem;
+			transform: none;
+		}
+	}
+}
+
+/* Mobile Navigation Optimizations */
+@media only screen and (max-width: $breakpoint-medium) {
+	.nav-header {
+		.nav-wrapper {
+			max-height: calc(100vh - 8rem);
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
+
+			/* Improve scrolling performance */
+			&::-webkit-scrollbar {
+				width: 4px;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background: rgba(255,255,255,0.3);
+				border-radius: 2px;
+			}
+		}
+
+		ul {
+			padding: 2rem 0 4rem;
+		}
+
+		li {
+			margin-bottom: 0.5rem;
+
+			a {
+				padding: 1.25rem 4rem;
+				border-radius: 0.75rem;
+				margin: 0 1rem;
+
+				&:active {
+					transform: scale(0.98);
+					transition: transform 0.1s ease-out;
+				}
+			}
+
+			&.active a {
+				background: rgba(255,255,255,0.1);
+			}
+		}
+	}
+
+	/* Enhanced menu toggle animation */
+	.nav-header.menu-active {
+		animation: slideInFromTop 0.3s ease-out;
+	}
+
+	.menu-active .nav-close {
+		animation: fadeIn 0.3s ease-out;
+	}
+}
+
+/* Touch-friendly navigation improvements */
+.nav-header .nav-wrapper-control {
+	touch-action: manipulation;
+
+	a {
+		min-height: 44px; /* iOS recommended minimum touch target */
+		padding: 1.5rem 0;
+	}
+}
+
+@keyframes slideInFromTop {
+	0% {
+		transform: translate3d(0, -100%, 0);
+	}
+	100% {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
 /* ==========================================================================
    Reading Progress
    ========================================================================== */
@@ -1795,6 +2006,7 @@ textarea {
 	position: relative;
 	z-index: 10;
 	margin: 0 0 2rem;
+	font-family: var(--gh-font-heading);
 	font-size: 4em;
 	line-height: 1.25em;
 	font-weight: 700;
@@ -1934,7 +2146,6 @@ textarea {
 
 .post-excerpt {
 	margin: 1em 0 0;
-	font-family: var(--font-secondary);
 	font-size: 1.75em;
 	line-height: 2em;
 }
@@ -2220,6 +2431,7 @@ textarea {
 .post-nav-title {
 	margin: 0 0 0.5rem;
 	padding: 0;
+	font-family: var(--gh-font-heading);
 	font-size: 2em;
 	line-height: 3rem;
 	color: inherit;
@@ -2234,7 +2446,6 @@ textarea {
 .post-nav-excerpt {
 	height: 5rem;
 	margin: 0 0 1rem;
-	font-family: var(--font-secondary);
 	font-size: 1.5em;
 	line-height: 2.5rem;
 	display: -webkit-box;
