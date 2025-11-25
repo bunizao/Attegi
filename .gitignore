@@ -3,3 +3,5 @@ node_modules
 dist/
 AGENTS.md
 docker-compose.yml
+/.playwright-mcp
+*.png

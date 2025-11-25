@@ -6,26 +6,46 @@
   --color-content-lead: #000;
   --color-content-main: #222426;
   --color-content-secondary: #73777D;
+
+  /* Semantic colors */
+  --color-highlight: #FFC336;
+  --color-social-twitter: #1da1f2;
+  --color-social-facebook: #3b5998;
+  --color-social-instagram: #e4405f;
+  --color-social-linkedin: #0077b5;
+  --color-social-github: #333;
+  --color-social-youtube: #ff0000;
+  --color-social-rss: #ff6600;
 }
 
 .theme-dark:root {
-  --color-background-main: #222426;
-  --color-background-secondary: #1D1F20;
-  --color-background-contrast: #3B3D40;
-  --color-background-overlay: rgba(9,10,13,0.9);
-  --color-content-lead: #FFF;
-  --color-content-main: #E1E3E6;
-  --color-content-secondary: #909499;
+  --color-background-main: #1D1F21;
+  --color-background-secondary: #25282D;
+  --color-background-contrast: #353A40;
+  --color-background-overlay: rgba(12,14,16,0.92);
+  --color-content-lead: #F6F7FA;
+  --color-content-main: #E2E6EB;
+  --color-content-secondary: #B6BBC4;
+
+  /* Semantic colors remain the same for consistency */
+  --color-highlight: #FFC336;
+  --color-social-twitter: #1da1f2;
+  --color-social-facebook: #3b5998;
+  --color-social-instagram: #e4405f;
+  --color-social-linkedin: #0077b5;
+  --color-social-github: #555; /* Lighter for dark mode */
+  --color-social-youtube: #ff0000;
+  --color-social-rss: #ff6600;
 }
 
 @media (prefers-color-scheme: dark) {
   html:not(.theme-light):root {
-    --color-background-main: #222426;
-    --color-background-secondary: #1D1F20;
-    --color-background-contrast: #3B3D40;
-    --color-background-overlay: rgba(9,10,13,0.9);
-    --color-content-lead: #FFF;
-    --color-content-main: #E1E3E6;
-    --color-content-secondary: #909499;
+    --color-background-main: #1D1F21;
+    --color-background-secondary: #25282D;
+    --color-background-contrast: #353A40;
+    --color-background-overlay: rgba(12,14,16,0.92);
+    --color-content-lead: #F6F7FA;
+    --color-content-main: #E2E6EB;
+    --color-content-secondary: #B6BBC4;
   }
 }

@@ -44,8 +44,8 @@ textarea {
 }
 
 .post-content {
-	font-size: 1.75em;
-	line-height: 2em;
+	font-size: 1.8em;
+	line-height: 1.75em;
 
 	a:not([class]) {
 		color: inherit;
@@ -66,7 +66,7 @@ textarea {
 	h4,
 	h5,
 	h6 {
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 		line-height: 1.25em;
 		font-family: var(--gh-font-heading);
 		text-rendering: optimizeLegibility;
@@ -74,26 +74,30 @@ textarea {
 	}
 
 	h1 {
-		font-size: 4rem;
+		font-size: 3.6em;
 		text-indent: -1px;
+		font-weight: 700;
 	}
 
 	h2 {
-		font-size: 3rem;
+		font-size: 2.8em;
 		text-indent: -1px;
+		font-weight: 600;
 	}
 
 	h3 {
-		font-size: 2.4rem;
+		font-size: 2.2em;
+		font-weight: 600;
 	}
 
 	h4 {
-		font-size: 2rem;
+		font-size: 1.9em;
+		font-weight: 500;
 	}
 
 	h5,
 	h6 {
-		font-size: 2rem;
+		font-size: 1.7em;
 		font-weight: 500;
 	}
 
@@ -107,12 +111,12 @@ textarea {
 	}
 
 	p {
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 	}
 
 	ol,
 	ul {
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 		padding-left: 2em;
 		box-sizing: border-box;
 	}
@@ -163,14 +167,14 @@ textarea {
 	hr {
 		display: block;
 		height: 1px;
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 		padding: 0;
 		background: var(--color-background-contrast);
 		border: 0;
 	}
 
 	blockquote {
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 		padding: 0.25em 1em;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
@@ -209,15 +213,14 @@ textarea {
 	}
 
 	dl {
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 		padding-left: 30px;
 	}
 
 	dl dt {
-		font-weight: 500;
+		font-weight: 700;
 		font-size: 0.75em;
 		line-height: 1.25em;
-		font-weight: 700;
 		margin-bottom: 0.33334em;
 	}
 
@@ -237,7 +240,7 @@ textarea {
 	}
 
 	mark {
-		background-color: #FFC336;
+		background-color: var(--color-highlight);
 	}
 
 	code,
@@ -245,7 +248,7 @@ textarea {
 		position: relative;
 		margin: 0 1px;
 		padding: 4px 8px;
-		font-family: monospace, sans-serif;
+		font-family: var(--gh-font-mono);
 		font-size: 0.75em;
 		background: var(--color-background-secondary);
 		border: 1px solid var(--color-background-contrast);
@@ -255,10 +258,10 @@ textarea {
 
 	pre {
 		position: relative;
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 		padding: 1em;
 		overflow: hidden;
-		font-family: monospace, sans-serif;
+		font-family: var(--gh-font-mono);
 		white-space: pre;
 		background: var(--color-background-secondary);
 		border: 1px solid var(--color-background-contrast);
@@ -325,7 +328,7 @@ textarea {
 		position: relative;
 		width: 100%;
 		max-width: 100%;
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 		border: 1px solid var(--color-background-contrast);
 		background: var(--color-background-secondary);
 
@@ -359,11 +362,11 @@ textarea {
 		display: block;
 		max-width: 100%;
 		height: auto;
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 	}
 
 	.fluid-width-video-wrapper {
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 	}
 
 	/* Enhanced Video Responsive Support (Reframe-style) */
@@ -373,7 +376,7 @@ textarea {
 		height: 0;
 		padding-bottom: 56.25%; /* 16:9 aspect ratio */
 		overflow: hidden;
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 
 		iframe,
 		object,
@@ -393,7 +396,7 @@ textarea {
 		position: relative;
 		width: 100%;
 		height: 0;
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 		overflow: hidden;
 
 		&.ratio-16-9 {
@@ -569,7 +572,7 @@ textarea {
 	}
 
 	.kg-card {
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 	}
 
 	// KG File
@@ -731,7 +734,7 @@ textarea {
 	// KG Embed
 
 	.kg-embed-card {
-		margin: 0 0 4rem;
+		margin: 0 0 2.5rem;
 
 		> * {
 			margin-left: auto;
@@ -951,13 +954,13 @@ textarea {
 
 /* Social Media Specific Icons */
 .icon-twitter,
-.icon-x { color: #1da1f2; }
-.icon-facebook { color: #3b5998; }
-.icon-instagram { color: #e4405f; }
-.icon-linkedin { color: #0077b5; }
-.icon-github { color: #333; }
-.icon-youtube { color: #ff0000; }
-.icon-rss { color: #ff6600; }
+.icon-x { color: var(--color-social-twitter); }
+.icon-facebook { color: var(--color-social-facebook); }
+.icon-instagram { color: var(--color-social-instagram); }
+.icon-linkedin { color: var(--color-social-linkedin); }
+.icon-github { color: var(--color-social-github); }
+.icon-youtube { color: var(--color-social-youtube); }
+.icon-rss { color: var(--color-social-rss); }
 
 @keyframes fadein {
 	0% {
@@ -1012,10 +1015,10 @@ textarea {
 
 .blog-header {
 	position: relative;
-	padding-top: calc(16rem + 4vw);
+	padding-top: calc(12rem + 3vw);
 
 	&.has-cover {
-		padding-top: calc(24rem + 8vw);
+		padding-top: calc(18rem + 6vw);
 		color: white;
 		background: black;
 		overflow: hidden;
@@ -1029,7 +1032,8 @@ textarea {
 	.blog-box {
 		position: relative;
 		z-index: 10;
-		padding-bottom: calc(4rem + 2vw);
+		padding-bottom: calc(2.5rem + 1.5vw);
+		margin-bottom: calc(3rem + 1.5vw);
 		text-align: center;
 		border-bottom: 1px solid var(--color-background-contrast);
 	}
@@ -1081,7 +1085,7 @@ textarea {
 	padding: 0;
 	font-family: var(--gh-font-heading);
 	font-weight: 700;
-	font-size: 6em;
+	font-size: 4.5em;
 	line-height: 1em;
 	text-decoration: none;
 	color: var(--color-content-lead);
@@ -1093,7 +1097,7 @@ textarea {
 
 .blog-description {
 	display: block;
-	margin-top: 1rem;
+	margin-top: 0.5rem;
 	padding: 0;
 	font-size: 3em;
 	line-height: 1.33334em;
@@ -1110,6 +1114,7 @@ textarea {
 
 	&.archive-box {
 		padding-bottom: calc(4rem + 2vw);
+		margin-bottom: calc(4rem + 2vw);
 		border-bottom: 1px solid var(--color-background-contrast);
 	}
 
@@ -1352,9 +1357,9 @@ textarea {
 }
 
 .menu-active .nav-header .nav-wrapper-control {
-	background: #222426;
+	background: var(--color-content-main);
 	color: var(--color-content-secondary);
-	border-color: #3B3D40;
+	border-color: var(--color-background-contrast);
 	@supports (-webkit-backdrop-filter: blur(2rem)) {
 		background: rgba(34,36,38,0.9);
 		-webkit-backdrop-filter: blur(2rem);
@@ -1375,7 +1380,7 @@ textarea {
 	overflow-y: auto;
 
 	@media only screen and (max-width: $breakpoint-medium) {
-		background: #222426;
+		background: var(--color-content-main);
 		flex-direction: column;
 
 		@supports (-webkit-backdrop-filter: blur(2rem)) {
@@ -1476,7 +1481,7 @@ textarea {
 					margin-left: 6px;
 					margin-top: -1px;
 					border-radius: 2px;
-					background: #3B3D40;
+					background: var(--color-background-contrast);
 				}
 			}
 		}
@@ -1500,7 +1505,7 @@ textarea {
 			color: var(--color-content-main);
 
 			@media only screen and (max-width: $breakpoint-medium) {
-				color: #C4C7CC;
+				color: var(--color-content-secondary);
 			}
 		}
 	}
@@ -1692,8 +1697,8 @@ textarea {
 .nav-footer {
 	position: relative;
 	z-index: 20;
-	padding-top: calc(12rem + 8vw);
-	padding-bottom: 12rem;
+	padding-top: calc(3rem + 2vw);
+	padding-bottom: 3rem;
 	margin-top: auto;
 	font-size: 1.6em;
 	line-height: 2rem;
@@ -1851,20 +1856,98 @@ textarea {
 .theme-text {}
 
 /* ==========================================================================
-   Index
+   Index - Minimal Homepage Layout
    ========================================================================== */
 .container {
 	position: relative;
 
-	.post .post-box {
-		padding-top: calc(4rem + 2vw);
-		padding-bottom: calc(4rem + 2vw);
-		border-bottom: 1px solid var(--color-background-contrast);
+	.post {
+		margin-bottom: 2.5rem;
+		position: relative;
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			margin-bottom: 2rem;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		.post-box {
+			padding: 0;
+			margin: 0;
+			background: transparent;
+			border: none;
+		}
 	}
 
-	#results .post:first-child .post-box {
-		border-top: 1px solid var(--color-background-contrast);
+	// Clean article separation
+	#results .post {
+		border-bottom: 1px solid var(--color-background-contrast);
+		padding-bottom: 4rem;
+
+		&:last-child {
+			border-bottom: none;
+			padding-bottom: 0;
+		}
 	}
+
+	.post .post-box {
+		border-radius: 12px;
+		padding: 3rem;
+		margin: 1rem -2rem;
+		transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-radius 0.18s ease, padding 0.18s ease, margin 0.18s ease;
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			padding: 2.25rem;
+			margin: 0.5rem -1rem;
+		}
+
+		&:hover {
+			transform: translateY(-2px);
+			background: var(--color-background-secondary);
+			box-shadow: 0 30px 90px rgba(0,0,0,0.10);
+			border-radius: 18px;
+			padding: 3.5rem 4rem;
+			margin: 1.5rem -2.5rem;
+
+			@media only screen and (max-width: $breakpoint-medium) {
+				padding: 2.5rem;
+				margin: 1rem -1.25rem;
+			}
+		}
+	}
+
+	@media (hover: none) and (pointer: coarse) {
+		.post .post-box,
+		.post .post-box:hover {
+			transform: none;
+			box-shadow: none;
+			background: transparent;
+			border-radius: 12px;
+			padding: 2.5rem;
+			margin: 1rem 0;
+			transition: none;
+		}
+	}
+}
+
+.container .post .post-excerpt {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	line-height: 1.75em;
+}
+
+/* Tighter title/meta spacing on index cards */
+.container .post .post-title {
+	margin: 0 0 0.35em;
+}
+
+.container .post .post-meta {
+	margin: 0 0 0.75em;
+	padding: 0;
 }
 
 .post-feature {
@@ -1884,36 +1967,95 @@ textarea {
 }
 
 .container .post.featured .inner:after {
-	content: '';
-	position: absolute;
-	z-index: -1;
-	top: 0;
-	width: calc(100% - 4rem);
-	@media only screen and (max-width: $breakpoint-medium) {
-		width: 100%;
-	}
-	height: calc(100% - 2rem);
-	background: var(--ghost-accent-color);
-	opacity: 0.1;
-	border-radius: 8px;
-
-	margin-left: -6rem;
-	margin-top: 1rem;
-	@media only screen and (max-width: $breakpoint-medium) {
-		margin-left: -4rem;
-	}
+	/* Purple background removed as requested */
+	display: none !important;
+	background: none !important;
+	opacity: 0 !important;
 }
 /* ==========================================================================
    Post
    ========================================================================== */
+.post-header .post-meta,
+.post-meta {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+	font-size: 16px;
+	line-height: 20px;
+	color: rgb(115, 119, 125);
+	margin: 5px 0px;
+	padding: 0px 0px 40px;
+	border-bottom: none;
+	font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "WenQuanYi Micro Hei", ui-sans-serif, system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	font-weight: 400;
+}
+
+.post-header .post-meta:before,
+.post-header .post-meta:after {
+	display: none;
+}
+
+.post-meta-avatars {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin: 0;
+	float: none;
+	position: static;
+}
+
+.post-meta-avatar {
+	position: relative;
+	display: block;
+	width: 3.6rem;
+	height: 3.6rem;
+	margin: 0;
+	border-radius: 50%;
+	border: 2px solid var(--color-background-contrast);
+	box-sizing: border-box;
+	overflow: hidden;
+	box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.post-meta-avatar img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.post-meta-author {
+	color: var(--color-content-main);
+	.has-cover & {
+		color: white;
+	}
+	font-weight: 600;
+	margin: 0;
+
+	a {
+		color: var(--color-content-main) !important;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+.post-meta time {
+	color: var(--color-content-secondary);
+	font-weight: 400;
+	font-variant-numeric: tabular-nums;
+}
 .post-header {
 	position: relative;
-	padding: calc(16rem + 4vw) 0 calc(2rem + 2vw);
+	padding: calc(10rem + 2vw) 0 calc(1.5rem + 1vw);
 }
 
 .post-header.has-cover {
-	padding: calc(16rem + 8vw) 0 calc(4rem + 6vw);
-	margin-bottom: calc(4rem + 2vw);
+	padding: calc(12rem + 4vw) 0 calc(3rem + 4vw);
+	margin-bottom: calc(3rem + 2vw);
 	background: black;
 	overflow: hidden;
 	text-shadow: 0 1px 2px rgba(0,0,0,0.1);
@@ -1962,30 +2104,7 @@ textarea {
 .post-info {
 	position: relative;
 	z-index: 10;
-	display: flex;
-	margin-bottom: 2rem;
-	font-size: 2em;
-	line-height: 1em;
-
-	.post-type {
-		color: var(--ghost-accent-color);
-	}
-
-	.post-count {
-		position: relative;
-		margin-left: 3.5rem;
-		color: var(--color-content-secondary);
-
-		&:after {
-			content: '';
-			position: absolute;
-			left: -2.5rem;
-			top: 50%;
-			width: 1.5rem;
-			height: 2px;
-			background: var(--color-background-contrast);
-		}
-	}
+	display: none;
 }
 
 .has-cover .post-info {
@@ -2005,30 +2124,42 @@ textarea {
 .post-title {
 	position: relative;
 	z-index: 10;
-	margin: 0 0 2rem;
-	font-family: var(--gh-font-heading);
-	font-size: 4em;
-	line-height: 1.25em;
-	font-weight: 700;
-	text-indent: -1px;
+	margin: 0 0 1rem;
+	font-family: var(--gh-font-body);
+	font-size: 2.4em;
+	line-height: 1.2em;
+	font-weight: 600;
+	text-indent: 0;
 	color: var(--color-content-lead);
+	transition: color ease-out 0.2s;
 
 	@media only screen and (max-width: $breakpoint-small) {
 		-webkit-hyphens: auto;
 		hyphens: auto;
+		font-size: 2.2em;
 	}
 
 	a {
 		text-decoration: none;
 		color: inherit;
 		font-weight: inherit;
+		position: relative;
+
+		&:hover {
+			color: var(--ghost-accent-color);
+		}
 	}
 }
 
 .post-header .post-title {
-	margin: 0 0 4rem;
-	font-size: 6em;
-	line-height: 1.25em;
+	margin: 0 0 3rem;
+	font-size: 3.6em;
+	line-height: 1.15em;
+
+	@media only screen and (max-width: $breakpoint-medium) {
+		font-size: 2.8em;
+		margin-bottom: 2rem;
+	}
 }
 
 .has-cover .post-title {
@@ -2037,42 +2168,29 @@ textarea {
 
 .post-meta {
 	font-weight: 400;
-	font-size: 1.6em;
-	line-height: 2rem;
+	font-size: 1.4em;
+	line-height: 1.6em;
 	color: var(--color-content-secondary);
+	margin: 0.5em 0 1.5em;
+	opacity: 0.85;
 
 	a {
-		display: inline-block;
+		color: var(--color-content-secondary);
 		text-decoration: none;
-		color: inherit;
+		font-weight: 400;
+		transition: color ease-out 0.2s;
 
 		&:focus,
 		&:hover {
-			text-decoration: underline;
+			color: var(--color-content-main);
 		}
 	}
 }
 
 .post-header .post-meta {
 	position: relative;
-	padding-bottom: 4rem;
+	padding-bottom: 1.5rem;
 	z-index: 10;
-
-	&:after {
-		clear: both;
-		content: '';
-		display: table;
-	}
-
-	&:before {
-		content: '';
-		position: absolute;
-		left: 0;
-		bottom: 0;
-		width: 8rem;
-		height: 1px;
-		background: var(--color-background-contrast);
-	}
 
 	.post-meta-avatars {
 		float: left;
@@ -2146,8 +2264,11 @@ textarea {
 
 .post-excerpt {
 	margin: 1em 0 0;
-	font-size: 1.75em;
-	line-height: 2em;
+	font-size: 1.5em;
+	line-height: 1.6em;
+	color: var(--color-content-secondary);
+	font-weight: 400;
+	max-width: 100%;
 }
 
 .post-content {
@@ -2304,7 +2425,7 @@ textarea {
 			border-radius: 0.5rem;
 			font-weight: 700;
 			color: white !important;
-			background: #222426 !important;
+			background: var(--color-content-main) !important;
 			transition: all ease-out 0.2s;
 
 			&:focus,
@@ -2552,4 +2673,88 @@ textarea {
 	.pagination-box {
 		border-bottom: 1px solid var(--color-background-contrast);
 	}
+}
+
+/* ==========================================================================
+   Minimal Post Layout - Homepage Redesign
+   ========================================================================== */
+.post-minimal {
+	padding: 2rem 0;
+	border-bottom: 1px solid var(--color-background-contrast);
+
+	&:last-child {
+		border-bottom: none;
+	}
+
+	.inner {
+		position: relative;
+	}
+}
+
+.post-feature-minimal {
+	display: inline-block;
+	color: var(--ghost-accent-color);
+	font-size: 1.2em;
+	margin-right: 0.5em;
+	vertical-align: top;
+}
+
+.post-title-minimal {
+	font-family: var(--gh-font-heading);
+	font-size: 2.4em;
+	line-height: 1.3em;
+	font-weight: 600;
+	margin: 0 0 0.5rem;
+	color: var(--color-content-lead);
+
+	a {
+		text-decoration: none;
+		color: inherit;
+		transition: color ease-out 0.2s;
+
+		&:hover {
+			color: var(--ghost-accent-color);
+		}
+	}
+
+	@media only screen and (max-width: $breakpoint-small) {
+		font-size: 2em;
+	}
+}
+
+.post-meta-minimal {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-bottom: 1rem;
+	font-size: 1.3em;
+	color: var(--color-content-secondary);
+
+	.post-date {
+		font-weight: 400;
+	}
+
+	.post-tag {
+		background: var(--color-background-secondary);
+		color: var(--color-content-main);
+		padding: 0.2em 0.8em;
+		border-radius: 1em;
+		font-size: 0.9em;
+		font-weight: 500;
+		text-decoration: none;
+		transition: all ease-out 0.2s;
+
+		&:hover {
+			background: var(--ghost-accent-color);
+			color: var(--color-background-main);
+		}
+	}
+}
+
+.post-excerpt-minimal {
+	font-size: 1.5em;
+	line-height: 1.6em;
+	color: var(--color-content-secondary);
+	margin: 0;
+	max-width: 100%;
 }

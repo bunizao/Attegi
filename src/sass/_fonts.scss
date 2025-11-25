@@ -1,3 +1,7 @@
+/* ==========================================================================
+   Web Fonts - Latin Characters
+   ========================================================================== */
+
 /* latin-ext */
 @font-face {
   font-family: 'Libre Baskerville';
@@ -52,42 +56,105 @@
   src: local('Libre Baskerville Bold'), local('LibreBaskerville-Bold'), url(https://fonts.gstatic.com/s/librebaskerville/v7/kmKiZrc3Hgbbcjq75U4uslyuy4kn0qviTgY3KcC-wLOj.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
 /* fira-sans-regular - latin */
 @font-face {
   font-family: 'Fira Sans';
   font-style: normal;
   font-weight: 400;
-  src: url('../font/fira-sans-v8-latin-regular.eot'); /* IE9 Compat Modes */
+  font-display: swap;
   src: local('Fira Sans Regular'), local('FiraSans-Regular'),
-  url('../font/fira-sans-v8-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('../font/fira-sans-v8-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-  url('../font/fira-sans-v8-latin-regular.woff') format('woff'), /* Modern Browsers */
-  url('../font/fira-sans-v8-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('../font/fira-sans-v8-latin-regular.svg#FiraSans') format('svg'); /* Legacy iOS */
+  url(https://fonts.gstatic.com/s/firasans/v11/va9E4kDNxMZdWfMOD5VvmojLeTY.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* fira-sans-500 - latin */
 @font-face {
   font-family: 'Fira Sans';
   font-style: normal;
   font-weight: 500;
-  src: url('../font/fira-sans-v8-latin-500.eot'); /* IE9 Compat Modes */
+  font-display: swap;
   src: local('Fira Sans Medium'), local('FiraSans-Medium'),
-  url('../font/fira-sans-v8-latin-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('../font/fira-sans-v8-latin-500.woff2') format('woff2'), /* Super Modern Browsers */
-  url('../font/fira-sans-v8-latin-500.woff') format('woff'), /* Modern Browsers */
-  url('../font/fira-sans-v8-latin-500.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('../font/fira-sans-v8-latin-500.svg#FiraSans') format('svg'); /* Legacy iOS */
+  url(https://fonts.gstatic.com/s/firasans/v11/va9B4kDNxMZdWfMOD5VvmojLazX3dA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* fira-sans-700 - latin */
 @font-face {
   font-family: 'Fira Sans';
   font-style: normal;
   font-weight: 700;
-  src: url('../font/fira-sans-v8-latin-700.eot'); /* IE9 Compat Modes */
+  font-display: swap;
   src: local('Fira Sans Bold'), local('FiraSans-Bold'),
-  url('../font/fira-sans-v8-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('../font/fira-sans-v8-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
-  url('../font/fira-sans-v8-latin-700.woff') format('woff'), /* Modern Browsers */
-  url('../font/fira-sans-v8-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
-  url('../font/fira-sans-v8-latin-700.svg#FiraSans') format('svg'); /* Legacy iOS */
+  url(https://fonts.gstatic.com/s/firasans/v11/va9B4kDNxMZdWfMOD5VvmojLetX3dA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ==========================================================================
+   Ghost Font System Variables - Multi-language Support
+   ========================================================================== */
+
+:root {
+  /* Primary font stack - optimized for readability across languages */
+  --gh-font-heading:
+    'Libre Baskerville',           /* Primary serif for Latin */
+    'Hiragino Mincho ProN',        /* Japanese serif */
+    'Hiragino Mincho Pro',         /* Japanese serif fallback */
+    'YuMincho',                    /* Japanese serif system */
+    'Yu Mincho',                   /* Japanese serif system variant */
+    'STSong',                      /* Chinese simplified serif */
+    'SimSun',                      /* Chinese simplified serif fallback */
+    'PMingLiU',                    /* Traditional Chinese serif */
+    'Apple Myungjo',               /* Korean serif */
+    'Batang',                      /* Korean serif fallback */
+    'Times New Roman',             /* Universal serif fallback */
+    serif;
+
+  /* Body font stack - optimized for readability and performance */
+  --gh-font-body:
+    'Fira Sans',                   /* Primary sans-serif for Latin */
+    -apple-system,                 /* iOS system font */
+    'SF Pro Display',              /* macOS system font */
+    'SF Pro Text',                 /* macOS text variant */
+    'Helvetica Neue',              /* Apple fallback */
+    'PingFang SC',                 /* Chinese simplified - Apple */
+    'PingFang TC',                 /* Chinese traditional - Apple */
+    'PingFang HK',                 /* Chinese Hong Kong - Apple */
+    'Hiragino Sans',               /* Japanese - Apple */
+    'Hiragino Kaku Gothic ProN',   /* Japanese fallback */
+    'Hiragino Kaku Gothic Pro',    /* Japanese fallback 2 */
+    'YuGothic',                    /* Japanese system */
+    'Yu Gothic',                   /* Japanese system variant */
+    'Microsoft YaHei',             /* Chinese simplified - Windows */
+    'Microsoft JhengHei',          /* Chinese traditional - Windows */
+    'Malgun Gothic',               /* Korean - Windows */
+    'Apple SD Gothic Neo',         /* Korean - Apple */
+    'Roboto',                      /* Android system */
+    'Noto Sans CJK SC',           /* Google Noto - Chinese simplified */
+    'Noto Sans CJK TC',           /* Google Noto - Chinese traditional */
+    'Noto Sans CJK JP',           /* Google Noto - Japanese */
+    'Noto Sans CJK KR',           /* Google Noto - Korean */
+    'Source Han Sans SC',          /* Adobe - Chinese simplified */
+    'Source Han Sans TC',          /* Adobe - Chinese traditional */
+    'Source Han Sans',             /* Adobe - General CJK */
+    'Segoe UI',                    /* Windows system */
+    'Ubuntu',                      /* Linux */
+    'Cantarell',                   /* GNOME */
+    'Oxygen',                      /* KDE */
+    'Liberation Sans',             /* Linux fallback */
+    'DejaVu Sans',                 /* Linux fallback 2 */
+    'Helvetica',                   /* General fallback */
+    'Arial',                       /* Universal fallback */
+    sans-serif;
+
+  /* Monospace font stack */
+  --gh-font-mono:
+    'SF Mono',                     /* macOS monospace */
+    'Monaco',                      /* macOS fallback */
+    'Cascadia Code',               /* Windows modern */
+    'Roboto Mono',                 /* Android */
+    'Consolas',                    /* Windows */
+    'Liberation Mono',             /* Linux */
+    'Menlo',                       /* macOS older */
+    'DejaVu Sans Mono',           /* Linux fallback */
+    'Courier New',                 /* Universal fallback */
+    monospace;
 }
