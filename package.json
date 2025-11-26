@@ -2,7 +2,7 @@
   "name": "attegi",
   "description": "Ghost Theme Attila with Moegi style, optimized for mobile readers.",
   "demo": "https://attegi.tutuis.me",
-  "version": "5.2.0",
+  "version": "6.0.0",
   "engines": {
     "ghost": ">=5.0.0"
   },

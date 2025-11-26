@@ -1032,15 +1032,20 @@ textarea {
 	.blog-box {
 		position: relative;
 		z-index: 10;
-		padding-bottom: calc(2.5rem + 1.5vw);
-		margin-bottom: calc(3rem + 1.5vw);
+		padding-bottom: 5rem;
+		margin-bottom: 2.5rem;
 		text-align: center;
 		border-bottom: 1px solid var(--color-background-contrast);
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			padding-bottom: 4rem;
+			margin-bottom: 3rem;
+		}
 	}
 
 	&.has-cover .blog-box {
 		border: none;
-		padding-bottom: calc(8rem + 4vw);
+		padding-bottom: 5rem;
 	}
 }
 
@@ -1332,22 +1337,28 @@ textarea {
 
 	.inner {
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
+		height: 6rem;
+		padding: 0 2.5rem;
 	}
 
 	a {
 		position: relative;
 		display: flex;
-		padding: 2rem 0;
+		align-items: center;
+		padding: 0;
 		font-size: 2em;
-		line-height: 2rem;
+		line-height: 1;
 		color: inherit;
+		background: transparent;
 		transition: all ease-out 0.1s;
 		gap: 1em;
 
 		&:focus,
 		&:hover {
-			color: var(--color-content-main);
+			color: white;
+			background: transparent;
 		}
 	}
 }
@@ -1357,36 +1368,46 @@ textarea {
 }
 
 .menu-active .nav-header .nav-wrapper-control {
-	background: var(--color-content-main);
-	color: var(--color-content-secondary);
-	border-color: var(--color-background-contrast);
+	background: var(--color-background-overlay);
+	color: rgba(255, 255, 255, 0.9);
+	border-color: rgba(255, 255, 255, 0.08);
+	border-radius: 0 0 1rem 1rem;
+
 	@supports (-webkit-backdrop-filter: blur(2rem)) {
-		background: rgba(34,36,38,0.9);
-		-webkit-backdrop-filter: blur(2rem);
+		background: var(--color-background-overlay);
+		-webkit-backdrop-filter: blur(1rem);
+		backdrop-filter: blur(1rem);
 	}
 
 	a {
 		&:focus,
 		&:hover {
-			color: var(--color-content-main-dark);
+			color: #fffefe;
+			background: hsla(0, 0%, 100%, 0.1);
+			border-radius: 0.5rem;
 		}
 	}
 }
 
-.nav-header .nav-wrapper {
-	display: flex;
-	max-height: calc(100vh - 6rem);
-	padding: 2rem 4rem;
-	overflow-y: auto;
+	.nav-header .nav-wrapper {
+		display: flex;
+		max-height: calc(100vh - 6rem);
+		padding: 2rem 4rem;
+		overflow-y: auto;
 
-	@media only screen and (max-width: $breakpoint-medium) {
-		background: var(--color-content-main);
-		flex-direction: column;
+		@media only screen and (max-width: $breakpoint-medium) {
+			background: var(--color-background-overlay);
+			flex-direction: column;
+			border-radius: 0 0 1rem 1rem;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+			padding: 3rem 3.5rem;
+			gap: 1.5rem;
 
-		@supports (-webkit-backdrop-filter: blur(2rem)) {
-			background: rgba(34,36,38,0.9);
-			-webkit-backdrop-filter: blur(2rem);
-		}
+			@supports (-webkit-backdrop-filter: blur(2rem)) {
+				background: color-mix(in srgb, var(--color-background-overlay) 90%, rgba(0,0,0,0.1));
+				-webkit-backdrop-filter: blur(1rem);
+				backdrop-filter: blur(1rem);
+			}
 
 		.nav-search {
 			display: none;
@@ -1415,22 +1436,22 @@ textarea {
 
 .nav-header {
 
-	ul {
-		position: relative;
-		display: flex;
-		width: 100%;
-		margin: 0 auto;
-		padding: 0;
-		list-style: none;
-		@media only screen and (max-width: $breakpoint-medium) {
-			flex-direction: column;
-			flex-shrink: 0;
-			padding: 2rem 0;
+		ul {
+			position: relative;
+			display: flex;
+			width: 100%;
+			margin: 0 auto;
+			padding: 0;
+			list-style: none;
+			@media only screen and (max-width: $breakpoint-medium) {
+				flex-direction: column;
+				flex-shrink: 0;
+				padding: 1rem 0;
+			}
 		}
-	}
-	
-	li {
-		position: relative;
+		
+		li {
+			position: relative;
 		margin-right: 3rem;
 
 		&.active {
@@ -1458,14 +1479,14 @@ textarea {
 			}
 		}
 
-		a {
-			cursor: pointer;
-			color: var(--color-content-main);
-			font-weight: 500;
+			a {
+				cursor: pointer;
+				color: var(--color-content-main);
+				font-weight: 500;
 
-			@media only screen and (max-width: $breakpoint-medium) {
-				color: white;
-			}
+				@media only screen and (max-width: $breakpoint-medium) {
+					color: rgba(255,255,255,0.9);
+				}
 
 			@media only screen and (max-width: $breakpoint-medium) {
 				font-size: 2em;
@@ -1481,7 +1502,7 @@ textarea {
 					margin-left: 6px;
 					margin-top: -1px;
 					border-radius: 2px;
-					background: var(--color-background-contrast);
+					background: rgba(255,255,255,0.25);
 				}
 			}
 		}
@@ -1505,7 +1526,7 @@ textarea {
 			color: var(--color-content-main);
 
 			@media only screen and (max-width: $breakpoint-medium) {
-				color: var(--color-content-secondary);
+				color: rgba(255,255,255,0.9);
 			}
 		}
 	}
@@ -1606,16 +1627,27 @@ textarea {
 		}
 
 		ul {
-			padding: 2rem 0 4rem;
+			padding: 2rem 0 3rem;
+			align-items: center;
+			justify-content: center;
 		}
 
 		li {
-			margin-bottom: 0.5rem;
+			margin: 0.5rem 0;
+			margin-right: 0;
+			width: 100%;
+			display: flex;
+			justify-content: center;
 
 			a {
+				color: rgba(255,255,255,0.9);
 				padding: 1.25rem 4rem;
-				border-radius: 0.75rem;
+				border-radius: 0.5rem;
 				margin: 0 1rem;
+				font-weight: 500;
+				background: transparent;
+				width: calc(100% - 2rem);
+				max-width: 520px;
 
 				&:active {
 					transform: scale(0.98);
@@ -1624,7 +1656,8 @@ textarea {
 			}
 
 			&.active a {
-				background: rgba(255,255,255,0.1);
+				background: rgba(255,255,255,0.08);
+				color: rgba(255,255,255,0.95);
 			}
 		}
 	}
@@ -1866,7 +1899,15 @@ textarea {
 		position: relative;
 
 		@media only screen and (max-width: $breakpoint-medium) {
-			margin-bottom: 2rem;
+			margin-bottom: 1.35rem;
+		}
+
+		&:first-child {
+			margin-top: 1.25rem;
+
+			@media only screen and (max-width: $breakpoint-medium) {
+				margin-top: 0.85rem;
+			}
 		}
 
 		&:last-child {
@@ -1899,8 +1940,8 @@ textarea {
 		transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-radius 0.18s ease, padding 0.18s ease, margin 0.18s ease;
 
 		@media only screen and (max-width: $breakpoint-medium) {
-			padding: 2.25rem;
-			margin: 0.5rem -1rem;
+			padding: 1.5rem;
+			margin: 0.25rem -0.75rem;
 		}
 
 		&:hover {
@@ -1912,8 +1953,8 @@ textarea {
 			margin: 1.5rem -2.5rem;
 
 			@media only screen and (max-width: $breakpoint-medium) {
-				padding: 2.5rem;
-				margin: 1rem -1.25rem;
+				padding: 1.8rem;
+				margin: 0.6rem -1rem;
 			}
 		}
 	}
@@ -1928,6 +1969,11 @@ textarea {
 			padding: 2.5rem;
 			margin: 1rem 0;
 			transition: none;
+
+			@media only screen and (max-width: $breakpoint-medium) {
+				padding: 1.45rem;
+				margin: 0.45rem 0;
+			}
 		}
 	}
 }
@@ -1942,12 +1988,21 @@ textarea {
 
 /* Tighter title/meta spacing on index cards */
 .container .post .post-title {
-	margin: 0 0 0.35em;
+	margin: 0.5rem 0 0.35em;
+	text-align: left;
+
+	@media only screen and (max-width: $breakpoint-medium) {
+		margin: 0.3rem 0 0.25em;
+	}
 }
 
 .container .post .post-meta {
 	margin: 0 0 0.75em;
 	padding: 0;
+
+	@media only screen and (max-width: $breakpoint-medium) {
+		margin-bottom: 0.5em;
+	}
 }
 
 .post-feature {
@@ -1960,6 +2015,8 @@ textarea {
 	height: 2.4em;
 	line-height: 2.4em;
 	color: var(--ghost-accent-color);
+	align-items: center;
+	transform: translateY(0.15em);
 }
 
 .container .post.featured .inner {
@@ -1984,8 +2041,8 @@ textarea {
 	font-size: 16px;
 	line-height: 20px;
 	color: rgb(115, 119, 125);
-	margin: 5px 0px;
-	padding: 0px 0px 40px;
+	margin: 4px 0 12px;
+	padding: 0;
 	border-bottom: none;
 	font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "WenQuanYi Micro Hei", ui-sans-serif, system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 	font-weight: 400;
@@ -2027,14 +2084,15 @@ textarea {
 
 .post-meta-author {
 	color: var(--color-content-main);
-	.has-cover & {
-		color: white;
-	}
 	font-weight: 600;
 	margin: 0;
 
+	.has-cover & {
+		color: white;
+	}
+
 	a {
-		color: var(--color-content-main) !important;
+		color: inherit;
 		text-decoration: none;
 
 		&:hover {
@@ -2162,7 +2220,8 @@ textarea {
 	}
 }
 
-.has-cover .post-title {
+.has-cover .post-title,
+.cover-active .post-title {
 	color: white;
 }
 
@@ -2236,16 +2295,13 @@ textarea {
 		}
 	}
 
-	.post-meta-author {
-		color: var(--color-content-main);
-		font-weight: 500;
-		margin: 0;
-	}
 }
 
-.has-cover .post-meta {
-	color: rgba(255,255,255,0.8);
+.has-cover .post-meta,
+.cover-active .post-meta {
+	color: rgba(255,255,255,0.9);
 	padding: 0;
+	gap: 1rem;
 
 	&:before {
 		display: none;
@@ -2257,9 +2313,21 @@ textarea {
 		}
 	}
 
-	.post-meta-author {
-		color: white;
+
+	.post-meta time {
+		color: rgba(255,255,255,0.9) !important;
+		font-weight: 400;
 	}
+
+	.post-meta-author {
+		color: #fff !important;
+		font-weight: 600;
+	}
+}
+
+.cover-active .post-meta time {
+	color: rgba(255,255,255,0.9);
+	font-weight: 400;
 }
 
 .post-excerpt {
