@@ -91,15 +91,17 @@
 
 			</section>
 
-			{{#if @custom.disqus_shortname}}
-			<section class="post-comments">
-			   <div id="disqus_thread"></div>
-			</section>
-			{{/if}}
-
 			{{#if comments}}
 			<section class="post-comments">
-				{{comments}}
+				<header class="post-comments-header">
+					<h3 class="post-comments-title">{{t "Comments"}}</h3>
+					<span class="post-comments-count">{{comment_count autowrap="false" empty=(t "0 comments")}}</span>
+				</header>
+				{{comments title="" count=false}}
+			</section>
+			{{else if @custom.disqus_shortname}}
+			<section class="post-comments">
+				<div id="disqus_thread"></div>
 			</section>
 			{{/if}}
 

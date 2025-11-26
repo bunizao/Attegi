@@ -2464,7 +2464,7 @@ textarea {
 .post-comments {
 	position: relative;
 	padding: 4rem;
-	text-align: center;
+	text-align: left;
 	background: var(--color-background-secondary);
 	border: 1px solid var(--color-background-contrast);
 	border-top: 1px solid var(--color-background-contrast);
@@ -2478,6 +2478,39 @@ textarea {
 		border-left: 0;
 		border-right: 0;
 	}
+}
+
+.post-comments-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin: 0 0 2rem;
+
+	@media only screen and (max-width: $breakpoint-medium) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+.post-comments-title {
+	margin: 0;
+	font-size: 2.2em;
+	font-weight: 700;
+	line-height: 1.2em;
+	color: var(--color-content-lead);
+}
+
+.post-comments-count {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.6rem 1.2rem;
+	border-radius: 999px;
+	background: var(--color-background-contrast);
+	color: var(--color-content-secondary);
+	font-size: 1.4em;
+	line-height: 1.2;
 }
 
 /* ==========================================================================
