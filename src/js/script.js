@@ -1,74 +1,60 @@
-jQuery(function($) {
+document.addEventListener("DOMContentLoaded", function() {
+  var documentElement = document.documentElement;
+  var menuButton = document.getElementById("menu");
+  var navMenu = document.querySelector(".nav-menu");
+  var navClose = document.querySelector(".nav-close");
 
-  var html = $('html');
-  var viewport = $(window);
+  function toggleMenu() {
+    documentElement.classList.toggle("menu-active");
+  }
 
-/* ==========================================================================
-   Menu
-   ========================================================================== */
+  // Add click listeners to menu elements
+  if (menuButton) {
+    menuButton.addEventListener("click", toggleMenu);
+  }
 
-  function menu() {
-    html.toggleClass('menu-active');
-  };
+  if (navMenu) {
+    navMenu.addEventListener("click", toggleMenu);
+  }
 
-  $('#menu').on({
-    'click': function() {
-      menu();
-    }
+  if (navClose) {
+    navClose.addEventListener("click", toggleMenu);
+  }
+
+  // Close menu on window resize
+  window.addEventListener("resize", function() {
+    documentElement.classList.remove("menu-active");
   });
 
-  $('.nav-menu').on({
-    'click': function() {
-      menu();
-    }
-  });
-
-  $('.nav-close').on({
-    'click': function() {
-      menu();
-    }
-  });
-
-  viewport.on({
-    'resize': function() {
-      html.removeClass('menu-active');
-    },
-    'orientationchange': function() {
-      html.removeClass('menu-active');
-    }
+  // Close menu on orientation change
+  window.addEventListener("orientationchange", function() {
+    documentElement.classList.remove("menu-active");
   });
 
 /* ==========================================================================
    Parallax cover
    ========================================================================== */
 
-  var cover = $('.cover');
+  var cover = document.querySelector('.cover');
   var coverPosition = 0;
 
   function prlx() {
-    if (cover.length >= 1) {
-      var windowPosition = viewport.scrollTop();
-      (windowPosition > 0) ? coverPosition = Math.floor(windowPosition * 0.25): coverPosition = 0;
-      cover.css({
-        '-webkit-transform': 'translate3d(0, ' + coverPosition + 'px, 0)',
-        'transform': 'translate3d(0, ' + coverPosition + 'px, 0)'
-      });
-      (viewport.scrollTop() < cover.height()) ? html.addClass('cover-active'): html.removeClass('cover-active');
+    if (cover) {
+      var windowPosition = window.pageYOffset;
+      coverPosition = windowPosition > 0 ? Math.floor(windowPosition * 0.25) : 0;
+      cover.style.transform = 'translate3d(0, ' + coverPosition + 'px, 0)';
+      if (window.pageYOffset < cover.offsetHeight) {
+        documentElement.classList.add('cover-active');
+      } else {
+        documentElement.classList.remove('cover-active');
+      }
     }
   }
   prlx();
 
-  viewport.on({
-    'scroll': function() {
-      prlx();
-    },
-    'resize': function() {
-      prlx();
-    },
-    'orientationchange': function() {
-      prlx();
-    }
-  });
+  window.addEventListener('scroll', prlx);
+  window.addEventListener('resize', prlx);
+  window.addEventListener('orientationchange', prlx);
 
 /* ==========================================================================
    Gallery
@@ -87,32 +73,39 @@ jQuery(function($) {
   }
   gallery();
 
-
 /* ==========================================================================
    Theme
    ========================================================================== */
 
   function theme() {
     'use strict';
-    var toggle = $('.js-theme');
-    var toggleText = toggle.find('.theme-text');
+    var toggle = document.querySelector('.js-theme');
+    var toggleText = toggle ? toggle.querySelector('.theme-text') : null;
 
     function system() {
-      html.removeClass(['theme-dark', 'theme-light']);
+      documentElement.classList.remove('theme-dark', 'theme-light');
       localStorage.removeItem('attegi_theme');
-      toggleText.text(toggle.attr('data-system'));
+      if (toggleText) {
+        toggleText.textContent = toggle.getAttribute('data-system');
+      }
     }
 
     function dark() {
-      html.removeClass('theme-light').addClass('theme-dark');
+      documentElement.classList.remove('theme-light');
+      documentElement.classList.add('theme-dark');
       localStorage.setItem('attegi_theme', 'dark');
-      toggleText.text(toggle.attr('data-dark'));
+      if (toggleText) {
+        toggleText.textContent = toggle.getAttribute('data-dark');
+      }
     }
 
     function light() {
-      html.removeClass('theme-dark').addClass('theme-light');
+      documentElement.classList.remove('theme-dark');
+      documentElement.classList.add('theme-light');
       localStorage.setItem('attegi_theme', 'light');
-      toggleText.text(toggle.attr('data-light'));
+      if (toggleText) {
+        toggleText.textContent = toggle.getAttribute('data-light');
+      }
     }
 
     switch (localStorage.getItem('attegi_theme')) {
@@ -127,17 +120,19 @@ jQuery(function($) {
       break;
     }
 
-    toggle.on('click', function (e) {
-      e.preventDefault();
+    if (toggle) {
+      toggle.addEventListener('click', function (e) {
+        e.preventDefault();
 
-      if (!html.hasClass('theme-dark') && !html.hasClass('theme-light')) {
-        dark();
-      } else if (html.hasClass('theme-dark')) {
-        light();
-      } else {
-        system();
-      }
-    });
+        if (!documentElement.classList.contains('theme-dark') && !documentElement.classList.contains('theme-light')) {
+          dark();
+        } else if (documentElement.classList.contains('theme-dark')) {
+          light();
+        } else {
+          system();
+        }
+      });
+    }
   }
   theme();
 });
