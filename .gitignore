@@ -8,3 +8,4 @@ docker-compose.yml
 # keep theme assets images tracked
 !assets/img/
 !assets/img/**
+/.lighthouseci
