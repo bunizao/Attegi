@@ -17,12 +17,22 @@ module.exports = function(grunt) {
     copy: {
       dev: {
         files: [{
+          dest: 'assets/font/',
+          src: '*',
+          cwd: 'src/font/',
+          expand: true
+        }, {
           dest: 'assets/js/highlight.pack.js',
           src: 'src/js/libs/highlight.pack.js'
         }]
       },
       dist: {
         files: [{
+          dest: 'assets/font/',
+          src: '*',
+          cwd: 'src/font/',
+          expand: true
+        }, {
           dest: 'assets/js/highlight.pack.js',
           src: 'src/js/libs/highlight.pack.js'
         }]

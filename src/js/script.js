@@ -58,35 +58,25 @@ document.addEventListener("DOMContentLoaded", function() {
    ========================================================================== */
 
   var cover = document.querySelector('.cover');
-  var ticking = false;
+  var coverPosition = 0;
 
-  function updateParallax() {
+  function prlx() {
     if (cover) {
       var windowPosition = window.pageYOffset;
-      var coverPosition = windowPosition > 0 ? Math.floor(windowPosition * 0.25) : 0;
+      coverPosition = windowPosition > 0 ? Math.floor(windowPosition * 0.25) : 0;
       cover.style.transform = 'translate3d(0, ' + coverPosition + 'px, 0)';
-      if (windowPosition < cover.offsetHeight) {
+      if (window.pageYOffset < cover.offsetHeight) {
         documentElement.classList.add('cover-active');
       } else {
         documentElement.classList.remove('cover-active');
       }
     }
-    ticking = false;
   }
+  prlx();
 
-  function onScroll() {
-    if (!ticking) {
-      window.requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
-  }
-
-  if (cover) {
-    updateParallax();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    window.addEventListener('orientationchange', onScroll, { passive: true });
-  }
+  window.addEventListener('scroll', prlx);
+  window.addEventListener('resize', prlx);
+  window.addEventListener('orientationchange', prlx);
 
 /* ==========================================================================
    Gallery
