@@ -103,9 +103,13 @@ document.addEventListener("DOMContentLoaded", function() {
     'use strict';
     var toggle = document.querySelector('.js-theme');
     var toggleText = toggle ? toggle.querySelector('.theme-text') : null;
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     function system() {
       documentElement.classList.remove('theme-dark', 'theme-light');
+      if (prefersDark) {
+        documentElement.classList.add('theme-dark');
+      }
       localStorage.setItem('attegi_theme', 'system');
       if (toggleText) {
         toggleText.textContent = toggle.getAttribute('data-system');
