@@ -189,8 +189,8 @@
 						
 						<span class="nav-title">{{@site.title}} &copy; {{date format='YYYY'}}</span>
 						<a aria-label="RSS" href="{{@site.url}}/rss/" title="RSS"><i class="icon icon-rss" aria-hidden="true">{{> "icons/icon-rss"}}</i></a>
-						{{#if @site.twitter}}<a aria-label="Twitter" href="{{social_url type=\"twitter\"}}" title="{{@site.twitter}}"><i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i></a>{{/if}}
-						{{#if @site.facebook}}<a aria-label="Facebook" href="{{social_url type=\"facebook\"}}" title="{{@site.facebook}}"><i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i></a>{{/if}}
+						{{#if @site.twitter}}<a aria-label="Twitter" href="{{social_url type='twitter'}}" title="{{@site.twitter}}"><i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i></a>{{/if}}
+						{{#if @site.facebook}}<a aria-label="Facebook" href="{{social_url type='facebook'}}" title="{{@site.facebook}}"><i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i></a>{{/if}}
 					</span>
 					{{#if @site.secondary_navigation}}
 					{{navigation type="secondary"}}
