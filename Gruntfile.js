@@ -21,6 +21,9 @@ module.exports = function(grunt) {
           src: '*',
           cwd: 'src/font/',
           expand: true
+        }, {
+          dest: 'assets/js/highlight.pack.js',
+          src: 'src/js/libs/highlight.pack.js'
         }]
       },
       dist: {
@@ -29,6 +32,9 @@ module.exports = function(grunt) {
           src: '*',
           cwd: 'src/font/',
           expand: true
+        }, {
+          dest: 'assets/js/highlight.pack.js',
+          src: 'src/js/libs/highlight.pack.js'
         }]
       }
     },
@@ -80,7 +86,6 @@ module.exports = function(grunt) {
       post: {
         files: {
           '<%= config.jsTargetDir %>/post.js': [
-            '<%= config.jsSrcDir %>/libs/highlight.pack.js',
             '<%= config.jsSrcDir %>/post.js'
           ]
         }

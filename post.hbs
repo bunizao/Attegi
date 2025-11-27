@@ -22,7 +22,7 @@
 					{{#if profile_image}}
 						<figure class="post-meta-avatar">
 							<a href="{{url}}" class="author-avatar">
-								<img class="author-profile-image" src="{{img_url profile_image size="xs"}}" alt="{{name}}" />
+								<img class="author-profile-image" src="{{img_url profile_image size="xs"}}" alt="{{name}}" loading="lazy" decoding="async" />
 							</a>
 						</figure>
 					{{else}}
@@ -155,5 +155,5 @@
 
 {{!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs --}}
 {{#contentFor "scripts"}}
-<script defer src="{{asset "js/post.js"}}"></script>
+<script defer src="{{asset "js/post.js"}}" data-highlight="{{asset "js/highlight.pack.js"}}"></script>
 {{/contentFor}}

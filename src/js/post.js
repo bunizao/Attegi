@@ -39,12 +39,13 @@
     });
   }
 
-  function highlightCode(container) {
-    if (!container || !window.hljs) return;
+  function highlightCode(container, highlightUrl) {
+    if (!container) return;
     var blocks = container.querySelectorAll('pre code');
     if (!blocks.length) return;
 
-    var run = function () {
+    function applyHighlight() {
+      if (!window.hljs) return;
       Array.prototype.forEach.call(blocks, function (code) {
         window.hljs.highlightElement(code);
         if (code.classList.contains('language-text')) return;
@@ -65,12 +66,32 @@
         lines.innerHTML = numbers;
         code.parentElement.appendChild(lines);
       });
-    };
+    }
 
+    if (window.hljs) {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(applyHighlight, { timeout: 300 });
+      } else {
+        setTimeout(applyHighlight, 0);
+      }
+      return;
+    }
+
+    if (!highlightUrl) return;
+    var script = doc.createElement('script');
+    script.src = highlightUrl;
+    script.defer = true;
+    script.onload = function () {
+      applyHighlight();
+    };
     if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(run, { timeout: 300 });
+      window.requestIdleCallback(function () {
+        doc.body.appendChild(script);
+      }, { timeout: 500 });
     } else {
-      setTimeout(run, 0);
+      setTimeout(function () {
+        doc.body.appendChild(script);
+      }, 0);
     }
   }
 
@@ -124,19 +145,43 @@
     var shortname = thread && thread.dataset ? thread.dataset.disqusShortname : '';
     if (!thread || !shortname) return;
 
-    var script = doc.createElement('script');
-    script.src = 'https://' + shortname + '.disqus.com/embed.js';
-    script.async = true;
-    script.setAttribute('data-timestamp', String(Date.now()));
-    doc.body.appendChild(script);
+    var loaded = false;
+
+    function loadDisqus() {
+      if (loaded) return;
+      loaded = true;
+      var script = doc.createElement('script');
+      script.src = 'https://' + shortname + '.disqus.com/embed.js';
+      script.async = true;
+      script.setAttribute('data-timestamp', String(Date.now()));
+      doc.body.appendChild(script);
+    }
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            loadDisqus();
+            observer.disconnect();
+          }
+        });
+      }, { rootMargin: '400px 0px' });
+      observer.observe(thread);
+    } else {
+      window.addEventListener('scroll', loadDisqus, { passive: true });
+      window.addEventListener('touchstart', loadDisqus, { passive: true });
+    }
   }
 
   function init() {
     var postContent = doc.querySelector('.post-content');
     if (!postContent) return;
 
+    var currentScript = doc.currentScript || null;
+    var highlightUrl = currentScript ? currentScript.getAttribute('data-highlight') : '';
+
     wrapEmbeds(postContent);
-    highlightCode(postContent);
+    highlightCode(postContent, highlightUrl);
     setupProgress(postContent);
     setupShare();
     setupDisqus();
