@@ -3,7 +3,7 @@
 {{!-- Everything inside the #post tags pulls data from the post --}}
 {{#post}}
 
-{{#match @page.show_title_and_feature_image}}
+{{#if @page.show_title_and_feature_image}}
 	<header class="post-header {{#if feature_image}} has-cover {{/if}}">
 		<div class="inner">
 			<h1 class="post-title">{{{title}}}</h1>
@@ -20,7 +20,7 @@
 			{{/if}}
 		</div>
 	</header>
-{{/match}}
+{{/if}}
 
 <main class="content" role="main">
 	<article class="{{post_class}}">

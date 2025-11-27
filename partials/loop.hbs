@@ -12,14 +12,14 @@
 					<i class="icon icon-star">{{> "icons/icon-star"}}</i>
 				</span>
 			{{/if}}
-			<h2 class="post-title"><a href="{{url}}">{{{title}}}</a></h2>
-			<span class="post-meta">
-				<time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time>
-			</span>
-			<p class="post-excerpt">{{excerpt characters="180"}}&hellip;</p>
+				<h2 class="post-title"><a href="{{url}}">{{{title}}}</a></h2>
+				<span class="post-meta">
+					<time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time>
+				</span>
+				<p class="post-excerpt">{{excerpt characters="180"}}</p>
+			</div>
 		</div>
-	</div>
-</article>
+	</article>
 
 {{/foreach}}
 

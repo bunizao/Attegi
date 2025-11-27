@@ -73,7 +73,7 @@
 						<a title="Facebook" aria-label="Facebook" class="facebook" href="https://www.facebook.com/sharer/sharer.php?u={{url absolute="true"}}" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
 							<i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i>
 						</a>
-						<a title="LinkedIn" aria-label="LinkedIn" class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{url absolute="true"}}/&amp;title={{title}}" onclick="window.open(this.href, 'linkedin-share', 'width=930,height=720');return false;">
+						<a title="LinkedIn" aria-label="LinkedIn" class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{url absolute="true"}}&amp;title={{encode title}}" onclick="window.open(this.href, 'linkedin-share', 'width=930,height=720');return false;">
 							<i class="icon icon-linkedin" aria-hidden="true">{{> "icons/icon-linkedin"}}</i>
 						</a>
 						<a title="Email" aria-label="Email" class="email" href="mailto:?subject={{title}}&amp;body={{url absolute="true"}}">
@@ -105,10 +105,12 @@
 			</section>
 			{{/if}}
 
-      {{#if @labs.subscribers}}
+      {{#if @site.members_enabled}}
       <section class="post-subscribe">
 				<p>{{t "Get the latest posts delivered right to your inbox."}}</p>
-        {{subscribe_form placeholder=(t "Your email address") form_class="post-subscribe-form" input_class="post-subscribe-input" button_class="post-subscribe-button"}}
+        {{#unless @member}}
+        	{{subscribe_form placeholder=(t "Your email address") form_class="post-subscribe-form" input_class="post-subscribe-input" button_class="post-subscribe-button"}}
+        {{/unless}}
       </section>
       {{/if}}
 
@@ -121,7 +123,7 @@
 						<section class="post-nav-teaser">
 							<i class="icon icon-arrow-left" aria-label="{{t "Next post"}}">{{> "icons/icon-arrow-left"}}</i>
 							<h2 class="post-nav-title">{{title}}</h2>
-							<p class="post-nav-excerpt">{{excerpt words="12"}}&hellip;</p>
+							<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
 							<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
 						</section>
 					</a>
@@ -133,7 +135,7 @@
 						<section class="post-nav-teaser">
 							<i class="icon icon-arrow-right" aria-label="{{t "Previous post"}}">{{> "icons/icon-arrow-right"}}</i>
 							<h2 class="post-nav-title">{{title}}</h2>
-							<p class="post-nav-excerpt">{{excerpt words="12"}}&hellip;</p>
+							<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
 							<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
 						</section>
 					</a>
@@ -214,18 +216,33 @@
 		{{/if}}
 
 		{{#match @custom.post_share "Native"}}
-		document.getElementById('share-button').addEventListener('click', async () => {
-			try {
-				await navigator.share({
-					//title: 'Title',
-					//text: 'Text',
-					url: '{{url absolute="true"}}',
-				});
-				console.log('Data was shared successfully');
-			} catch (err) {
-				console.error('error:', err.message);
+		(function setupNativeShare() {
+			var shareButton = document.getElementById('share-button');
+			if (!shareButton) {
+				return;
 			}
-		});
+
+			if (navigator.share) {
+				shareButton.addEventListener('click', async function (event) {
+					event.preventDefault();
+					try {
+						await navigator.share({
+							url: '{{url absolute="true"}}'
+						});
+						console.log('Data was shared successfully');
+					} catch (err) {
+						console.error('error:', err.message);
+					}
+				});
+			} else {
+				shareButton.setAttribute('aria-disabled', 'true');
+				shareButton.title = 'Sharing is not supported in this browser';
+				shareButton.addEventListener('click', function (event) {
+					event.preventDefault();
+					console.warn('Native share is not supported in this browser.');
+				});
+			}
+		})();
 		{{/match}}
   });
 </script>

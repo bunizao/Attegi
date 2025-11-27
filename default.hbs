@@ -19,31 +19,43 @@
 	</script>
 
 	<script>
+		(function applyStoredTheme() {
 			var localTheme = localStorage.getItem('attegi_theme');
-			switch (localTheme) {
-					case 'dark':
-							document.documentElement.classList.add('theme-dark');
-							break;
-					case 'light':
-							document.documentElement.classList.add('theme-light');
-							break;
-					default:
-							break;
+			if (localTheme === 'dark') {
+				document.documentElement.classList.add('theme-dark');
+			} else if (localTheme === 'light') {
+				document.documentElement.classList.add('theme-light');
 			}
+		})();
 	</script>
 
 	{{#match @custom.color_scheme "Dark"}}
-		<script>localStorage.setItem('attegi_theme', 'dark');</script>
+		<script>
+			if (!localStorage.getItem('attegi_theme')) {
+				localStorage.setItem('attegi_theme', 'dark');
+				document.documentElement.classList.add('theme-dark');
+			}
+		</script>
 		<style>.js-theme {display:none!important;}</style>
 	{{/match}}
 
 	{{#match @custom.color_scheme "Light"}}
-		<script>localStorage.setItem('attegi_theme', 'light');</script>
+		<script>
+			if (!localStorage.getItem('attegi_theme')) {
+				localStorage.setItem('attegi_theme', 'light');
+				document.documentElement.classList.add('theme-light');
+			}
+		</script>
 		<style>.js-theme {display:none!important;}</style>
 	{{/match}}
 
 	{{#match @custom.color_scheme "System"}}
-		<script>localStorage.setItem('attegi_theme', 'system');</script>
+		<script>
+			if (!localStorage.getItem('attegi_theme')) {
+				localStorage.setItem('attegi_theme', 'system');
+				document.documentElement.classList.remove('theme-dark', 'theme-light');
+			}
+		</script>
 	{{/match}}
 
 	{{#match @custom.color_scheme "!=" "Light"}}
@@ -67,20 +79,20 @@
 <body class="{{body_class}}">
 
 	<div class="viewport">
-		<div class="nav-header">
-			<nav class="nav-wrapper" aria-label="{{t "Main"}}">
-				{{#if @site.logo}}
-					<span class="logo">
-						<a href="{{@site.url}}" title="{{t "Home"}}"><img src="{{@site.logo}}" alt="{{t "Logo"}}" /></a>
-					</span>
-				{{/if}}
-				{{navigation}}
-				<a class="nav-search" title="{{t "Search"}}" aria-label="{{t "Search"}}" data-ghost-search><i class="icon icon-search" aria-hidden="true">{{> "icons/icon-search"}}</i></a>
-				{{#if @site.members_enabled}}
-					<span class="nav-members">
-						{{#unless @member}}
-							{{#unless @site.members_invite_only}}
-								<a class="nav-button-secondary" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
+			<div class="nav-header">
+				<nav class="nav-wrapper" aria-label="{{t "Main"}}">
+					{{#if @site.logo}}
+						<span class="logo">
+							<a href="{{@site.url}}" title="{{t "Home"}}"><img src="{{@site.logo}}" alt="{{t "Logo"}}" /></a>
+						</span>
+					{{/if}}
+					{{navigation}}
+					<a class="nav-search" href="#search" role="button" aria-label="{{t "Search"}}" data-ghost-search><i class="icon icon-search" aria-hidden="true">{{> "icons/icon-search"}}</i></a>
+					{{#if @site.members_enabled}}
+						<span class="nav-members">
+							{{#unless @member}}
+								{{#unless @site.members_invite_only}}
+									<a class="nav-button-secondary" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
 								{{#unless hideSubscribeButton}}
 									<a class="nav-button-primary" href="#/portal/signup" data-portal="signup">{{t "Subscribe"}}</a>
 								{{/unless}}
@@ -94,14 +106,14 @@
 				{{/if}}
 			</nav>
 
-			<div class="nav-wrapper-control">
-				<div class="inner">
-					<a class="nav-menu" role="button"><i class="icon icon-menu" aria-hidden="true">{{> "icons/icon-menu"}}</i> {{t "Menu"}}</a>
-					<a class="nav-search" title="{{t "Search"}}" aria-label="{{t "Search"}}" role="button" data-ghost-search><i class="icon icon-search" aria-hidden="true">{{> "icons/icon-search"}}</i></a>
+				<div class="nav-wrapper-control">
+					<div class="inner">
+						<a class="nav-menu" href="#menu" role="button" aria-expanded="false"><i class="icon icon-menu" aria-hidden="true">{{> "icons/icon-menu"}}</i> {{t "Menu"}}</a>
+						<a class="nav-search" href="#search" role="button" aria-label="{{t "Search"}}" data-ghost-search><i class="icon icon-search" aria-hidden="true">{{> "icons/icon-search"}}</i></a>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="nav-close" role="button" aria-label="{{t "Close"}}"></div>
+			<div class="nav-close" role="button" aria-label="{{t "Close"}}" tabindex="0" aria-hidden="true"></div>
 
 		<section class="page-wrapper">
 

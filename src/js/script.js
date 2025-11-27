@@ -4,31 +4,53 @@ document.addEventListener("DOMContentLoaded", function() {
   var navMenu = document.querySelector(".nav-menu");
   var navClose = document.querySelector(".nav-close");
 
-  function toggleMenu() {
-    documentElement.classList.toggle("menu-active");
+  function setMenuState(isOpen) {
+    documentElement.classList.toggle("menu-active", isOpen);
+    if (navMenu) {
+      navMenu.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
+    if (navClose) {
+      navClose.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    }
   }
 
-  // Add click listeners to menu elements
+  function toggleMenu(event) {
+    if (event && event.type === "keydown" && event.key !== "Enter" && event.key !== " ") {
+      return;
+    }
+    if (event) {
+      event.preventDefault();
+    }
+    var isOpen = documentElement.classList.contains("menu-active");
+    setMenuState(!isOpen);
+  }
+
+  // Add click/keyboard listeners to menu elements
   if (menuButton) {
     menuButton.addEventListener("click", toggleMenu);
+    menuButton.addEventListener("keydown", toggleMenu);
   }
 
   if (navMenu) {
     navMenu.addEventListener("click", toggleMenu);
+    navMenu.addEventListener("keydown", toggleMenu);
   }
 
   if (navClose) {
     navClose.addEventListener("click", toggleMenu);
+    navClose.addEventListener("keydown", toggleMenu);
   }
+
+  setMenuState(documentElement.classList.contains("menu-active"));
 
   // Close menu on window resize
   window.addEventListener("resize", function() {
-    documentElement.classList.remove("menu-active");
+    setMenuState(false);
   });
 
   // Close menu on orientation change
   window.addEventListener("orientationchange", function() {
-    documentElement.classList.remove("menu-active");
+    setMenuState(false);
   });
 
 /* ==========================================================================
@@ -84,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function system() {
       documentElement.classList.remove('theme-dark', 'theme-light');
-      localStorage.removeItem('attegi_theme');
+      localStorage.setItem('attegi_theme', 'system');
       if (toggleText) {
         toggleText.textContent = toggle.getAttribute('data-system');
       }
