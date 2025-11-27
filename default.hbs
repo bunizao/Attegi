@@ -31,16 +31,6 @@
 	<link rel="preload" as="style" href="{{asset "css/style.css"}}" />
 	<link rel="stylesheet" media="print" onload="this.media='all'" href="{{asset "css/style.css"}}" />
 	<noscript><link rel="stylesheet" href="{{asset "css/style.css"}}" /></noscript>
-	{{!-- Preload primary LCP media --}}
-	{{#is "home"}}
-		{{#if @site.cover_image}}
-			<link rel="preload" as="image"
-				href="{{img_url @site.cover_image size="l"}}"
-				imagesrcset="{{img_url @site.cover_image size="s"}} 320w, {{img_url @site.cover_image size="m"}} 640w, {{img_url @site.cover_image size="l"}} 960w, {{img_url @site.cover_image size="xl"}} 1920w"
-				imagesizes="(max-width: 960px) 100vw, 960px"
-				fetchpriority="high" />
-		{{/if}}
-	{{/is}}
 	<script>
 		/* Avoid noisy analytics calls in local/dev */
 		(function () {
@@ -213,8 +203,8 @@
 						
 						<span class="nav-title">{{@site.title}} &copy; {{date format='YYYY'}}</span>
 						<a aria-label="RSS" href="{{@site.url}}/rss/" title="RSS"><i class="icon icon-rss" aria-hidden="true">{{> "icons/icon-rss"}}</i></a>
-						{{#if @site.twitter}}<a aria-label="Twitter" href="{{social_url type=\"twitter\"}}" title="{{@site.twitter}}"><i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i></a>{{/if}}
-						{{#if @site.facebook}}<a aria-label="Facebook" href="{{social_url type=\"facebook\"}}" title="{{@site.facebook}}"><i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i></a>{{/if}}
+						{{#if @site.twitter}}<a aria-label="Twitter" href="{{social_url type='twitter'}}" title="{{@site.twitter}}"><i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i></a>{{/if}}
+						{{#if @site.facebook}}<a aria-label="Facebook" href="{{social_url type='facebook'}}" title="{{@site.facebook}}"><i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i></a>{{/if}}
 					</span>
 					{{#if @site.secondary_navigation}}
 					{{navigation type="secondary"}}

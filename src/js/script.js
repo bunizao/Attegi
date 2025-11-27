@@ -161,17 +161,4 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
   theme();
-
-/* ==========================================================================
-   Lazy-load non-critical images
-   ========================================================================== */
-
-  (function lazyImages() {
-    var images = document.querySelectorAll('img:not([loading])');
-    images.forEach(function (img) {
-      if (img.hasAttribute('data-lcp')) return;
-      img.setAttribute('loading', 'lazy');
-      img.setAttribute('decoding', 'async');
-    });
-  })();
 });
