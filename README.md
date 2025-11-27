@@ -1,62 +1,94 @@
 # Attegi
-### Here is a [**Ghost**](https://ghost.org) theme optimized for mobile devices based on [*Attila*](https://github.com/zutrinken/attila), with a style inspired by [*Moegi*](https://github.com/moegi-design/ghost-theme-Moegi). 
+[![Ghost 5+](https://img.shields.io/badge/Ghost-5%2B-000?logo=ghost&logoColor=white)](https://ghost.org/)
+[![MIT License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
+[![Build](https://img.shields.io/badge/build-grunt-orange?logo=grunt&logoColor=white)](Gruntfile.js)
+[![Demo](https://img.shields.io/badge/demo-attegi.tutuis.me-4F46E5)](https://Attegi.tutuis.me)
 
-### [**中文文档**](https://github.com/bunizao/Attegi/blob/master/README_zh.md)
+A Ghost theme focused on clean typography, mobile readability, and a calm dark/light presentation. Built on [Attila](https://github.com/zutrinken/attila) with refinements inspired by Moegi.
+
+![Attegi logo](assets/img/attegi-logo-1.png)
+
+[简体中文](README_zh.md)
 
 ---
 
-## Features
- - **Smaller** font size than Attila's, allowing more content to be displayed on mobile devices.
-    - **Adaptive** font size on different screen sizes.
- - **Slimmer** and **cleaner** design than Attila's, with a focus on readability and a more modern font family.
- - **Dark Mode** support and a more comfortable background and font color.
- - **Image caption** style changed. (Maybe a bug fixed)
- - *( Optional )* Hide unnecessary page elements to simplify the pages. (e.g. `.post-comments`、.`nav-credits` or `.nav-copy` etc.)
- - And we also support all functions of Attila, see its original [README.md](https://github.com/zutrinken/attila/blob/main/README.md) for more details.
-  
+## Highlights
+- Mobile-friendly scale: tighter fonts, spacing, and card layouts that stay readable on phones.
+- Dual theme polish: tuned dark/light colors, accent-aware states, consistent author/date meta.
+- Liquid glass touches: softened glassy hovers on cards and meta blocks for a lightweight depth effect.
+- Thoughtful details: improved captions, softer shadows, refined featured/star markers, responsive video wrappers.
+- Attila-compatible: all core Attila features remain; you can still use its helpers and blocks.
+
+---
+
+## Quick Start
+- Download the release zip (`npx grunt compress` or GitHub zip).
+- Upload in Ghost Admin → Design → Upload Theme → Activate.
+- For hacking and local dev, see **Development** below.
+
+---
+
+## Customization
+- **Accent color**: Ghost Admin → Design & Branding → Accent color (set dark-mode accent if desired).
+- **Hide blocks** (via Code Injection):
+```html
+<style>
+section.post-comments,
+.post-share,
+.nav-footer ul,
+span.nav-credits,
+span.nav-copy { display: none !important; }
+</style>
+```
+- **SCSS/JS edits**: change source in `src/sass` and `src/js`, then rebuild. Do not edit `assets/` directly.
+
+---
+
+## Project Structure
+- Templates: root `.hbs` files + `partials/`
+- Source: `src/sass`, `src/js` → compiled to `assets/`
+- Package: `dist/attegi.zip` from `npx grunt compress`
+
 ---
 
 ## Demo
-You can see the demo at **https://Attegi.tutuis.me**.
+https://attegi.tutuis.me
 
 ---
 
-## Installation
-1. Download the theme directly from the [link](https://github.com/bunizao/Attegi/archive/refs/heads/master.zip), it will automatically download the latest theme under the master branch.
-2. Upload the ZIP file to your Ghost Admin Portal.
----
-## Customization
-All the following operations should be performed in the **Ghost Admin Portal** -> **Advanced** -> **Code Injection**.
-### Hide something
+<details>
+<summary><strong>Development</strong></summary>
 
-```
-<style>
-section.post-comments, 
-post-share,
-.nav-footer ul,
-span.nav-credits, 
-span.nav-copy {
-    display: none !important;
-}
-</style>
+1) **Install deps**
+```bash
+npm install
 ```
 
-- **Explanation:**
+2) **Run locally with Ghost (SQLite)**
+```bash
+docker-compose up -d          # starts Ghost + mounts this repo as the theme
+```
+Open `http://localhost:2368/ghost` to activate the theme.
 
-| Selector               | Scope  | Description                                                                       |
-|------------------------|--------|-----------------------------------------------------------------------------------|
-| `section.post-comments`| Post   | Hide the comment section.                                                         |
-| `post-share`           | Post   | Hide the post sharing options.                                                    |
-| `nav-footer ul`        | Global | Hide the `Sign up` button in the footer.                                          |
-| `span.nav-credits`     | Global | Hide the credits including `Published with Ghost`, `Theme Attegi`, and the theme change button in the footer. |
-| `span.nav-copy`        | Global | Hide the copyright information and social media links in the footer.              |
+3) **Live build while editing**
+```bash
+npx grunt                     # watches src/sass and src/js, outputs to assets/
+```
 
-### Change something
-- `Accent color` can be changed in `Site` —> `Design & Branding` —> `Brand` -> `Accent color`.
-  - you can also select another color for dark mode.
-- `Code Injection` can almost change anything, if you are familiar with CSS.
+4) **Package for upload**
+```bash
+npx grunt build && npx grunt compress   # dist/attegi.zip
+```
+
+5) **Sync to a running local Ghost + restart**
+```bash
+rsync -av --delete --exclude '.git' --exclude 'node_modules' --exclude 'dist' ./ /Users/tutu/Ghost/themes/attegi/ \
+  && docker-compose restart ghost
+```
+
+</details>
 
 ---
 
 ## License
-Since this theme is a modification of [*Attila*](https://github.com/zutrinken/attila) and [*Moegi*](https://github.com/moegi-design/ghost-theme-Moegi), the license of this theme is also based on the MIT License of Attila.
+MIT (inherits from `Attila`). See `LICENSE`.

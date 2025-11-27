@@ -1,63 +1,94 @@
 # Attegi
-### 这是一个基于 [*Attila*](https://github.com/zutrinken/attila) 并参考了 [*Moegi*](https://github.com/moegi-design/ghost-theme-Moegi) 风格的移动设备优化 Ghost 主题。
+[![Ghost 5+](https://img.shields.io/badge/Ghost-5%2B-000?logo=ghost&logoColor=white)](https://ghost.org/)
+[![MIT License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
+[![Build](https://img.shields.io/badge/build-grunt-orange?logo=grunt&logoColor=white)](Gruntfile.js)
+[![Demo](https://img.shields.io/badge/demo-attegi.tutuis.me-4F46E5)](https://Attegi.tutuis.me)
 
-### [**English Doc**](https://github.com/bunizao/Attegi/blob/master/README.md)
+一款注重排版与移动端可读性的 Ghost 主题，基于 [Attila](https://github.com/zutrinken/attila) 打磨，并借鉴 Moegi 的风格细节。
+
+![Attegi logo](assets/img/attegi-logo-1.png)
+
+[English](README.md)
 
 ---
 
 ## 特点
-- 比原版 Attila 字体更小，可以在移动设备上显示更多内容。
-  - 不同屏幕尺寸自适应字体大小。
-- 比原版 Attila 更加精简和整洁，注重可读性并采用更现代的字体。
-- 支持**暗黑模式**，并提供更舒适的背景和字体颜色。
-- 更改了**图片描述**的样式。（可能还修复了一个错误）
-- *(可选)* 隐藏不必要的页面元素以简化页面显示。（例如：`.post-comments`、`.nav-credits` 或 `.nav-copy` 等）
-- 此外，主题还支持 Attila 的所有功能，详细信息请参见其原始 [README.md](https://github.com/zutrinken/attila/blob/main/README.md)。
+- 移动端友好：更紧凑的字体与间距，列表卡片在手机上依然清晰易读。
+- 深浅色精调：暗/亮模式的舒适配色，强调色状态统一，作者/日期元信息更一致。
+- Liquidglass 质感：卡片和 meta 模块带轻盈的玻璃态悬停效果，增加层次感。
+- 细节优化：图片说明、柔和阴影、精选星标、响应式视频容器等。
+- 兼容 Attila：保留 Attila 的所有核心能力，可直接使用其辅助与区块。
+
+---
+
+## 快速开始
+- 下载发布 zip（`npx grunt compress` 或 GitHub zip）。
+- 在 Ghost 后台 → 设计 → 上传主题 → 启用。
+- 本地开发请见下方 **Development**。
+
+---
+
+## 自定义
+- **强调色**：Ghost 后台 → 设计与品牌 → 强调色（可单独设置深色模式强调色）。
+- **隐藏区块**（代码注入）：
+```html
+<style>
+section.post-comments,
+.post-share,
+.nav-footer ul,
+span.nav-credits,
+span.nav-copy { display: none !important; }
+</style>
+```
+- **修改样式/脚本**：只改 `src/sass`、`src/js`，再构建；不要直接改 `assets/`。
+
+---
+
+## 项目结构
+- 模板：根目录 `.hbs` 与 `partials/`
+- 源码：`src/sass`、`src/js` → 编译到 `assets/`
+- 打包：`npx grunt compress` 产出 `dist/attegi.zip`
 
 ---
 
 ## 示例
-你可以在 **https://Attegi.tutuis.me** 查看示例。
-
----
-
-## 安装
-1. 直接从[链接](https://github.com/bunizao/Attegi/archive/refs/heads/master.zip)下载主题，将自动下载 master 分支下的最新主题。
-2. 将 ZIP 文件上传到你的 Ghost 管理后台。
----
-
-## 自定义
-以下所有操作都应在 **Ghost 管理后台** -> **高级** -> **代码注入** 中进行。
-
-### 隐藏某些元素
-
-```
-<style>
-section.post-comments, 
-post-share,
-.nav-footer ul,
-span.nav-credits, 
-span.nav-copy {
-    display: none !important;
-}
-</style>
-```
-- **解释：**
-
-| 选择器                 | 范围  | 描述                                                                           |
-|------------------------|--------|---------------------------------------------------------------------------------|
-| `section.post-comments`| 文章   | 隐藏评论部分。                                                                  |
-| `post-share`           | 文章   | 隐藏文章分享选项。                                                              |
-| `nav-footer ul`        | 全局   | 隐藏页脚中的 `注册` 按钮。                                                      |
-| `span.nav-credits`     | 全局   | 隐藏页脚中的版权信息，包括 `Published with Ghost`、`Theme Attegi` 及主题切换按钮。|
-| `span.nav-copy`        | 全局   | 隐藏页脚中的版权信息和社交媒体链接。                                            |
-
-### 修改某些元素
-- 可以在 `站点` —> `设计与品牌` —> `品牌` _> `强调色` 中更改 `强调色`。
-  - 你还可以为深色模式选择其他颜色。
-- 如果熟悉 CSS，可以通过 `代码注入` 几乎更改任何内容。
+https://Attegi.tutuis.me
 
 ---
 
 ## 许可证
-由于此主题是对 [*Attila*](https://github.com/zutrinken/attila) 和 [*Moegi*](https://github.com/moegi-design/ghost-theme-Moegi) 的修改，因此该主题的许可证基于 Attila 的 MIT 许可证。
+MIT（继承自 Attila），见 `LICENSE`。
+
+---
+
+<details>
+<summary><strong>Development</strong></summary>
+
+1) **安装依赖**
+```bash
+npm install
+```
+
+2) **本地启动 Ghost（SQLite）**
+```bash
+docker-compose up -d          # 启动 Ghost，并挂载此仓库为主题
+```
+打开 `http://localhost:2368/ghost` 启用主题。
+
+3) **开发时实时构建**
+```bash
+npx grunt                     # 监听 src/sass 和 src/js，输出到 assets/
+```
+
+4) **打包上传**
+```bash
+npx grunt build && npx grunt compress   # 生成 dist/attegi.zip
+```
+
+5) **同步到本地运行中的 Ghost 并重启**
+```bash
+rsync -av --delete --exclude '.git' --exclude 'node_modules' --exclude 'dist' ./ /Users/tutu/Ghost/themes/attegi/ \
+  && docker-compose restart ghost
+```
+
+</details>
