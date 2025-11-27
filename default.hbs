@@ -213,7 +213,7 @@
 	</svg>
 
 	{{!-- Load basic scripts --}}
-	<script type="text/javascript" src="{{asset "js/script.js"}}"></script>
+	<script defer src="{{asset "js/script.js"}}"></script>
 
 	{{!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. --}}
 	{{{block "scripts"}}}

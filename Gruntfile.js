@@ -12,11 +12,7 @@ module.exports = function(grunt) {
       'cssTargetDir': 'assets/css',
       'jsSrcDir': 'src/js',
       'jsTargetDir': 'assets/js',
-      'jsDependencies': [
-        '<%= config.jsSrcDir %>/libs/jquery.min.js',
-        '<%= config.jsSrcDir %>/libs/jquery.fitvids.js',
-        '<%= config.jsSrcDir %>/libs/highlight.pack.js'
-      ]
+      'jsDependencies': []
     },
     copy: {
       dev: {
@@ -74,11 +70,18 @@ module.exports = function(grunt) {
       }
     },
     uglify: {
-      js: {
+      main: {
         files: {
           '<%= config.jsTargetDir %>/script.js': [
-            '<%= config.jsDependencies %>',
             '<%= config.jsSrcDir %>/script.js'
+          ]
+        }
+      },
+      post: {
+        files: {
+          '<%= config.jsTargetDir %>/post.js': [
+            '<%= config.jsSrcDir %>/libs/highlight.pack.js',
+            '<%= config.jsSrcDir %>/post.js'
           ]
         }
       }
@@ -90,7 +93,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: '<%=  config.jsSrcDir %>/**/*.js',
-        tasks: ['uglify']
+        tasks: ['uglify:main', 'uglify:post']
       }
     },
     compress: {
@@ -123,13 +126,15 @@ module.exports = function(grunt) {
     'sass:dist',
     'postcss:dist',
     'copy:dist',
-    'uglify'
+    'uglify:main',
+    'uglify:post'
   ]);
   grunt.registerTask('default', [
     'sass:dev',
     'postcss:dev',
     'copy:dev',
-    'uglify',
+    'uglify:main',
+    'uglify:post',
     'watch'
   ]);
 };

@@ -41,7 +41,11 @@
               {{img_url feature_image size="l"}} 960w,
               {{img_url feature_image size="xl"}} 1920w"
       src="{{img_url feature_image size="xl"}}"
-			alt="{{title}}" />
+			alt="{{title}}"
+			loading="eager"
+			decoding="async"
+			fetchpriority="high"
+			sizes="(max-width: 960px) 100vw, 960px" />
 		</div>
 		{{/if}}
 	</div>
@@ -101,7 +105,7 @@
 			</section>
 			{{else if @custom.disqus_shortname}}
 			<section class="post-comments">
-				<div id="disqus_thread"></div>
+				<div id="disqus_thread" data-disqus-shortname="{{@custom.disqus_shortname}}"></div>
 			</section>
 			{{/if}}
 
@@ -151,99 +155,5 @@
 
 {{!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs --}}
 {{#contentFor "scripts"}}
-<script>
-  $(document).ready(function () {
-		var viewport = $(window);
-		var post = $('.post-content');
-		// Responsive videos with fitVids
-    post.fitVids();
-		// Format code blocks and add line numbers
-		function codestyling() {
-	    $('pre code').each(function(i, e) {
-				// Code highlight
-	      hljs.highlightElement(e);
-	      // No lines for plain text blocks
-	      if (!$(this).hasClass('language-text')) {
-	        var code = $(this);
-					// Calculate amount of lines
-	        var lines = code.html().split(/\n(?!$)/g).length;
-	        var numbers = [];
-	        if (lines > 1) {
-	          lines++;
-	        }
-	        for (i = 1; i < lines; i++) {
-	          numbers += '<span class="line" aria-hidden="true">' + i + '</span>';
-	        }
-	        code.parent().append('<div class="lines">' + numbers + '</div>');
-	      }
-	    });
-	  }
-	  codestyling();
-		// Reading progress bar on window top
-	  function readingProgress() {
-			var postBottom = post.offset().top + post.height();
-			var viewportHeight = viewport.height();
-      var progress = 100 - (((postBottom - (viewport.scrollTop() + viewportHeight) + viewportHeight / 3) / (postBottom - viewportHeight + viewportHeight / 3)) * 100);
-      $('.progress-bar').css('width', progress + '%');
-      (progress > 100) ? $('.progress-container').addClass('complete'): $('.progress-container').removeClass('complete');
-	  }
-	  readingProgress();
-		// Trigger reading progress
-	  viewport.on({
-	    'scroll': function() {
-	      readingProgress();
-	    },
-	    'resize': function() {
-	      readingProgress();
-	    },
-	    'orientationchange': function() {
-	      readingProgress();
-	    }
-	  });
-
-		{{#if @custom.disqus_shortname}}
-			var disqus = '{{@custom.disqus_shortname}}';
-	    function launchDisqus() {
-	      $.ajax({
-	        type: "GET",
-	        url: "//" + disqus + ".disqus.com/embed.js",
-	        dataType: "script",
-	        cache: true
-	      });
-	      $(this).parent().addClass('activated');
-	    }
-			launchDisqus();
-		{{/if}}
-
-		{{#match @custom.post_share "Native"}}
-		(function setupNativeShare() {
-			var shareButton = document.getElementById('share-button');
-			if (!shareButton) {
-				return;
-			}
-
-			if (navigator.share) {
-				shareButton.addEventListener('click', async function (event) {
-					event.preventDefault();
-					try {
-						await navigator.share({
-							url: '{{url absolute="true"}}'
-						});
-						console.log('Data was shared successfully');
-					} catch (err) {
-						console.error('error:', err.message);
-					}
-				});
-			} else {
-				shareButton.setAttribute('aria-disabled', 'true');
-				shareButton.title = 'Sharing is not supported in this browser';
-				shareButton.addEventListener('click', function (event) {
-					event.preventDefault();
-					console.warn('Native share is not supported in this browser.');
-				});
-			}
-		})();
-		{{/match}}
-  });
-</script>
+<script defer src="{{asset "js/post.js"}}"></script>
 {{/contentFor}}

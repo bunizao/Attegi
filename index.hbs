@@ -15,7 +15,11 @@
               {{img_url @site.cover_image size="l"}} 960w,
               {{img_url @site.cover_image size="xl"}} 1920w"
       src="{{img_url @site.cover_image size="xl"}}"
-			alt="{{@site.title}}" />
+			alt="{{@site.title}}"
+			loading="eager"
+			decoding="async"
+			fetchpriority="high"
+			sizes="(max-width: 960px) 100vw, 960px" />
 		</div>
 		{{/if}}
 	</div>
