@@ -1,0 +1,42 @@
+name: Build Theme
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build assets
+        run: npx grunt build
+
+      - name: Package theme
+        run: npx grunt compress
+
+      - name: Upload theme zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: attegi
+          path: dist/attegi.zip
+
+      - name: Create release and attach zip
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/attegi.zip
