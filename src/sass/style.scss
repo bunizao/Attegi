@@ -538,6 +538,28 @@ textarea {
 		box-shadow: 0 0 0 3px rgba(var(--ghost-accent-color), 0.2);
 	}
 }
+
+.theme-dark {
+	.nav-header a.nav-button-secondary {
+		color: #f5f7fa;
+		border: 1px solid rgba(255,255,255,0.35);
+		background: rgba(255,255,255,0.14);
+		box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+		text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+
+		&:before {
+			background: radial-gradient(65% 65% at 70% 70%, rgba(255,255,255,0.24), rgba(255,255,255,0) 58%);
+			opacity: 0.35;
+		}
+
+		&:focus,
+		&:hover {
+			color: #f9fbff;
+			border-color: rgba(255,255,255,0.6);
+			background: rgba(255,255,255,0.2);
+		}
+	}
+}
 /* ==========================================================================
    KG Cards
    ========================================================================== */
@@ -1609,19 +1631,37 @@ textarea {
 	padding: 0 2rem;
 	width: auto;
 	min-width: 0;
-	color: white;
-	background: var(--ghost-accent-color);
+	color: #ffffff;
+	text-shadow: 0 1px 2px rgba(0,0,0,0.14);
+	background: color-mix(in srgb, var(--ghost-accent-color) 65%, #ffffff 35%);
+	border: 1px solid color-mix(in srgb, var(--ghost-accent-color) 60%, #ffffff 40%);
 	border-radius: 4rem;
 	line-height: 4rem;
 	text-align: center;
-	box-shadow: rgba(0,0,0,0.16) 0 6px 12px -2px;
-	border: none;
+	box-shadow: 0 4px 10px rgba(0,0,0,0.06);
 	font-size: 1.6rem;
-	transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+	transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease, border-color 0.18s ease;
+	overflow: hidden;
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+	isolation: isolate;
+
+	&:before {
+		content: '';
+		position: absolute;
+		inset: -25%;
+		background: radial-gradient(55% 55% at 30% 30%, rgba(255,255,255,0.18), rgba(255,255,255,0) 58%);
+		opacity: 0.35;
+		animation: glass-flow 12s ease-in-out infinite;
+		pointer-events: none;
+		z-index: -1;
+	}
 
 	&:focus,
 	&:hover {
-		opacity: 0.92;
+		opacity: 1;
+		border-color: color-mix(in srgb, var(--ghost-accent-color) 55%, #ffffff 45%);
+		background: color-mix(in srgb, var(--ghost-accent-color) 45%, #ffffff 55%);
 	}
 
 	@media only screen and (max-width: $breakpoint-medium) {
@@ -1647,23 +1687,38 @@ textarea {
 	padding: 0 2rem;
 	width: auto;
 	min-width: 0;
-	border: 1px solid var(--color-background-contrast);
+	border: 1px solid rgba(0,0,0,0.08);
 	font-size: 1.6rem;
 	line-height: 4rem;
 	font-weight: 500;
-	color: var(--color-content-secondary);
+	color: var(--color-content-main);
 	border-radius: 4rem;
 	box-sizing: border-box;
 	text-align: center;
-	background: transparent;
-	box-shadow: inset 0 0 0 1px var(--color-background-contrast);
-	transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+	background: rgba(255,255,255,0.82);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+	transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease, border-color 0.18s ease;
+	overflow: hidden;
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+	isolation: isolate;
+
+	&:before {
+		content: '';
+		position: absolute;
+		inset: -25%;
+		background: radial-gradient(65% 65% at 70% 70%, rgba(255,255,255,0.16), rgba(255,255,255,0) 58%);
+		opacity: 0.3;
+		animation: glass-flow 12s ease-in-out infinite reverse;
+		pointer-events: none;
+		z-index: -1;
+	}
 
 	&:focus,
 	&:hover {
 		color: var(--color-content-main);
-		border-color: var(--ghost-accent-color);
-		box-shadow: inset 0 0 0 1px var(--ghost-accent-color);
+		border-color: color-mix(in srgb, var(--ghost-accent-color) 30%, rgba(0,0,0,0.12));
+		background: rgba(255,255,255,0.9);
 	}
 
 	@media only screen and (max-width: $breakpoint-medium) {
@@ -2084,6 +2139,9 @@ iframe.gh-portal-triggerbtn-iframe {
 	.post {
 		margin-bottom: 2.5rem;
 		position: relative;
+		.post-box {
+			border: 1px solid transparent;
+		}
 
 		@media only screen and (max-width: $breakpoint-medium) {
 			margin-bottom: 1.35rem;
@@ -2121,10 +2179,10 @@ iframe.gh-portal-triggerbtn-iframe {
 	}
 
 	.post .post-box {
-		border-radius: 12px;
+		border-radius: 18px;
 		padding: 3rem;
 		margin: 1rem -2rem;
-		transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-radius 0.18s ease, padding 0.18s ease, margin 0.18s ease;
+		transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-radius 0.18s ease, padding 0.18s ease, margin 0.18s ease, border-color 0.18s ease;
 
 		@media only screen and (max-width: $breakpoint-medium) {
 			padding: 1.5rem;
@@ -2133,11 +2191,27 @@ iframe.gh-portal-triggerbtn-iframe {
 
 		&:hover {
 			transform: translateY(-2px);
-			background: var(--color-background-secondary);
-			box-shadow: 0 30px 90px rgba(0,0,0,0.10);
-			border-radius: 18px;
+			background: rgba(255,255,255,0.65);
+			border-color: rgba(255,255,255,0.3);
+			box-shadow: 0 30px 90px rgba(0,0,0,0.12);
+			border-radius: 28px;
 			padding: 3.5rem 4rem;
 			margin: 1.5rem -2.5rem;
+			position: relative;
+			overflow: hidden;
+			-webkit-backdrop-filter: blur(12px);
+			backdrop-filter: blur(12px);
+
+			&:before {
+				content: '';
+				position: absolute;
+				inset: -120%;
+				background: radial-gradient(70% 70% at 70% 30%, rgba(255,255,255,0.28), rgba(255,255,255,0) 60%);
+				opacity: 0.75;
+				animation: glass-flow 14s ease-in-out infinite;
+				pointer-events: none;
+				z-index: 0;
+			}
 
 			@media only screen and (max-width: $breakpoint-medium) {
 				padding: 1.8rem;
@@ -2161,6 +2235,22 @@ iframe.gh-portal-triggerbtn-iframe {
 				padding: 1.45rem;
 				margin: 0.45rem 0;
 			}
+		}
+	}
+}
+
+.theme-dark {
+	.container {
+		.post {
+			.post-box {
+				border-color: rgba(255,255,255,0.08);
+			}
+		}
+
+		.post .post-box:hover {
+			background: rgba(255,255,255,0.12);
+			border-color: rgba(255,255,255,0.12);
+			box-shadow: 0 24px 70px rgba(0,0,0,0.38);
 		}
 	}
 }
