@@ -129,7 +129,13 @@
 
   function setupShare() {
     var shareButton = doc.getElementById('share-button');
-    if (!shareButton || !navigator.share) return;
+    if (!shareButton) return;
+    if (!navigator.share) {
+      shareButton.setAttribute('aria-hidden', 'true');
+      shareButton.setAttribute('tabindex', '-1');
+      shareButton.style.display = 'none';
+      return;
+    }
 
     shareButton.addEventListener('click', function (event) {
       event.preventDefault();

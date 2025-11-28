@@ -1,4 +1,3 @@
-  
 {
     "Logo": "Логотип",
     "Close": "Закрити",
@@ -39,5 +38,8 @@
     "Next post": "Наступна публікація",
     "Previous post": "Попередня публікація",
     "Sign in": "Увійти",
-    "Sign up": "Зарееструватися"
+    "Sign up": "Зарееструватися",
+    "Account": "Account",
+    "Comments": "Comments",
+    "0 comments": "0 comments"
 }

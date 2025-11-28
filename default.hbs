@@ -138,19 +138,8 @@
 				if (/fonts\.bunny\.net|fonts\.googleapis\.com/i.test(href)) {
 					link.parentNode && link.parentNode.removeChild(link);
 				}
-			});
-		})();
-	</script>
-	<script>
-		// Force system mode to render dark for consistency with explicit Dark choice
-		(function enforceSystemDark() {
-			var stored = localStorage.getItem('attegi_theme');
-			var isSystemCustom = '{{@custom.color_scheme}}' === 'System';
-			if (stored === 'system' || (!stored && isSystemCustom)) {
-				document.documentElement.classList.remove('theme-light');
-				document.documentElement.classList.add('theme-dark');
-			}
-		})();
+				});
+			})();
 	</script>
 </head>
 
