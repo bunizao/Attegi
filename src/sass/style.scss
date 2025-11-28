@@ -560,6 +560,20 @@ textarea {
 		}
 	}
 }
+
+/* Raw HTML cards or standalone badge links */
+.post-content > a {
+	display: inline-block;
+	margin: 2.5rem 0;
+	box-shadow: none !important;
+	text-decoration: none;
+}
+
+.post-content > a img {
+	margin: 0;
+	display: block;
+}
+
 /* ==========================================================================
    KG Cards
    ========================================================================== */
