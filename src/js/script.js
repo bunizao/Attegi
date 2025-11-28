@@ -59,24 +59,47 @@ document.addEventListener("DOMContentLoaded", function() {
 
   var cover = document.querySelector('.cover');
   var coverPosition = 0;
+  var coverHeight = cover ? cover.offsetHeight : 0;
+  var ticking = false;
+
+  function updateCoverMetrics() {
+    if (!cover) return;
+    coverHeight = cover.offsetHeight || 0;
+  }
 
   function prlx() {
-    if (cover) {
-      var windowPosition = window.pageYOffset;
-      coverPosition = windowPosition > 0 ? Math.floor(windowPosition * 0.25) : 0;
-      cover.style.transform = 'translate3d(0, ' + coverPosition + 'px, 0)';
-      if (window.pageYOffset < cover.offsetHeight) {
-        documentElement.classList.add('cover-active');
-      } else {
-        documentElement.classList.remove('cover-active');
-      }
+    if (!cover) return;
+    var windowPosition = window.pageYOffset;
+    coverPosition = windowPosition > 0 ? Math.floor(windowPosition * 0.25) : 0;
+    cover.style.transform = 'translate3d(0, ' + coverPosition + 'px, 0)';
+    if (window.pageYOffset < coverHeight) {
+      documentElement.classList.add('cover-active');
+    } else {
+      documentElement.classList.remove('cover-active');
     }
   }
+
+  function requestPrlx() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function() {
+      prlx();
+      ticking = false;
+    });
+  }
+
+  updateCoverMetrics();
   prlx();
 
-  window.addEventListener('scroll', prlx);
-  window.addEventListener('resize', prlx);
-  window.addEventListener('orientationchange', prlx);
+  window.addEventListener('scroll', requestPrlx, { passive: true });
+  window.addEventListener('resize', function() {
+    updateCoverMetrics();
+    requestPrlx();
+  }, { passive: true });
+  window.addEventListener('orientationchange', function() {
+    updateCoverMetrics();
+    requestPrlx();
+  }, { passive: true });
 
 /* ==========================================================================
    Gallery

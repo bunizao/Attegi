@@ -11,21 +11,46 @@
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<script>
-		// Preload theme class ASAP to avoid light flash; System = dark by default
-		(function instantTheme() {
-			var stored = localStorage.getItem('attegi_theme') || '{{@custom.color_scheme}}'.toLowerCase() || 'system';
-			var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-			var choice = stored === 'system' ? (prefersDark ? 'dark' : 'light') : stored;
+		<script>
+			// Preload theme class ASAP to avoid light flash
+			(function instantTheme() {
+				var docEl = document.documentElement;
+				var customScheme = '{{@custom.color_scheme}}';
+				var mql = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
-			document.documentElement.classList.remove('theme-dark', 'theme-light');
-			if (choice === 'dark') {
-				document.documentElement.classList.add('theme-dark');
-			} else if (choice === 'light') {
-				document.documentElement.classList.add('theme-light');
-			}
-		})();
-	</script>
+				function applyTheme(choice) {
+					docEl.classList.remove('theme-dark', 'theme-light');
+					if (choice === 'dark') {
+						docEl.classList.add('theme-dark');
+					} else if (choice === 'light') {
+						docEl.classList.add('theme-light');
+					} else if (choice === 'system') {
+						if (mql && mql.matches) {
+							docEl.classList.add('theme-dark');
+						} else {
+							docEl.classList.add('theme-light');
+						}
+					}
+				}
+
+				var stored = localStorage.getItem('attegi_theme') || (customScheme ? customScheme.toLowerCase() : 'system') || 'system';
+				applyTheme(stored);
+
+				if (mql && mql.addEventListener) {
+					mql.addEventListener('change', function () {
+						if ((localStorage.getItem('attegi_theme') || 'system') === 'system') {
+							applyTheme('system');
+						}
+					});
+				} else if (mql && mql.addListener) {
+					mql.addListener(function () {
+						if ((localStorage.getItem('attegi_theme') || 'system') === 'system') {
+							applyTheme('system');
+						}
+					});
+				}
+			})();
+		</script>
 
 	{{!-- Styles'n'Scripts --}}
 	<link rel="preload" as="style" href="{{asset "css/style.css"}}" />
@@ -58,34 +83,6 @@
 			var siteUrl = '{{@site.url}}';
 	</script>
 
-	<script>
-		(function applyStoredTheme() {
-			var mql = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-
-			function applyTheme(choice) {
-				document.documentElement.classList.remove('theme-dark', 'theme-light');
-				if (choice === 'dark') {
-					document.documentElement.classList.add('theme-dark');
-				} else if (choice === 'light') {
-					document.documentElement.classList.add('theme-light');
-				} else if (mql && mql.matches) {
-					document.documentElement.classList.add('theme-dark');
-				}
-			}
-
-			var storedTheme = localStorage.getItem('attegi_theme') || 'system';
-			applyTheme(storedTheme);
-
-			if (mql) {
-				mql.addEventListener('change', function (e) {
-					if ((localStorage.getItem('attegi_theme') || 'system') === 'system') {
-						applyTheme('system');
-					}
-				});
-			}
-		})();
-	</script>
-
 	{{#match @custom.color_scheme "Dark"}}
 		<script>
 			if (!localStorage.getItem('attegi_theme')) {
@@ -108,8 +105,10 @@
 
 	{{#match @custom.color_scheme "System"}}
 		<script>
-			localStorage.setItem('attegi_theme', 'system');
-			document.documentElement.classList.remove('theme-dark', 'theme-light');
+			if (!localStorage.getItem('attegi_theme')) {
+				localStorage.setItem('attegi_theme', 'system');
+				document.documentElement.classList.remove('theme-dark', 'theme-light');
+			}
 		</script>
 	{{/match}}
 
