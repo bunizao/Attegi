@@ -3,6 +3,10 @@
 {{!-- Everything inside the #post tags pulls data from the post --}}
 {{#post}}
 
+{{#if feature_image}}
+{{#contentFor "html_class"}}cover-active{{/contentFor}}
+{{/if}}
+
 <div class="progress-container">
 	<span class="progress-bar"></span>
 </div>

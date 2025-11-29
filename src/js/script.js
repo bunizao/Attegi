@@ -66,19 +66,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function updateCoverMetrics() {
     if (!cover) return;
-    var measured = cover.getBoundingClientRect().height || cover.offsetHeight || 0;
-    if (!measured && coverImage && coverImage.naturalWidth) {
-      var ratio = coverImage.naturalHeight / coverImage.naturalWidth;
-      measured = cover.clientWidth * ratio;
-    }
-    coverHeight = measured || coverHeight;
+    coverHeight = cover.offsetHeight || 0;
   }
 
   function prlx() {
     if (!cover) return;
-    if (!coverHeight) {
-      updateCoverMetrics();
-    }
+    if (!coverHeight) updateCoverMetrics();
     var windowPosition = window.pageYOffset;
     coverPosition = windowPosition > 0 ? Math.floor(windowPosition * 0.25) : 0;
     cover.style.transform = 'translate3d(0, ' + coverPosition + 'px, 0)';
@@ -101,24 +94,11 @@ document.addEventListener("DOMContentLoaded", function() {
   updateCoverMetrics();
   prlx();
 
-  if (cover) {
-    documentElement.classList.add('cover-active');
-  }
-
   if (coverImage) {
-    if (coverImage.complete) {
+    coverImage.addEventListener('load', function () {
       updateCoverMetrics();
       prlx();
-    } else {
-      coverImage.addEventListener('load', function () {
-        updateCoverMetrics();
-        prlx();
-      }, { once: true });
-    }
-    setTimeout(function () {
-      updateCoverMetrics();
-      prlx();
-    }, 300);
+    });
   }
 
   window.addEventListener('scroll', requestPrlx, { passive: true });

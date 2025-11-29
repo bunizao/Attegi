@@ -4,6 +4,12 @@
 {{#post}}
 
 {{#if @page.show_title_and_feature_image}}
+	{{#if feature_image}}
+		{{#contentFor "html_class"}}cover-active{{/contentFor}}
+	{{/if}}
+{{/if}}
+
+{{#if @page.show_title_and_feature_image}}
 	<header class="post-header {{#if feature_image}} has-cover {{/if}}">
 		<div class="inner">
 			<h1 class="post-title">{{{title}}}</h1>
