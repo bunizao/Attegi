@@ -149,18 +149,6 @@
 	{{/match}}
 
 	{{ghost_head}}
-	<script>
-		// Remove external font stylesheets to prevent render-blocking font fetches
-		(function pruneExternalFonts() {
-			var links = Array.prototype.slice.call(document.querySelectorAll('link[rel="stylesheet"], link[rel="preload"]'));
-			links.forEach(function (link) {
-				var href = link.getAttribute('href') || '';
-				if (/fonts\.bunny\.net|fonts\.googleapis\.com/i.test(href)) {
-					link.parentNode && link.parentNode.removeChild(link);
-				}
-				});
-			})();
-	</script>
 </head>
 
 <body class="{{body_class}}">
