@@ -2621,7 +2621,7 @@ iframe.gh-portal-triggerbtn-iframe {
 }
 
 .has-cover .post-title,
-.cover-active .post-title {
+.cover-active .post-header .post-title {
 	color: white;
 }
 
@@ -2698,7 +2698,7 @@ iframe.gh-portal-triggerbtn-iframe {
 }
 
 .has-cover .post-meta,
-.cover-active .post-meta {
+.cover-active .post-header .post-meta {
 	color: rgba(255,255,255,0.9);
 	padding: 0;
 	gap: 1rem;
@@ -2730,7 +2730,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	}
 }
 
-.cover-active .post-meta time {
+.cover-active .post-header .post-meta time {
 	color: rgba(255,255,255,0.9);
 	font-weight: 400;
 }
