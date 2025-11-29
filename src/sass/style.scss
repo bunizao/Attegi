@@ -539,6 +539,17 @@ textarea {
 	}
 }
 
+.menu-active .nav-members .nav-button-secondary {
+	color: #fff;
+	border-color: rgba(255,255,255,0.6);
+	background: rgba(255,255,255,0.08);
+
+	&:link,
+	&:visited {
+		color: #fff;
+	}
+}
+
 .theme-dark {
 	.nav-header a.nav-button-secondary {
 		color: #f5f7fa;
