@@ -1,4 +1,8 @@
 {{!< default}}
+{{#if @site.cover_image}}
+	{{#contentFor "html_class"}}cover-active{{/contentFor}}
+{{/if}}
+
 <header class="blog-header {{#if @site.cover_image}} has-cover{{/if}}">
 	<div class="inner">
 		<div class="box blog-box">
