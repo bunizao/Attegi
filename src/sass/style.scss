@@ -1833,14 +1833,15 @@ textarea {
 
 .cover-active .nav-header a.nav-button-primary {
 	@extend %liquid-glass;
-	color: rgba(255,255,255,0.9);
+	color: #fff;
 	border-color: rgba(255,255,255,0.35);
-	background: rgba(0,0,0,0.15);
-	box-shadow: 0 14px 38px rgba(0,0,0,0.18);
+	background: rgba(255,255,255,0.18);
+	box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+	text-shadow: none;
 
 	&:link,
 	&:visited {
-		color: rgba(255,255,255,0.9);
+		color: #fff;
 	}
 
 	&:before {
@@ -1850,22 +1851,24 @@ textarea {
 	&:focus,
 	&:hover {
 		color: #fff;
-		border-color: rgba(255,255,255,0.7);
-		background: rgba(255,255,255,0.16);
+		border-color: rgba(255,255,255,0.55);
+		background: rgba(255,255,255,0.22);
 		opacity: 1;
+		box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 	}
 }
 
 .cover-active .nav-header a.nav-button-secondary {
 	@extend %liquid-glass;
-	color: rgba(255,255,255,0.9);
-	border-color: rgba(255,255,255,0.35);
-	background: rgba(0,0,0,0.15);
-	box-shadow: 0 14px 38px rgba(0,0,0,0.18);
+	color: #fff;
+	border-color: rgba(255,255,255,0.3);
+	background: rgba(255,255,255,0.14);
+	box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+	text-shadow: none;
 
 	&:link,
 	&:visited {
-		color: rgba(255,255,255,0.9);
+		color: #fff;
 	}
 
 	&:before {
@@ -1875,8 +1878,9 @@ textarea {
 	&:focus,
 	&:hover {
 		color: #fff;
-		border-color: rgba(255,255,255,0.6);
-		background: rgba(255,255,255,0.1);
+		border-color: rgba(255,255,255,0.5);
+		background: rgba(255,255,255,0.18);
+		box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 	}
 }
 
