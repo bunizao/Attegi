@@ -1327,10 +1327,14 @@ textarea {
 	left: 0;
 	width: 100%;
 	z-index: 400;
-	transition: all ease-out 0.3s;
+	transition: none;
 	@media only screen and (max-width: $breakpoint-medium) {
 		transform: translate3d(0,-100%,0);
 	}
+}
+
+.menu-ready .nav-header {
+	transition: all ease-out 0.3s;
 }
 
 .menu-active .nav-header {

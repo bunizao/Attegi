@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   setMenuState(documentElement.classList.contains("menu-active"));
+  documentElement.classList.add("menu-ready");
 
   // Close menu on window resize
   window.addEventListener("resize", function() {
