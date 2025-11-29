@@ -53,6 +53,27 @@
 		</script>
 
 	{{!-- Styles'n'Scripts --}}
+	<style>
+		a.nav-menu,
+		a.nav-search,
+		.post-meta-author a,
+		.post-meta-avatars a {
+			color: inherit;
+			text-decoration: none;
+			-webkit-tap-highlight-color: transparent;
+		}
+		a.nav-menu:link,
+		a.nav-menu:visited,
+		a.nav-search:link,
+		a.nav-search:visited,
+		.post-meta-author a:link,
+		.post-meta-author a:visited,
+		.post-meta-avatars a:link,
+		.post-meta-avatars a:visited {
+			color: inherit;
+			text-decoration: none;
+		}
+	</style>
 	<link rel="preload" as="style" href="{{asset "css/style.css"}}" />
 	<link rel="stylesheet" media="print" onload="this.media='all'" href="{{asset "css/style.css"}}" />
 	<noscript><link rel="stylesheet" href="{{asset "css/style.css"}}" /></noscript>

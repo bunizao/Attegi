@@ -1466,6 +1466,29 @@ textarea {
 	}
 }
 
+.nav-header .nav-menu,
+.nav-header .nav-search {
+	color: inherit;
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+
+	&:link,
+	&:visited {
+		color: inherit;
+		text-decoration: none;
+	}
+}
+
+.post-meta-author a,
+.post-meta-avatars a {
+	color: inherit;
+
+	&:link,
+	&:visited {
+		color: inherit;
+	}
+}
+
 .nav-header .logo {
 	margin-right: 3rem;
 	@media only screen and (max-width: $breakpoint-medium) {
@@ -1664,6 +1687,11 @@ textarea {
 	backdrop-filter: blur(8px);
 	isolation: isolate;
 
+	&:link,
+	&:visited {
+		color: #ffffff;
+	}
+
 	&:before {
 		content: '';
 		position: absolute;
@@ -1720,6 +1748,11 @@ textarea {
 	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);
 	isolation: isolate;
+
+	&:link,
+	&:visited {
+		color: var(--color-content-main);
+	}
 
 	&:before {
 		content: '';
@@ -1794,6 +1827,11 @@ textarea {
 	background: rgba(0,0,0,0.15);
 	box-shadow: 0 14px 38px rgba(0,0,0,0.18);
 
+	&:link,
+	&:visited {
+		color: rgba(255,255,255,0.9);
+	}
+
 	&:before {
 		display: none;
 	}
@@ -1813,6 +1851,11 @@ textarea {
 	border-color: rgba(255,255,255,0.35);
 	background: rgba(0,0,0,0.15);
 	box-shadow: 0 14px 38px rgba(0,0,0,0.18);
+
+	&:link,
+	&:visited {
+		color: rgba(255,255,255,0.9);
+	}
 
 	&:before {
 		display: none;
@@ -1877,6 +1920,24 @@ iframe.gh-portal-triggerbtn-iframe {
 
 	&.active a {
 		@media only screen and (min-width: $breakpoint-medium) {
+			color: white;
+		}
+	}
+
+	.nav-menu,
+	.nav-search {
+		color: rgba(255,255,255,0.8);
+		text-decoration: none;
+		-webkit-tap-highlight-color: transparent;
+
+		&:link,
+		&:visited {
+			color: rgba(255,255,255,0.8);
+			text-decoration: none;
+		}
+
+		&:focus,
+		&:hover {
 			color: white;
 		}
 	}

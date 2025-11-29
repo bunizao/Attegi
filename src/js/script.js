@@ -59,17 +59,26 @@ document.addEventListener("DOMContentLoaded", function() {
    ========================================================================== */
 
   var cover = document.querySelector('.cover');
+  var coverImage = cover ? cover.querySelector('img') : null;
   var coverPosition = 0;
   var coverHeight = cover ? cover.offsetHeight : 0;
   var ticking = false;
 
   function updateCoverMetrics() {
     if (!cover) return;
-    coverHeight = cover.offsetHeight || 0;
+    var measured = cover.getBoundingClientRect().height || cover.offsetHeight || 0;
+    if (!measured && coverImage && coverImage.naturalWidth) {
+      var ratio = coverImage.naturalHeight / coverImage.naturalWidth;
+      measured = cover.clientWidth * ratio;
+    }
+    coverHeight = measured || coverHeight;
   }
 
   function prlx() {
     if (!cover) return;
+    if (!coverHeight) {
+      updateCoverMetrics();
+    }
     var windowPosition = window.pageYOffset;
     coverPosition = windowPosition > 0 ? Math.floor(windowPosition * 0.25) : 0;
     cover.style.transform = 'translate3d(0, ' + coverPosition + 'px, 0)';
@@ -91,6 +100,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
   updateCoverMetrics();
   prlx();
+
+  if (cover) {
+    documentElement.classList.add('cover-active');
+  }
+
+  if (coverImage) {
+    if (coverImage.complete) {
+      updateCoverMetrics();
+      prlx();
+    } else {
+      coverImage.addEventListener('load', function () {
+        updateCoverMetrics();
+        prlx();
+      }, { once: true });
+    }
+    setTimeout(function () {
+      updateCoverMetrics();
+      prlx();
+    }, 300);
+  }
 
   window.addEventListener('scroll', requestPrlx, { passive: true });
   window.addEventListener('resize', function() {
