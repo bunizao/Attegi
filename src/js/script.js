@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var coverPosition = 0;
   var coverHeight = cover ? cover.offsetHeight : 0;
   var ticking = false;
+  var coverPreActive = documentElement.classList.contains('cover-active');
 
   function updateCoverMetrics() {
     if (!cover) return;
@@ -75,11 +76,8 @@ document.addEventListener("DOMContentLoaded", function() {
     var windowPosition = window.pageYOffset;
     coverPosition = windowPosition > 0 ? Math.floor(windowPosition * 0.25) : 0;
     cover.style.transform = 'translate3d(0, ' + coverPosition + 'px, 0)';
-    if (window.pageYOffset < coverHeight) {
-      documentElement.classList.add('cover-active');
-    } else {
-      documentElement.classList.remove('cover-active');
-    }
+    var withinCover = coverHeight ? window.pageYOffset < coverHeight : coverPreActive;
+    documentElement.classList.toggle('cover-active', withinCover);
   }
 
   function requestPrlx() {
