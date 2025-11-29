@@ -1770,40 +1770,33 @@ textarea {
 	position: relative;
 	overflow: hidden;
 	color: #fff;
-	border: 1px solid rgba(255,255,255,0.25);
-	background: rgba(255,255,255,0.05);
+	border: 1px solid rgba(255,255,255,0.35);
+	background: rgba(0,0,0,0.15);
 	box-shadow: 0 14px 38px rgba(0,0,0,0.18);
-	-webkit-backdrop-filter: blur(14px);
-	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(18px);
+	backdrop-filter: blur(18px);
 	isolation: isolate;
 	z-index: 1;
 
 	&:before {
-		content: '';
-		position: absolute;
-		inset: -120%;
-		background: radial-gradient(60% 60% at 30% 30%, rgba(255,255,255,0.28), rgba(255,255,255,0) 62%);
-		opacity: 0.7;
-		animation: glass-flow 12s ease-in-out infinite;
-		pointer-events: none;
-		z-index: -1;
+		display: none;
 	}
 
 	&:after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		z-index: -1;
-		pointer-events: none;
-		border-radius: inherit;
-		filter: url(#liquid-glass-distortion);
-		-webkit-filter: url(#liquid-glass-distortion);
-		mix-blend-mode: screen;
+		display: none;
 	}
 }
 
 .cover-active .nav-header a.nav-button-primary {
 	@extend %liquid-glass;
+	color: rgba(255,255,255,0.9);
+	border-color: rgba(255,255,255,0.35);
+	background: rgba(0,0,0,0.15);
+	box-shadow: 0 14px 38px rgba(0,0,0,0.18);
+
+	&:before {
+		display: none;
+	}
 
 	&:focus,
 	&:hover {
@@ -1816,12 +1809,13 @@ textarea {
 
 .cover-active .nav-header a.nav-button-secondary {
 	@extend %liquid-glass;
-	background: rgba(255,255,255,0.035);
-	box-shadow: 0 12px 26px rgba(0,0,0,0.16);
+	color: rgba(255,255,255,0.9);
+	border-color: rgba(255,255,255,0.35);
+	background: rgba(0,0,0,0.15);
+	box-shadow: 0 14px 38px rgba(0,0,0,0.18);
 
 	&:before {
-		background: radial-gradient(70% 70% at 70% 70%, rgba(255,255,255,0.24), rgba(255,255,255,0) 60%);
-		animation-direction: reverse;
+		display: none;
 	}
 
 	&:focus,
@@ -2216,32 +2210,34 @@ iframe.gh-portal-triggerbtn-iframe {
 			margin: 0.25rem -0.75rem;
 		}
 
-		&:hover {
-			background: rgba(255,255,255,0.65);
-			border-color: rgba(255,255,255,0.3);
-			box-shadow: 0 30px 90px rgba(0,0,0,0.12);
-			border-radius: 28px;
-			padding: 3.5rem 4rem;
-			margin: 1.5rem -2.5rem;
-			position: relative;
-			overflow: hidden;
-			-webkit-backdrop-filter: blur(12px);
-			backdrop-filter: blur(12px);
+		@media (hover: hover) and (pointer: fine) {
+			&:hover {
+				background: rgba(255,255,255,0.65);
+				border-color: rgba(255,255,255,0.3);
+				box-shadow: 0 30px 90px rgba(0,0,0,0.12);
+				border-radius: 28px;
+				padding: 3.5rem 4rem;
+				margin: 1.5rem -2.5rem;
+				position: relative;
+				overflow: hidden;
+				-webkit-backdrop-filter: blur(12px);
+				backdrop-filter: blur(12px);
 
-			&:before {
-				content: '';
-				position: absolute;
-				inset: -120%;
-				background: radial-gradient(70% 70% at 70% 30%, rgba(255,255,255,0.28), rgba(255,255,255,0) 60%);
-				opacity: 0.75;
-				animation: glass-flow 14s ease-in-out infinite;
-				pointer-events: none;
-				z-index: 0;
-			}
+				&:before {
+					content: '';
+					position: absolute;
+					inset: -120%;
+					background: radial-gradient(70% 70% at 70% 30%, rgba(255,255,255,0.28), rgba(255,255,255,0) 60%);
+					opacity: 0.75;
+					animation: glass-flow 14s ease-in-out infinite;
+					pointer-events: none;
+					z-index: 0;
+				}
 
-			@media only screen and (max-width: $breakpoint-medium) {
-				padding: 1.8rem;
-				margin: 0.6rem -1rem;
+				@media only screen and (max-width: $breakpoint-medium) {
+					padding: 1.8rem;
+					margin: 0.6rem -1rem;
+				}
 			}
 		}
 	}
@@ -2251,8 +2247,9 @@ iframe.gh-portal-triggerbtn-iframe {
 		.post .post-box:hover,
 		.post .post-box:active {
 			transform: none;
-			box-shadow: none;
-			background: transparent;
+			box-shadow: none !important;
+			background: transparent !important;
+			border: none !important;
 			border-radius: 12px;
 			padding: 2.5rem;
 			margin: 1rem 0;
@@ -2262,6 +2259,15 @@ iframe.gh-portal-triggerbtn-iframe {
 				padding: 1.45rem;
 				margin: 0.45rem 0;
 			}
+
+			&:before {
+				display: none;
+			}
+		}
+
+		.post .post-box:active {
+			background: rgba(0,0,0,0.04) !important;
+			border: none !important;
 		}
 	}
 }
@@ -2271,6 +2277,24 @@ iframe.gh-portal-triggerbtn-iframe {
 		.post {
 			.post-box {
 				border-color: rgba(255,255,255,0.08);
+			}
+
+			@media (hover: none) and (pointer: coarse) {
+				.post-box,
+				.post-box:hover,
+				.post-box:active {
+					background: transparent !important;
+					border: none !important;
+
+					&:before {
+						display: none;
+					}
+				}
+
+				.post-box:active {
+					background: rgba(255,255,255,0.06) !important;
+					border: none !important;
+				}
 			}
 		}
 

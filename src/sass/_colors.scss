@@ -16,6 +16,11 @@
   --color-social-github: #333;
   --color-social-youtube: #ff0000;
   --color-social-rss: #ff6600;
+
+  /* Liquid glass gradient base */
+  --liquid-glass-bg:
+    radial-gradient(180% 140% at 20% 20%, rgba(255,255,255,0.18), rgba(255,255,255,0.02)),
+    linear-gradient(135deg, #6a7cff, #7bf3d0, #ff9fd3);
 }
 
 .theme-dark:root {
