@@ -1,0 +1,73 @@
+{{!< default}}
+
+<div class="error-page">
+	<div class="inner">
+		<div class="error-content">
+			{{!-- Creative 404 Animation --}}
+			<div class="error-illustration">
+				<div class="error-number">
+					<span class="digit digit-4">4</span>
+					<span class="digit digit-0">
+						<span class="planet"></span>
+					</span>
+					<span class="digit digit-4">4</span>
+				</div>
+				<div class="stars">
+					<div class="star"></div>
+					<div class="star"></div>
+					<div class="star"></div>
+					<div class="star"></div>
+					<div class="star"></div>
+					<div class="star"></div>
+					<div class="star"></div>
+					<div class="star"></div>
+				</div>
+			</div>
+
+			{{!-- Error Message Card --}}
+			<div class="error-card">
+				<h1 class="error-title">{{t "Page Not Found"}}</h1>
+				<p class="error-description">
+					{{t "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place."}}
+				</p>
+				<a href="{{@site.url}}" class="error-button">
+					<i class="icon icon-arrow-left">{{> "icons/icon-arrow-left"}}</i>
+					<span>{{t "Return Home"}}</span>
+				</a>
+			</div>
+
+			{{!-- Recent Posts Recommendation --}}
+			{{#get "posts" limit="3" include="tags"}}
+			{{#if posts}}
+			<div class="error-recommendations">
+				<h2 class="recommendations-title">{{t "Maybe try these instead"}}</h2>
+				<div class="recommendations-grid">
+					{{#foreach posts}}
+					<article class="recommendation-card">
+						<a href="{{url}}" class="recommendation-link">
+							{{#if feature_image}}
+							<div class="recommendation-image">
+								<img src="{{img_url feature_image size="s"}}" alt="{{title}}" loading="lazy" />
+							</div>
+							{{/if}}
+							<div class="recommendation-content">
+								{{#if tags}}
+								<div class="recommendation-tags">
+									{{#foreach tags limit="1"}}
+									<span class="recommendation-tag">{{name}}</span>
+									{{/foreach}}
+								</div>
+								{{/if}}
+								<h3 class="recommendation-title">{{title}}</h3>
+								<time class="recommendation-date" datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMM DD, YYYY"}}</time>
+							</div>
+						</a>
+					</article>
+					{{/foreach}}
+				</div>
+			</div>
+			{{/if}}
+			{{/get}}
+		</div>
+	</div>
+</div>
