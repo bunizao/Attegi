@@ -7,32 +7,32 @@
 <article class="{{post_class}}">
 	<div class="inner">
 		<div class="box post-box">
-			<a class="post-box-link" href="{{url}}" aria-label="{{title}}">
-				<div class="post-box-header">
-					<div class="post-box-title-wrap">
-						{{#if featured}}
-							<span class="post-feature">
-								<i class="icon icon-star">{{> "icons/icon-star"}}</i>
-							</span>
-						{{/if}}
-						<h2 class="post-title">{{{title}}}</h2>
-					</div>
-					{{#if tags}}
-					<div class="post-tags-inline">
-						{{#foreach tags limit="3"}}
-						<span class="post-tag-chip">{{name}}</span>
-						{{/foreach}}
-					</div>
+			<div class="post-box-header">
+				<div class="post-box-title-wrap">
+					{{#if featured}}
+						<span class="post-feature">
+							<i class="icon icon-star">{{> "icons/icon-star"}}</i>
+						</span>
 					{{/if}}
+					<h2 class="post-title"><a href="{{url}}">{{{title}}}</a></h2>
 				</div>
+				{{#if tags}}
+				<div class="post-tags-inline">
+					{{#foreach tags limit="3"}}
+					<a href="{{url}}" class="post-tag-chip">{{name}}</a>
+					{{/foreach}}
+				</div>
+				{{/if}}
+			</div>
+			<a class="post-box-link" href="{{url}}" aria-label="{{title}}">
 				<span class="post-meta">
 					<time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time>
 				</span>
 				<p class="post-excerpt">{{excerpt characters="180"}}</p>
 			</a>
-			</div>
 		</div>
-	</article>
+	</div>
+</article>
 
 {{/foreach}}
 

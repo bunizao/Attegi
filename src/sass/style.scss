@@ -3317,7 +3317,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	}
 }
 
-.post-tag-chip {
+a.post-tag-chip {
 	display: inline-flex;
 	align-items: center;
 	padding: 0.25em 0.85em;
@@ -3329,7 +3329,9 @@ iframe.gh-portal-triggerbtn-iframe {
 	border: 1px solid var(--color-background-contrast);
 	border-radius: 2em;
 	white-space: nowrap;
+	text-decoration: none;
 	transition: all ease-out 0.15s;
+	cursor: pointer;
 
 	&:hover {
 		color: var(--ghost-accent-color);
