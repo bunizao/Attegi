@@ -9,20 +9,26 @@
 		<div class="box post-box">
 			<div class="post-box-header">
 				<div class="post-box-title-wrap">
-					{{#if featured}}
-						<span class="post-feature">
-							<i class="icon icon-star">{{> "icons/icon-star"}}</i>
-						</span>
-					{{/if}}
 					<h2 class="post-title"><a href="{{url}}">{{{title}}}</a></h2>
 				</div>
-				{{#if tags}}
+				{{#if tags}}{{#if featured}}
+				<div class="post-tags-inline">
+					<span class="post-feature-tag">#Featured</span>
+					{{#foreach tags limit="3"}}
+					<a href="{{url}}" class="post-tag-chip">{{name}}</a>
+					{{/foreach}}
+				</div>
+				{{else}}
 				<div class="post-tags-inline">
 					{{#foreach tags limit="3"}}
 					<a href="{{url}}" class="post-tag-chip">{{name}}</a>
 					{{/foreach}}
 				</div>
-				{{/if}}
+				{{/if}}{{else}}{{#if featured}}
+				<div class="post-tags-inline">
+					<span class="post-feature-tag">#Featured</span>
+				</div>
+				{{/if}}{{/if}}
 			</div>
 			<a class="post-box-link" href="{{url}}" aria-label="{{title}}">
 				<span class="post-meta">

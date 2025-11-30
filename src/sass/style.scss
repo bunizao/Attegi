@@ -2423,6 +2423,26 @@ iframe.gh-portal-triggerbtn-iframe {
 	transform: translateY(0.15em);
 }
 
+/* Featured Tag Style */
+.post-feature-tag {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.2em 0.7em;
+	margin-right: 0.75rem;
+	font-size: 1.2em;
+	font-weight: 600;
+	line-height: 1.4;
+	color: var(--ghost-accent-color);
+	background: color-mix(in srgb, var(--ghost-accent-color) 12%, transparent);
+	border-radius: 0.4em;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.theme-dark .post-feature-tag {
+	background: color-mix(in srgb, var(--ghost-accent-color) 20%, transparent);
+}
+
 .container .post.featured .inner {
 	position: relative;
 }
@@ -3289,14 +3309,9 @@ iframe.gh-portal-triggerbtn-iframe {
 	flex: 1;
 	min-width: 0;
 	display: flex;
-	align-items: flex-start;
-
-	.post-feature {
-		position: relative;
-		margin-left: 0;
-		margin-right: 0.5rem;
-		transform: none;
-	}
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5rem;
 
 	.post-title {
 		margin: 0;
