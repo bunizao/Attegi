@@ -6,26 +6,18 @@
 
 :root {
   /* Primary font stack - optimized for readability across languages */
-  /* Using modern sans-serif for CJK as they look better than serif fallbacks */
+  /* -apple-system ensures best CJK font selection on Apple devices */
   --gh-font-heading:
-    'Libre Baskerville',           /* Primary serif for Latin */
-    'PingFang SC',                 /* Chinese simplified - Apple (优先) */
-    'PingFang TC',                 /* Chinese traditional - Apple */
-    'PingFang HK',                 /* Chinese Hong Kong - Apple */
-    'Hiragino Sans',               /* Japanese - Apple (优先) */
-    'Hiragino Kaku Gothic ProN',   /* Japanese fallback */
-    'Noto Sans SC',                /* Google Noto - Chinese simplified */
-    'Noto Sans TC',                /* Google Noto - Chinese traditional */
+    -apple-system,                 /* System font - auto selects PingFang for CJK */
+    BlinkMacSystemFont,            /* Chrome on macOS */
+    'Segoe UI',                    /* Windows */
+    'Microsoft YaHei',             /* 微软雅黑 - Windows CJK */
+    'PingFang SC',                 /* Chinese simplified - explicit fallback */
+    'Hiragino Sans',               /* Japanese - Apple */
+    'Noto Sans SC',                /* Google Noto - Chinese */
     'Noto Sans JP',                /* Google Noto - Japanese */
-    'Source Han Sans SC',          /* Adobe 思源黑体 - Chinese simplified */
-    'Source Han Sans TC',          /* Adobe 思源黑体 - Chinese traditional */
-    'Source Han Sans',             /* Adobe 思源黑体 - General CJK */
-    'Microsoft YaHei',             /* 微软雅黑 - Windows */
-    'Microsoft JhengHei',          /* 微軟正黑體 - Windows */
-    'Yu Gothic',                   /* Japanese - Windows */
-    'Malgun Gothic',               /* Korean - Windows */
-    'Apple SD Gothic Neo',         /* Korean - Apple */
-    'sans-serif';
+    'Source Han Sans SC',          /* Adobe 思源黑体 */
+    sans-serif;
 
   /* Body font stack - optimized for readability and performance */
   --gh-font-body:

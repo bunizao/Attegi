@@ -1,0 +1,107 @@
+{{!< default}}
+
+{{!-- Links Page Template --}}
+{{!-- Create a page with slug "links" to use this template --}}
+{{!-- Add friend links in the page content using the bookmark card format --}}
+{{!-- Or use HTML cards with the link-card class structure --}}
+
+{{#post}}
+
+<div class="links-page">
+	<div class="inner">
+		<div class="links-content">
+			{{!-- Creative Friends Header --}}
+			<div class="friends-illustration">
+				<svg class="friends-illustration-svg" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+					<defs>
+						<filter id="planet-glow" x="-50%" y="-50%" width="200%" height="200%">
+							<feGaussianBlur stdDeviation="2.5" result="blur"/>
+							<feComposite in="SourceGraphic" in2="blur" operator="over"/>
+						</filter>
+						<radialGradient id="star-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(200 100) rotate(90) scale(30)">
+							<stop stop-color="currentColor" stop-opacity="0.8"/>
+							<stop offset="1" stop-color="currentColor" stop-opacity="0"/>
+						</radialGradient>
+					</defs>
+					<style>
+						.orbit-ring { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-opacity: 0.3; stroke-dasharray: 6 4; }
+						.planet-group { transform-origin: 200px 100px; }
+						@keyframes orbit-1 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+						@keyframes orbit-2 { from { transform: rotate(120deg); } to { transform: rotate(480deg); } }
+						@keyframes orbit-3 { from { transform: rotate(240deg); } to { transform: rotate(600deg); } }
+						@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+						@keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.1); } }
+						@keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+						.system-container { animation: float 6s ease-in-out infinite; transform-origin: center; }
+						.orbit-1 { animation: orbit-1 20s linear infinite; }
+						.orbit-2 { animation: orbit-2 25s linear infinite reverse; }
+						.orbit-3 { animation: orbit-3 30s linear infinite; }
+						.center-star { transform-origin: 200px 100px; animation: pulse 4s ease-in-out infinite; }
+						.star-bg { animation: twinkle 3s ease-in-out infinite alternate; }
+					</style>
+					<g class="system-container">
+						<circle cx="50" cy="40" r="1" fill="currentColor" class="star-bg" style="animation-delay: 0s"/>
+						<circle cx="350" cy="160" r="1.5" fill="currentColor" class="star-bg" style="animation-delay: 1s"/>
+						<circle cx="300" cy="30" r="1" fill="currentColor" class="star-bg" style="animation-delay: 2s"/>
+						<circle cx="80" cy="170" r="1" fill="currentColor" class="star-bg" style="animation-delay: 1.5s"/>
+						<circle cx="200" cy="100" r="20" fill="url(#star-gradient)" class="center-star"/>
+						<circle cx="200" cy="100" r="10" fill="currentColor" filter="url(#planet-glow)"/>
+						<g class="orbit-1 planet-group">
+							<ellipse cx="200" cy="100" rx="140" ry="40" class="orbit-ring"/>
+							<circle cx="340" cy="100" r="8" fill="#fb923c" filter="url(#planet-glow)"/>
+						</g>
+						<g class="orbit-2 planet-group">
+							<ellipse cx="200" cy="100" rx="110" ry="70" transform="rotate(60 200 100)" class="orbit-ring"/>
+							<circle cx="310" cy="100" r="6" fill="#38bdf8" filter="url(#planet-glow)"/>
+						</g>
+						<g class="orbit-3 planet-group">
+							<ellipse cx="200" cy="100" rx="120" ry="30" transform="rotate(-45 200 100)" class="orbit-ring"/>
+							<circle cx="80" cy="100" r="7" fill="#a855f7" filter="url(#planet-glow)"/>
+						</g>
+						<g style="animation: orbit-1 8s linear infinite reverse; transform-origin: 200px 100px;">
+							<circle cx="200" cy="145" r="3" fill="#f472b6" opacity="0.9"/>
+						</g>
+					</g>
+				</svg>
+
+				<h1 class="friends-title">Friends</h1>
+				{{#if custom_excerpt}}
+				<p class="friends-description">{{custom_excerpt}}</p>
+				{{/if}}
+			</div>
+
+			{{!-- Links Grid --}}
+			{{!--
+				Usage Instructions:
+
+				1. Using Ghost's Bookmark Card (Recommended):
+				   - Simply paste a URL in the editor
+				   - Ghost will automatically fetch the site's title, description, and image
+				   - The bookmark card will be styled as a friend link card
+
+				2. Using HTML Card for custom links:
+				   <div class="link-card">
+				     <a href="https://example.com" class="link-card-container" target="_blank" rel="noopener">
+				       <div class="link-card-content">
+				         <div class="link-card-title">Site Name</div>
+				         <div class="link-card-description">Site description goes here</div>
+				         <div class="link-card-meta">
+				           <img class="link-card-icon" src="favicon-url" alt="">
+				           <span class="link-card-author">Author Name</span>
+				         </div>
+				       </div>
+				       <div class="link-card-image">
+				         <img src="image-url" alt="Site Name">
+				       </div>
+				     </a>
+				   </div>
+			--}}
+
+			<section class="links-grid post-content">
+				{{content}}
+			</section>
+		</div>
+	</div>
+</div>
+
+{{/post}}

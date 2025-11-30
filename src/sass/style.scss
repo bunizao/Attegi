@@ -3661,3 +3661,535 @@ a.post-tag-chip {
 	font-size: 1.2em;
 	color: var(--color-content-secondary);
 }
+
+/* ==========================================================================
+   Links Page - Friend Links / Blogroll
+   ========================================================================== */
+.links-page {
+	min-height: calc(100vh - 20rem);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 6rem 0;
+
+	.inner {
+		width: 100%;
+		max-width: 72rem;
+	}
+}
+
+.links-content {
+	text-align: center;
+}
+
+/* Creative Friends Illustration */
+.friends-illustration {
+	position: relative;
+	margin-bottom: 2rem;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		margin-bottom: 1.5rem;
+	}
+}
+
+/* SVG Illustration */
+.friends-illustration-svg {
+	display: block;
+	max-width: 28rem;
+	height: auto;
+	margin: 0 auto 1.5rem;
+	color: var(--ghost-accent-color);
+	filter: drop-shadow(0 4px 20px color-mix(in srgb, var(--ghost-accent-color) 30%, transparent));
+
+	@media only screen and (max-width: $breakpoint-small) {
+		max-width: 20rem;
+	}
+}
+
+/* Flowing Lines */
+.flow-lines {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+	max-width: 28rem;
+	height: 10rem;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.flow-line {
+	stroke-dasharray: 8 6;
+	animation: flow 2s linear infinite;
+
+	&.flow-line-1 {
+		stroke: rgba(251, 191, 36, 0.4);
+	}
+
+	&.flow-line-2 {
+		stroke: rgba(56, 189, 248, 0.4);
+		animation-delay: 1s;
+	}
+}
+
+@keyframes flow {
+	to {
+		stroke-dashoffset: -28;
+	}
+}
+
+.friends-visual {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1.2rem;
+	height: 8rem;
+	margin-bottom: 1rem;
+	z-index: 1;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		height: 6rem;
+		gap: 0.8rem;
+	}
+}
+
+/* Three Planet Balls */
+.planet-ball {
+	position: relative;
+	border-radius: 50%;
+	animation: float 3s ease-in-out infinite;
+
+	/* Highlight */
+	&::before {
+		content: '';
+		position: absolute;
+		top: 10%;
+		left: 15%;
+		width: 25%;
+		height: 20%;
+		background: rgba(255, 255, 255, 0.5);
+		border-radius: 50%;
+		filter: blur(2px);
+	}
+}
+
+/* Mars - Red/Orange */
+.planet-ball-1 {
+	width: 3.2rem;
+	height: 3.2rem;
+	background: linear-gradient(135deg, #fb923c 0%, #ea580c 50%, #c2410c 100%);
+	box-shadow:
+		inset -4px -4px 10px rgba(0, 0, 0, 0.35),
+		0 6px 20px rgba(251, 146, 60, 0.5);
+	animation-delay: 0s;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		width: 2.5rem;
+		height: 2.5rem;
+	}
+}
+
+/* Earth - Blue/Green */
+.planet-ball-2 {
+	width: 4.2rem;
+	height: 4.2rem;
+	background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 30%, #22c55e 70%, #16a34a 100%);
+	box-shadow:
+		inset -5px -5px 12px rgba(0, 0, 0, 0.35),
+		0 8px 25px rgba(56, 189, 248, 0.5);
+	animation-delay: 0.3s;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		width: 3.2rem;
+		height: 3.2rem;
+	}
+}
+
+/* Saturn - Yellow/Gold with ring */
+.planet-ball-3 {
+	width: 3.5rem;
+	height: 3.5rem;
+	background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+	box-shadow:
+		inset -4px -4px 10px rgba(0, 0, 0, 0.35),
+		0 6px 20px rgba(251, 191, 36, 0.5);
+	animation-delay: 0.6s;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		width: 2.8rem;
+		height: 2.8rem;
+	}
+}
+
+/* Planet Ring (Saturn) */
+.planet-ring {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) rotateX(70deg);
+	width: 160%;
+	height: 160%;
+	border: 3px solid rgba(251, 191, 36, 0.5);
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+/* Planet Face */
+.planet-face {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 70%;
+	height: 50%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 20%;
+}
+
+.planet-eye {
+	width: 18%;
+	height: 35%;
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 50%;
+	position: relative;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 30%;
+		left: 30%;
+		width: 40%;
+		height: 40%;
+		background: #1e293b;
+		border-radius: 50%;
+	}
+}
+
+.planet-mouth {
+	width: 40%;
+	height: 30%;
+	border: 3px solid rgba(255, 255, 255, 0.9);
+	border-top: none;
+	border-radius: 0 0 50% 50%;
+	margin-top: -5%;
+}
+
+.friends-title {
+	font-family: var(--gh-font-heading);
+	font-size: 4em;
+	font-weight: 800;
+	line-height: 1.2;
+	margin: 0 0 0.5rem;
+	color: var(--color-content-lead);
+	letter-spacing: -0.02em;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		font-size: 3em;
+	}
+}
+
+.friends-description {
+	font-size: 1.6em;
+	line-height: 1.6;
+	color: var(--color-content-secondary);
+	margin: 0 auto;
+	max-width: 40rem;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		font-size: 1.4em;
+	}
+}
+
+/* Links Grid Layout */
+.links-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 2rem;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		gap: 1.5rem;
+	}
+}
+
+/* Override default post-content styles for links page */
+.links-grid.post-content {
+	display: grid;
+
+	> * {
+		min-width: 0;
+		max-width: none;
+	}
+
+	/* Style Ghost's bookmark cards as friend link cards */
+	.kg-bookmark-card {
+		margin: 0;
+		border-radius: 1.5rem;
+		overflow: hidden;
+		transition: all ease-out 0.25s;
+		background: var(--color-background-secondary);
+		border: 1px solid var(--color-background-contrast);
+		box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+
+		&:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+			border-color: var(--ghost-accent-color);
+		}
+
+		a.kg-bookmark-container,
+		a.kg-bookmark-container:hover {
+			min-height: auto;
+			background: transparent;
+			border: none;
+			border-radius: 0;
+			flex-direction: row;
+
+			@media only screen and (max-width: $breakpoint-medium) {
+				flex-direction: row;
+			}
+		}
+	}
+
+	.kg-bookmark-content {
+		padding: 2rem 2.5rem;
+		justify-content: center;
+
+		@media only screen and (max-width: $breakpoint-small) {
+			padding: 1.5rem;
+		}
+	}
+
+	.kg-bookmark-title {
+		font-family: var(--gh-font-heading);
+		font-size: 1.1em;
+		font-weight: 700;
+		line-height: 1.3;
+		color: var(--color-content-lead);
+		margin-bottom: 0.5rem;
+	}
+
+	.kg-bookmark-description {
+		font-size: 0.9em;
+		line-height: 1.5;
+		color: var(--color-content-secondary);
+		margin-top: 0.5rem;
+		max-height: none;
+		-webkit-line-clamp: 2;
+	}
+
+	.kg-bookmark-metadata {
+		margin-top: 1rem;
+		font-size: 0.85em;
+		gap: 0.5rem;
+	}
+
+	.kg-bookmark-icon {
+		width: 1.5em;
+		height: 1.5em;
+		margin-right: 0.5rem;
+		border-radius: 4px;
+	}
+
+	.kg-bookmark-author {
+		font-weight: 500;
+		color: var(--color-content-main);
+
+		&:after {
+			content: none;
+		}
+	}
+
+	.kg-bookmark-publisher {
+		color: var(--color-content-secondary);
+		font-weight: 400;
+
+		&:before {
+			content: "•";
+			margin: 0 0.5em;
+			color: var(--color-content-secondary);
+		}
+	}
+
+	.kg-bookmark-thumbnail {
+		position: relative;
+		min-width: 180px;
+		max-width: 220px;
+		max-height: none;
+		flex-shrink: 0;
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			min-width: 120px;
+			max-width: 150px;
+		}
+
+		@media only screen and (max-width: $breakpoint-small) {
+			min-width: 100px;
+			max-width: 120px;
+		}
+
+		img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 0;
+			transition: transform ease-out 0.3s;
+		}
+	}
+
+	.kg-bookmark-card:hover .kg-bookmark-thumbnail img {
+		transform: scale(1.05);
+	}
+}
+
+/* Dark theme adjustments for links page */
+.theme-dark .links-grid.post-content {
+	.kg-bookmark-card {
+		background: rgba(255, 255, 255, 0.04);
+		border-color: rgba(255, 255, 255, 0.08);
+		box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+
+		&:hover {
+			box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+			border-color: var(--ghost-accent-color);
+		}
+	}
+}
+
+/* Custom Link Card (for HTML card usage) */
+.link-card {
+	background: var(--color-background-secondary);
+	border: 1px solid var(--color-background-contrast);
+	border-radius: 1.5rem;
+	overflow: hidden;
+	transition: all ease-out 0.25s;
+	box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+		border-color: var(--ghost-accent-color);
+	}
+}
+
+.theme-dark .link-card {
+	background: rgba(255, 255, 255, 0.04);
+	border-color: rgba(255, 255, 255, 0.08);
+	box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+
+	&:hover {
+		box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+	}
+}
+
+.link-card-container {
+	display: flex;
+	text-decoration: none;
+	color: inherit;
+	min-height: 8rem;
+
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+.link-card-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 2rem 2.5rem;
+	min-width: 0;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		padding: 1.5rem;
+	}
+}
+
+.link-card-title {
+	font-family: var(--gh-font-heading);
+	font-size: 1.8em;
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--color-content-lead);
+	margin-bottom: 0.5rem;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		font-size: 1.5em;
+	}
+}
+
+.link-card-description {
+	font-size: 1.4em;
+	line-height: 1.5;
+	color: var(--color-content-secondary);
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		font-size: 1.3em;
+		-webkit-line-clamp: 2;
+	}
+}
+
+.link-card-meta {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: 1rem;
+	font-size: 1.3em;
+	color: var(--color-content-secondary);
+}
+
+.link-card-icon {
+	width: 2rem;
+	height: 2rem;
+	border-radius: 4px;
+	object-fit: cover;
+}
+
+.link-card-author {
+	font-weight: 500;
+	color: var(--color-content-main);
+}
+
+.link-card-image {
+	position: relative;
+	min-width: 180px;
+	max-width: 220px;
+	flex-shrink: 0;
+	overflow: hidden;
+
+	@media only screen and (max-width: $breakpoint-medium) {
+		min-width: 120px;
+		max-width: 150px;
+	}
+
+	@media only screen and (max-width: $breakpoint-small) {
+		min-width: 100px;
+		max-width: 120px;
+	}
+
+	img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform ease-out 0.3s;
+	}
+}
+
+.link-card:hover .link-card-image img {
+	transform: scale(1.05);
+}
