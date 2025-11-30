@@ -6,19 +6,26 @@
 
 :root {
   /* Primary font stack - optimized for readability across languages */
+  /* Using modern sans-serif for CJK as they look better than serif fallbacks */
   --gh-font-heading:
     'Libre Baskerville',           /* Primary serif for Latin */
-    'Hiragino Mincho ProN',        /* Japanese serif */
-    'Hiragino Mincho Pro',         /* Japanese serif fallback */
-    'YuMincho',                    /* Japanese serif system */
-    'Yu Mincho',                   /* Japanese serif system variant */
-    'STSong',                      /* Chinese simplified serif */
-    'SimSun',                      /* Chinese simplified serif fallback */
-    'PMingLiU',                    /* Traditional Chinese serif */
-    'Apple Myungjo',               /* Korean serif */
-    'Batang',                      /* Korean serif fallback */
-    'Times New Roman',             /* Universal serif fallback */
-    serif;
+    'PingFang SC',                 /* Chinese simplified - Apple (优先) */
+    'PingFang TC',                 /* Chinese traditional - Apple */
+    'PingFang HK',                 /* Chinese Hong Kong - Apple */
+    'Hiragino Sans',               /* Japanese - Apple (优先) */
+    'Hiragino Kaku Gothic ProN',   /* Japanese fallback */
+    'Noto Sans SC',                /* Google Noto - Chinese simplified */
+    'Noto Sans TC',                /* Google Noto - Chinese traditional */
+    'Noto Sans JP',                /* Google Noto - Japanese */
+    'Source Han Sans SC',          /* Adobe 思源黑体 - Chinese simplified */
+    'Source Han Sans TC',          /* Adobe 思源黑体 - Chinese traditional */
+    'Source Han Sans',             /* Adobe 思源黑体 - General CJK */
+    'Microsoft YaHei',             /* 微软雅黑 - Windows */
+    'Microsoft JhengHei',          /* 微軟正黑體 - Windows */
+    'Yu Gothic',                   /* Japanese - Windows */
+    'Malgun Gothic',               /* Korean - Windows */
+    'Apple SD Gothic Neo',         /* Korean - Apple */
+    'sans-serif';
 
   /* Body font stack - optimized for readability and performance */
   --gh-font-body:
