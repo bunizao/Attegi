@@ -8,12 +8,23 @@
 	<div class="inner">
 		<div class="box post-box">
 			<a class="post-box-link" href="{{url}}" aria-label="{{title}}">
-				{{#if featured}}
-					<span class="post-feature">
-						<i class="icon icon-star">{{> "icons/icon-star"}}</i>
-					</span>
-				{{/if}}
-				<h2 class="post-title">{{{title}}}</h2>
+				<div class="post-box-header">
+					<div class="post-box-title-wrap">
+						{{#if featured}}
+							<span class="post-feature">
+								<i class="icon icon-star">{{> "icons/icon-star"}}</i>
+							</span>
+						{{/if}}
+						<h2 class="post-title">{{{title}}}</h2>
+					</div>
+					{{#if tags}}
+					<div class="post-tags-inline">
+						{{#foreach tags limit="3"}}
+						<span class="post-tag-chip">{{name}}</span>
+						{{/foreach}}
+					</div>
+					{{/if}}
+				</div>
 				<span class="post-meta">
 					<time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time>
 				</span>

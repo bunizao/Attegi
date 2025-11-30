@@ -15,9 +15,9 @@ A Ghost theme focused on clean typography, mobile readability, and a calm dark/l
 ## Highlights
 - Mobile-friendly scale: tighter fonts, spacing, and card layouts that stay readable on phones.
 - Dual theme polish: tuned dark/light colors, accent-aware states, consistent author/date meta.
-- Liquid glass touches: softened glassy hovers on cards and meta blocks for a lightweight depth effect.
+- **Liquid glass** touches: softened glassy hovers on cards and meta blocks for a lightweight depth effect.
 - Thoughtful details: improved captions, softer shadows, refined featured/star markers, responsive video wrappers.
-- Attila-compatible: all core Attila features remain; you can still use its helpers and blocks.
+- Attila-compatible: all core Attila features remain, you can still use its helpers and blocks.
 
 ---
 
