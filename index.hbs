@@ -1,4 +1,13 @@
 {{!< default}}
+
+{{!--
+    index.hbs
+    ---------
+    Homepage template displaying the main blog header and post listing.
+    Shows site title, description, and cover image (if set).
+    Uses the loop partial to render paginated post cards.
+--}}
+
 {{#if @site.cover_image}}
 	{{#contentFor "html_class"}}cover-active{{/contentFor}}
 {{/if}}

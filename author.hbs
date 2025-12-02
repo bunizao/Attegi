@@ -1,5 +1,14 @@
 {{!< default}}
 
+{{!--
+    author.hbs
+    ----------
+    Author archive template displaying posts by a specific author.
+    Shows author profile image, name, bio, social links, and post count.
+    Includes fallback avatar when no profile image is set.
+    Uses the loop partial to render paginated post cards.
+--}}
+
 {{#author}}
 
 <header class="blog-header{{#if cover_image}} has-cover{{/if}}">
@@ -9,17 +18,25 @@
 				<span class="archive-type">{{t "Author"}}</span>
 				<span class="archive-count">{{plural ../pagination.total empty=(t "No Posts") singular=(t "% Post") plural=(t "% Posts")}}</span>
 			</span>
+			{{!-- Author avatar with SVG fallback for missing profile image --}}
 			{{#if profile_image}}
 				<figure class="archive-avatar">
 					<img src="{{profile_image}}" alt="{{name}}" />
 				</figure>
 			{{else}}
-				<figure class="archive-avatar avatar"></figure>
+				<figure class="archive-avatar avatar" aria-label="{{name}}">
+					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+						<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+					</svg>
+				</figure>
 			{{/if}}
 			
 			<h2 class="archive-title">{{name}}</h2>
+			{{!-- Author bio with fallback message --}}
 			{{#if bio}}
 				<span class="archive-description">{{{bio}}}</span>
+			{{else}}
+				<span class="archive-description archive-description-fallback">{{t "Posts by"}} {{name}}</span>
 			{{/if}}
 			<span class="archive-links">
 				{{#if website}}

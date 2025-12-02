@@ -1,5 +1,12 @@
 {{!< default}}
 
+{{!--
+    tag.hbs
+    -------
+    Tag archive template displaying posts filtered by a specific tag.
+    Shows tag name, description, post count, and optional feature image.
+    Uses the loop partial to render paginated post cards.
+--}}
 
 <header class="blog-header{{#if tag.feature_image}} has-cover{{/if}}">
 	<div class="inner">
@@ -9,8 +16,11 @@
 				<span class="archive-count">{{plural pagination.total empty=(t "No Posts") singular=(t "% Post") plural=(t "% Posts")}}</span>
 			</span>
 			<h2 class="archive-title">{{tag.name}}</h2>
+			{{!-- Tag description with fallback message --}}
 			{{#if tag.description}}
 				<span class="archive-description">{{{tag.description}}}</span>
+			{{else}}
+				<span class="archive-description archive-description-fallback">{{t "Posts tagged with"}} "{{tag.name}}"</span>
 			{{/if}}
 		</div>
 

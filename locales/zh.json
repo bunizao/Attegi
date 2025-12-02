@@ -40,6 +40,10 @@
     "Sign in": "登录",
     "Sign up": "注册",
     "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Comments": "评论",
+    "0 comments": "0 条评论",
+    "Posts tagged with": "标签为",
+    "Posts by": "来自",
+    "Back to home": "返回主页",
+    "Return to Home": "返回主页"
 }
