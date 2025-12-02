@@ -1,20 +1,23 @@
-name: Build Theme
+name: Create Release
 
 on:
-  push:
-    branches: [ master, main ]
-    tags: [ '*' ]
-  pull_request:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (leave empty to use package.json version)'
+        required: false
+        type: string
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -25,60 +28,72 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Clean dist
-        run: npx grunt clean:dist || true
+      - name: Get version
+        id: version
+        run: |
+          if [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION=$(node -p "require('./package.json').version")
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+          echo "📌 Version: $VERSION"
 
-      - name: Build assets
-        run: npx grunt build
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "⚠️  Tag v${{ steps.version.outputs.version }} already exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "✅ Tag v${{ steps.version.outputs.version }} does not exist"
+          fi
 
-      - name: Package theme
-        run: npx grunt compress
+      - name: Build and package
+        run: |
+          npx grunt clean:dist
+          npx grunt build
+          npx grunt compress
 
-      - name: Validate theme with GScan
+      - name: Validate theme
         run: npx gscan -z dist/attegi.zip
 
       - name: Extract package info
         id: package
         run: |
-          VERSION=$(node -p "require('./package.json').version")
           NAME=$(node -p "require('./package.json').name")
           DESCRIPTION=$(node -p "require('./package.json').description")
           DEMO=$(node -p "require('./package.json').demo")
           GHOST_VERSION=$(node -p "require('./package.json').engines.ghost")
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          SIZE_BYTES=$(stat -f%z dist/attegi.zip 2>/dev/null || stat -c%s dist/attegi.zip)
+          SIZE_KB=$((SIZE_BYTES / 1024))
           echo "name=$NAME" >> $GITHUB_OUTPUT
           echo "description=$DESCRIPTION" >> $GITHUB_OUTPUT
           echo "demo=$DEMO" >> $GITHUB_OUTPUT
           echo "ghost_version=$GHOST_VERSION" >> $GITHUB_OUTPUT
-
-      - name: Check package size
-        id: size
-        run: |
-          SIZE=$(du -h dist/attegi.zip | cut -f1)
-          SIZE_BYTES=$(stat -f%z dist/attegi.zip 2>/dev/null || stat -c%s dist/attegi.zip)
-          SIZE_KB=$((SIZE_BYTES / 1024))
-          echo "size=$SIZE" >> $GITHUB_OUTPUT
           echo "size_kb=${SIZE_KB}KB" >> $GITHUB_OUTPUT
-          echo "📦 Package size: $SIZE (${SIZE_KB}KB)"
-          ls -lh dist/attegi.zip
 
-      - name: Upload theme zip
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ steps.package.outputs.name }}-v${{ steps.package.outputs.version }}
-          path: dist/attegi.zip
-          retention-days: 90
+      - name: Create and push tag
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ steps.version.outputs.tag }}" -m "Release ${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.version.outputs.tag }}"
 
-      - name: Create release and attach zip
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: ${{ steps.package.outputs.name }} v${{ steps.package.outputs.version }}
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.package.outputs.name }} ${{ steps.version.outputs.tag }}
           generate_release_notes: true
-          fail_on_unmatched_files: true
+          draft: false
+          prerelease: false
           files: dist/attegi.zip
           body: |
-            ## 🎨 ${{ steps.package.outputs.name }} v${{ steps.package.outputs.version }}
+            ## 🎨 ${{ steps.package.outputs.name }} ${{ steps.version.outputs.tag }}
 
             ${{ steps.package.outputs.description }}
 
@@ -107,7 +122,7 @@ jobs:
 
             ### 📊 Package Info
 
-            - **Size**: ${{ steps.size.outputs.size_kb }}
+            - **Size**: ${{ steps.package.outputs.size_kb }}
             - **Ghost Version**: ${{ steps.package.outputs.ghost_version }}
             - **Validation**: ✅ Passed GScan
             - **License**: MIT
