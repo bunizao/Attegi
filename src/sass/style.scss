@@ -3700,6 +3700,7 @@ a.post-tag-chip {
 	margin: 0 auto 1.5rem;
 	color: var(--ghost-accent-color);
 	filter: drop-shadow(0 4px 20px color-mix(in srgb, var(--ghost-accent-color) 30%, transparent));
+	overflow: visible;
 
 	@media only screen and (max-width: $breakpoint-small) {
 		max-width: 20rem;
