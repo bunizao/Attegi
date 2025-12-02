@@ -116,10 +116,22 @@ module.exports = function(grunt) {
             '!src/**',
             '!dist',
             '!dist/**',
+            '!screenshots',
+            '!screenshots/**',
             '!.git',
+            '!.git/**',
+            '!.github',
+            '!.github/**',
             '!.gitignore',
+            '!.gitattributes',
             '!Gruntfile.js',
-            '!package-lock.json'
+            '!package-lock.json',
+            '!docker-compose.yml',
+            '!AGENTS.md',
+            '!README_zh.md',
+            '!.DS_Store',
+            '!.lighthouseci',
+            '!.playwright-mcp'
           ],
           dest: '.'
         }]
