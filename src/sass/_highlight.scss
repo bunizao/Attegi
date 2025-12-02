@@ -33,7 +33,7 @@
 }
 
 /* Dark theme colors */
-.theme-dark:root {
+html.theme-dark {
     --code-bg: #1e2127;
     --code-border: #3e4451;
     --code-text: #abb2bf;
@@ -57,13 +57,13 @@
     --code-regexp: #98c379;
     --code-deletion: #e06c75;
     --code-addition: #98c379;
-    --code-label-bg: #2c313a;
+    --code-label-bg: #282c34;
     --code-label-text: #9da5b4;
 }
 
 /* System dark mode */
 @media (prefers-color-scheme: dark) {
-    html:not(.theme-light):root {
+    html:not(.theme-light) {
         --code-bg: #1e2127;
         --code-border: #3e4451;
         --code-text: #abb2bf;
@@ -87,7 +87,7 @@
         --code-regexp: #98c379;
         --code-deletion: #e06c75;
         --code-addition: #98c379;
-        --code-label-bg: #2c313a;
+        --code-label-bg: #282c34;
         --code-label-text: #9da5b4;
     }
 }

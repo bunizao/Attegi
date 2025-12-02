@@ -126,6 +126,38 @@
     var blocks = container.querySelectorAll('pre code');
     if (!blocks.length) return;
 
+    function createCodeHeader(pre, code, langName) {
+      var header = doc.createElement('div');
+      header.className = 'code-header';
+
+      // Language label
+      var lang = doc.createElement('span');
+      lang.className = 'code-lang';
+      lang.textContent = langName || '';
+      header.appendChild(lang);
+
+      // Copy button
+      var btn = doc.createElement('button');
+      btn.className = 'code-copy-btn';
+      btn.setAttribute('aria-label', 'Copy code');
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span>Copy</span>';
+
+      btn.addEventListener('click', function() {
+        var text = code.textContent || code.innerText;
+        navigator.clipboard.writeText(text).then(function() {
+          btn.classList.add('copied');
+          btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Copied!</span>';
+          setTimeout(function() {
+            btn.classList.remove('copied');
+            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span>Copy</span>';
+          }, 2000);
+        });
+      });
+
+      header.appendChild(btn);
+      pre.insertBefore(header, pre.firstChild);
+    }
+
     function applyHighlight() {
       if (!window.hljs) return;
       Array.prototype.forEach.call(blocks, function (code) {
@@ -133,29 +165,11 @@
 
         var pre = code.parentElement;
 
-        // Add language label
-        var langName = getLanguageDisplayName(code.className);
-        if (langName && langName !== 'Plain Text') {
-          pre.setAttribute('data-language', langName);
+        // Add header with language and copy button
+        if (!pre.querySelector('.code-header')) {
+          var langName = getLanguageDisplayName(code.className);
+          createCodeHeader(pre, code, langName);
         }
-
-        if (code.classList.contains('language-text')) return;
-        if (pre.querySelector('.lines')) return;
-
-        var sanitized = code.innerHTML.replace(/\n+$/, '');
-        var lineCount = sanitized.split(/\n(?!$)/g).length + 1;
-        if (lineCount < 2) return;
-
-        var lines = doc.createElement('div');
-        lines.className = 'lines';
-
-        var numbers = '';
-        for (var i = 1; i < lineCount; i++) {
-          numbers += '<span class="line" aria-hidden="true">' + i + '</span>';
-        }
-
-        lines.innerHTML = numbers;
-        pre.appendChild(lines);
       });
     }
 
