@@ -60,9 +60,12 @@ Attegi achieves high scores on Google's PageSpeed Insights for both mobile and d
 ---
 
 ## Quick Start
-- Download the release zip (`npx grunt compress` or GitHub zip).
-- Upload in Ghost Admin → Design → Upload Theme → Activate.
-- For hacking and local dev, see **Development** below.
+
+1. **Download** the latest release from [GitHub Releases](https://github.com/bunizao/Attegi/releases)
+2. **Upload** in Ghost Admin → Settings → Design → Upload Theme
+3. **Activate** the Attegi theme
+
+For local development, see the **Development** section below.
 
 ---
 
