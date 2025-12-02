@@ -138,15 +138,14 @@
 				{{else}}
 					<a class="post-nav-next post-nav-home" href="{{@site.url}}">
 						<section class="post-nav-teaser">
-							<i class="icon icon-arrow-left" aria-label="{{t "Back to home"}}">{{> "icons/icon-arrow-left"}}</i>
-							<h2 class="post-nav-title">{{@site.title}}</h2>
+							<i class="icon icon-home" aria-label="{{t "Back to home"}}">{{> "icons/icon-home"}}</i>
+							<h2 class="post-nav-title">{{t "Return to Home"}}</h2>
 							<p class="post-nav-excerpt">{{@site.description}}</p>
-							<p class="post-nav-meta">{{t "Back to home"}}</p>
 						</section>
 					</a>
 				{{/next_post}}
 
-				{{!-- If there's a previous post, display it using the same markup included from - partials/post-card.hbs --}}
+				{{!-- If there's a previous post, display it; otherwise show home link --}}
 				{{#prev_post}}
 					<a class="post-nav-prev" href="{{url}}">
 						<section class="post-nav-teaser">
@@ -154,6 +153,14 @@
 							<h2 class="post-nav-title">{{title}}</h2>
 							<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
 							<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
+						</section>
+					</a>
+				{{else}}
+					<a class="post-nav-prev post-nav-home" href="{{@site.url}}">
+						<section class="post-nav-teaser">
+							<i class="icon icon-home" aria-label="{{t "Back to home"}}">{{> "icons/icon-home"}}</i>
+							<h2 class="post-nav-title">{{t "Return to Home"}}</h2>
+							<p class="post-nav-excerpt">{{@site.description}}</p>
 						</section>
 					</a>
 				{{/prev_post}}

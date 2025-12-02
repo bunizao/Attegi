@@ -2970,12 +2970,23 @@ iframe.gh-portal-triggerbtn-iframe {
 .post-nav-prev {
 	text-decoration: none;
 	color: inherit;
-	display: block;
+	display: flex;
+	flex-direction: column;
 	padding: 1.5rem;
 	border-radius: 1rem;
 	background: var(--color-background-secondary);
 	border: 1px solid var(--color-background-contrast);
 	transition: all 0.25s ease;
+
+	.post-nav-teaser {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.post-nav-excerpt {
+		flex: 1;
+	}
 
 	&:focus,
 	&:hover {
@@ -3022,6 +3033,64 @@ iframe.gh-portal-triggerbtn-iframe {
 
 	&:hover i {
 		transform: translateX(3px);
+	}
+}
+
+.post-nav-home {
+	background: linear-gradient(135deg,
+		color-mix(in srgb, var(--ghost-accent-color) 8%, var(--color-background-secondary)) 0%,
+		var(--color-background-secondary) 100%);
+	border-color: color-mix(in srgb, var(--ghost-accent-color) 20%, transparent);
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+
+	.post-nav-teaser {
+		padding: 0 !important;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	i.icon {
+		position: static !important;
+		width: 3rem;
+		height: 3rem;
+		margin-bottom: 1rem;
+		padding: 0.6rem;
+		background: color-mix(in srgb, var(--ghost-accent-color) 15%, transparent);
+		border-radius: 50%;
+		color: var(--ghost-accent-color);
+
+		svg {
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	.post-nav-title {
+		margin-bottom: 0.5rem;
+		color: var(--ghost-accent-color);
+	}
+
+	.post-nav-excerpt {
+		margin: 0;
+		font-size: 1.3em;
+		-webkit-line-clamp: unset;
+		opacity: 0.8;
+	}
+
+	&:hover {
+		background: linear-gradient(135deg,
+			color-mix(in srgb, var(--ghost-accent-color) 15%, var(--color-background-secondary)) 0%,
+			var(--color-background-secondary) 100%);
+		border-color: color-mix(in srgb, var(--ghost-accent-color) 40%, transparent);
+
+		i.icon {
+			background: color-mix(in srgb, var(--ghost-accent-color) 25%, transparent);
+			transform: none;
+		}
 	}
 }
 
