@@ -39,7 +39,18 @@
     "Previous post": "前の投稿",
     "Sign in": "ログイン",
     "Sign up": "登録する",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "アカウント",
+    "Comments": "コメント",
+    "0 comments": "0件のコメント",
+    "Posts tagged with": "タグ付き投稿",
+    "Posts by": "投稿者",
+    "Back to home": "ホームに戻る",
+    "Return to Home": "ホームに戻る",
+    "Featured": "注目",
+    "Page Not Found": "ページが見つかりません",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "お探しのページは見つかりませんでした。移動、削除されたか、最初から存在しなかった可能性があります。",
+    "Return Home": "ホームに戻る",
+    "Maybe try these instead": "こちらもお試しください",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

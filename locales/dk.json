@@ -39,7 +39,18 @@
     "Previous post": "Forrige indlæg",
     "Sign in": "Log på",
     "Sign up": "Tilmeld dig",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Konto",
+    "Comments": "Kommentarer",
+    "0 comments": "0 kommentarer",
+    "Posts tagged with": "Indlæg tagget med",
+    "Posts by": "Indlæg af",
+    "Back to home": "Tilbage til hjem",
+    "Return to Home": "Tilbage til hjem",
+    "Featured": "Fremhævet",
+    "Page Not Found": "Siden blev ikke fundet",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "Siden du leder efter er forsvundet i tomrummet. Måske blev den flyttet, slettet eller eksisterede aldrig.",
+    "Return Home": "Tilbage til hjem",
+    "Maybe try these instead": "Prøv måske disse i stedet",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

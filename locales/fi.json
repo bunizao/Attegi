@@ -39,7 +39,18 @@
     "Previous post": "Edellinen postaus",
     "Sign in": "Kirjaudu",
     "Sign up": "Rekisteröidy",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Tili",
+    "Comments": "Kommentit",
+    "0 comments": "0 kommenttia",
+    "Posts tagged with": "Postaukset tunnisteella",
+    "Posts by": "Postaukset kirjoittajalta",
+    "Back to home": "Takaisin etusivulle",
+    "Return to Home": "Takaisin etusivulle",
+    "Featured": "Suositeltu",
+    "Page Not Found": "Sivua ei löydy",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "Etsimäsi sivu on kadonnut tyhjyyteen. Ehkä se siirrettiin, poistettiin tai sitä ei koskaan ollut.",
+    "Return Home": "Takaisin etusivulle",
+    "Maybe try these instead": "Kokeile ehkä näitä",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

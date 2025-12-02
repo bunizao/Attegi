@@ -38,7 +38,18 @@
     "Previous post": "Forrige innlegg",
     "Sign in": "Logg inn",
     "Sign up": "Registrer",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Konto",
+    "Comments": "Kommentarer",
+    "0 comments": "0 kommentarer",
+    "Posts tagged with": "Innlegg merket med",
+    "Posts by": "Innlegg av",
+    "Back to home": "Tilbake til hjem",
+    "Return to Home": "Tilbake til hjem",
+    "Featured": "Fremhevet",
+    "Page Not Found": "Siden ble ikke funnet",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "Siden du leter etter har forsvunnet i tomrommet. Kanskje den ble flyttet, slettet eller aldri eksisterte.",
+    "Return Home": "Tilbake til hjem",
+    "Maybe try these instead": "Kanskje prøv disse i stedet",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

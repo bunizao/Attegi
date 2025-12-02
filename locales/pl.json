@@ -39,7 +39,18 @@
     "Previous post": "Poprzedni post",
     "Sign in": "Zaloguj się",
     "Sign up": "Zarejestruj się",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Konto",
+    "Comments": "Komentarze",
+    "0 comments": "0 komentarzy",
+    "Posts tagged with": "Posty z tagiem",
+    "Posts by": "Posty autora",
+    "Back to home": "Powrót do strony głównej",
+    "Return to Home": "Powrót do strony głównej",
+    "Featured": "Wyróżnione",
+    "Page Not Found": "Strona nie znaleziona",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "Strona, której szukasz, zniknęła w pustce. Być może została przeniesiona, usunięta lub nigdy nie istniała.",
+    "Return Home": "Wróć do strony głównej",
+    "Maybe try these instead": "Może spróbuj tych",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

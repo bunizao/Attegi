@@ -39,7 +39,18 @@
     "Previous post": "المنشور السابق",
     "Sign in": "تسجيل الدخول",
     "Sign up": "تسجيل اشتراك",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "الحساب",
+    "Comments": "التعليقات",
+    "0 comments": "0 تعليقات",
+    "Posts tagged with": "منشورات بوسم",
+    "Posts by": "منشورات بواسطة",
+    "Back to home": "العودة للرئيسية",
+    "Return to Home": "العودة للرئيسية",
+    "Featured": "مميز",
+    "Page Not Found": "الصفحة غير موجودة",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "الصفحة التي تبحث عنها انجرفت إلى الفراغ. ربما تم نقلها أو حذفها أو لم تكن موجودة من الأساس.",
+    "Return Home": "العودة للرئيسية",
+    "Maybe try these instead": "ربما جرب هذه بدلاً من ذلك",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

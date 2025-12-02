@@ -42,4 +42,16 @@
     "Account": "Account",
     "Comments": "Comments",
     "0 comments": "0 comments"
+    ,
+    "Posts tagged with": "Posts tagged with",
+    "Posts by": "Posts by",
+    "Back to home": "Back to home",
+    "Return to Home": "Return to Home",
+    "Featured": "Featured",
+    "Page Not Found": "Page Not Found",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.",
+    "Return Home": "Return Home",
+    "Maybe try these instead": "Maybe try these instead",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

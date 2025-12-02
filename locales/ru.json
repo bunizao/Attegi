@@ -39,7 +39,18 @@
     "Previous post": "Предыдущая статья",
     "Sign in": "Войти",
     "Sign up": "Регистрация",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Аккаунт",
+    "Comments": "Комментарии",
+    "0 comments": "0 комментариев",
+    "Posts tagged with": "Статьи с тегом",
+    "Posts by": "Статьи автора",
+    "Back to home": "Вернуться на главную",
+    "Return to Home": "Вернуться на главную",
+    "Featured": "Избранное",
+    "Page Not Found": "Страница не найдена",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "Страница, которую вы ищете, исчезла в пустоте. Возможно, она была перемещена, удалена или никогда не существовала.",
+    "Return Home": "На главную",
+    "Maybe try these instead": "Попробуйте эти статьи",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

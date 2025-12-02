@@ -39,7 +39,18 @@
     "Previous post": "Article précédent",
     "Sign in": "Connexion",
     "Sign up": "Inscription",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Compte",
+    "Comments": "Commentaires",
+    "0 comments": "0 commentaire",
+    "Posts tagged with": "Articles tagués avec",
+    "Posts by": "Articles de",
+    "Back to home": "Retour à l'accueil",
+    "Return to Home": "Retour à l'accueil",
+    "Featured": "À la une",
+    "Page Not Found": "Page non trouvée",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "La page que vous recherchez s'est perdue dans le vide. Elle a peut-être été déplacée, supprimée, ou n'a jamais existé.",
+    "Return Home": "Retour à l'accueil",
+    "Maybe try these instead": "Essayez peut-être ceux-ci",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

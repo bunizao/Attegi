@@ -39,7 +39,18 @@
     "Previous post": "Önceki gönderi",
     "Sign in": "Giriş Yap",
     "Sign up": "Üye Ol",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Hesap",
+    "Comments": "Yorumlar",
+    "0 comments": "0 yorum",
+    "Posts tagged with": "Etiketli gönderiler",
+    "Posts by": "Gönderiler",
+    "Back to home": "Ana sayfaya dön",
+    "Return to Home": "Ana sayfaya dön",
+    "Featured": "Öne Çıkan",
+    "Page Not Found": "Sayfa Bulunamadı",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "Aradığınız sayfa boşluğa sürüklendi. Belki taşındı, silindi veya hiç var olmadı.",
+    "Return Home": "Ana sayfaya dön",
+    "Maybe try these instead": "Bunları deneyin",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

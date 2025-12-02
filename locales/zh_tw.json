@@ -39,7 +39,18 @@
     "Previous post": "上一篇文章",
     "Sign in": "登入",
     "Sign up": "註冊",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "帳戶",
+    "Comments": "留言",
+    "0 comments": "0 則留言",
+    "Posts tagged with": "標籤為",
+    "Posts by": "來自",
+    "Back to home": "返回首頁",
+    "Return to Home": "返回首頁",
+    "Featured": "精選",
+    "Page Not Found": "找不到頁面",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "您要找的頁面已經漂入虛空。也許它已被移動、刪除，或者..從未存在過。",
+    "Return Home": "返回首頁",
+    "Maybe try these instead": "也許可以看看這些",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

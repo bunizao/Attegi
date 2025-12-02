@@ -39,7 +39,18 @@
     "Previous post": "Vorheriger Beitrag",
     "Sign in": "Einloggen",
     "Sign up": "Registrieren",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Konto",
+    "Comments": "Kommentare",
+    "0 comments": "0 Kommentare",
+    "Posts tagged with": "Beiträge mit Tag",
+    "Posts by": "Beiträge von",
+    "Back to home": "Zurück zur Startseite",
+    "Return to Home": "Zurück zur Startseite",
+    "Featured": "Empfohlen",
+    "Page Not Found": "Seite nicht gefunden",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "Die gesuchte Seite ist ins Leere gedriftet. Vielleicht wurde sie verschoben, gelöscht oder existierte nie.",
+    "Return Home": "Zur Startseite",
+    "Maybe try these instead": "Vielleicht versuchen Sie diese",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

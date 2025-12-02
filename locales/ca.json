@@ -29,7 +29,18 @@
     "Topic": "Tema",
     "Share": "Compartir",
     "Search": "Buscar",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Compte",
+    "Comments": "Comentaris",
+    "0 comments": "0 comentaris",
+    "Posts tagged with": "Articles etiquetats amb",
+    "Posts by": "Articles de",
+    "Back to home": "Tornar a l'inici",
+    "Return to Home": "Tornar a l'inici",
+    "Featured": "Destacat",
+    "Page Not Found": "Pàgina no trobada",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "La pàgina que cerques s'ha perdut al buit. Potser s'ha mogut, eliminat o mai ha existit.",
+    "Return Home": "Tornar a l'inici",
+    "Maybe try these instead": "Potser prova aquests",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

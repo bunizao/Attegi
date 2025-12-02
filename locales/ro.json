@@ -29,7 +29,18 @@
     "Topic": "Subiect",
     "Share": "Distribuie",
     "Search": "Caută",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Cont",
+    "Comments": "Comentarii",
+    "0 comments": "0 comentarii",
+    "Posts tagged with": "Postări etichetate cu",
+    "Posts by": "Postări de",
+    "Back to home": "Înapoi la pagina principală",
+    "Return to Home": "Înapoi la pagina principală",
+    "Featured": "Recomandat",
+    "Page Not Found": "Pagina nu a fost găsită",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "Pagina pe care o căutați a dispărut în vid. Poate a fost mutată, ștearsă sau nu a existat niciodată.",
+    "Return Home": "Înapoi la pagina principală",
+    "Maybe try these instead": "Poate încercați acestea",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

@@ -39,7 +39,18 @@
     "Previous post": "Föregående inlägg",
     "Sign in": "Logga in",
     "Sign up": "Skapa konto",
-    "Account": "Account",
-    "Comments": "Comments",
-    "0 comments": "0 comments"
+    "Account": "Konto",
+    "Comments": "Kommentarer",
+    "0 comments": "0 kommentarer",
+    "Posts tagged with": "Inlägg taggade med",
+    "Posts by": "Inlägg av",
+    "Back to home": "Tillbaka till hem",
+    "Return to Home": "Tillbaka till hem",
+    "Featured": "Utvalt",
+    "Page Not Found": "Sidan hittades inte",
+    "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place.": "Sidan du letar efter har försvunnit i tomrummet. Kanske flyttades den, raderades eller existerade aldrig.",
+    "Return Home": "Tillbaka till hem",
+    "Maybe try these instead": "Prova kanske dessa istället",
+    "Twitter": "Twitter",
+    "Facebook": "Facebook"
 }

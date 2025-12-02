@@ -25,7 +25,7 @@
 				</div>
 				{{#if tags}}{{#if featured}}
 				<div class="post-tags-inline">
-					<span class="post-feature-tag">#Featured</span>
+					<span class="post-feature-tag">#{{t "Featured"}}</span>
 					{{#foreach tags limit="3"}}
 					<a href="{{url}}" class="post-tag-chip">{{name}}</a>
 					{{/foreach}}
@@ -38,7 +38,7 @@
 				</div>
 				{{/if}}{{else}}{{#if featured}}
 				<div class="post-tags-inline">
-					<span class="post-feature-tag">#Featured</span>
+					<span class="post-feature-tag">#{{t "Featured"}}</span>
 				</div>
 				{{/if}}{{/if}}
 			</div>
