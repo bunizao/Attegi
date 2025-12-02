@@ -10,63 +10,68 @@
 <div class="links-page">
 	<div class="inner">
 		<div class="links-content">
-			{{!-- Creative Friends Header --}}
-			<div class="friends-illustration">
-				<svg class="friends-illustration-svg" viewBox="-50 -50 500 300" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-					<defs>
-						<filter id="planet-glow" x="-50%" y="-50%" width="200%" height="200%">
-							<feGaussianBlur stdDeviation="2.5" result="blur"/>
-							<feComposite in="SourceGraphic" in2="blur" operator="over"/>
-						</filter>
-						<radialGradient id="star-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(200 100) rotate(90) scale(30)">
-							<stop stop-color="currentColor" stop-opacity="0.8"/>
-							<stop offset="1" stop-color="currentColor" stop-opacity="0"/>
-						</radialGradient>
-					</defs>
-					<style>
-						.orbit-ring { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-opacity: 0.3; stroke-dasharray: 6 4; }
-						.planet-group { transform-origin: 200px 100px; }
-						@keyframes orbit-1 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-						@keyframes orbit-2 { from { transform: rotate(120deg); } to { transform: rotate(480deg); } }
-						@keyframes orbit-3 { from { transform: rotate(240deg); } to { transform: rotate(600deg); } }
-						@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-						@keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.1); } }
-						@keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
-						.system-container { animation: float 6s ease-in-out infinite; transform-origin: center; }
-						.orbit-1 { animation: orbit-1 20s linear infinite; }
-						.orbit-2 { animation: orbit-2 25s linear infinite reverse; }
-						.orbit-3 { animation: orbit-3 30s linear infinite; }
-						.center-star { transform-origin: 200px 100px; animation: pulse 4s ease-in-out infinite; }
-						.star-bg { animation: twinkle 3s ease-in-out infinite alternate; }
-					</style>
-					<g class="system-container">
-						<circle cx="50" cy="40" r="1" fill="currentColor" class="star-bg" style="animation-delay: 0s"/>
-						<circle cx="350" cy="160" r="1.5" fill="currentColor" class="star-bg" style="animation-delay: 1s"/>
-						<circle cx="300" cy="30" r="1" fill="currentColor" class="star-bg" style="animation-delay: 2s"/>
-						<circle cx="80" cy="170" r="1" fill="currentColor" class="star-bg" style="animation-delay: 1.5s"/>
-						<circle cx="200" cy="100" r="20" fill="url(#star-gradient)" class="center-star"/>
-						<circle cx="200" cy="100" r="10" fill="currentColor" filter="url(#planet-glow)"/>
-						<g class="orbit-1 planet-group">
-							<ellipse cx="200" cy="100" rx="140" ry="40" class="orbit-ring"/>
-							<circle cx="340" cy="100" r="8" fill="#fb923c" filter="url(#planet-glow)"/>
+			{{!-- Links Header - Möbius Infinity --}}
+			<div class="links-header">
+				<div class="links-visual">
+					<svg class="links-symbol" viewBox="0 0 140 70" fill="none">
+						<defs>
+							<linearGradient id="mobius-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+								<stop offset="0%" stop-color="currentColor" stop-opacity="0.2"/>
+								<stop offset="25%" stop-color="currentColor" stop-opacity="0.8"/>
+								<stop offset="50%" stop-color="currentColor" stop-opacity="1"/>
+								<stop offset="75%" stop-color="currentColor" stop-opacity="0.8"/>
+								<stop offset="100%" stop-color="currentColor" stop-opacity="0.2"/>
+							</linearGradient>
+							<radialGradient id="particle-grad" cx="50%" cy="30%" r="60%">
+								<stop offset="0%" stop-color="#fff" stop-opacity="1"/>
+								<stop offset="50%" stop-color="currentColor" stop-opacity="1"/>
+								<stop offset="100%" stop-color="currentColor" stop-opacity="0.4"/>
+							</radialGradient>
+							<filter id="glow-soft" x="-50%" y="-50%" width="200%" height="200%">
+								<feGaussianBlur stdDeviation="2" result="blur"/>
+								<feComposite in="SourceGraphic" in2="blur" operator="over"/>
+							</filter>
+							<filter id="glow-strong" x="-100%" y="-100%" width="300%" height="300%">
+								<feGaussianBlur stdDeviation="4" result="blur1"/>
+								<feGaussianBlur stdDeviation="8" result="blur2"/>
+								<feMerge>
+									<feMergeNode in="blur2"/>
+									<feMergeNode in="blur1"/>
+									<feMergeNode in="SourceGraphic"/>
+								</feMerge>
+							</filter>
+							<filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+								<feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="currentColor" flood-opacity="0.25"/>
+							</filter>
+						</defs>
+						{{!-- Ambient glow --}}
+						<path class="mobius-glow" d="M18 35 C18 12, 42 12, 70 35 C98 58, 122 58, 122 35 C122 12, 98 12, 70 35 C42 58, 18 58, 18 35" stroke="currentColor" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.06" filter="url(#glow-soft)"/>
+						{{!-- Main infinity path --}}
+						<path class="mobius-path" d="M18 35 C18 12, 42 12, 70 35 C98 58, 122 58, 122 35 C122 12, 98 12, 70 35 C42 58, 18 58, 18 35" stroke="url(#mobius-grad)" stroke-width="4" stroke-linecap="round" fill="none" filter="url(#shadow)"/>
+						{{!-- Sparkles - start on path with opacity 0 --}}
+						<g class="sparkles">
+							<circle r="1.2" fill="currentColor" opacity="0"><animateMotion dur="7s" repeatCount="indefinite" fill="freeze"><mpath href="#flow-path"/></animateMotion><animate attributeName="opacity" values="0;0.9;0" dur="2s" repeatCount="indefinite"/><animate attributeName="r" values="0.8;1.8;0.8" dur="2s" repeatCount="indefinite"/></circle>
+							<circle r="1" fill="currentColor" opacity="0"><animateMotion dur="7s" repeatCount="indefinite" begin="1.75s" fill="freeze"><mpath href="#flow-path"/></animateMotion><animate attributeName="opacity" values="0;0.7;0" dur="1.6s" repeatCount="indefinite" begin="1.75s"/><animate attributeName="r" values="0.5;1.3;0.5" dur="1.6s" repeatCount="indefinite" begin="1.75s"/></circle>
+							<circle r="1" fill="currentColor" opacity="0"><animateMotion dur="7s" repeatCount="indefinite" begin="3.5s" fill="freeze"><mpath href="#flow-path"/></animateMotion><animate attributeName="opacity" values="0;0.8;0" dur="1.8s" repeatCount="indefinite" begin="3.5s"/><animate attributeName="r" values="0.6;1.5;0.6" dur="1.8s" repeatCount="indefinite" begin="3.5s"/></circle>
+							<circle r="0.8" fill="currentColor" opacity="0"><animateMotion dur="7s" repeatCount="indefinite" begin="5.25s" fill="freeze"><mpath href="#flow-path"/></animateMotion><animate attributeName="opacity" values="0;0.6;0" dur="1.4s" repeatCount="indefinite" begin="5.25s"/><animate attributeName="r" values="0.4;1;0.4" dur="1.4s" repeatCount="indefinite" begin="5.25s"/></circle>
 						</g>
-						<g class="orbit-2 planet-group">
-							<ellipse cx="200" cy="100" rx="110" ry="70" transform="rotate(60 200 100)" class="orbit-ring"/>
-							<circle cx="310" cy="100" r="6" fill="#38bdf8" filter="url(#planet-glow)"/>
-						</g>
-						<g class="orbit-3 planet-group">
-							<ellipse cx="200" cy="100" rx="120" ry="30" transform="rotate(-45 200 100)" class="orbit-ring"/>
-							<circle cx="80" cy="100" r="7" fill="#a855f7" filter="url(#planet-glow)"/>
-						</g>
-						<g style="animation: orbit-1 8s linear infinite reverse; transform-origin: 200px 100px;">
-							<circle cx="200" cy="145" r="3" fill="#f472b6" opacity="0.9"/>
-						</g>
-					</g>
-				</svg>
-
-				<h1 class="friends-title">{{title}}</h1>
+						{{!-- Main particles --}}
+						<circle class="particle-main" r="4" fill="url(#particle-grad)" filter="url(#glow-strong)">
+							<animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" fill="freeze"><mpath href="#flow-path"/></animateMotion>
+							<animate attributeName="r" values="4;5.5;4" dur="2.5s" repeatCount="indefinite"/>
+						</circle>
+						<circle class="particle-secondary" r="3" fill="url(#particle-grad)" filter="url(#glow-strong)" opacity="0">
+							<animateMotion dur="6s" repeatCount="indefinite" calcMode="linear" begin="3s" fill="freeze"><mpath href="#flow-path"/></animateMotion>
+							<animate attributeName="opacity" values="0;0.8;0.8;0.8" dur="6s" repeatCount="indefinite" begin="3s" keyTimes="0;0.01;0.99;1"/>
+							<animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite" begin="3s"/>
+						</circle>
+						{{!-- Motion path --}}
+						<path id="flow-path" d="M18 35 C18 12, 42 12, 70 35 C98 58, 122 58, 122 35 C122 12, 98 12, 70 35 C42 58, 18 58, 18 35" fill="none" stroke="none"/>
+					</svg>
+				</div>
+				<h1 class="links-title">{{title}}</h1>
 				{{#if custom_excerpt}}
-				<p class="friends-description">{{custom_excerpt}}</p>
+				<p class="links-description">{{custom_excerpt}}</p>
 				{{/if}}
 			</div>
 
