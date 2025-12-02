@@ -1,58 +1,242 @@
 /*
-Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
-*/
+ * Modern Syntax Highlighting Theme
+ * Inspired by One Dark Pro with custom enhancements
+ */
 
-.hljs {
-    color: var(--color-content-main);
-    background: var(--color-background-main);
+/* Light theme colors */
+:root {
+    --code-bg: #fafbfc;
+    --code-border: #e1e4e8;
+    --code-text: #24292e;
+    --code-comment: #6a737d;
+    --code-keyword: #d73a49;
+    --code-string: #22863a;
+    --code-number: #005cc5;
+    --code-function: #6f42c1;
+    --code-variable: #e36209;
+    --code-operator: #d73a49;
+    --code-class: #6f42c1;
+    --code-constant: #005cc5;
+    --code-tag: #22863a;
+    --code-attribute: #6f42c1;
+    --code-selector: #6f42c1;
+    --code-property: #005cc5;
+    --code-punctuation: #24292e;
+    --code-builtin: #005cc5;
+    --code-type: #d73a49;
+    --code-meta: #6a737d;
+    --code-regexp: #032f62;
+    --code-deletion: #b31d28;
+    --code-addition: #22863a;
+    --code-label-bg: #f1f3f5;
+    --code-label-text: #586069;
 }
 
+/* Dark theme colors */
+.theme-dark:root {
+    --code-bg: #1e2127;
+    --code-border: #3e4451;
+    --code-text: #abb2bf;
+    --code-comment: #5c6370;
+    --code-keyword: #c678dd;
+    --code-string: #98c379;
+    --code-number: #d19a66;
+    --code-function: #61afef;
+    --code-variable: #e06c75;
+    --code-operator: #56b6c2;
+    --code-class: #e5c07b;
+    --code-constant: #d19a66;
+    --code-tag: #e06c75;
+    --code-attribute: #d19a66;
+    --code-selector: #e06c75;
+    --code-property: #61afef;
+    --code-punctuation: #abb2bf;
+    --code-builtin: #e5c07b;
+    --code-type: #e5c07b;
+    --code-meta: #5c6370;
+    --code-regexp: #98c379;
+    --code-deletion: #e06c75;
+    --code-addition: #98c379;
+    --code-label-bg: #2c313a;
+    --code-label-text: #9da5b4;
+}
+
+/* System dark mode */
+@media (prefers-color-scheme: dark) {
+    html:not(.theme-light):root {
+        --code-bg: #1e2127;
+        --code-border: #3e4451;
+        --code-text: #abb2bf;
+        --code-comment: #5c6370;
+        --code-keyword: #c678dd;
+        --code-string: #98c379;
+        --code-number: #d19a66;
+        --code-function: #61afef;
+        --code-variable: #e06c75;
+        --code-operator: #56b6c2;
+        --code-class: #e5c07b;
+        --code-constant: #d19a66;
+        --code-tag: #e06c75;
+        --code-attribute: #d19a66;
+        --code-selector: #e06c75;
+        --code-property: #61afef;
+        --code-punctuation: #abb2bf;
+        --code-builtin: #e5c07b;
+        --code-type: #e5c07b;
+        --code-meta: #5c6370;
+        --code-regexp: #98c379;
+        --code-deletion: #e06c75;
+        --code-addition: #98c379;
+        --code-label-bg: #2c313a;
+        --code-label-text: #9da5b4;
+    }
+}
+
+/* Base hljs styles */
+.hljs {
+    color: var(--code-text);
+    background: var(--code-bg);
+}
+
+/* Comments */
+.hljs-comment,
+.hljs-quote {
+    color: var(--code-comment);
+    font-style: italic;
+}
+
+/* Keywords */
 .hljs-keyword,
 .hljs-selector-tag,
-.hljs-literal,
-.hljs-section,
-.hljs-link {
-    color: var(--color-content-lead);
+.hljs-literal {
+    color: var(--code-keyword);
+    font-weight: 500;
 }
 
-.hljs-subst {
-    /* default */
-}
-
+/* Strings */
 .hljs-string,
+.hljs-doctag,
+.hljs-regexp {
+    color: var(--code-string);
+}
+
+/* Numbers */
+.hljs-number {
+    color: var(--code-number);
+}
+
+/* Functions */
 .hljs-title,
-.hljs-name,
+.hljs-title.function_,
+.hljs-title.class_ {
+    color: var(--code-function);
+    font-weight: 500;
+}
+
+/* Variables */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-variable.language_ {
+    color: var(--code-variable);
+}
+
+/* Operators */
+.hljs-operator {
+    color: var(--code-operator);
+}
+
+/* Classes and Types */
 .hljs-type,
-.hljs-attribute,
+.hljs-class,
+.hljs-built_in {
+    color: var(--code-class);
+}
+
+/* Constants */
 .hljs-symbol,
 .hljs-bullet,
-.hljs-built_in,
-.hljs-addition,
-.hljs-variable,
-.hljs-template-tag,
-.hljs-template-variable {
-    color: var(--ghost-accent-color);
+.hljs-link {
+    color: var(--code-constant);
 }
 
-.hljs-comment,
-.hljs-quote,
-.hljs-deletion,
+/* HTML/XML Tags */
+.hljs-tag {
+    color: var(--code-tag);
+}
+
+.hljs-name {
+    color: var(--code-tag);
+}
+
+/* Attributes */
+.hljs-attr,
+.hljs-attribute {
+    color: var(--code-attribute);
+}
+
+/* CSS Selectors */
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+    color: var(--code-selector);
+}
+
+/* CSS Properties */
+.hljs-property {
+    color: var(--code-property);
+}
+
+/* Punctuation */
+.hljs-punctuation {
+    color: var(--code-punctuation);
+}
+
+/* Meta/Preprocessor */
 .hljs-meta {
-    color: var(--color-content-secondary);
+    color: var(--code-meta);
 }
 
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-literal,
-.hljs-title,
-.hljs-section,
-.hljs-doctag,
-.hljs-type,
-.hljs-name,
+.hljs-meta .hljs-keyword {
+    color: var(--code-keyword);
+}
+
+.hljs-meta .hljs-string {
+    color: var(--code-string);
+}
+
+/* Diff */
+.hljs-deletion {
+    color: var(--code-deletion);
+    background-color: rgba(179, 29, 40, 0.1);
+}
+
+.hljs-addition {
+    color: var(--code-addition);
+    background-color: rgba(34, 134, 58, 0.1);
+}
+
+/* Section headers */
+.hljs-section {
+    color: var(--code-function);
+    font-weight: 700;
+}
+
+/* Strong/Emphasis */
 .hljs-strong {
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .hljs-emphasis {
     font-style: italic;
+}
+
+/* Params */
+.hljs-params {
+    color: var(--code-text);
+}
+
+/* Subst */
+.hljs-subst {
+    color: var(--code-text);
 }

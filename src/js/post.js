@@ -39,6 +39,88 @@
     });
   }
 
+  // Language display name mapping
+  var languageNames = {
+    'javascript': 'JavaScript',
+    'js': 'JavaScript',
+    'typescript': 'TypeScript',
+    'ts': 'TypeScript',
+    'python': 'Python',
+    'py': 'Python',
+    'java': 'Java',
+    'c': 'C',
+    'cpp': 'C++',
+    'csharp': 'C#',
+    'cs': 'C#',
+    'go': 'Go',
+    'rust': 'Rust',
+    'ruby': 'Ruby',
+    'rb': 'Ruby',
+    'php': 'PHP',
+    'swift': 'Swift',
+    'kotlin': 'Kotlin',
+    'scala': 'Scala',
+    'r': 'R',
+    'sql': 'SQL',
+    'html': 'HTML',
+    'xml': 'XML',
+    'css': 'CSS',
+    'scss': 'SCSS',
+    'sass': 'Sass',
+    'less': 'Less',
+    'json': 'JSON',
+    'yaml': 'YAML',
+    'yml': 'YAML',
+    'markdown': 'Markdown',
+    'md': 'Markdown',
+    'bash': 'Bash',
+    'shell': 'Shell',
+    'sh': 'Shell',
+    'zsh': 'Zsh',
+    'powershell': 'PowerShell',
+    'ps1': 'PowerShell',
+    'dockerfile': 'Dockerfile',
+    'docker': 'Docker',
+    'nginx': 'Nginx',
+    'apache': 'Apache',
+    'lua': 'Lua',
+    'perl': 'Perl',
+    'haskell': 'Haskell',
+    'elixir': 'Elixir',
+    'erlang': 'Erlang',
+    'clojure': 'Clojure',
+    'lisp': 'Lisp',
+    'scheme': 'Scheme',
+    'ocaml': 'OCaml',
+    'fsharp': 'F#',
+    'dart': 'Dart',
+    'groovy': 'Groovy',
+    'julia': 'Julia',
+    'matlab': 'MATLAB',
+    'objectivec': 'Objective-C',
+    'objc': 'Objective-C',
+    'assembly': 'Assembly',
+    'asm': 'Assembly',
+    'vb': 'Visual Basic',
+    'vbnet': 'VB.NET',
+    'graphql': 'GraphQL',
+    'toml': 'TOML',
+    'ini': 'INI',
+    'makefile': 'Makefile',
+    'cmake': 'CMake',
+    'diff': 'Diff',
+    'plaintext': 'Plain Text',
+    'text': 'Plain Text'
+  };
+
+  function getLanguageDisplayName(langClass) {
+    if (!langClass) return null;
+    var match = langClass.match(/language-(\w+)/i);
+    if (!match) return null;
+    var lang = match[1].toLowerCase();
+    return languageNames[lang] || lang.charAt(0).toUpperCase() + lang.slice(1);
+  }
+
   function highlightCode(container, highlightUrl) {
     if (!container) return;
     var blocks = container.querySelectorAll('pre code');
@@ -48,8 +130,17 @@
       if (!window.hljs) return;
       Array.prototype.forEach.call(blocks, function (code) {
         window.hljs.highlightElement(code);
+
+        var pre = code.parentElement;
+
+        // Add language label
+        var langName = getLanguageDisplayName(code.className);
+        if (langName && langName !== 'Plain Text') {
+          pre.setAttribute('data-language', langName);
+        }
+
         if (code.classList.contains('language-text')) return;
-        if (code.parentElement.querySelector('.lines')) return;
+        if (pre.querySelector('.lines')) return;
 
         var sanitized = code.innerHTML.replace(/\n+$/, '');
         var lineCount = sanitized.split(/\n(?!$)/g).length + 1;
@@ -64,7 +155,7 @@
         }
 
         lines.innerHTML = numbers;
-        code.parentElement.appendChild(lines);
+        pre.appendChild(lines);
       });
     }
 

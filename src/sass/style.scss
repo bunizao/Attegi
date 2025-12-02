@@ -259,36 +259,56 @@ textarea {
 	pre {
 		position: relative;
 		margin: 0 0 2.5rem;
-		padding: 1em;
+		padding: 0;
 		overflow: hidden;
 		font-family: var(--gh-font-mono);
 		white-space: pre;
-		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
+		background: var(--code-bg);
+		border: 1px solid var(--code-border);
+		border-radius: 0.75rem;
 		box-sizing: border-box;
+
+		/* Language label */
+		&[data-language]::before {
+			content: attr(data-language);
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 0.35em 0.75em;
+			font-size: 0.65em;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: var(--code-label-text);
+			background: var(--code-label-bg);
+			border-bottom-left-radius: 0.5rem;
+			z-index: 10;
+			user-select: none;
+			-webkit-user-select: none;
+		}
 	}
 
 	pre .lines {
 		position: absolute;
-		width: 2.66667em;
+		width: 3.5em;
 		height: 100%;
 		left: 0;
 		top: 0;
 		padding: 1.33334em 0;
-		border-right: 1px solid var(--color-background-contrast);
-		color: var(--color-content-secondary);
+		border-right: 1px solid var(--code-border);
+		color: var(--code-comment);
 		font-size: 0.75em;
 		line-height: 2em;
 		text-align: right;
 		box-sizing: border-box;
-		background: var(--color-background-secondary);
+		background: var(--code-label-bg);
 		user-select: none;
 		-webkit-user-select: none;
 	}
 
 	pre .lines .line {
 		display: block;
-		padding-right: 0.33334em;
+		padding-right: 0.5em;
 	}
 
 	pre code,
@@ -296,7 +316,7 @@ textarea {
 		display: block;
 		position: static;
 		top: auto;
-		margin: -1.33334em -1.33334em -1.33334em 1.33334em;
+		margin: 0 0 0 3.5em;
 		padding: 1.33334em;
 		overflow-x: auto;
 		font-size: 0.75em;
@@ -308,7 +328,13 @@ textarea {
 	}
 
 	pre code.language-text {
-		margin-left: -1.33334em;
+		margin-left: 0;
+	}
+
+	/* Code block without line numbers */
+	pre:not(:has(.lines)) code,
+	pre:not(:has(.lines)) tt {
+		margin-left: 0;
 	}
 
 	kbd {
