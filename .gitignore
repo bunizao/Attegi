@@ -4,8 +4,5 @@ dist/
 AGENTS.md
 docker-compose.yml
 /.playwright-mcp
-*.png
 # keep theme assets images tracked
-!assets/img/
-!assets/img/**
 /.lighthouseci

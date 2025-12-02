@@ -4,22 +4,35 @@
 [![Build](https://img.shields.io/badge/build-grunt-orange?logo=grunt&logoColor=white)](Gruntfile.js)
 [![Demo](https://img.shields.io/badge/demo-attegi.tutuis.me-4F46E5)](https://Attegi.tutuis.me)
 
-A Ghost theme focused on clean typography, mobile readability, and a calm dark/light presentation. Built on [Attila](https://github.com/zutrinken/attila) with refinements inspired by Moegi.
+A modern, elegant Ghost theme focused on clean typography, mobile readability, and seamless dark/light mode switching. Built on [Attila](https://github.com/zutrinken/attila) with extensive enhancements for better user experience and performance.
 
-![Attegi logo](assets/img/attegi-logo-1.png)
+**[View Live Demo →](https://attegi.tutuis.me)**
 
 [简体中文](README_zh.md)
 
 ---
 
-## Screenshots
+## Key Features
 
-### Light Mode
-![Homepage Light](screenshots/homepage-light.png)
+- ✨ **Dual Theme Support** - Polished dark/light modes with system preference detection
+- 📱 **Mobile Optimized** - Responsive design with optimized fonts and spacing for all devices
+- 🎨 **Liquid Glass Effects** - Modern UI with elegant hover animations and glass morphism
+- 💻 **Enhanced Code Blocks** - Syntax highlighting with language headers and copy-to-clipboard
+- 🧭 **Smart Navigation** - Intelligent post navigation with home fallback
+- 🎯 **SEO Optimized** - Clean markup, structured data, and excellent performance scores
+- 🌍 **i18n Ready** - 32 language translations included
+- ♿ **Accessible** - WCAG compliant with proper ARIA labels and keyboard navigation
+- 🚀 **Fast Performance** - Optimized assets and lazy loading for quick page loads
 
-### Dark Mode
-![Homepage Dark](screenshots/homepage-dark.png)
+## Features & Screenshots
 
+### Dark Mode and Elegant Hover
+I redesigned and created the homepage, adding elegant animations and hovers, as well as a brand new tab system.
+![Homepage Light](screenshots/homepage-dark.png)
+
+### Mobile-friendly scale
+Tighter fonts, spacing, and card layouts that stay readable on phones.
+![Mobile-friendly scale](screenshots/iphone.png)
 ### Code Blocks with Syntax Highlighting
 Beautifully styled code blocks with language headers and one-click copy functionality.
 
@@ -30,16 +43,19 @@ Elegant post navigation with home fallback when at the first or last post.
 
 ![Post Navigation](screenshots/post-navigation.png)
 
----
+### Elegant 404 Page
+Creative 404 error page with animated space theme and post recommendations.
+![Elegant 404 Page](screenshots/404-Page.png)
 
-## Highlights
-- **Mobile-friendly scale**: tighter fonts, spacing, and card layouts that stay readable on phones.
-- **Dual theme polish**: tuned dark/light colors, accent-aware states, consistent author/date meta.
-- **Liquid glass touches**: softened glassy hovers on cards and meta blocks for a lightweight depth effect.
-- **Code block enhancement**: language headers, syntax highlighting, and copy-to-clipboard functionality.
-- **Smart navigation**: post navigation with automatic home link fallback for first/last posts.
-- **Thoughtful details**: improved captions, softer shadows, refined featured/star markers, responsive video wrappers.
-- **Attila-compatible**: all core Attila features remain, you can still use its helpers and blocks.
+### Liquid Glass Texture Buttons
+Modern glass morphism effects on interactive elements for a premium feel.
+![Liquid glass texture buttons](screenshots/liquid-glass-button.png)
+
+### Excellent Performance
+
+Attegi achieves high scores on Google's PageSpeed Insights for both mobile and desktop, ensuring fast load times and smooth user experience.
+
+**[View PageSpeed Report →](https://pagespeed.web.dev/analysis/https-attegi-tutuis-me/hzaz7busnt)**
 
 ---
 
@@ -66,49 +82,130 @@ span.nav-copy { display: none !important; }
 
 ---
 
-## Project Structure
-- Templates: root `.hbs` files + `partials/`
-- Source: `src/sass`, `src/js` → compiled to `assets/`
-- Package: `dist/attegi.zip` from `npx grunt compress`
-
----
-
 ## Demo
-https://attegi.tutuis.me
+
+**[View Live Demo →](https://attegi.tutuis.me)**
 
 ---
 
-<details>
-<summary><strong>Development</strong></summary>
+## Development
 
-1) **Install deps**
+### Prerequisites
+
+- Node.js 16+ and npm
+- Docker (optional, for local Ghost instance)
+- Git
+
+### Setup
+
+**1. Clone and Install**
+
 ```bash
+git clone https://github.com/bunizao/Attegi.git
+cd Attegi
 npm install
 ```
 
-2) **Run locally with Ghost (SQLite)**
-```bash
-docker-compose up -d          # starts Ghost + mounts this repo as the theme
-```
-Open `http://localhost:2368/ghost` to activate the theme.
+**2. Development Workflow**
 
-3) **Live build while editing**
-```bash
-npx grunt                     # watches src/sass and src/js, outputs to assets/
-```
+Choose one of the following methods:
 
-4) **Package for upload**
+#### Option A: Local Ghost with Docker (Recommended)
+
 ```bash
-npx grunt build && npx grunt compress   # dist/attegi.zip
+# Start Ghost with theme mounted
+docker-compose up -d
+
+# Access Ghost admin at http://localhost:2368/ghost
+# Activate the Attegi theme in Settings → Design
 ```
 
-5) **Sync to a running local Ghost + restart**
+#### Option B: Upload to Existing Ghost Instance
+
 ```bash
-rsync -av --delete --exclude '.git' --exclude 'node_modules' --exclude 'dist' ./ /Users/tutu/Ghost/themes/attegi/ \
-  && docker-compose restart ghost
+# Build and package theme
+npx grunt build && npx grunt compress
+
+# Upload dist/attegi.zip via Ghost Admin → Design → Upload Theme
 ```
 
-</details>
+**3. Live Development**
+
+Watch for changes and auto-rebuild assets:
+
+```bash
+npx grunt watch
+```
+
+This watches `src/sass` and `src/js` and compiles to `assets/` on save.
+
+**4. Build for Production**
+
+```bash
+# Clean build
+npx grunt build
+
+# Create distribution package
+npx grunt compress
+
+# Output: dist/attegi.zip
+```
+
+**5. Theme Validation**
+
+```bash
+# Validate theme compatibility
+npx gscan .
+
+# Check for errors before submitting
+```
+
+### Project Structure
+
+```
+Attegi/
+├── assets/           # Compiled CSS/JS (don't edit directly)
+├── locales/          # i18n translation files (32 languages)
+├── partials/         # Reusable template components
+├── src/
+│   ├── sass/        # Source SCSS files
+│   └── js/          # Source JavaScript files
+├── *.hbs            # Handlebars templates
+├── package.json     # Theme metadata and dependencies
+└── Gruntfile.js     # Build configuration
+```
+
+### Making Changes
+
+- **Styles**: Edit files in `src/sass/`, run `npx grunt` to compile
+- **Scripts**: Edit files in `src/js/`, run `npx grunt` to compile
+- **Templates**: Edit `.hbs` files directly
+- **Translations**: Edit files in `locales/`
+
+### Tips
+
+- Use `npx grunt watch` during development for auto-compilation
+- Test in both light and dark modes
+- Verify mobile responsiveness
+- Run `npx gscan .` before committing changes
+- Check browser console for JavaScript errors
+
+---
+
+## Support
+
+Need help with Attegi? Here's how to get support:
+
+- **Documentation**: Check this README and the [Ghost theme documentation](https://ghost.org/docs/themes/)
+- **Issues**: Report bugs or request features on [GitHub Issues](https://github.com/bunizao/Attegi/issues)
+- **Questions**: Ask questions in [GitHub Discussions](https://github.com/bunizao/Attegi/discussions)
+- **Contact**: Reach out via email at [me@tutuis.me](mailto:me@tutuis.me)
+
+Before opening an issue, please:
+1. Check existing issues to avoid duplicates
+2. Include your Ghost version and theme version
+3. Provide steps to reproduce any bugs
+4. Share relevant screenshots if applicable
 
 ---
 
