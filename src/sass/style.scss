@@ -264,9 +264,10 @@ textarea {
 		font-family: var(--gh-font-mono);
 		white-space: pre;
 		background: var(--code-bg);
-		border: 1px solid var(--code-border);
-		border-radius: 0.5rem;
+		border: none;
+		border-radius: 0.75rem;
 		box-sizing: border-box;
+		box-shadow: var(--code-shadow);
 
 		/* Header bar with language label and copy button */
 		.code-header {
@@ -274,13 +275,12 @@ textarea {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 0.3em 0.75em;
+			padding: 0.6em 1em;
 			font-family: var(--gh-font-body);
-			font-size: 0.75em;
+			font-size: 0.8em;
 			color: var(--code-comment);
-			background: var(--code-label-bg);
-			border-bottom: 1px solid var(--code-border);
-			border-radius: 0.5rem 0.5rem 0 0;
+			background: transparent;
+			border: none;
 		}
 
 		.code-lang {

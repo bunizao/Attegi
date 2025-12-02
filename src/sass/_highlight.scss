@@ -5,7 +5,7 @@
 
 /* Light theme colors */
 :root {
-    --code-bg: #fafbfc;
+    --code-bg: #f8f9fa;
     --code-border: #e1e4e8;
     --code-text: #24292e;
     --code-comment: #6a737d;
@@ -28,16 +28,17 @@
     --code-regexp: #032f62;
     --code-deletion: #b31d28;
     --code-addition: #22863a;
-    --code-label-bg: #f1f3f5;
-    --code-label-text: #586069;
+    --code-label-bg: #f8f9fa;
+    --code-label-text: #6a737d;
+    --code-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* Dark theme colors */
 html.theme-dark {
-    --code-bg: #1e2127;
+    --code-bg: #282c34;
     --code-border: #3e4451;
     --code-text: #abb2bf;
-    --code-comment: #5c6370;
+    --code-comment: #7f848e;
     --code-keyword: #c678dd;
     --code-string: #98c379;
     --code-number: #d19a66;
@@ -53,21 +54,22 @@ html.theme-dark {
     --code-punctuation: #abb2bf;
     --code-builtin: #e5c07b;
     --code-type: #e5c07b;
-    --code-meta: #5c6370;
+    --code-meta: #7f848e;
     --code-regexp: #98c379;
     --code-deletion: #e06c75;
     --code-addition: #98c379;
     --code-label-bg: #282c34;
     --code-label-text: #9da5b4;
+    --code-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* System dark mode */
 @media (prefers-color-scheme: dark) {
     html:not(.theme-light) {
-        --code-bg: #1e2127;
+        --code-bg: #282c34;
         --code-border: #3e4451;
         --code-text: #abb2bf;
-        --code-comment: #5c6370;
+        --code-comment: #7f848e;
         --code-keyword: #c678dd;
         --code-string: #98c379;
         --code-number: #d19a66;
@@ -83,12 +85,13 @@ html.theme-dark {
         --code-punctuation: #abb2bf;
         --code-builtin: #e5c07b;
         --code-type: #e5c07b;
-        --code-meta: #5c6370;
+        --code-meta: #7f848e;
         --code-regexp: #98c379;
         --code-deletion: #e06c75;
         --code-addition: #98c379;
         --code-label-bg: #282c34;
         --code-label-text: #9da5b4;
+        --code-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     }
 }
 
