@@ -12,12 +12,34 @@ A Ghost theme focused on clean typography, mobile readability, and a calm dark/l
 
 ---
 
+## Screenshots
+
+### Light Mode
+![Homepage Light](screenshots/homepage-light.png)
+
+### Dark Mode
+![Homepage Dark](screenshots/homepage-dark.png)
+
+### Code Blocks with Syntax Highlighting
+Beautifully styled code blocks with language headers and one-click copy functionality.
+
+![Code Block](screenshots/code-block.png)
+
+### Smart Post Navigation
+Elegant post navigation with home fallback when at the first or last post.
+
+![Post Navigation](screenshots/post-navigation.png)
+
+---
+
 ## Highlights
-- Mobile-friendly scale: tighter fonts, spacing, and card layouts that stay readable on phones.
-- Dual theme polish: tuned dark/light colors, accent-aware states, consistent author/date meta.
-- **Liquid glass** touches: softened glassy hovers on cards and meta blocks for a lightweight depth effect.
-- Thoughtful details: improved captions, softer shadows, refined featured/star markers, responsive video wrappers.
-- Attila-compatible: all core Attila features remain, you can still use its helpers and blocks.
+- **Mobile-friendly scale**: tighter fonts, spacing, and card layouts that stay readable on phones.
+- **Dual theme polish**: tuned dark/light colors, accent-aware states, consistent author/date meta.
+- **Liquid glass touches**: softened glassy hovers on cards and meta blocks for a lightweight depth effect.
+- **Code block enhancement**: language headers, syntax highlighting, and copy-to-clipboard functionality.
+- **Smart navigation**: post navigation with automatic home link fallback for first/last posts.
+- **Thoughtful details**: improved captions, softer shadows, refined featured/star markers, responsive video wrappers.
+- **Attila-compatible**: all core Attila features remain, you can still use its helpers and blocks.
 
 ---
 
