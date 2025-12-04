@@ -95,7 +95,7 @@ span.nav-copy { display: none !important; }
 
 ### Prerequisites
 
-- Node.js 16+ and npm
+- Node.js 16+ and npm/yarn
 - Docker (optional, for local Ghost instance)
 - Git
 
@@ -106,7 +106,12 @@ span.nav-copy { display: none !important; }
 ```bash
 git clone https://github.com/bunizao/Attegi.git
 cd Attegi
+
+# Using npm
 npm install
+
+# Or using yarn (recommended)
+yarn install
 ```
 
 **2. Development Workflow**
@@ -127,7 +132,10 @@ docker-compose up -d
 
 ```bash
 # Build and package theme
-npx grunt build && npx grunt compress
+yarn build && yarn compress
+
+# Or with npm
+npm run build && npm run compress
 
 # Upload dist/attegi.zip via Ghost Admin → Design → Upload Theme
 ```
@@ -137,7 +145,14 @@ npx grunt build && npx grunt compress
 Watch for changes and auto-rebuild assets:
 
 ```bash
-npx grunt watch
+# Using yarn (recommended)
+yarn dev
+
+# Or using npm
+npm run dev
+
+# Or watch only
+yarn watch
 ```
 
 This watches `src/sass` and `src/js` and compiles to `assets/` on save.
@@ -146,10 +161,10 @@ This watches `src/sass` and `src/js` and compiles to `assets/` on save.
 
 ```bash
 # Clean build
-npx grunt build
+yarn build
 
 # Create distribution package
-npx grunt compress
+yarn compress
 
 # Output: dist/attegi.zip
 ```
@@ -180,14 +195,14 @@ Attegi/
 
 ### Making Changes
 
-- **Styles**: Edit files in `src/sass/`, run `npx grunt` to compile
-- **Scripts**: Edit files in `src/js/`, run `npx grunt` to compile
+- **Styles**: Edit files in `src/sass/`, run `yarn build` to compile
+- **Scripts**: Edit files in `src/js/`, run `yarn build` to compile
 - **Templates**: Edit `.hbs` files directly
 - **Translations**: Edit files in `locales/`
 
 ### Tips
 
-- Use `npx grunt watch` during development for auto-compilation
+- Use `yarn dev` during development for auto-compilation
 - Test in both light and dark modes
 - Verify mobile responsiveness
 - Run `npx gscan .` before committing changes

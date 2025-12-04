@@ -32,8 +32,15 @@
     "type": "git",
     "url": "https://github.com/bunizao/Attegi.git"
   },
+  "scripts": {
+    "dev": "grunt",
+    "build": "grunt build",
+    "watch": "grunt watch",
+    "compress": "grunt compress"
+  },
   "devDependencies": {
     "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.49",
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^2.0.0",
@@ -43,7 +50,6 @@
     "grunt-postcss": "^0.9.0",
     "grunt-sass": "^3.1.0",
     "load-grunt-tasks": "^5.1.0",
-    "node-sass": "^8.0.0",
     "sass": "^1.94.2"
   },
   "config": {

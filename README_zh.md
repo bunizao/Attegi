@@ -96,7 +96,7 @@ span.nav-copy { display: none !important; }
 
 ### 前置要求
 
-- Node.js 16+ 和 npm
+- Node.js 16+ 和 npm/yarn
 - Docker（可选，用于本地 Ghost 实例）
 - Git
 
@@ -107,7 +107,12 @@ span.nav-copy { display: none !important; }
 ```bash
 git clone https://github.com/bunizao/Attegi.git
 cd Attegi
+
+# 使用 npm
 npm install
+
+# 或使用 yarn（推荐）
+yarn install
 ```
 
 **2. 开发工作流**
@@ -128,7 +133,10 @@ docker-compose up -d
 
 ```bash
 # 构建并打包主题
-npx grunt build && npx grunt compress
+yarn build && yarn compress
+
+# 或使用 npm
+npm run build && npm run compress
 
 # 通过 Ghost 管理后台 → 设计 → 上传主题 上传 dist/attegi.zip
 ```
@@ -138,7 +146,14 @@ npx grunt build && npx grunt compress
 监听更改并自动重新构建资源：
 
 ```bash
-npx grunt watch
+# 使用 yarn（推荐）
+yarn dev
+
+# 或使用 npm
+npm run dev
+
+# 或仅监听
+yarn watch
 ```
 
 这会监听 `src/sass` 和 `src/js`，并在保存时编译到 `assets/`。
@@ -147,10 +162,10 @@ npx grunt watch
 
 ```bash
 # 清理构建
-npx grunt build
+yarn build
 
 # 创建分发包
-npx grunt compress
+yarn compress
 
 # 输出：dist/attegi.zip
 ```
@@ -181,14 +196,14 @@ Attegi/
 
 ### 进行修改
 
-- **样式**：编辑 `src/sass/` 中的文件，运行 `npx grunt` 编译
-- **脚本**：编辑 `src/js/` 中的文件，运行 `npx grunt` 编译
+- **样式**：编辑 `src/sass/` 中的文件，运行 `yarn build` 编译
+- **脚本**：编辑 `src/js/` 中的文件，运行 `yarn build` 编译
 - **模板**：直接编辑 `.hbs` 文件
 - **翻译**：编辑 `locales/` 中的文件
 
 ### 提示
 
-- 开发时使用 `npx grunt watch` 进行自动编译
+- 开发时使用 `yarn dev` 进行自动编译
 - 在深浅色模式下都要测试
 - 验证移动端响应性
 - 提交更改前运行 `npx gscan .`
