@@ -74,30 +74,30 @@ textarea {
 	}
 
 	h1 {
-		font-size: 3.6em;
+		font-size: 1.8em;
 		text-indent: -1px;
 		font-weight: 700;
 	}
 
 	h2 {
-		font-size: 2.8em;
+		font-size: 1.5em;
 		text-indent: -1px;
 		font-weight: 600;
 	}
 
 	h3 {
-		font-size: 2.2em;
+		font-size: 1.3em;
 		font-weight: 600;
 	}
 
 	h4 {
-		font-size: 1.9em;
+		font-size: 1.2em;
 		font-weight: 500;
 	}
 
 	h5,
 	h6 {
-		font-size: 1.7em;
+		font-size: 1.1em;
 		font-weight: 500;
 	}
 
@@ -1086,10 +1086,10 @@ textarea {
 
 .blog-header {
 	position: relative;
-	padding-top: calc(12rem + 3vw);
+	padding-top: calc(10rem + 2vw);
 
 	&.has-cover {
-		padding-top: calc(18rem + 6vw);
+		padding-top: calc(14rem + 4vw);
 		color: white;
 		background: black;
 		overflow: hidden;
@@ -2516,11 +2516,11 @@ iframe.gh-portal-triggerbtn-iframe {
 }
 .post-header {
 	position: relative;
-	padding: calc(10rem + 2vw) 0 calc(1.5rem + 1vw);
+	padding: calc(8rem + 2vw) 0 calc(1.5rem + 1vw);
 }
 
 .post-header.has-cover {
-	padding: calc(12rem + 4vw) 0 calc(3rem + 4vw);
+	padding: calc(10rem + 3vw) 0 calc(2.5rem + 3vw);
 	margin-bottom: calc(3rem + 2vw);
 	background: black;
 	overflow: hidden;
