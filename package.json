@@ -86,7 +86,7 @@
       },
       "darkmode_accent_color": {
         "type": "color",
-        "default": "82C0CC"
+        "default": "#82C0CC"
       },
       "post_share": {
         "type": "select",
