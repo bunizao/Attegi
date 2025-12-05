@@ -41,11 +41,22 @@
 					{{/if}}
 				{{/foreach}}
 			</div>
-			<h4 class="post-meta-author">
-				{{#foreach authors}}
-					<a href="{{url}}">{{name}}</a>{{#unless @last}}{{#if @index}}, {{/if}}{{/unless}}
-				{{/foreach}}
-			</h4>
+			<h4 class="post-meta-author" data-authors='[{{#foreach authors}}{"name":"{{name}}","url":"{{url}}"}{{#unless @last}},{{/unless}}{{/foreach}}]'></h4>
+			<script>
+				(function() {
+					var authorEl = document.querySelector('.post-meta-author[data-authors]');
+					if (!authorEl) return;
+					var authors = JSON.parse(authorEl.getAttribute('data-authors'));
+					var html = authors.map(function(author, i) {
+						var link = '<a href="' + author.url + '">' + author.name + '</a>';
+						if (i === authors.length - 1) return link;
+						if (i === authors.length - 2) return link + ' & ';
+						return link + ', ';
+					}).join('');
+					authorEl.innerHTML = html;
+					authorEl.removeAttribute('data-authors');
+				})();
+			</script>
 			<time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMM DD, YYYY"}}</time> &bull; {{reading_time minute=(t "1 min read") minutes=(t "% min read")}}
 		</div>
 		{{#if feature_image}}
