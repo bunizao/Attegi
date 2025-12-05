@@ -41,7 +41,11 @@
 					{{/if}}
 				{{/foreach}}
 			</div>
-			<h4 class="post-meta-author"><a href="{{authors.[0].url}}">{{authors.[0].name}}</a></h4>
+			<h4 class="post-meta-author">
+				{{#foreach authors}}
+					<a href="{{url}}">{{name}}</a>{{#if @last}}{{else}}{{#if @penultimate}} & {{else}}, {{/if}}{{/if}}
+				{{/foreach}}
+			</h4>
 			<time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMM DD, YYYY"}}</time> &bull; {{reading_time minute=(t "1 min read") minutes=(t "% min read")}}
 		</div>
 		{{#if feature_image}}
