@@ -43,7 +43,7 @@
 			</div>
 			<h4 class="post-meta-author">
 				{{#foreach authors}}
-					<a href="{{url}}">{{name}}</a>{{#if @last}}{{else}}{{#if @penultimate}} & {{else}}, {{/if}}{{/if}}
+					<a href="{{url}}">{{name}}</a>{{#unless @last}}{{#if @index}}, {{/if}}{{/unless}}
 				{{/foreach}}
 			</h4>
 			<time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMM DD, YYYY"}}</time> &bull; {{reading_time minute=(t "1 min read") minutes=(t "% min read")}}
