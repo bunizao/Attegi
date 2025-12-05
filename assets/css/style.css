@@ -762,6 +762,7 @@ textarea {
   font-size: 0.75em;
   background: var(--color-background-secondary);
   border: 1px solid var(--color-background-contrast);
+  border-radius: 4px;
   top: -2px;
   white-space: pre-wrap;
 }
@@ -1279,7 +1280,7 @@ textarea {
 .post-content .kg-bookmark-card a.kg-bookmark-container:hover {
   display: flex;
   text-decoration: none;
-  min-height: auto;
+  min-height: 160px;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -1328,8 +1329,9 @@ textarea {
   position: relative;
   min-width: 180px;
   max-width: 220px;
-  max-height: none;
+  min-height: 160px;
   flex-shrink: 0;
+  overflow: hidden;
 }
 @media only screen and (max-width: 640px) {
   .post-content .kg-bookmark-thumbnail {
@@ -1390,22 +1392,6 @@ textarea {
   content: "•";
   margin: 0 0.5em;
   color: var(--color-content-secondary);
-}
-@media (max-width: 640px) {
-  .post-content .kg-bookmark-container {
-    flex-direction: column;
-  }
-  .post-content .kg-bookmark-thumbnail {
-    order: 1;
-    width: 100%;
-    min-height: 160px;
-  }
-  .post-content .kg-bookmark-thumbnail img {
-    border-radius: 3px 3px 0 0;
-  }
-  .post-content .kg-bookmark-content {
-    order: 2;
-  }
 }
 .post-content .kg-toggle-card {
   background: var(--color-background-secondary);
