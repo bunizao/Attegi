@@ -1,7 +1,6 @@
 .DS_store
 node_modules
 dist/
-AGENTS.md
 docker-compose.yml
 /.playwright-mcp
 # keep theme assets images tracked
