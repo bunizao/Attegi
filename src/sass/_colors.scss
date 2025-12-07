@@ -8,7 +8,7 @@
   --color-content-secondary: #73777D;
 
   /* Semantic colors */
-  --color-highlight: #FFC336;
+  --color-highlight: #FEF3C7;
   --color-social-twitter: #1da1f2;
   --color-social-facebook: #3b5998;
   --color-social-instagram: #e4405f;
@@ -32,8 +32,8 @@
   --color-content-main: #E2E6EB;
   --color-content-secondary: #B6BBC4;
 
-  /* Semantic colors remain the same for consistency */
-  --color-highlight: #FFC336;
+  /* Semantic colors - adjusted for dark mode */
+  --color-highlight: rgba(251, 191, 36, 0.3);
   --color-social-twitter: #1da1f2;
   --color-social-facebook: #3b5998;
   --color-social-instagram: #e4405f;

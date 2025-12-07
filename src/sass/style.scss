@@ -376,6 +376,10 @@ textarea {
 
 	mark {
 		background-color: var(--color-highlight);
+		padding: 0.1em 0.35em;
+		border-radius: 0.25em;
+		box-decoration-break: clone;
+		-webkit-box-decoration-break: clone;
 	}
 
 	code,
@@ -1481,6 +1485,16 @@ textarea {
 			border-color: color-mix(in srgb, var(--ghost-accent-color) 30%, var(--color-background-contrast));
 		}
 
+		// Reset Ghost's default container styles
+		.kg-product-card-container {
+			background: transparent;
+			border: none;
+			border-radius: 0;
+			box-shadow: none;
+			padding: 0;
+			text-align: center;
+		}
+
 		// Image container
 		.kg-product-card-image {
 			position: relative;
@@ -1498,7 +1512,8 @@ textarea {
 		}
 
 		// Content area
-		.kg-product-card-title-wrapper {
+		.kg-product-card-title-wrapper,
+		.kg-product-card-title-container {
 			padding: 1.5rem 1.75rem 0;
 		}
 
@@ -1552,12 +1567,12 @@ textarea {
 
 		// Button
 		.kg-product-card-button {
-			display: flex;
+			display: inline-flex;
 			align-items: center;
 			justify-content: center;
 			gap: 0.5rem;
 			padding: 0.9rem 1.75rem;
-			margin: 0 1.75rem 1.75rem;
+			margin: 0 auto 1.75rem;
 			background: var(--ghost-accent-color);
 			color: #fff;
 			text-decoration: none;
@@ -1568,6 +1583,7 @@ textarea {
 			letter-spacing: 0.01em;
 			transition: all ease-out 0.2s;
 			box-shadow: 0 2px 8px color-mix(in srgb, var(--ghost-accent-color) 20%, transparent);
+			width: fit-content;
 
 			&:hover {
 				transform: translateY(-2px);
