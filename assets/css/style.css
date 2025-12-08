@@ -219,7 +219,7 @@ td, th {
   --color-content-main: #E2E6EB;
   --color-content-secondary: #B6BBC4;
   /* Semantic colors - adjusted for dark mode */
-  --color-highlight: rgba(251, 191, 36, 0.3);
+  --color-highlight: #fbbf24;
   --color-social-twitter: #1da1f2;
   --color-social-facebook: #3b5998;
   --color-social-instagram: #e4405f;
