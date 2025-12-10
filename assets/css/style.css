@@ -553,6 +553,417 @@ html.theme-dark {
 }
 
 /* ==========================================================================
+   Table of Contents - Elegant Sidebar Navigation
+   ========================================================================== */
+.toc-sidebar {
+  position: fixed;
+  top: 120px;
+  right: calc((100vw - calc(64rem + 8vw)) / 2 - 260px - 4rem);
+  width: 260px;
+  max-height: calc(100vh - 120px - 4rem);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.toc-sidebar.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+@media only screen and (max-width: 1440px) {
+  .toc-sidebar {
+    right: 2rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .toc-sidebar {
+    display: none;
+  }
+}
+
+.toc-container {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-background-contrast);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.theme-dark .toc-container {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-background-contrast);
+}
+
+.toc-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--ghost-accent-color);
+  flex-shrink: 0;
+}
+.toc-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.toc-title {
+  font-family: var(--gh-font-heading);
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--color-content-lead);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: calc(100vh - 120px - 12rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-background-contrast) transparent;
+}
+.toc-list::-webkit-scrollbar {
+  width: 4px;
+}
+.toc-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.toc-list::-webkit-scrollbar-thumb {
+  background: var(--color-background-contrast);
+  border-radius: 2px;
+}
+
+.toc-item {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+.toc-item::before {
+  display: none !important;
+}
+
+.toc-link {
+  display: block;
+  padding: 0.5rem 0;
+  padding-left: 1rem;
+  font-size: 1.35em;
+  line-height: 1.4;
+  color: var(--color-content-secondary);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  word-break: break-word;
+}
+.toc-link:hover {
+  color: var(--color-content-main);
+  border-left-color: var(--color-background-contrast);
+}
+.toc-link.is-active {
+  color: var(--ghost-accent-color);
+  border-left-color: var(--ghost-accent-color);
+  font-weight: 500;
+}
+.toc-link[data-level="3"] {
+  padding-left: 2rem;
+  font-size: 1.25em;
+}
+.toc-link[data-level="4"] {
+  padding-left: 3rem;
+  font-size: 1.2em;
+}
+
+.toc-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 0;
+  background: var(--ghost-accent-color);
+  border-radius: 1px;
+  transition: height 0.1s ease-out;
+  opacity: 0.3;
+}
+
+/* ==========================================================================
+   Mobile TOC - Floating Button & Drawer
+   ========================================================================== */
+.toc-mobile-trigger {
+  display: none;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 5rem;
+  height: 5rem;
+  z-index: 200;
+  background: var(--ghost-accent-color);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--ghost-accent-color) 40%, transparent);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+}
+.toc-mobile-trigger.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+.toc-mobile-trigger:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px color-mix(in srgb, var(--ghost-accent-color) 50%, transparent);
+}
+.toc-mobile-trigger:active {
+  transform: scale(0.95);
+}
+.toc-mobile-trigger svg {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+@media only screen and (max-width: 1200px) {
+  .toc-mobile-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .toc-mobile-trigger {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+  .toc-mobile-trigger svg {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.toc-mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: var(--color-background-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.toc-mobile-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+@media only screen and (max-width: 1200px) {
+  .toc-mobile-overlay {
+    display: block;
+  }
+}
+
+.toc-mobile-drawer {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 350;
+  max-height: 70vh;
+  background: var(--color-background-main);
+  border-radius: 1.5rem 1.5rem 0 0;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+.toc-mobile-drawer.is-open {
+  transform: translateY(0);
+}
+.theme-dark .toc-mobile-drawer {
+  background: var(--color-background-secondary);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
+}
+@media only screen and (max-width: 1200px) {
+  .toc-mobile-drawer {
+    display: block;
+  }
+}
+
+.toc-mobile-handle {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  cursor: grab;
+}
+.toc-mobile-handle::before {
+  content: "";
+  width: 4rem;
+  height: 0.4rem;
+  background: var(--color-background-contrast);
+  border-radius: 0.2rem;
+}
+
+.toc-mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem 1rem;
+  border-bottom: 1px solid var(--color-background-contrast);
+}
+
+.toc-mobile-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--gh-font-heading);
+  font-size: 1.6em;
+  font-weight: 600;
+  color: var(--color-content-lead);
+  margin: 0;
+}
+.toc-mobile-title svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--ghost-accent-color);
+}
+
+.toc-mobile-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-background-contrast);
+  border-radius: 50%;
+  color: var(--color-content-secondary);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.toc-mobile-close:hover {
+  color: var(--color-content-main);
+  border-color: var(--ghost-accent-color);
+}
+.toc-mobile-close svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.toc-mobile-content {
+  padding: 1.5rem 2rem 2rem;
+  max-height: calc(70vh - 8rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.toc-mobile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-mobile-item {
+  margin: 0;
+  padding: 0;
+}
+.toc-mobile-item::before {
+  display: none !important;
+}
+
+.toc-mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  font-size: 1.5em;
+  line-height: 1.4;
+  color: var(--color-content-main);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-background-contrast);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.toc-mobile-link:last-child {
+  border-bottom: none;
+}
+.toc-mobile-link::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--color-background-contrast);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.toc-mobile-link:hover, .toc-mobile-link.is-active {
+  color: var(--ghost-accent-color);
+}
+.toc-mobile-link:hover::before, .toc-mobile-link.is-active::before {
+  background: var(--ghost-accent-color);
+}
+.toc-mobile-link.is-active {
+  font-weight: 600;
+}
+.toc-mobile-link[data-level="3"] {
+  padding-left: 1.5rem;
+  font-size: 1.4em;
+}
+.toc-mobile-link[data-level="4"] {
+  padding-left: 3rem;
+  font-size: 1.3em;
+}
+
+/* ==========================================================================
+   TOC Empty State
+   ========================================================================== */
+.toc-empty {
+  text-align: center;
+  padding: 1rem;
+  color: var(--color-content-secondary);
+  font-size: 1.3em;
+}
+
+/* ==========================================================================
+   Body scroll lock when mobile TOC is open
+   ========================================================================== */
+.toc-open {
+  overflow: hidden;
+}
+@media only screen and (min-width: 1201px) {
+  .toc-open {
+    overflow: auto;
+  }
+}
+
+/* ==========================================================================
+   Smooth scroll behavior
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+/* ==========================================================================
+   Adjust main content when TOC is visible (desktop)
+   ========================================================================== */
+/* ==========================================================================
    Basics
    ========================================================================== */
 html {

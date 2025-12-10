@@ -89,6 +89,13 @@ module.exports = function(grunt) {
             '<%= config.jsSrcDir %>/post.js'
           ]
         }
+      },
+      toc: {
+        files: {
+          '<%= config.jsTargetDir %>/toc.js': [
+            '<%= config.jsSrcDir %>/toc.js'
+          ]
+        }
       }
     },
     watch: {
@@ -98,7 +105,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: '<%=  config.jsSrcDir %>/**/*.js',
-        tasks: ['uglify:main', 'uglify:post']
+        tasks: ['uglify:main', 'uglify:post', 'uglify:toc']
       }
     },
     compress: {
@@ -144,7 +151,8 @@ module.exports = function(grunt) {
     'postcss:dist',
     'copy:dist',
     'uglify:main',
-    'uglify:post'
+    'uglify:post',
+    'uglify:toc'
   ]);
   grunt.registerTask('default', [
     'sass:dev',
@@ -152,6 +160,7 @@ module.exports = function(grunt) {
     'copy:dev',
     'uglify:main',
     'uglify:post',
+    'uglify:toc',
     'watch'
   ]);
 };
