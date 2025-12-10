@@ -20,7 +20,9 @@
   var state = {
     headings: [],
     isOpen: false,
-    activeIndex: -1
+    activeIndex: -1,
+    isVisible: false,
+    articleContentTop: 0
   };
 
   // DOM Elements
@@ -56,13 +58,15 @@
     // Setup event listeners
     setupEventListeners();
 
-    // Initial scroll spy update
-    updateScrollSpy();
+    // Calculate article content top position
+    var articleContent = doc.querySelector('.article-content') || doc.querySelector('.post-content');
+    if (articleContent) {
+      state.articleContentTop = articleContent.getBoundingClientRect().top + win.pageYOffset;
+    }
 
-    // Show TOC after a short delay
-    setTimeout(function () {
-      showTOC();
-    }, 500);
+    // Initial scroll spy update and visibility check
+    updateScrollSpy();
+    updateTOCVisibility();
   }
 
   /**
@@ -137,6 +141,30 @@
    * Create desktop sidebar TOC
    */
   function createDesktopTOC() {
+    // Find the main content area
+    var mainContent = doc.querySelector('.content');
+    var articleInner = mainContent ? mainContent.querySelector('article .inner') : null;
+
+    if (!articleInner) {
+      // Fallback: append to body if structure not found
+      createDesktopTOCFallback();
+      return;
+    }
+
+    // Create wrapper for flex layout
+    var wrapper = doc.createElement('div');
+    wrapper.className = 'article-with-toc';
+
+    // Create content container
+    var contentContainer = doc.createElement('div');
+    contentContainer.className = 'article-content';
+
+    // Move existing content into the content container
+    while (articleInner.firstChild) {
+      contentContainer.appendChild(articleInner.firstChild);
+    }
+
+    // Create TOC sidebar
     var sidebar = doc.createElement('aside');
     sidebar.className = 'toc-sidebar';
     sidebar.setAttribute('aria-label', 'Table of Contents');
@@ -161,6 +189,66 @@
       '<h3 class="toc-title">On this page</h3>';
 
     // List
+    var list = doc.createElement('ul');
+    list.className = 'toc-list';
+
+    state.headings.forEach(function (heading, index) {
+      var item = doc.createElement('li');
+      item.className = 'toc-item';
+
+      var link = doc.createElement('a');
+      link.className = 'toc-link';
+      link.href = '#' + heading.id;
+      link.textContent = heading.text;
+      link.setAttribute('data-level', heading.level);
+      link.setAttribute('data-index', index);
+
+      item.appendChild(link);
+      list.appendChild(item);
+      elements.links.push(link);
+    });
+
+    container.appendChild(header);
+    container.appendChild(list);
+    sidebar.appendChild(container);
+
+    // Assemble the layout: content first, then TOC
+    wrapper.appendChild(contentContainer);
+    wrapper.appendChild(sidebar);
+
+    // Insert wrapper into article inner
+    articleInner.appendChild(wrapper);
+
+    elements.sidebar = sidebar;
+    elements.tocList = list;
+  }
+
+  /**
+   * Fallback: Create TOC appended to body (original behavior)
+   */
+  function createDesktopTOCFallback() {
+    var sidebar = doc.createElement('aside');
+    sidebar.className = 'toc-sidebar toc-sidebar-fallback';
+    sidebar.setAttribute('aria-label', 'Table of Contents');
+
+    var container = doc.createElement('div');
+    container.className = 'toc-container';
+
+    var header = doc.createElement('div');
+    header.className = 'toc-header';
+    header.innerHTML =
+      '<div class="toc-icon">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<line x1="8" y1="6" x2="21" y2="6"></line>' +
+          '<line x1="8" y1="12" x2="21" y2="12"></line>' +
+          '<line x1="8" y1="18" x2="21" y2="18"></line>' +
+          '<line x1="3" y1="6" x2="3.01" y2="6"></line>' +
+          '<line x1="3" y1="12" x2="3.01" y2="12"></line>' +
+          '<line x1="3" y1="18" x2="3.01" y2="18"></line>' +
+        '</svg>' +
+      '</div>' +
+      '<h3 class="toc-title">On this page</h3>';
+
     var list = doc.createElement('ul');
     list.className = 'toc-list';
 
@@ -291,8 +379,11 @@
    * Setup event listeners
    */
   function setupEventListeners() {
-    // Scroll spy
-    var throttledScrollSpy = throttle(updateScrollSpy, config.throttleDelay);
+    // Scroll spy and visibility check
+    var throttledScrollSpy = throttle(function() {
+      updateScrollSpy();
+      updateTOCVisibility();
+    }, config.throttleDelay);
     win.addEventListener('scroll', throttledScrollSpy, { passive: true });
     win.addEventListener('resize', throttledScrollSpy, { passive: true });
 
@@ -405,14 +496,44 @@
   }
 
   /**
+   * Update TOC visibility based on scroll position
+   * TOC should only be visible when scrolled past the article header/featured image
+   */
+  function updateTOCVisibility() {
+    var scrollTop = win.pageYOffset || doc.documentElement.scrollTop;
+    // Show TOC when scrolled past the article content start (with some offset)
+    var shouldShow = scrollTop >= state.articleContentTop - 100;
+
+    if (shouldShow && !state.isVisible) {
+      showTOC();
+    } else if (!shouldShow && state.isVisible) {
+      hideTOC();
+    }
+  }
+
+  /**
    * Show TOC elements
    */
   function showTOC() {
+    state.isVisible = true;
     if (elements.sidebar) {
       elements.sidebar.classList.add('is-visible');
     }
     if (elements.mobileTrigger) {
       elements.mobileTrigger.classList.add('is-visible');
+    }
+  }
+
+  /**
+   * Hide TOC elements
+   */
+  function hideTOC() {
+    state.isVisible = false;
+    if (elements.sidebar) {
+      elements.sidebar.classList.remove('is-visible');
+    }
+    if (elements.mobileTrigger) {
+      elements.mobileTrigger.classList.remove('is-visible');
     }
   }
 
