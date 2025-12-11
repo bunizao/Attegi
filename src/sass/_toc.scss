@@ -134,7 +134,7 @@ $toc-breakpoint-small: 480px;
    Mobile TOC - Mini Floating Panel
    ========================================================================== */
 
-// Floating trigger button
+// Floating trigger button with progress ring
 .toc-mobile-trigger {
   display: none;
   position: fixed;
@@ -144,7 +144,7 @@ $toc-breakpoint-small: 480px;
   height: 4.4rem;
   z-index: 200;
   background: var(--color-background-main);
-  border: 1px solid var(--color-background-contrast);
+  border: none;
   border-radius: 50%;
   color: var(--color-content-main);
   cursor: pointer;
@@ -164,7 +164,8 @@ $toc-breakpoint-small: 480px;
     transform: scale(0.95);
   }
 
-  svg {
+  // Icon
+  .toc-trigger-icon {
     width: 2rem;
     height: 2rem;
   }
@@ -181,6 +182,31 @@ $toc-breakpoint-small: 480px;
     align-items: center;
     justify-content: center;
   }
+}
+
+// Progress ring SVG
+.toc-progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.toc-progress-ring__bg {
+  fill: none;
+  stroke: var(--color-background-contrast);
+  stroke-width: 2;
+}
+
+.toc-progress-ring__progress {
+  fill: none;
+  stroke: var(--ghost-accent-color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.15s ease;
 }
 
 // Mini floating panel (replaces drawer)

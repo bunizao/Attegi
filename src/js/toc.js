@@ -275,12 +275,20 @@
    * Create mobile TOC (trigger button, overlay, mini panel)
    */
   function createMobileTOC() {
-    // Trigger button
+    // Trigger button with progress ring
     var trigger = doc.createElement('button');
     trigger.className = 'toc-mobile-trigger';
     trigger.setAttribute('aria-label', 'Open table of contents');
+
+    // Progress ring SVG (circumference = 2 * PI * radius, radius = 20)
+    var circumference = 2 * Math.PI * 20;
     trigger.innerHTML =
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<svg class="toc-progress-ring" viewBox="0 0 44 44">' +
+        '<circle class="toc-progress-ring__bg" cx="22" cy="22" r="20"></circle>' +
+        '<circle class="toc-progress-ring__progress" cx="22" cy="22" r="20" ' +
+          'stroke-dasharray="' + circumference + '" stroke-dashoffset="' + circumference + '"></circle>' +
+      '</svg>' +
+      '<svg class="toc-trigger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
         '<line x1="8" y1="6" x2="21" y2="6"></line>' +
         '<line x1="8" y1="12" x2="21" y2="12"></line>' +
         '<line x1="8" y1="18" x2="21" y2="18"></line>' +
@@ -391,9 +399,13 @@
     // Scroll visibility and sync
     var throttledUpdate = throttle(function() {
       updateTOCVisibility();
+      updateProgressRing();
     }, 100);
     win.addEventListener('scroll', throttledUpdate, { passive: true });
     win.addEventListener('resize', throttledUpdate, { passive: true });
+
+    // Initial progress ring update
+    updateProgressRing();
 
     // Mobile trigger
     elements.mobileTrigger.addEventListener('click', openMobileTOC);
@@ -469,6 +481,35 @@
    */
   function setupSwipeToClose() {
     // Swipe gesture not needed for mini floating panel
+  }
+
+  /**
+   * Update progress ring on mobile trigger button
+   * Progress is based on article content, not entire page
+   */
+  function updateProgressRing() {
+    if (!elements.mobileTrigger) return;
+
+    var progressCircle = elements.mobileTrigger.querySelector('.toc-progress-ring__progress');
+    if (!progressCircle) return;
+
+    var scrollTop = win.pageYOffset || doc.documentElement.scrollTop;
+    var viewportHeight = win.innerHeight;
+
+    // Calculate progress based on article content area
+    var articleStart = state.articleTop;
+    var articleEnd = state.articleBottom;
+    var articleHeight = articleEnd - articleStart - viewportHeight;
+
+    var progress = 0;
+    if (articleHeight > 0) {
+      var scrolledInArticle = scrollTop - articleStart;
+      progress = Math.max(0, Math.min(scrolledInArticle / articleHeight, 1));
+    }
+
+    var circumference = 2 * Math.PI * 20;
+    var offset = circumference * (1 - progress);
+    progressCircle.style.strokeDashoffset = offset;
   }
 
   /**
