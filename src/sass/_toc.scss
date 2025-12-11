@@ -5,7 +5,7 @@
 // TOC Variables
 $toc-width: 220px;
 $toc-offset-top: 3rem;
-$toc-gap: 4rem;
+$toc-gap: 3rem;  // Gap between content edge and TOC
 $toc-transition: all 0.25s ease;
 $toc-breakpoint: 1400px;
 $toc-breakpoint-small: 480px;
@@ -16,53 +16,40 @@ $toc-breakpoint-small: 480px;
   overflow-x: clip !important;  // clip allows sticky, hidden breaks it
 }
 
-// When TOC is present, expand the inner container
-.has-toc article .inner {
-  max-width: calc(64rem + 8vw + #{$toc-width} + #{$toc-gap});
-  padding: 0 2rem;
-
-  @media only screen and (max-width: $toc-breakpoint) {
-    max-width: calc(64rem + 8vw);
-  }
-}
-
-// Article wrapper - flex layout with content taking priority
+// Article wrapper - no special positioning needed
 .article-with-toc {
-  display: flex;
-  align-items: flex-start;
-  gap: $toc-gap;
-
-  @media only screen and (max-width: $toc-breakpoint) {
-    display: block;
-  }
+  // Content layout remains unchanged
 }
 
-// Main content area - takes up available space, max-width for readability
+// Main content area - stays centered, no change to layout
 .article-content {
-  flex: 1;
-  max-width: calc(64rem + 8vw);
-  min-width: 0;
+  // Content remains centered as normal
 }
 
-// Desktop TOC Sidebar - flex item with sticky content
+// Desktop TOC Sidebar - fixed position on the left side of viewport
+// Uses fixed positioning but respects article boundaries via JS
 .toc-sidebar {
-  flex-shrink: 0;
-  width: $toc-width;
-  align-self: stretch;  // Full height of flex container
-
-  @media only screen and (max-width: $toc-breakpoint) {
-    display: none;
-  }
-}
-
-// Sticky wrapper - this is what actually sticks
-.toc-sticky {
-  position: sticky;
+  position: fixed;
   top: $toc-offset-top;
+  // Position from the left edge of viewport
+  left: calc((100vw - 64rem - 8vw) / 2 - #{$toc-width} - #{$toc-gap});
+  width: $toc-width;
   max-height: calc(100vh - #{$toc-offset-top} - 2rem);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-background-contrast) transparent;
+  // Initially hidden, JS will show it
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 100;
+
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
 
   &::-webkit-scrollbar {
     width: 3px;
@@ -76,6 +63,16 @@ $toc-breakpoint-small: 480px;
     background: var(--color-background-contrast);
     border-radius: 2px;
   }
+
+  // Hide when viewport is too narrow for TOC
+  @media only screen and (max-width: $toc-breakpoint) {
+    display: none;
+  }
+}
+
+// Sticky wrapper - not needed with fixed positioning, but keep for structure
+.toc-sticky {
+  // No sticky needed when parent is fixed
 }
 
 // TOC Container
