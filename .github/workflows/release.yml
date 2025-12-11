@@ -7,12 +7,17 @@ on:
         description: 'Version to release (leave empty to use package.json version)'
         required: false
         type: string
+      previous_tag:
+        description: 'Previous tag to compare (leave empty for auto-detect)'
+        required: false
+        type: string
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      models: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,6 +55,96 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
             echo "✅ Tag v${{ steps.version.outputs.version }} does not exist"
           fi
+
+      - name: Get previous tag
+        id: prev_tag
+        run: |
+          if [ -n "${{ inputs.previous_tag }}" ]; then
+            PREV_TAG="${{ inputs.previous_tag }}"
+          else
+            PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          fi
+          echo "tag=$PREV_TAG" >> $GITHUB_OUTPUT
+          echo "📌 Previous tag: $PREV_TAG"
+
+      - name: Get commit diff
+        id: diff
+        run: |
+          if [ -n "${{ steps.prev_tag.outputs.tag }}" ]; then
+            COMMITS=$(git log ${{ steps.prev_tag.outputs.tag }}..HEAD --pretty=format:"- %s" --no-merges | head -50)
+            FILES_CHANGED=$(git diff --name-only ${{ steps.prev_tag.outputs.tag }}..HEAD | head -30)
+          else
+            COMMITS=$(git log --pretty=format:"- %s" --no-merges -20)
+            FILES_CHANGED=$(git diff --name-only HEAD~20..HEAD 2>/dev/null | head -30)
+          fi
+
+          # Save to files for fallback
+          echo "$COMMITS" > /tmp/commits.txt
+          echo "$FILES_CHANGED" > /tmp/files.txt
+
+          # Output commits for Copilot action
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          # Output for debugging
+          echo "📝 Recent commits:"
+          echo "$COMMITS"
+
+      - name: Generate release summary with GitHub Copilot
+        id: summary
+        uses: github/copilot-models-action@v1
+        with:
+          model: gpt-4o
+          prompt: |
+            You are a release notes writer for a Ghost blog theme called "Attegi".
+            Based on the git commits below, generate a concise release summary.
+
+            Commits:
+            ${{ steps.diff.outputs.commits }}
+
+            Requirements:
+            - Group into: ✨ New Features, 🐛 Bug Fixes, 🎨 Improvements, 📝 Documentation
+            - Only include categories with changes
+            - Keep each item to 1 line
+            - Maximum 10 items
+            - No code fences
+            - If minimal changes, write "Minor updates and improvements"
+
+      - name: Fallback summary
+        id: fallback
+        if: failure() || steps.summary.outputs.response == ''
+        run: |
+          # Generate simple summary from commits
+          COMMITS=$(cat /tmp/commits.txt | head -10)
+
+          # Categorize commits
+          FEATURES=$(echo "$COMMITS" | grep -iE "^- (feat|add|new)" | head -5 || true)
+          FIXES=$(echo "$COMMITS" | grep -iE "^- (fix|bug|patch)" | head -3 || true)
+          IMPROVEMENTS=$(echo "$COMMITS" | grep -iE "^- (improve|update|refactor|enhance|style)" | head -3 || true)
+          DOCS=$(echo "$COMMITS" | grep -iE "^- (doc|readme)" | head -2 || true)
+
+          SUMMARY=""
+          if [ -n "$FEATURES" ]; then
+            SUMMARY="${SUMMARY}#### ✨ New Features\n${FEATURES}\n\n"
+          fi
+          if [ -n "$FIXES" ]; then
+            SUMMARY="${SUMMARY}#### 🐛 Bug Fixes\n${FIXES}\n\n"
+          fi
+          if [ -n "$IMPROVEMENTS" ]; then
+            SUMMARY="${SUMMARY}#### 🎨 Improvements\n${IMPROVEMENTS}\n\n"
+          fi
+          if [ -n "$DOCS" ]; then
+            SUMMARY="${SUMMARY}#### 📝 Documentation\n${DOCS}\n\n"
+          fi
+
+          if [ -z "$SUMMARY" ]; then
+            SUMMARY="Minor updates and improvements"
+          fi
+
+          echo "response<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$SUMMARY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Build and package
         run: |
@@ -97,6 +192,10 @@ jobs:
 
             ${{ steps.package.outputs.description }}
 
+            ### 📝 What's Changed
+
+            ${{ steps.summary.outputs.response || steps.fallback.outputs.response || 'See commits below for details.' }}
+
             ### 📥 Installation
 
             1. **Download** `attegi.zip` from the assets below
@@ -110,23 +209,14 @@ jobs:
             - **Documentation**: [README.md](https://github.com/${{ github.repository }}/blob/main/README.md)
             - **中文文档**: [README_zh.md](https://github.com/${{ github.repository }}/blob/main/README_zh.md)
 
-            ### ✨ Features
-
-            - 🎨 Dual theme support (Light/Dark/System)
-            - 📱 Mobile optimized & responsive
-            - 💻 Enhanced code blocks with syntax highlighting
-            - 🧭 Smart post navigation
-            - 🌍 32 language translations
-            - ♿ WCAG accessible
-            - 🚀 Optimized performance
-
             ### 📊 Package Info
 
-            - **Size**: ${{ steps.package.outputs.size_kb }}
-            - **Ghost Version**: ${{ steps.package.outputs.ghost_version }}
-            - **Validation**: ✅ Passed GScan
-            - **License**: MIT
+            | Item | Value |
+            |------|-------|
+            | Size | ${{ steps.package.outputs.size_kb }} |
+            | Ghost Version | ${{ steps.package.outputs.ghost_version }} |
+            | Validation | ✅ Passed GScan |
+            | License | MIT |
 
-            ### 📝 What's Changed
-
-            See the full changelog below.
+            ---
+            *Release notes generated with GitHub Copilot*
