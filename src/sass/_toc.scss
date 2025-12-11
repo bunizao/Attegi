@@ -31,8 +31,8 @@ $toc-breakpoint-small: 480px;
 .toc-sidebar {
   position: fixed;
   top: $toc-offset-top;
-  // Position from the left edge of viewport
-  left: calc((100vw - 64rem - 8vw) / 2 - #{$toc-width} - #{$toc-gap});
+  // Position from the left edge of viewport - closer to content
+  left: calc((100vw - 64rem - 8vw) / 2 - #{$toc-width} - 1.5rem);
   width: $toc-width;
   max-height: calc(100vh - #{$toc-offset-top} - 2rem);
   overflow-y: auto;
@@ -80,11 +80,9 @@ $toc-breakpoint-small: 480px;
   padding: 0;
 }
 
-// TOC Header
+// TOC Header - minimal, no border
 .toc-header {
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--color-background-contrast);
+  margin-bottom: 1rem;
 }
 
 // Hide the icon in desktop view
@@ -92,15 +90,16 @@ $toc-breakpoint-small: 480px;
   display: none;
 }
 
-// TOC Title
+// TOC Title - uppercase with letter spacing like reference design
 .toc-title {
   font-family: var(--gh-font-body);
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--color-content-main);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--color-content-main) 60%, transparent);
   margin: 0;
   line-height: 1.4;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
 // TOC List
@@ -120,17 +119,18 @@ $toc-breakpoint-small: 480px;
   }
 }
 
-// TOC Link
+// TOC Link - with left border indicator for active state
 .toc-link {
   display: block;
-  padding: 0.5rem 0;
-  font-size: 1.5rem;
-  line-height: 1.6;
+  padding: 0.4rem 0 0.4rem 1rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
   font-weight: 400;
-  color: color-mix(in srgb, var(--color-content-main) 60%, transparent);
+  color: color-mix(in srgb, var(--color-content-main) 55%, transparent);
   text-decoration: none;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease;
   word-break: break-word;
+  border-left: 2px solid transparent;
 
   &:hover {
     color: var(--color-content-main);
@@ -138,18 +138,19 @@ $toc-breakpoint-small: 480px;
 
   &.is-active {
     color: var(--color-content-main);
-    font-weight: 500;
+    font-weight: 600;
+    border-left-color: var(--color-content-main);
   }
 
-  // Heading level indentation
+  // Heading level indentation - add to existing padding
   &[data-level="3"] {
-    padding-left: 1rem;
-    font-size: 1.4rem;
+    padding-left: 2rem;
+    font-size: 1.35rem;
   }
 
   &[data-level="4"] {
-    padding-left: 2rem;
-    font-size: 1.35rem;
+    padding-left: 3rem;
+    font-size: 1.3rem;
   }
 }
 
