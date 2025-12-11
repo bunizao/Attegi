@@ -1,0 +1,40 @@
+name: Deploy to Ghost
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[deploy]')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build theme
+        run: |
+          npx grunt clean:dist
+          npx grunt build
+          npx grunt compress
+
+      - name: Validate theme
+        run: npx gscan -z dist/attegi.zip
+
+      - name: Deploy to Ghost
+        uses: TryGhost/action-deploy-theme@v1
+        with:
+          api-url: ${{ secrets.GHOST_ADMIN_API_URL }}
+          api-key: ${{ secrets.GHOST_ADMIN_API_KEY }}
+          file: dist/attegi.zip
