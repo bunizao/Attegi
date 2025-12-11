@@ -7,7 +7,7 @@
 [![Build](https://img.shields.io/badge/build-grunt-orange?logo=grunt&logoColor=white)](Gruntfile.js)
 [![Demo](https://img.shields.io/badge/demo-attegi.tutuis.me-4F46E5)](https://attegi.tutuis.me)
 
-A modern, elegant Ghost theme focused on clean typography, mobile readability, and seamless dark/light mode switching.
+A modern, elegant Ghost theme focused on clean typography, mobile readability, and deep support for [Ghost](https://ghost.org).
 
 **[View Live Demo →](https://attegi.tutuis.me)**
 
@@ -21,93 +21,83 @@ A modern, elegant Ghost theme focused on clean typography, mobile readability, a
 
 ## Features
 
-<table>
-<tr>
-<td width="50%">
-
-### Core
-
-- ✨ **Dual Theme** - Dark/light modes with system detection
-- 📱 **Mobile First** - Optimized for all screen sizes
-- 🎨 **Glass Effects** - Modern UI with elegant animations
-- 💻 **Code Blocks** - Syntax highlighting + copy button
-
-</td>
-<td width="50%">
-
-### Advanced
-
-- 📑 **Auto TOC** - Table of contents with scroll spy
-- 🧭 **Smart Nav** - Post navigation with home fallback
-- 🌍 **32 Languages** - Full i18n support
-- 🚀 **Fast** - Optimized assets & lazy loading
-
-</td>
-</tr>
-</table>
+| Core | Advanced |
+|------|----------|
+| ✨ **Dual Theme** - Dark/light modes with system detection | 📑 **Auto TOC** - Table of contents with scroll spy |
+| 📱 **Mobile First** - Optimized for all screen sizes | 🧭 **Smart Nav** - Post navigation with home fallback |
+| 🎨 **Glass Effects** - Modern UI with elegant animations | 🌍 **32 Languages** - Full i18n support |
+| 💻 **Code Blocks** - Syntax highlighting + copy button | 🚀 **Fast** - Optimized assets & lazy loading |
 
 ---
 
-## Screenshots
+## Performance
 
-<table>
-<tr>
-<td width="50%" align="center">
-<strong>Mobile Optimized</strong><br><br>
-<img src="screenshots/iphone.png" alt="Mobile View" width="280">
-</td>
-<td width="50%" align="center">
-<strong>Code Blocks</strong><br><br>
-<img src="screenshots/code-block.png" alt="Code Block" width="400">
-</td>
-</tr>
-<tr>
-<td width="50%" align="center">
-<strong>Post Navigation</strong><br><br>
-<img src="screenshots/post-navigation.png" alt="Post Navigation" width="400">
-</td>
-<td width="50%" align="center">
-<strong>404 Page</strong><br><br>
-<img src="screenshots/404-Page.png" alt="404 Page" width="400">
-</td>
-</tr>
-<tr>
-<td colspan="2" align="center">
-<strong>Glass Buttons</strong><br><br>
-<img src="screenshots/liquid-glass-button.png" alt="Glass Buttons" width="500">
-</td>
-</tr>
-</table>
+Attegi achieves excellent scores on [Google PageSpeed Insights](https://pagespeed.web.dev/analysis/https-attegi-tutuis-me/jhk5dugrrn):
+
+| Metric | Mobile | Desktop |
+|--------|--------|---------|
+| Performance | 97 | 97 |
+| Accessibility | 96 | **100** |
+| Best Practices | **100** | **100** |
+| SEO | **100** | **100** |
+
+---
+
+## Features
 
 ### Table of Contents
 
-Auto-generated TOC for long articles with:
-- Desktop: Fixed sidebar with scroll spy
-- Mobile: Floating panel with reading progress
-- Disable per-post with `#no-toc` tag
+> Disable TOC on specific posts with `#no-toc` internal tag.
 
-### Performance
+<details>
+<summary>View screenshots</summary>
+<p align="center">
+<img src="screenshots/desktop-toc.png" alt="Desktop TOC" width="700">
+</p>
+<p align="center">
+<img src="screenshots/mobile-toc.png" alt="Mobile TOC" width="350">
+</p>
+</details>
 
-Excellent scores on [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-attegi-tutuis-me/hzaz7busnt) for both mobile and desktop.
+### Mobile & Code Blocks
+
+<details>
+<summary>View screenshots</summary>
+<p align="center">
+<img src="screenshots/iphone.png" alt="Mobile View" width="400">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="screenshots/code-block.png" alt="Code Block" width="450">
+</p>
+</details>
+
+### Navigation & 404
+
+<details>
+<summary>View screenshots</summary>
+<p align="center">
+<img src="screenshots/post-navigation.png" alt="Post Navigation" width="450">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="screenshots/404-Page.png" alt="404 Page" width="450">
+</p>
+</details>
+
+### Glass Buttons
+
+<details>
+<summary>View screenshots</summary>
+<p align="center">
+<img src="screenshots/liquid-glass-button.png" alt="Glass Buttons" width="500">
+</p>
+</details>
 
 ---
 
 ## Quick Start
 
-```bash
-# 1. Download from GitHub Releases
-# 2. Ghost Admin → Settings → Design → Upload Theme
-# 3. Activate Attegi
-```
-
-Or build from source:
-
-```bash
-git clone https://github.com/bunizao/Attegi.git
-cd Attegi && yarn install
-yarn build && yarn compress
-# Upload dist/attegi.zip
-```
+1. Download from [GitHub Releases](https://github.com/bunizao/Attegi/releases)
+2. `Ghost Admin` → `Settings` → `Design` → `Upload Theme`
+3. Activate `**Attegi**`
+4. Enjoy!
 
 ---
 
@@ -173,7 +163,7 @@ npx gscan .     # Validate theme
 <details>
 <summary><strong>Project Structure</strong></summary>
 
-```
+```text
 Attegi/
 ├── assets/        # Compiled (don't edit)
 ├── locales/       # 32 language files
@@ -194,7 +184,6 @@ Attegi/
 - **Docs**: [Ghost Theme Documentation](https://ghost.org/docs/themes/)
 - **Issues**: [GitHub Issues](https://github.com/bunizao/Attegi/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/bunizao/Attegi/discussions)
-- **Email**: [me@tutuis.me](mailto:me@tutuis.me)
 
 ---
 

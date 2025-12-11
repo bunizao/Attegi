@@ -7,7 +7,7 @@
 [![Build](https://img.shields.io/badge/build-grunt-orange?logo=grunt&logoColor=white)](Gruntfile.js)
 [![Demo](https://img.shields.io/badge/demo-attegi.tutuis.me-4F46E5)](https://attegi.tutuis.me)
 
-一款现代、优雅的 Ghost 主题，专注于清晰排版、移动端可读性和流畅的深浅色模式切换。
+一款现代、优雅的 Ghost 主题，专注于清晰排版、移动端可读性和对 [Ghost](https://ghost.org) 的深度支持。
 
 **[查看在线演示 →](https://attegi.tutuis.me)**
 
@@ -21,93 +21,82 @@
 
 ## 特性
 
-<table>
-<tr>
-<td width="50%">
+| 核心功能 | 高级功能 |
+|----------|----------|
+| ✨ **双主题** - 深浅色模式，支持系统偏好检测 | 📑 **自动目录** - 带滚动监听的目录导航 |
+| 📱 **移动优先** - 针对所有屏幕尺寸优化 | 🧭 **智能导航** - 文章导航，带主页回退 |
+| 🎨 **玻璃效果** - 现代 UI，优雅动画 | 🌍 **32 种语言** - 完整国际化支持 |
+| 💻 **代码块** - 语法高亮 + 一键复制 | 🚀 **高性能** - 资源优化 & 延迟加载 |
 
-### 核心功能
+---
 
-- ✨ **双主题** - 深浅色模式，支持系统偏好检测
-- 📱 **移动优先** - 针对所有屏幕尺寸优化
-- 🎨 **玻璃效果** - 现代 UI，优雅动画
-- 💻 **代码块** - 语法高亮 + 一键复制
+## 性能表现
 
-</td>
-<td width="50%">
+Attegi 在 [Google PageSpeed Insights](https://pagespeed.web.dev/analysis/https-attegi-tutuis-me/jhk5dugrrn) 获得优秀评分：
 
-### 高级功能
-
-- 📑 **自动目录** - 带滚动监听的目录导航
-- 🧭 **智能导航** - 文章导航，带主页回退
-- 🌍 **32 种语言** - 完整国际化支持
-- 🚀 **高性能** - 资源优化 & 延迟加载
-
-</td>
-</tr>
-</table>
+| 指标 | 移动端 | 桌面端 |
+|------|--------|--------|
+| 性能 | 97 | 97 |
+| 无障碍 | 96 | **100** |
+| 最佳实践 | **100** | **100** |
+| SEO | **100** | **100** |
 
 ---
 
 ## 截图
 
-<table>
-<tr>
-<td width="50%" align="center">
-<strong>移动端优化</strong><br><br>
-<img src="screenshots/iphone.png" alt="移动端视图" width="280">
-</td>
-<td width="50%" align="center">
-<strong>代码块</strong><br><br>
-<img src="screenshots/code-block.png" alt="代码块" width="400">
-</td>
-</tr>
-<tr>
-<td width="50%" align="center">
-<strong>文章导航</strong><br><br>
-<img src="screenshots/post-navigation.png" alt="文章导航" width="400">
-</td>
-<td width="50%" align="center">
-<strong>404 页面</strong><br><br>
-<img src="screenshots/404-Page.png" alt="404 页面" width="400">
-</td>
-</tr>
-<tr>
-<td colspan="2" align="center">
-<strong>玻璃按钮</strong><br><br>
-<img src="screenshots/liquid-glass-button.png" alt="玻璃按钮" width="500">
-</td>
-</tr>
-</table>
-
 ### 目录导航
 
-长文章自动生成目录：
-- 桌面端：固定侧边栏，带滚动监听
-- 移动端：浮动面板，带阅读进度
-- 单篇禁用：添加 `#no-toc` 标签
+> 使用 `#no-toc` 内部标签可禁用单篇文章的目录。
 
-### 性能表现
+<details>
+<summary>查看截图</summary>
+<p align="center">
+<img src="screenshots/desktop-toc.png" alt="桌面端目录" width="700">
+</p>
+<p align="center">
+<img src="screenshots/mobile-toc.png" alt="移动端目录" width="350">
+</p>
+</details>
 
-在 [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-attegi-tutuis-me/hzaz7busnt) 移动端和桌面端均获得优秀评分。
+### 移动端 & 代码块
+
+<details>
+<summary>查看截图</summary>
+<p align="center">
+<img src="screenshots/iphone.png" alt="移动端视图" width="400">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="screenshots/code-block.png" alt="代码块" width="450">
+</p>
+</details>
+
+### 导航 & 404 页面
+
+<details>
+<summary>查看截图</summary>
+<p align="center">
+<img src="screenshots/post-navigation.png" alt="文章导航" width="450">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="screenshots/404-Page.png" alt="404 页面" width="450">
+</p>
+</details>
+
+### 液态玻璃风格按钮
+
+<details>
+<summary>查看截图</summary>
+<p align="center">
+<img src="screenshots/liquid-glass-button.png" alt="玻璃按钮" width="500">
+</p>
+</details>
 
 ---
 
 ## 快速开始
 
-```bash
-# 1. 从 GitHub Releases 下载
-# 2. Ghost 后台 → 设置 → 设计 → 上传主题
-# 3. 激活 Attegi
-```
-
-或从源码构建：
-
-```bash
-git clone https://github.com/bunizao/Attegi.git
-cd Attegi && yarn install
-yarn build && yarn compress
-# 上传 dist/attegi.zip
-```
+1. 从 [GitHub Releases](https://github.com/bunizao/Attegi/releases) 下载
+2. Ghost 后台 → 设置 → 设计 → 上传主题
+3. 激活 Attegi
 
 ---
 
@@ -173,7 +162,7 @@ npx gscan .     # 验证主题
 <details>
 <summary><strong>项目结构</strong></summary>
 
-```
+```text
 Attegi/
 ├── assets/        # 编译产物（勿直接编辑）
 ├── locales/       # 32 种语言文件
@@ -194,7 +183,6 @@ Attegi/
 - **文档**：[Ghost 主题文档](https://ghost.org/docs/themes/)
 - **问题**：[GitHub Issues](https://github.com/bunizao/Attegi/issues)
 - **讨论**：[GitHub Discussions](https://github.com/bunizao/Attegi/discussions)
-- **邮箱**：[me@tutuis.me](mailto:me@tutuis.me)
 
 ---
 
