@@ -1,5 +1,5 @@
 /**
- * Table of Contents - Elegant Navigation
+ * Table of Contents - Using tocbot
  * Automatically generates TOC from post headings with scroll spy
  */
 (function () {
@@ -10,17 +10,13 @@
 
   // Configuration
   var config = {
-    headingSelector: '.post-content h2, .post-content h3, .post-content h4',
     minHeadings: 2,
-    scrollOffset: 100,
-    throttleDelay: 100
+    tocBreakpoint: 1400
   };
 
   // State
   var state = {
-    headings: [],
     isOpen: false,
-    activeIndex: -1,
     isVisible: false,
     articleTop: 0,
     articleBottom: 0
@@ -32,10 +28,7 @@
     mobileTrigger: null,
     mobileOverlay: null,
     mobileDrawer: null,
-    tocList: null,
-    mobileTocList: null,
-    links: [],
-    mobileLinks: []
+    mobileList: null
   };
 
   /**
@@ -45,16 +38,48 @@
     var postContent = doc.querySelector('.post-content');
     if (!postContent) return;
 
-    // Collect headings
-    var headings = postContent.querySelectorAll(config.headingSelector);
+    // Check if there are enough headings
+    var headings = postContent.querySelectorAll('h2, h3, h4');
     if (headings.length < config.minHeadings) return;
 
-    // Process headings and add IDs
-    state.headings = processHeadings(headings);
-    if (state.headings.length < config.minHeadings) return;
-
     // Create TOC elements
-    createTOC();
+    createTOCElements();
+
+    // Initialize tocbot for desktop only
+    if (typeof tocbot !== 'undefined') {
+      tocbot.init({
+        tocSelector: '.toc-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h2, h3, h4',
+        ignoreSelector: '.js-toc-ignore, .gh-post-upgrade-cta h2',
+        hasInnerContainers: true,
+        linkClass: 'toc-link',
+        activeLinkClass: 'is-active',
+        listClass: 'toc-list',
+        listItemClass: 'toc-item',
+        activeListItemClass: 'is-active-li',
+        collapseDepth: 6,
+        scrollSmooth: true,
+        scrollSmoothOffset: -100,
+        headingsOffset: 100,
+        throttleTimeout: 50,
+        orderedList: false,
+        onClick: function(e) {
+          // Close mobile drawer if open
+          if (state.isOpen) {
+            closeMobileTOC();
+          }
+        }
+      });
+
+      // Copy TOC content to mobile after tocbot generates it
+      setTimeout(function() {
+        copyTocToMobile();
+      }, 100);
+
+      // Setup auto-scroll for TOC sidebar
+      setupTOCAutoScroll();
+    }
 
     // Setup event listeners
     setupEventListeners();
@@ -62,9 +87,11 @@
     // Calculate article boundaries for TOC visibility
     calculateArticleBounds();
 
-    // Initial scroll spy update and visibility check
-    updateScrollSpy();
+    // Initial visibility check
     updateTOCVisibility();
+
+    // Add class to body
+    doc.body.classList.add('has-toc');
 
     // Show mobile trigger after a short delay
     setTimeout(function() {
@@ -75,88 +102,147 @@
   }
 
   /**
-   * Calculate article content boundaries
+   * Setup auto-scroll for TOC sidebar when active item changes
+   * Uses MutationObserver to detect when tocbot changes the active class
    */
-  function calculateArticleBounds() {
-    var postContent = doc.querySelector('.post-content');
-    if (postContent) {
-      var rect = postContent.getBoundingClientRect();
-      state.articleTop = rect.top + win.pageYOffset;
-      state.articleBottom = rect.bottom + win.pageYOffset;
+  function setupTOCAutoScroll() {
+    var tocList = doc.querySelector('.toc-sidebar .toc-list');
+    if (!tocList || !elements.sidebar) return;
+
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          var target = mutation.target;
+          if (target.classList.contains('is-active') && target.classList.contains('toc-link')) {
+            scrollTOCToActiveItem(target);
+          }
+        }
+      });
+    });
+
+    observer.observe(tocList, {
+      attributes: true,
+      subtree: true,
+      attributeFilter: ['class']
+    });
+  }
+
+  /**
+   * Scroll TOC sidebar to center the active item
+   */
+  function scrollTOCToActiveItem(activeLink) {
+    if (!elements.sidebar || !activeLink) return;
+
+    var sidebar = elements.sidebar;
+    var sidebarRect = sidebar.getBoundingClientRect();
+    var linkRect = activeLink.getBoundingClientRect();
+
+    // Calculate the link's position relative to the sidebar
+    var linkTop = linkRect.top - sidebarRect.top + sidebar.scrollTop;
+    var linkHeight = linkRect.height;
+    var sidebarHeight = sidebarRect.height;
+
+    // Calculate scroll position to center the active item
+    var targetScroll = linkTop - (sidebarHeight / 2) + (linkHeight / 2);
+
+    // Clamp to valid scroll range
+    var maxScroll = sidebar.scrollHeight - sidebarHeight;
+    targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+
+    // Smooth scroll to the target position
+    sidebar.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth'
+    });
+  }
+
+  /**
+   * Copy desktop TOC content to mobile TOC
+   */
+  function copyTocToMobile() {
+    var desktopList = doc.querySelector('.toc-sidebar .toc-list');
+    if (!desktopList || !elements.mobileList) return;
+
+    // Clone the content
+    var clone = desktopList.cloneNode(true);
+
+    // Replace classes for mobile styling
+    clone.className = 'toc-mobile-list';
+
+    // Update all nested elements
+    var items = clone.querySelectorAll('.toc-item');
+    items.forEach(function(item) {
+      item.className = item.className.replace('toc-item', 'toc-mobile-item');
+    });
+
+    var links = clone.querySelectorAll('.toc-link');
+    links.forEach(function(link) {
+      link.className = link.className.replace('toc-link', 'toc-mobile-link');
+      // Add click handler
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var href = link.getAttribute('href');
+        var targetId = href.substring(1);
+        var target = doc.getElementById(targetId);
+        if (target) {
+          closeMobileTOC();
+          setTimeout(function() {
+            var offsetTop = target.getBoundingClientRect().top + win.pageYOffset - 100;
+            win.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth'
+            });
+          }, 300);
+        }
+      });
+    });
+
+    var nestedLists = clone.querySelectorAll('.toc-list');
+    nestedLists.forEach(function(list) {
+      list.className = list.className.replace('toc-list', 'toc-mobile-list');
+    });
+
+    // Replace mobile list content
+    elements.mobileList.innerHTML = '';
+    while (clone.firstChild) {
+      elements.mobileList.appendChild(clone.firstChild);
     }
   }
 
   /**
-   * Process headings and ensure they have IDs
+   * Sync active state from desktop to mobile
    */
-  function processHeadings(headings) {
-    var processed = [];
-    var usedIds = {};
+  function syncMobileActiveState() {
+    if (!elements.mobileList) return;
 
-    Array.prototype.forEach.call(headings, function (heading, index) {
-      // Skip empty headings
-      var text = heading.textContent.trim();
-      if (!text) return;
+    // Get active link from desktop
+    var activeDesktopLink = doc.querySelector('.toc-sidebar .toc-link.is-active');
+    var activeHref = activeDesktopLink ? activeDesktopLink.getAttribute('href') : null;
 
-      // Generate or use existing ID
-      var id = heading.id;
-      if (!id) {
-        id = generateId(text);
-        // Ensure unique ID
-        var baseId = id;
-        var counter = 1;
-        while (usedIds[id]) {
-          id = baseId + '-' + counter;
-          counter++;
-        }
-        heading.id = id;
+    // Update mobile links
+    var mobileLinks = elements.mobileList.querySelectorAll('.toc-mobile-link');
+    mobileLinks.forEach(function(link) {
+      if (activeHref && link.getAttribute('href') === activeHref) {
+        link.classList.add('is-active');
+      } else {
+        link.classList.remove('is-active');
       }
-      usedIds[id] = true;
-
-      // Get heading level
-      var level = parseInt(heading.tagName.charAt(1), 10);
-
-      processed.push({
-        id: id,
-        text: text,
-        level: level,
-        element: heading
-      });
     });
-
-    return processed;
-  }
-
-  /**
-   * Generate URL-friendly ID from text
-   */
-  function generateId(text) {
-    return text
-      .toLowerCase()
-      .replace(/[^\w\u4e00-\u9fa5\s-]/g, '') // Keep Chinese characters
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '')
-      .substring(0, 50) || 'heading';
   }
 
   /**
    * Create TOC DOM elements
    */
-  function createTOC() {
+  function createTOCElements() {
     // Create desktop sidebar
     createDesktopTOC();
 
     // Create mobile TOC
     createMobileTOC();
-
-    // Add class to body
-    doc.body.classList.add('has-toc');
   }
 
   /**
    * Create desktop sidebar TOC
-   * Uses fixed positioning - TOC is appended to body
    */
   function createDesktopTOC() {
     var sidebar = doc.createElement('aside');
@@ -171,25 +257,9 @@
     header.className = 'toc-header';
     header.innerHTML = '<h3 class="toc-title">On this page</h3>';
 
-    // List
-    var list = doc.createElement('ul');
+    // List - tocbot will populate this
+    var list = doc.createElement('nav');
     list.className = 'toc-list';
-
-    state.headings.forEach(function (heading, index) {
-      var item = doc.createElement('li');
-      item.className = 'toc-item';
-
-      var link = doc.createElement('a');
-      link.className = 'toc-link';
-      link.href = '#' + heading.id;
-      link.textContent = heading.text;
-      link.setAttribute('data-level', heading.level);
-      link.setAttribute('data-index', index);
-
-      item.appendChild(link);
-      list.appendChild(item);
-      elements.links.push(link);
-    });
 
     container.appendChild(header);
     container.appendChild(list);
@@ -199,7 +269,6 @@
     doc.body.appendChild(sidebar);
 
     elements.sidebar = sidebar;
-    elements.tocList = list;
   }
 
   /**
@@ -265,25 +334,9 @@
     var content = doc.createElement('div');
     content.className = 'toc-mobile-content';
 
-    // List
-    var list = doc.createElement('ul');
+    // List - will be populated by copying from desktop
+    var list = doc.createElement('nav');
     list.className = 'toc-mobile-list';
-
-    state.headings.forEach(function (heading, index) {
-      var item = doc.createElement('li');
-      item.className = 'toc-mobile-item';
-
-      var link = doc.createElement('a');
-      link.className = 'toc-mobile-link';
-      link.href = '#' + heading.id;
-      link.textContent = heading.text;
-      link.setAttribute('data-level', heading.level);
-      link.setAttribute('data-index', index);
-
-      item.appendChild(link);
-      list.appendChild(item);
-      elements.mobileLinks.push(link);
-    });
 
     content.appendChild(list);
     drawer.appendChild(handle);
@@ -297,21 +350,31 @@
     elements.mobileTrigger = trigger;
     elements.mobileOverlay = overlay;
     elements.mobileDrawer = drawer;
-    elements.mobileTocList = list;
+    elements.mobileList = list;
+  }
+
+  /**
+   * Calculate article content boundaries
+   */
+  function calculateArticleBounds() {
+    var postContent = doc.querySelector('.post-content');
+    if (postContent) {
+      var rect = postContent.getBoundingClientRect();
+      state.articleTop = rect.top + win.pageYOffset;
+      state.articleBottom = rect.bottom + win.pageYOffset;
+    }
   }
 
   /**
    * Update TOC visibility based on scroll position
-   * Show TOC when in article content area, hide when scrolled past
    */
   function updateTOCVisibility() {
     if (!elements.sidebar) return;
 
     var scrollTop = win.pageYOffset || doc.documentElement.scrollTop;
     var viewportHeight = win.innerHeight;
-    var tocHeight = elements.sidebar.offsetHeight;
 
-    // Recalculate article bounds on each check (in case of dynamic content)
+    // Recalculate article bounds
     var postContent = doc.querySelector('.post-content');
     if (postContent) {
       var rect = postContent.getBoundingClientRect();
@@ -319,12 +382,9 @@
       state.articleBottom = rect.bottom + scrollTop;
     }
 
-    // TOC should be visible when:
-    // 1. We've scrolled past the start of the article (with some offset)
-    // 2. We haven't scrolled past the end of the article content
-    var showStart = state.articleTop - 100;  // Show a bit before article starts
-    var showEnd = state.articleBottom - viewportHeight + 100;  // Hide when article bottom is near viewport bottom
-
+    // TOC should be visible when in article content area
+    var showStart = state.articleTop - 100;
+    var showEnd = state.articleBottom - viewportHeight + 100;
     var shouldShow = scrollTop >= showStart && scrollTop <= showEnd;
 
     if (shouldShow !== state.isVisible) {
@@ -335,24 +395,21 @@
         elements.sidebar.classList.remove('is-visible');
       }
     }
+
+    // Sync mobile active state
+    syncMobileActiveState();
   }
 
   /**
    * Setup event listeners
    */
   function setupEventListeners() {
-    // Scroll spy and visibility
+    // Scroll visibility and sync
     var throttledUpdate = throttle(function() {
-      updateScrollSpy();
       updateTOCVisibility();
-    }, config.throttleDelay);
+    }, 100);
     win.addEventListener('scroll', throttledUpdate, { passive: true });
     win.addEventListener('resize', throttledUpdate, { passive: true });
-
-    // Desktop TOC link clicks
-    elements.links.forEach(function (link) {
-      link.addEventListener('click', handleLinkClick);
-    });
 
     // Mobile trigger
     elements.mobileTrigger.addEventListener('click', openMobileTOC);
@@ -366,14 +423,6 @@
       closeBtn.addEventListener('click', closeMobileTOC);
     }
 
-    // Mobile link clicks
-    elements.mobileLinks.forEach(function (link) {
-      link.addEventListener('click', function (e) {
-        handleLinkClick(e);
-        closeMobileTOC();
-      });
-    });
-
     // Escape key to close mobile TOC
     doc.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && state.isOpen) {
@@ -386,92 +435,12 @@
   }
 
   /**
-   * Handle TOC link click
-   */
-  function handleLinkClick(e) {
-    e.preventDefault();
-    var href = e.currentTarget.getAttribute('href');
-    var targetId = href.substring(1);
-    var target = doc.getElementById(targetId);
-
-    if (target) {
-      var offsetTop = target.getBoundingClientRect().top + win.pageYOffset - config.scrollOffset;
-      win.scrollTo({
-        top: offsetTop,
-        behavior: 'smooth'
-      });
-
-      // Update URL hash without jumping
-      if (history.pushState) {
-        history.pushState(null, null, href);
-      }
-    }
-  }
-
-  /**
-   * Update scroll spy - highlight current section
-   */
-  function updateScrollSpy() {
-    var scrollTop = win.pageYOffset || doc.documentElement.scrollTop;
-    var viewportHeight = win.innerHeight;
-    var activeIndex = -1;
-
-    // Find the current active heading
-    for (var i = state.headings.length - 1; i >= 0; i--) {
-      var heading = state.headings[i];
-      var rect = heading.element.getBoundingClientRect();
-      var offsetTop = rect.top + scrollTop;
-
-      if (scrollTop >= offsetTop - config.scrollOffset - 50) {
-        activeIndex = i;
-        break;
-      }
-    }
-
-    // Update active state if changed
-    if (activeIndex !== state.activeIndex) {
-      state.activeIndex = activeIndex;
-
-      // Update desktop links
-      elements.links.forEach(function (link, index) {
-        link.classList.toggle('is-active', index === activeIndex);
-      });
-
-      // Update mobile links
-      elements.mobileLinks.forEach(function (link, index) {
-        link.classList.toggle('is-active', index === activeIndex);
-      });
-
-      // Scroll active item into view in desktop TOC sidebar
-      // The scrollable container is .toc-sidebar, not .toc-list
-      if (activeIndex >= 0 && elements.sidebar) {
-        var activeLink = elements.links[activeIndex];
-        if (activeLink) {
-          var sidebarRect = elements.sidebar.getBoundingClientRect();
-          var linkRect = activeLink.getBoundingClientRect();
-
-          // Check if link is outside the visible area of the sidebar
-          if (linkRect.top < sidebarRect.top || linkRect.bottom > sidebarRect.bottom) {
-            // Calculate scroll position to center the active item
-            var linkOffsetTop = activeLink.offsetTop;
-            var sidebarHeight = elements.sidebar.clientHeight;
-            var linkHeight = activeLink.offsetHeight;
-            var scrollTarget = linkOffsetTop - (sidebarHeight / 2) + (linkHeight / 2);
-
-            elements.sidebar.scrollTo({
-              top: Math.max(0, scrollTarget),
-              behavior: 'smooth'
-            });
-          }
-        }
-      }
-    }
-  }
-
-  /**
    * Open mobile TOC
    */
   function openMobileTOC() {
+    // Sync active state before opening
+    syncMobileActiveState();
+
     state.isOpen = true;
     doc.body.classList.add('toc-open');
     elements.mobileOverlay.classList.add('is-open');

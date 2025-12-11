@@ -1,44 +1,29 @@
 /* ==========================================================================
-   Table of Contents - Sticky Sidebar Navigation
+   Table of Contents - Using tocbot
    ========================================================================== */
 
 // TOC Variables
-$toc-width: 220px;
+$toc-width: 250px;
 $toc-offset-top: 3rem;
-$toc-gap: 3rem;  // Gap between content edge and TOC
+$toc-gap: 3rem;
 $toc-transition: all 0.25s ease;
 $toc-breakpoint: 1400px;
 $toc-breakpoint-small: 480px;
 
 // When TOC is present, fix overflow to allow sticky positioning
 .has-toc {
-  // Override body overflow-x to allow sticky to work
-  overflow-x: clip !important;  // clip allows sticky, hidden breaks it
-}
-
-// Article wrapper - no special positioning needed
-.article-with-toc {
-  // Content layout remains unchanged
-}
-
-// Main content area - stays centered, no change to layout
-.article-content {
-  // Content remains centered as normal
+  overflow-x: clip !important;
 }
 
 // Desktop TOC Sidebar - fixed position on the left side of viewport
-// Uses fixed positioning but respects article boundaries via JS
 .toc-sidebar {
   position: fixed;
   top: $toc-offset-top;
-  // Position from the left edge of viewport - closer to content
-  left: calc((100vw - 64rem - 8vw) / 2 - #{$toc-width} - 1.5rem);
+  left: calc((100vw - 64rem - 8vw) / 2 - #{$toc-width} - 2.5rem);
   width: $toc-width;
   max-height: calc(100vh - #{$toc-offset-top} - 2rem);
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-background-contrast) transparent;
-  // Initially hidden, JS will show it
+  scrollbar-width: none;
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
@@ -52,27 +37,12 @@ $toc-breakpoint-small: 480px;
   }
 
   &::-webkit-scrollbar {
-    width: 3px;
+    display: none;
   }
 
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--color-background-contrast);
-    border-radius: 2px;
-  }
-
-  // Hide when viewport is too narrow for TOC
   @media only screen and (max-width: $toc-breakpoint) {
     display: none;
   }
-}
-
-// Sticky wrapper - not needed with fixed positioning, but keep for structure
-.toc-sticky {
-  // No sticky needed when parent is fixed
 }
 
 // TOC Container
@@ -80,17 +50,12 @@ $toc-breakpoint-small: 480px;
   padding: 0;
 }
 
-// TOC Header - minimal, no border
+// TOC Header
 .toc-header {
   margin-bottom: 1rem;
 }
 
-// Hide the icon in desktop view
-.toc-icon {
-  display: none;
-}
-
-// TOC Title - uppercase with letter spacing like reference design
+// TOC Title - uppercase with letter spacing
 .toc-title {
   font-family: var(--gh-font-body);
   font-size: 1.2rem;
@@ -102,13 +67,20 @@ $toc-breakpoint-small: 480px;
   text-transform: uppercase;
 }
 
-// TOC List
+// TOC List - tocbot generates nested lists
 .toc-list {
   list-style: none;
   margin: 0;
   padding: 0;
+
+  // Nested lists for sub-headings
+  .toc-list {
+    margin: 0;
+    padding-left: 0;
+  }
 }
 
+// TOC Item
 .toc-item {
   position: relative;
   margin: 0;
@@ -123,7 +95,7 @@ $toc-breakpoint-small: 480px;
 .toc-link {
   display: block;
   padding: 0.4rem 0 0.4rem 1rem;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   line-height: 1.5;
   font-weight: 400;
   color: color-mix(in srgb, var(--color-content-main) 55%, transparent);
@@ -141,22 +113,21 @@ $toc-breakpoint-small: 480px;
     font-weight: 600;
     border-left-color: var(--color-content-main);
   }
-
-  // Heading level indentation - add to existing padding
-  &[data-level="3"] {
-    padding-left: 2rem;
-    font-size: 1.35rem;
-  }
-
-  &[data-level="4"] {
-    padding-left: 3rem;
-    font-size: 1.3rem;
-  }
 }
 
-// Progress indicator - hidden in minimal design
-.toc-progress {
-  display: none;
+// Nested heading levels - tocbot uses nested lists
+.toc-list .toc-list {
+  // Level 2 (h3)
+  .toc-link {
+    padding-left: 2rem;
+    font-size: 1.45rem;
+  }
+
+  // Level 3 (h4)
+  .toc-list .toc-link {
+    padding-left: 3rem;
+    font-size: 1.4rem;
+  }
 }
 
 /* ==========================================================================
@@ -343,10 +314,17 @@ $toc-breakpoint-small: 480px;
   -webkit-overflow-scrolling: touch;
 }
 
+// Mobile TOC List - tocbot generates nested lists
 .toc-mobile-list {
   list-style: none;
   margin: 0;
   padding: 0;
+
+  // Nested lists
+  .toc-mobile-list {
+    margin: 0;
+    padding-left: 0;
+  }
 }
 
 .toc-mobile-item {
@@ -370,10 +348,6 @@ $toc-breakpoint-small: 480px;
   border-bottom: 1px solid var(--color-background-contrast);
   transition: $toc-transition;
 
-  &:last-child {
-    border-bottom: none;
-  }
-
   &::before {
     content: '';
     width: 0.5rem;
@@ -396,28 +370,24 @@ $toc-breakpoint-small: 480px;
   &.is-active {
     font-weight: 600;
   }
+}
 
-  // Heading level indentation
-  &[data-level="3"] {
+// Mobile nested heading levels
+.toc-mobile-list .toc-mobile-list {
+  .toc-mobile-link {
     padding-left: 1.5rem;
     font-size: 1.4em;
   }
 
-  &[data-level="4"] {
+  .toc-mobile-list .toc-mobile-link {
     padding-left: 3rem;
     font-size: 1.3em;
   }
 }
 
-/* ==========================================================================
-   TOC Empty State
-   ========================================================================== */
-
-.toc-empty {
-  text-align: center;
-  padding: 1rem;
-  color: var(--color-content-secondary);
-  font-size: 1.3em;
+// Remove border from last visible item
+.toc-mobile-item:last-child > .toc-mobile-link {
+  border-bottom: none;
 }
 
 /* ==========================================================================
@@ -439,21 +409,5 @@ $toc-breakpoint-small: 480px;
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
-  }
-}
-
-/* ==========================================================================
-   Fallback mode - when TOC is appended to body (fixed positioning)
-   ========================================================================== */
-
-.toc-sidebar-fallback {
-  position: fixed;
-  top: $toc-offset-top;
-  right: 2rem;
-  width: $toc-width;
-  max-height: calc(100vh - #{$toc-offset-top} - 4rem);
-
-  @media only screen and (max-width: $toc-breakpoint) {
-    display: none;
   }
 }
