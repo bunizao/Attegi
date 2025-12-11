@@ -18,6 +18,7 @@ A modern, elegant Ghost theme focused on clean typography, mobile readability, a
 - 📱 **Mobile Optimized** - Responsive design with optimized fonts and spacing for all devices
 - 🎨 **Liquid Glass Effects** - Modern UI with elegant hover animations and glass morphism
 - 💻 **Enhanced Code Blocks** - Syntax highlighting with language headers and copy-to-clipboard
+- 📑 **Auto Table of Contents** - Smart TOC with scroll spy, auto-scroll, and reading progress indicator
 - 🧭 **Smart Navigation** - Intelligent post navigation with home fallback
 - 🎯 **SEO Optimized** - Clean markup, structured data, and excellent performance scores
 - 🌍 **i18n Ready** - 32 language translations included
@@ -50,6 +51,11 @@ Creative 404 error page with animated space theme and post recommendations.
 ### Liquid Glass Texture Buttons
 Modern glass morphism effects on interactive elements for a premium feel.
 ![Liquid glass texture buttons](screenshots/liquid-glass-button.png)
+
+### Table of Contents
+Automatic table of contents for long-form articles with smart features.
+
+To disable TOC on a specific post, add the internal tag `#no-toc` in Ghost Admin.
 
 ### Excellent Performance
 

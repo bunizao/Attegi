@@ -77,7 +77,8 @@
 	<article class="{{post_class}}">
 		<div class="inner">
 
-			<section class="post-content">
+			{{!-- Add no-toc class if #no-toc tag is present --}}
+			<section class="post-content{{#has tag="#no-toc"}} no-toc{{/has}}">
 				{{content}}
 			</section>
 
@@ -194,11 +195,6 @@
 {{!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs --}}
 {{#contentFor "scripts"}}
 <script defer src="{{asset "js/post.js"}}" data-highlight="{{asset "js/highlight.pack.js"}}"></script>
-{{!-- TOC: use #no-toc internal tag to disable on specific posts --}}
-{{#post}}
-{{#unless (has tag="hash-no-toc")}}
 <script defer src="{{asset "js/tocbot.min.js"}}"></script>
 <script defer src="{{asset "js/toc.js"}}"></script>
-{{/unless}}
-{{/post}}
 {{/contentFor}}

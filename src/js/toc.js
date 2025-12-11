@@ -38,6 +38,9 @@
     var postContent = doc.querySelector('.post-content');
     if (!postContent) return;
 
+    // Check if TOC is disabled via #no-toc tag
+    if (postContent.classList.contains('no-toc')) return;
+
     // Check if there are enough headings
     var headings = postContent.querySelectorAll('h2, h3, h4');
     if (headings.length < config.minHeadings) return;
