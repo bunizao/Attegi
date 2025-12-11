@@ -17,7 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      models: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -91,59 +90,53 @@ jobs:
           echo "📝 Recent commits:"
           echo "$COMMITS"
 
-      - name: Generate release summary with GitHub Copilot
+      - name: Generate release summary
         id: summary
-        uses: github/copilot-models-action@v1
-        with:
-          model: gpt-4o
-          prompt: |
-            You are a release notes writer for a Ghost blog theme called "Attegi".
-            Based on the git commits below, generate a concise release summary.
-
-            Commits:
-            ${{ steps.diff.outputs.commits }}
-
-            Requirements:
-            - Group into: ✨ New Features, 🐛 Bug Fixes, 🎨 Improvements, 📝 Documentation
-            - Only include categories with changes
-            - Keep each item to 1 line
-            - Maximum 10 items
-            - No code fences
-            - If minimal changes, write "Minor updates and improvements"
-
-      - name: Fallback summary
-        id: fallback
-        if: failure() || steps.summary.outputs.response == ''
         run: |
-          # Generate simple summary from commits
-          COMMITS=$(cat /tmp/commits.txt | head -10)
+          # Read commits
+          COMMITS=$(cat /tmp/commits.txt)
 
-          # Categorize commits
-          FEATURES=$(echo "$COMMITS" | grep -iE "^- (feat|add|new)" | head -5 || true)
-          FIXES=$(echo "$COMMITS" | grep -iE "^- (fix|bug|patch)" | head -3 || true)
-          IMPROVEMENTS=$(echo "$COMMITS" | grep -iE "^- (improve|update|refactor|enhance|style)" | head -3 || true)
-          DOCS=$(echo "$COMMITS" | grep -iE "^- (doc|readme)" | head -2 || true)
+          # Categorize commits by conventional commit prefixes
+          FEATURES=$(echo "$COMMITS" | grep -iE "^- feat" | sed 's/^- feat[^:]*: /- /' | head -5 || true)
+          FIXES=$(echo "$COMMITS" | grep -iE "^- fix" | sed 's/^- fix[^:]*: /- /' | head -3 || true)
+          IMPROVEMENTS=$(echo "$COMMITS" | grep -iE "^- (improve|update|refactor|enhance|style|perf)" | sed 's/^- [^:]*: /- /' | head -3 || true)
+          DOCS=$(echo "$COMMITS" | grep -iE "^- doc" | sed 's/^- doc[^:]*: /- /' | head -2 || true)
 
+          # Build summary
           SUMMARY=""
           if [ -n "$FEATURES" ]; then
-            SUMMARY="${SUMMARY}#### ✨ New Features\n${FEATURES}\n\n"
+            SUMMARY="${SUMMARY}#### ✨ New Features
+          ${FEATURES}
+
+          "
           fi
           if [ -n "$FIXES" ]; then
-            SUMMARY="${SUMMARY}#### 🐛 Bug Fixes\n${FIXES}\n\n"
+            SUMMARY="${SUMMARY}#### 🐛 Bug Fixes
+          ${FIXES}
+
+          "
           fi
           if [ -n "$IMPROVEMENTS" ]; then
-            SUMMARY="${SUMMARY}#### 🎨 Improvements\n${IMPROVEMENTS}\n\n"
+            SUMMARY="${SUMMARY}#### 🎨 Improvements
+          ${IMPROVEMENTS}
+
+          "
           fi
           if [ -n "$DOCS" ]; then
-            SUMMARY="${SUMMARY}#### 📝 Documentation\n${DOCS}\n\n"
+            SUMMARY="${SUMMARY}#### 📝 Documentation
+          ${DOCS}
+
+          "
           fi
 
+          # Default if empty
           if [ -z "$SUMMARY" ]; then
-            SUMMARY="Minor updates and improvements"
+            SUMMARY="Minor updates and improvements. See commits below for details."
           fi
 
+          # Output
           echo "response<<EOF" >> $GITHUB_OUTPUT
-          echo -e "$SUMMARY" >> $GITHUB_OUTPUT
+          echo "$SUMMARY" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Build and package
@@ -194,7 +187,7 @@ jobs:
 
             ### 📝 What's Changed
 
-            ${{ steps.summary.outputs.response || steps.fallback.outputs.response || 'See commits below for details.' }}
+            ${{ steps.summary.outputs.response }}
 
             ### 📥 Installation
 
