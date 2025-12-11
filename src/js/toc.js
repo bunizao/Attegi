@@ -442,15 +442,26 @@
         link.classList.toggle('is-active', index === activeIndex);
       });
 
-      // Scroll active item into view in desktop TOC
-      if (activeIndex >= 0 && elements.tocList) {
+      // Scroll active item into view in desktop TOC sidebar
+      // The scrollable container is .toc-sidebar, not .toc-list
+      if (activeIndex >= 0 && elements.sidebar) {
         var activeLink = elements.links[activeIndex];
         if (activeLink) {
-          var listRect = elements.tocList.getBoundingClientRect();
+          var sidebarRect = elements.sidebar.getBoundingClientRect();
           var linkRect = activeLink.getBoundingClientRect();
 
-          if (linkRect.top < listRect.top || linkRect.bottom > listRect.bottom) {
-            activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          // Check if link is outside the visible area of the sidebar
+          if (linkRect.top < sidebarRect.top || linkRect.bottom > sidebarRect.bottom) {
+            // Calculate scroll position to center the active item
+            var linkOffsetTop = activeLink.offsetTop;
+            var sidebarHeight = elements.sidebar.clientHeight;
+            var linkHeight = activeLink.offsetHeight;
+            var scrollTarget = linkOffsetTop - (sidebarHeight / 2) + (linkHeight / 2);
+
+            elements.sidebar.scrollTo({
+              top: Math.max(0, scrollTarget),
+              behavior: 'smooth'
+            });
           }
         }
       }
