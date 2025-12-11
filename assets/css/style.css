@@ -627,32 +627,32 @@ html.theme-dark {
 
 .toc-link {
   display: block;
-  padding: 0.4rem 0 0.4rem 1rem;
-  font-size: 1.5rem;
-  line-height: 1.5;
+  padding: 0.45rem 0 0.45rem 1.2rem;
+  font-size: 1.45rem;
+  line-height: 1.4;
   font-weight: 400;
-  color: color-mix(in srgb, var(--color-content-main) 55%, transparent);
+  color: color-mix(in srgb, var(--color-content-main) 45%, transparent);
   text-decoration: none;
+  border-left: 1.5px solid transparent;
   transition: color 0.15s ease, border-color 0.15s ease;
   word-break: break-word;
-  border-left: 2px solid transparent;
 }
 .toc-link:hover {
-  color: var(--color-content-main);
+  color: color-mix(in srgb, var(--color-content-main) 75%, transparent);
 }
 .toc-link.is-active {
   color: var(--color-content-main);
-  font-weight: 600;
-  border-left-color: var(--color-content-main);
+  font-weight: 500;
+  border-left-color: var(--ghost-accent-color);
 }
 
 .toc-list .toc-list .toc-link {
-  padding-left: 2rem;
-  font-size: 1.45rem;
+  padding-left: 2.2rem;
+  font-size: 1.4rem;
 }
 .toc-list .toc-list .toc-list .toc-link {
-  padding-left: 3rem;
-  font-size: 1.4rem;
+  padding-left: 3.2rem;
+  font-size: 1.35rem;
 }
 
 /* ==========================================================================
