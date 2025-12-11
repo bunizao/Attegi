@@ -131,27 +131,28 @@ $toc-breakpoint-small: 480px;
 }
 
 /* ==========================================================================
-   Mobile TOC - Floating Button & Drawer
+   Mobile TOC - Mini Floating Panel
    ========================================================================== */
 
+// Floating trigger button
 .toc-mobile-trigger {
   display: none;
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  width: 5rem;
-  height: 5rem;
+  width: 4.4rem;
+  height: 4.4rem;
   z-index: 200;
-  background: var(--ghost-accent-color);
-  border: none;
+  background: var(--color-background-main);
+  border: 1px solid var(--color-background-contrast);
   border-radius: 50%;
-  color: #fff;
+  color: var(--color-content-main);
   cursor: pointer;
-  box-shadow: 0 4px 20px color-mix(in srgb, var(--ghost-accent-color) 40%, transparent);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   transition: $toc-transition;
   opacity: 0;
   visibility: hidden;
-  transform: scale(0.8);
+  transform: scale(0.9);
 
   &.is-visible {
     opacity: 1;
@@ -159,18 +160,20 @@ $toc-breakpoint-small: 480px;
     transform: scale(1);
   }
 
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 25px color-mix(in srgb, var(--ghost-accent-color) 50%, transparent);
-  }
-
   &:active {
     transform: scale(0.95);
   }
 
   svg {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  // Hide when panel is open
+  &.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8);
   }
 
   @media only screen and (max-width: $toc-breakpoint) {
@@ -178,30 +181,54 @@ $toc-breakpoint-small: 480px;
     align-items: center;
     justify-content: center;
   }
+}
 
-  @media only screen and (max-width: $toc-breakpoint-small) {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 4.5rem;
-    height: 4.5rem;
+// Mini floating panel (replaces drawer)
+.toc-mobile-drawer {
+  display: none;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 350;
+  width: min(32rem, calc(100vw - 3rem));
+  max-height: min(50vh, 40rem);
+  background: var(--color-background-main);
+  border: 1px solid var(--color-background-contrast);
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1rem) scale(0.95);
+  transform-origin: bottom right;
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
 
-    svg {
-      width: 2rem;
-      height: 2rem;
-    }
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  .theme-dark & {
+    background: var(--color-background-secondary);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  @media only screen and (max-width: $toc-breakpoint) {
+    display: flex;
+    flex-direction: column;
   }
 }
 
-// Mobile drawer overlay
+// Overlay - subtle backdrop
 .toc-mobile-overlay {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 300;
-  background: var(--color-background-overlay);
+  background: transparent;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
 
   &.is-open {
     opacity: 1;
@@ -213,73 +240,30 @@ $toc-breakpoint-small: 480px;
   }
 }
 
-// Mobile drawer
-.toc-mobile-drawer {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 350;
-  max-height: 70vh;
-  background: var(--color-background-main);
-  border-radius: 1.5rem 1.5rem 0 0;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
-  transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-
-  &.is-open {
-    transform: translateY(0);
-  }
-
-  .theme-dark & {
-    background: var(--color-background-secondary);
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
-  }
-
-  @media only screen and (max-width: $toc-breakpoint) {
-    display: block;
-  }
-}
-
-.toc-mobile-handle {
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
-  cursor: grab;
-
-  &::before {
-    content: '';
-    width: 4rem;
-    height: 0.4rem;
-    background: var(--color-background-contrast);
-    border-radius: 0.2rem;
-  }
-}
-
+// Panel header
 .toc-mobile-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem 1rem;
+  padding: 1.2rem 1.4rem;
   border-bottom: 1px solid var(--color-background-contrast);
+  flex-shrink: 0;
 }
 
 .toc-mobile-title {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-family: var(--gh-font-heading);
-  font-size: 1.6em;
-  font-weight: 600;
-  color: var(--color-content-lead);
+  gap: 0.6rem;
+  font-family: var(--gh-font-body);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--color-content-main) 60%, transparent);
   margin: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 
   svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: var(--ghost-accent-color);
+    display: none;
   }
 }
 
@@ -287,40 +271,51 @@ $toc-breakpoint-small: 480px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  background: var(--color-background-secondary);
-  border: 1px solid var(--color-background-contrast);
-  border-radius: 50%;
+  width: 2.8rem;
+  height: 2.8rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.6rem;
   color: var(--color-content-secondary);
   cursor: pointer;
   transition: $toc-transition;
 
   &:hover {
+    background: var(--color-background-contrast);
     color: var(--color-content-main);
-    border-color: var(--ghost-accent-color);
   }
 
   svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.6rem;
+    height: 1.6rem;
   }
 }
 
-.toc-mobile-content {
-  padding: 1.5rem 2rem 2rem;
-  max-height: calc(70vh - 8rem);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+// Handle - hidden in mini panel
+.toc-mobile-handle {
+  display: none;
 }
 
-// Mobile TOC List - tocbot generates nested lists
+// Content area
+.toc-mobile-content {
+  padding: 0.8rem 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  min-height: 0;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// Mobile TOC List
 .toc-mobile-list {
   list-style: none;
   margin: 0;
   padding: 0;
 
-  // Nested lists
   .toc-mobile-list {
     margin: 0;
     padding-left: 0;
@@ -337,68 +332,38 @@ $toc-breakpoint-small: 480px;
 }
 
 .toc-mobile-link {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 0;
-  font-size: 1.5em;
+  display: block;
+  padding: 0.7rem 1.4rem 0.7rem 1.4rem;
+  font-size: 1.4rem;
   line-height: 1.4;
-  color: var(--color-content-main);
+  color: color-mix(in srgb, var(--color-content-main) 70%, transparent);
   text-decoration: none;
-  border-bottom: 1px solid var(--color-background-contrast);
-  transition: $toc-transition;
+  border-left: 2px solid transparent;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 
-  &::before {
-    content: '';
-    width: 0.5rem;
-    height: 0.5rem;
+  &:hover {
+    color: var(--color-content-main);
     background: var(--color-background-contrast);
-    border-radius: 50%;
-    flex-shrink: 0;
-    transition: $toc-transition;
-  }
-
-  &:hover,
-  &.is-active {
-    color: var(--ghost-accent-color);
-
-    &::before {
-      background: var(--ghost-accent-color);
-    }
   }
 
   &.is-active {
+    color: var(--color-content-main);
     font-weight: 600;
+    border-left-color: var(--ghost-accent-color);
+    background: color-mix(in srgb, var(--ghost-accent-color) 8%, transparent);
   }
 }
 
 // Mobile nested heading levels
 .toc-mobile-list .toc-mobile-list {
   .toc-mobile-link {
-    padding-left: 1.5rem;
-    font-size: 1.4em;
+    padding-left: 2.4rem;
+    font-size: 1.35rem;
   }
 
   .toc-mobile-list .toc-mobile-link {
-    padding-left: 3rem;
-    font-size: 1.3em;
-  }
-}
-
-// Remove border from last visible item
-.toc-mobile-item:last-child > .toc-mobile-link {
-  border-bottom: none;
-}
-
-/* ==========================================================================
-   Body scroll lock when mobile TOC is open
-   ========================================================================== */
-
-.toc-open {
-  overflow: hidden;
-
-  @media only screen and (min-width: #{$toc-breakpoint + 1px}) {
-    overflow: auto;
+    padding-left: 3.4rem;
+    font-size: 1.3rem;
   }
 }
 

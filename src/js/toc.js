@@ -272,7 +272,7 @@
   }
 
   /**
-   * Create mobile TOC (trigger button, overlay, drawer)
+   * Create mobile TOC (trigger button, overlay, mini panel)
    */
   function createMobileTOC() {
     // Trigger button
@@ -289,35 +289,20 @@
         '<line x1="3" y1="18" x2="3.01" y2="18"></line>' +
       '</svg>';
 
-    // Overlay
+    // Overlay (for click-outside-to-close)
     var overlay = doc.createElement('div');
     overlay.className = 'toc-mobile-overlay';
 
-    // Drawer
+    // Mini panel
     var drawer = doc.createElement('div');
     drawer.className = 'toc-mobile-drawer';
     drawer.setAttribute('role', 'dialog');
     drawer.setAttribute('aria-label', 'Table of Contents');
 
-    // Drawer handle
-    var handle = doc.createElement('div');
-    handle.className = 'toc-mobile-handle';
-
-    // Drawer header
+    // Panel header
     var header = doc.createElement('div');
     header.className = 'toc-mobile-header';
-    header.innerHTML =
-      '<h3 class="toc-mobile-title">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-          '<line x1="8" y1="6" x2="21" y2="6"></line>' +
-          '<line x1="8" y1="12" x2="21" y2="12"></line>' +
-          '<line x1="8" y1="18" x2="21" y2="18"></line>' +
-          '<line x1="3" y1="6" x2="3.01" y2="6"></line>' +
-          '<line x1="3" y1="12" x2="3.01" y2="12"></line>' +
-          '<line x1="3" y1="18" x2="3.01" y2="18"></line>' +
-        '</svg>' +
-        'On this page' +
-      '</h3>';
+    header.innerHTML = '<h3 class="toc-mobile-title">On this page</h3>';
 
     // Close button
     var closeBtn = doc.createElement('button');
@@ -339,7 +324,6 @@
     list.className = 'toc-mobile-list';
 
     content.appendChild(list);
-    drawer.appendChild(handle);
     drawer.appendChild(header);
     drawer.appendChild(content);
 
@@ -442,10 +426,12 @@
     syncMobileActiveState();
 
     state.isOpen = true;
-    doc.body.classList.add('toc-open');
+    elements.mobileTrigger.classList.add('is-hidden');
     elements.mobileOverlay.classList.add('is-open');
     elements.mobileDrawer.classList.add('is-open');
-    elements.mobileTrigger.setAttribute('aria-expanded', 'true');
+
+    // Scroll to active item in mobile panel
+    scrollMobileTOCToActiveItem();
   }
 
   /**
@@ -453,50 +439,36 @@
    */
   function closeMobileTOC() {
     state.isOpen = false;
-    doc.body.classList.remove('toc-open');
+    elements.mobileTrigger.classList.remove('is-hidden');
     elements.mobileOverlay.classList.remove('is-open');
     elements.mobileDrawer.classList.remove('is-open');
-    elements.mobileTrigger.setAttribute('aria-expanded', 'false');
   }
 
   /**
-   * Setup swipe down to close mobile drawer
+   * Scroll mobile TOC to center the active item
+   */
+  function scrollMobileTOCToActiveItem() {
+    var content = elements.mobileDrawer.querySelector('.toc-mobile-content');
+    var activeLink = elements.mobileList.querySelector('.toc-mobile-link.is-active');
+    if (!content || !activeLink) return;
+
+    var contentRect = content.getBoundingClientRect();
+    var linkRect = activeLink.getBoundingClientRect();
+    var linkTop = linkRect.top - contentRect.top + content.scrollTop;
+    var targetScroll = linkTop - (contentRect.height / 2) + (linkRect.height / 2);
+    var maxScroll = content.scrollHeight - contentRect.height;
+
+    content.scrollTo({
+      top: Math.max(0, Math.min(targetScroll, maxScroll)),
+      behavior: 'smooth'
+    });
+  }
+
+  /**
+   * Setup swipe down to close mobile drawer (disabled for mini panel)
    */
   function setupSwipeToClose() {
-    var drawer = elements.mobileDrawer;
-    var handle = drawer.querySelector('.toc-mobile-handle');
-    if (!handle) return;
-
-    var startY = 0;
-    var currentY = 0;
-    var isDragging = false;
-
-    handle.addEventListener('touchstart', function (e) {
-      startY = e.touches[0].clientY;
-      isDragging = true;
-    }, { passive: true });
-
-    handle.addEventListener('touchmove', function (e) {
-      if (!isDragging) return;
-      currentY = e.touches[0].clientY;
-      var diff = currentY - startY;
-
-      if (diff > 0) {
-        drawer.style.transform = 'translateY(' + diff + 'px)';
-      }
-    }, { passive: true });
-
-    handle.addEventListener('touchend', function () {
-      if (!isDragging) return;
-      isDragging = false;
-
-      var diff = currentY - startY;
-      drawer.style.transform = '';
-
-      if (diff > 100) {
-        closeMobileTOC();
-      }
-    }, { passive: true });
+    // Swipe gesture not needed for mini floating panel
   }
 
   /**
