@@ -1,1 +1,590 @@
-(()=>{var e,f=document,x=window,C={headingSelector:".post-content h2, .post-content h3, .post-content h4",minHeadings:2,scrollOffset:100,throttleDelay:100},E={headings:[],isOpen:!1,activeIndex:-1,isVisible:!1,articleContentTop:0},k={sidebar:null,mobileTrigger:null,mobileOverlay:null,mobileDrawer:null,tocList:null,mobileTocList:null,links:[],mobileLinks:[]};function L(e){e.preventDefault();var e=e.currentTarget.getAttribute("href"),t=e.substring(1),t=f.getElementById(t);t&&(t=t.getBoundingClientRect().top+x.pageYOffset-C.scrollOffset,x.scrollTo({top:t,behavior:"smooth"}),history.pushState)&&history.pushState(null,null,e)}function T(){for(var e,t,i,n=x.pageYOffset||f.documentElement.scrollTop,l=(x.innerHeight,-1),a=E.headings.length-1;0<=a;a--)if(n>=E.headings[a].element.getBoundingClientRect().top+n-C.scrollOffset-50){l=a;break}l!==E.activeIndex&&(E.activeIndex=l,k.links.forEach(function(e,t){e.classList.toggle("is-active",t===l)}),k.mobileLinks.forEach(function(e,t){e.classList.toggle("is-active",t===l)}),0<=l)&&k.tocList&&(e=k.links[l])&&(t=k.tocList.getBoundingClientRect(),(i=e.getBoundingClientRect()).top<t.top||i.bottom>t.bottom)&&e.scrollIntoView({block:"nearest",behavior:"smooth"})}function w(){var e=(x.pageYOffset||f.documentElement.scrollTop)>=E.articleContentTop-100;e&&!E.isVisible?(E.isVisible=!0,k.sidebar&&k.sidebar.classList.add("is-visible"),k.mobileTrigger&&k.mobileTrigger.classList.add("is-visible")):!e&&E.isVisible&&(E.isVisible=!1,k.sidebar&&k.sidebar.classList.remove("is-visible"),k.mobileTrigger)&&k.mobileTrigger.classList.remove("is-visible")}function N(){E.isOpen=!0,f.body.classList.add("toc-open"),k.mobileOverlay.classList.add("is-open"),k.mobileDrawer.classList.add("is-open"),k.mobileTrigger.setAttribute("aria-expanded","true")}function O(){E.isOpen=!1,f.body.classList.remove("toc-open"),k.mobileOverlay.classList.remove("is-open"),k.mobileDrawer.classList.remove("is-open"),k.mobileTrigger.setAttribute("aria-expanded","false")}e=function(){if(e=f.querySelector(".post-content")){var s,r,e=e.querySelectorAll(C.headingSelector);if(!(e.length<C.minHeadings))if(E.headings=(s=[],r={},Array.prototype.forEach.call(e,function(e,t){var i=e.textContent.trim();if(i){if(!(n=e.id)){for(var n,l=n=i.toLowerCase().replace(/[^\w\u4e00-\u9fa5\s-]/g,"").replace(/\s+/g,"-").replace(/-+/g,"-").replace(/^-|-$/g,"").substring(0,50)||"heading",a=1;r[n];)n=l+"-"+a,a++;e.id=n}r[n]=!0;var o=parseInt(e.tagName.charAt(1),10);s.push({id:n,text:i,level:o,element:e})}}),s),!(E.headings.length<C.minHeadings)){var t=(e=f.querySelector(".content"))?e.querySelector("article .inner"):null;if(t){var e=f.createElement("div"),i=(e.className="article-with-toc",f.createElement("div"));for(i.className="article-content";t.firstChild;)i.appendChild(t.firstChild);var n=f.createElement("aside"),l=(n.className="toc-sidebar",n.setAttribute("aria-label","Table of Contents"),f.createElement("div")),a=(l.className="toc-container",f.createElement("div")),o=(a.className="toc-header",a.innerHTML='<div class="toc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></div><h3 class="toc-title">On this page</h3>',f.createElement("ul"));o.className="toc-list",E.headings.forEach(function(e,t){var i=f.createElement("li"),n=(i.className="toc-item",f.createElement("a"));n.className="toc-link",n.href="#"+e.id,n.textContent=e.text,n.setAttribute("data-level",e.level),n.setAttribute("data-index",t),i.appendChild(n),o.appendChild(i),k.links.push(n)}),l.appendChild(a),l.appendChild(o),n.appendChild(l),e.appendChild(i),e.appendChild(n),t.appendChild(e),k.sidebar=n,k.tocList=o}else{var a=f.createElement("aside"),l=(a.className="toc-sidebar toc-sidebar-fallback",a.setAttribute("aria-label","Table of Contents"),f.createElement("div")),e=(l.className="toc-container",f.createElement("div")),c=(e.className="toc-header",e.innerHTML='<div class="toc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></div><h3 class="toc-title">On this page</h3>',f.createElement("ul"));c.className="toc-list",E.headings.forEach(function(e,t){var i=f.createElement("li"),n=(i.className="toc-item",f.createElement("a"));n.className="toc-link",n.href="#"+e.id,n.textContent=e.text,n.setAttribute("data-level",e.level),n.setAttribute("data-index",t),i.appendChild(n),c.appendChild(i),k.links.push(n)}),l.appendChild(e),l.appendChild(c),a.appendChild(l),f.body.appendChild(a),k.sidebar=a,k.tocList=c}var n=f.createElement("button"),e=(n.className="toc-mobile-trigger",n.setAttribute("aria-label","Open table of contents"),n.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>',f.createElement("div")),d=(e.className="toc-mobile-overlay",f.createElement("div")),m=(d.className="toc-mobile-drawer",d.setAttribute("role","dialog"),d.setAttribute("aria-label","Table of Contents"),f.createElement("div")),p=(m.className="toc-mobile-handle",f.createElement("div")),u=(p.className="toc-mobile-header",p.innerHTML='<h3 class="toc-mobile-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>On this page</h3>',f.createElement("button")),b=(u.className="toc-mobile-close",u.setAttribute("aria-label","Close table of contents"),u.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>',p.appendChild(u),(u=f.createElement("div")).className="toc-mobile-content",f.createElement("ul")),m=(b.className="toc-mobile-list",E.headings.forEach(function(e,t){var i=f.createElement("li"),n=(i.className="toc-mobile-item",f.createElement("a"));n.className="toc-mobile-link",n.href="#"+e.id,n.textContent=e.text,n.setAttribute("data-level",e.level),n.setAttribute("data-index",t),i.appendChild(n),b.appendChild(i),k.mobileLinks.push(n)}),u.appendChild(b),d.appendChild(m),d.appendChild(p),d.appendChild(u),f.body.appendChild(n),f.body.appendChild(e),f.body.appendChild(d),k.mobileTrigger=n,k.mobileOverlay=e,k.mobileDrawer=d,k.mobileTocList=b,f.body.classList.add("has-toc"),((i,n)=>{var l=0,a=null;return function(){var e=Date.now(),t=n-(e-l);t<=0?(a&&(clearTimeout(a),a=null),l=e,i()):a=a||setTimeout(function(){l=Date.now(),a=null,i()},t)}})(function(){T(),w()},C.throttleDelay));x.addEventListener("scroll",m,{passive:!0}),x.addEventListener("resize",m,{passive:!0}),k.links.forEach(function(e){e.addEventListener("click",L)}),k.mobileTrigger.addEventListener("click",N),k.mobileOverlay.addEventListener("click",O),(m=k.mobileDrawer.querySelector(".toc-mobile-close"))&&m.addEventListener("click",O),k.mobileLinks.forEach(function(e){e.addEventListener("click",function(e){L(e),O()})}),f.addEventListener("keydown",function(e){"Escape"===e.key&&E.isOpen&&O()});var h,v,y,g=k.mobileDrawer,p=((m=g.querySelector(".toc-mobile-handle"))&&(v=h=0,y=!1,m.addEventListener("touchstart",function(e){h=e.touches[0].clientY,y=!0},{passive:!0}),m.addEventListener("touchmove",function(e){y&&0<(e=(v=e.touches[0].clientY)-h)&&(g.style.transform="translateY("+e+"px)")},{passive:!0}),m.addEventListener("touchend",function(){var e;y&&(y=!1,e=v-h,g.style.transform="",100<e)&&O()},{passive:!0})),f.querySelector(".article-content")||f.querySelector(".post-content"));p&&(E.articleContentTop=p.getBoundingClientRect().top+x.pageYOffset),T(),w()}}},"loading"===f.readyState?f.addEventListener("DOMContentLoaded",e):e()})();
+/**
+ * Table of Contents - Elegant Navigation
+ * Automatically generates TOC from post headings with scroll spy
+ */
+(function () {
+  'use strict';
+
+  var doc = document;
+  var win = window;
+
+  // Configuration
+  var config = {
+    headingSelector: '.post-content h2, .post-content h3, .post-content h4',
+    minHeadings: 2,
+    scrollOffset: 100,
+    throttleDelay: 100
+  };
+
+  // State
+  var state = {
+    headings: [],
+    isOpen: false,
+    activeIndex: -1
+  };
+
+  // DOM Elements
+  var elements = {
+    sidebar: null,
+    mobileTrigger: null,
+    mobileOverlay: null,
+    mobileDrawer: null,
+    tocList: null,
+    mobileTocList: null,
+    links: [],
+    mobileLinks: []
+  };
+
+  /**
+   * Initialize TOC
+   */
+  function init() {
+    var postContent = doc.querySelector('.post-content');
+    if (!postContent) return;
+
+    // Collect headings
+    var headings = postContent.querySelectorAll(config.headingSelector);
+    if (headings.length < config.minHeadings) return;
+
+    // Process headings and add IDs
+    state.headings = processHeadings(headings);
+    if (state.headings.length < config.minHeadings) return;
+
+    // Create TOC elements
+    createTOC();
+
+    // Setup event listeners
+    setupEventListeners();
+
+    // Initial scroll spy update
+    updateScrollSpy();
+
+    // Show mobile trigger after a short delay
+    setTimeout(function() {
+      if (elements.mobileTrigger) {
+        elements.mobileTrigger.classList.add('is-visible');
+      }
+    }, 500);
+  }
+
+  /**
+   * Process headings and ensure they have IDs
+   */
+  function processHeadings(headings) {
+    var processed = [];
+    var usedIds = {};
+
+    Array.prototype.forEach.call(headings, function (heading, index) {
+      // Skip empty headings
+      var text = heading.textContent.trim();
+      if (!text) return;
+
+      // Generate or use existing ID
+      var id = heading.id;
+      if (!id) {
+        id = generateId(text);
+        // Ensure unique ID
+        var baseId = id;
+        var counter = 1;
+        while (usedIds[id]) {
+          id = baseId + '-' + counter;
+          counter++;
+        }
+        heading.id = id;
+      }
+      usedIds[id] = true;
+
+      // Get heading level
+      var level = parseInt(heading.tagName.charAt(1), 10);
+
+      processed.push({
+        id: id,
+        text: text,
+        level: level,
+        element: heading
+      });
+    });
+
+    return processed;
+  }
+
+  /**
+   * Generate URL-friendly ID from text
+   */
+  function generateId(text) {
+    return text
+      .toLowerCase()
+      .replace(/[^\w\u4e00-\u9fa5\s-]/g, '') // Keep Chinese characters
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      .substring(0, 50) || 'heading';
+  }
+
+  /**
+   * Create TOC DOM elements
+   */
+  function createTOC() {
+    // Create desktop sidebar
+    createDesktopTOC();
+
+    // Create mobile TOC
+    createMobileTOC();
+
+    // Add class to body
+    doc.body.classList.add('has-toc');
+  }
+
+  /**
+   * Create desktop sidebar TOC
+   * Uses flex layout with sticky positioning for natural scroll behavior
+   */
+  function createDesktopTOC() {
+    // Find the main content area
+    var mainContent = doc.querySelector('.content');
+    var articleInner = mainContent ? mainContent.querySelector('article .inner') : null;
+
+    if (!articleInner) {
+      // Fallback: append to body if structure not found
+      createDesktopTOCFallback();
+      return;
+    }
+
+    // Create wrapper for flex layout (content + TOC side by side)
+    var wrapper = doc.createElement('div');
+    wrapper.className = 'article-with-toc';
+
+    // Create content container (left side)
+    var contentContainer = doc.createElement('div');
+    contentContainer.className = 'article-content';
+
+    // Move existing content into the content container
+    while (articleInner.firstChild) {
+      contentContainer.appendChild(articleInner.firstChild);
+    }
+
+    // Create TOC sidebar (right side, will be sticky)
+    var sidebar = doc.createElement('aside');
+    sidebar.className = 'toc-sidebar';
+    sidebar.setAttribute('aria-label', 'Table of Contents');
+
+    // Inner wrapper for sticky behavior
+    var stickyWrapper = doc.createElement('div');
+    stickyWrapper.className = 'toc-sticky';
+
+    var container = doc.createElement('div');
+    container.className = 'toc-container';
+
+    // Header
+    var header = doc.createElement('div');
+    header.className = 'toc-header';
+    header.innerHTML = '<h3 class="toc-title">On this page</h3>';
+
+    // List
+    var list = doc.createElement('ul');
+    list.className = 'toc-list';
+
+    state.headings.forEach(function (heading, index) {
+      var item = doc.createElement('li');
+      item.className = 'toc-item';
+
+      var link = doc.createElement('a');
+      link.className = 'toc-link';
+      link.href = '#' + heading.id;
+      link.textContent = heading.text;
+      link.setAttribute('data-level', heading.level);
+      link.setAttribute('data-index', index);
+
+      item.appendChild(link);
+      list.appendChild(item);
+      elements.links.push(link);
+    });
+
+    container.appendChild(header);
+    container.appendChild(list);
+    stickyWrapper.appendChild(container);
+    sidebar.appendChild(stickyWrapper);
+
+    // Assemble the layout: content first, then TOC
+    wrapper.appendChild(contentContainer);
+    wrapper.appendChild(sidebar);
+
+    // Insert wrapper into article inner
+    articleInner.appendChild(wrapper);
+
+    elements.sidebar = sidebar;
+    elements.tocList = list;
+  }
+
+  /**
+   * Fallback: Create TOC appended to body (original behavior)
+   */
+  function createDesktopTOCFallback() {
+    var sidebar = doc.createElement('aside');
+    sidebar.className = 'toc-sidebar toc-sidebar-fallback';
+    sidebar.setAttribute('aria-label', 'Table of Contents');
+
+    var container = doc.createElement('div');
+    container.className = 'toc-container';
+
+    var header = doc.createElement('div');
+    header.className = 'toc-header';
+    header.innerHTML =
+      '<div class="toc-icon">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<line x1="8" y1="6" x2="21" y2="6"></line>' +
+          '<line x1="8" y1="12" x2="21" y2="12"></line>' +
+          '<line x1="8" y1="18" x2="21" y2="18"></line>' +
+          '<line x1="3" y1="6" x2="3.01" y2="6"></line>' +
+          '<line x1="3" y1="12" x2="3.01" y2="12"></line>' +
+          '<line x1="3" y1="18" x2="3.01" y2="18"></line>' +
+        '</svg>' +
+      '</div>' +
+      '<h3 class="toc-title">On this page</h3>';
+
+    var list = doc.createElement('ul');
+    list.className = 'toc-list';
+
+    state.headings.forEach(function (heading, index) {
+      var item = doc.createElement('li');
+      item.className = 'toc-item';
+
+      var link = doc.createElement('a');
+      link.className = 'toc-link';
+      link.href = '#' + heading.id;
+      link.textContent = heading.text;
+      link.setAttribute('data-level', heading.level);
+      link.setAttribute('data-index', index);
+
+      item.appendChild(link);
+      list.appendChild(item);
+      elements.links.push(link);
+    });
+
+    container.appendChild(header);
+    container.appendChild(list);
+    sidebar.appendChild(container);
+
+    doc.body.appendChild(sidebar);
+    elements.sidebar = sidebar;
+    elements.tocList = list;
+  }
+
+  /**
+   * Create mobile TOC (trigger button, overlay, drawer)
+   */
+  function createMobileTOC() {
+    // Trigger button
+    var trigger = doc.createElement('button');
+    trigger.className = 'toc-mobile-trigger';
+    trigger.setAttribute('aria-label', 'Open table of contents');
+    trigger.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<line x1="8" y1="6" x2="21" y2="6"></line>' +
+        '<line x1="8" y1="12" x2="21" y2="12"></line>' +
+        '<line x1="8" y1="18" x2="21" y2="18"></line>' +
+        '<line x1="3" y1="6" x2="3.01" y2="6"></line>' +
+        '<line x1="3" y1="12" x2="3.01" y2="12"></line>' +
+        '<line x1="3" y1="18" x2="3.01" y2="18"></line>' +
+      '</svg>';
+
+    // Overlay
+    var overlay = doc.createElement('div');
+    overlay.className = 'toc-mobile-overlay';
+
+    // Drawer
+    var drawer = doc.createElement('div');
+    drawer.className = 'toc-mobile-drawer';
+    drawer.setAttribute('role', 'dialog');
+    drawer.setAttribute('aria-label', 'Table of Contents');
+
+    // Drawer handle
+    var handle = doc.createElement('div');
+    handle.className = 'toc-mobile-handle';
+
+    // Drawer header
+    var header = doc.createElement('div');
+    header.className = 'toc-mobile-header';
+    header.innerHTML =
+      '<h3 class="toc-mobile-title">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<line x1="8" y1="6" x2="21" y2="6"></line>' +
+          '<line x1="8" y1="12" x2="21" y2="12"></line>' +
+          '<line x1="8" y1="18" x2="21" y2="18"></line>' +
+          '<line x1="3" y1="6" x2="3.01" y2="6"></line>' +
+          '<line x1="3" y1="12" x2="3.01" y2="12"></line>' +
+          '<line x1="3" y1="18" x2="3.01" y2="18"></line>' +
+        '</svg>' +
+        'On this page' +
+      '</h3>';
+
+    // Close button
+    var closeBtn = doc.createElement('button');
+    closeBtn.className = 'toc-mobile-close';
+    closeBtn.setAttribute('aria-label', 'Close table of contents');
+    closeBtn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<line x1="18" y1="6" x2="6" y2="18"></line>' +
+        '<line x1="6" y1="6" x2="18" y2="18"></line>' +
+      '</svg>';
+    header.appendChild(closeBtn);
+
+    // Content
+    var content = doc.createElement('div');
+    content.className = 'toc-mobile-content';
+
+    // List
+    var list = doc.createElement('ul');
+    list.className = 'toc-mobile-list';
+
+    state.headings.forEach(function (heading, index) {
+      var item = doc.createElement('li');
+      item.className = 'toc-mobile-item';
+
+      var link = doc.createElement('a');
+      link.className = 'toc-mobile-link';
+      link.href = '#' + heading.id;
+      link.textContent = heading.text;
+      link.setAttribute('data-level', heading.level);
+      link.setAttribute('data-index', index);
+
+      item.appendChild(link);
+      list.appendChild(item);
+      elements.mobileLinks.push(link);
+    });
+
+    content.appendChild(list);
+    drawer.appendChild(handle);
+    drawer.appendChild(header);
+    drawer.appendChild(content);
+
+    doc.body.appendChild(trigger);
+    doc.body.appendChild(overlay);
+    doc.body.appendChild(drawer);
+
+    elements.mobileTrigger = trigger;
+    elements.mobileOverlay = overlay;
+    elements.mobileDrawer = drawer;
+    elements.mobileTocList = list;
+  }
+
+  /**
+   * Setup event listeners
+   */
+  function setupEventListeners() {
+    // Scroll spy
+    var throttledScrollSpy = throttle(updateScrollSpy, config.throttleDelay);
+    win.addEventListener('scroll', throttledScrollSpy, { passive: true });
+    win.addEventListener('resize', throttledScrollSpy, { passive: true });
+
+    // Desktop TOC link clicks
+    elements.links.forEach(function (link) {
+      link.addEventListener('click', handleLinkClick);
+    });
+
+    // Mobile trigger
+    elements.mobileTrigger.addEventListener('click', openMobileTOC);
+
+    // Mobile overlay click
+    elements.mobileOverlay.addEventListener('click', closeMobileTOC);
+
+    // Mobile close button
+    var closeBtn = elements.mobileDrawer.querySelector('.toc-mobile-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeMobileTOC);
+    }
+
+    // Mobile link clicks
+    elements.mobileLinks.forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        handleLinkClick(e);
+        closeMobileTOC();
+      });
+    });
+
+    // Escape key to close mobile TOC
+    doc.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && state.isOpen) {
+        closeMobileTOC();
+      }
+    });
+
+    // Handle swipe down to close
+    setupSwipeToClose();
+  }
+
+  /**
+   * Handle TOC link click
+   */
+  function handleLinkClick(e) {
+    e.preventDefault();
+    var href = e.currentTarget.getAttribute('href');
+    var targetId = href.substring(1);
+    var target = doc.getElementById(targetId);
+
+    if (target) {
+      var offsetTop = target.getBoundingClientRect().top + win.pageYOffset - config.scrollOffset;
+      win.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+
+      // Update URL hash without jumping
+      if (history.pushState) {
+        history.pushState(null, null, href);
+      }
+    }
+  }
+
+  /**
+   * Update scroll spy - highlight current section
+   */
+  function updateScrollSpy() {
+    var scrollTop = win.pageYOffset || doc.documentElement.scrollTop;
+    var viewportHeight = win.innerHeight;
+    var activeIndex = -1;
+
+    // Find the current active heading
+    for (var i = state.headings.length - 1; i >= 0; i--) {
+      var heading = state.headings[i];
+      var rect = heading.element.getBoundingClientRect();
+      var offsetTop = rect.top + scrollTop;
+
+      if (scrollTop >= offsetTop - config.scrollOffset - 50) {
+        activeIndex = i;
+        break;
+      }
+    }
+
+    // Update active state if changed
+    if (activeIndex !== state.activeIndex) {
+      state.activeIndex = activeIndex;
+
+      // Update desktop links
+      elements.links.forEach(function (link, index) {
+        link.classList.toggle('is-active', index === activeIndex);
+      });
+
+      // Update mobile links
+      elements.mobileLinks.forEach(function (link, index) {
+        link.classList.toggle('is-active', index === activeIndex);
+      });
+
+      // Scroll active item into view in desktop TOC
+      if (activeIndex >= 0 && elements.tocList) {
+        var activeLink = elements.links[activeIndex];
+        if (activeLink) {
+          var listRect = elements.tocList.getBoundingClientRect();
+          var linkRect = activeLink.getBoundingClientRect();
+
+          if (linkRect.top < listRect.top || linkRect.bottom > listRect.bottom) {
+            activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Open mobile TOC
+   */
+  function openMobileTOC() {
+    state.isOpen = true;
+    doc.body.classList.add('toc-open');
+    elements.mobileOverlay.classList.add('is-open');
+    elements.mobileDrawer.classList.add('is-open');
+    elements.mobileTrigger.setAttribute('aria-expanded', 'true');
+  }
+
+  /**
+   * Close mobile TOC
+   */
+  function closeMobileTOC() {
+    state.isOpen = false;
+    doc.body.classList.remove('toc-open');
+    elements.mobileOverlay.classList.remove('is-open');
+    elements.mobileDrawer.classList.remove('is-open');
+    elements.mobileTrigger.setAttribute('aria-expanded', 'false');
+  }
+
+  /**
+   * Setup swipe down to close mobile drawer
+   */
+  function setupSwipeToClose() {
+    var drawer = elements.mobileDrawer;
+    var handle = drawer.querySelector('.toc-mobile-handle');
+    if (!handle) return;
+
+    var startY = 0;
+    var currentY = 0;
+    var isDragging = false;
+
+    handle.addEventListener('touchstart', function (e) {
+      startY = e.touches[0].clientY;
+      isDragging = true;
+    }, { passive: true });
+
+    handle.addEventListener('touchmove', function (e) {
+      if (!isDragging) return;
+      currentY = e.touches[0].clientY;
+      var diff = currentY - startY;
+
+      if (diff > 0) {
+        drawer.style.transform = 'translateY(' + diff + 'px)';
+      }
+    }, { passive: true });
+
+    handle.addEventListener('touchend', function () {
+      if (!isDragging) return;
+      isDragging = false;
+
+      var diff = currentY - startY;
+      drawer.style.transform = '';
+
+      if (diff > 100) {
+        closeMobileTOC();
+      }
+    }, { passive: true });
+  }
+
+  /**
+   * Throttle function
+   */
+  function throttle(fn, delay) {
+    var lastCall = 0;
+    var timeout = null;
+
+    return function () {
+      var now = Date.now();
+      var remaining = delay - (now - lastCall);
+
+      if (remaining <= 0) {
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+        lastCall = now;
+        fn();
+      } else if (!timeout) {
+        timeout = setTimeout(function () {
+          lastCall = Date.now();
+          timeout = null;
+          fn();
+        }, remaining);
+      }
+    };
+  }
+
+  /**
+   * Initialize when DOM is ready
+   */
+  function onReady(fn) {
+    if (doc.readyState === 'loading') {
+      doc.addEventListener('DOMContentLoaded', fn);
+    } else {
+      fn();
+    }
+  }
+
+  onReady(init);
+})();

@@ -1,65 +1,66 @@
 /* ==========================================================================
-   Table of Contents - Minimal Sidebar Navigation (Ghost Style)
+   Table of Contents - Sticky Sidebar Navigation
    ========================================================================== */
 
 // TOC Variables
-$toc-width: 180px;
-$toc-offset-top: 6rem;  // More space from top
-$toc-gap-from-content: 4rem;  // Gap between content and TOC
+$toc-width: 220px;
+$toc-offset-top: 3rem;
+$toc-gap: 4rem;
 $toc-transition: all 0.25s ease;
-$toc-breakpoint-medium: 640px;
+$toc-breakpoint: 1400px;
 $toc-breakpoint-small: 480px;
 
-// When TOC is present, the article content should remain centered
+// When TOC is present, fix overflow to allow sticky positioning
+.has-toc {
+  // Override body overflow-x to allow sticky to work
+  overflow-x: clip !important;  // clip allows sticky, hidden breaks it
+}
+
+// When TOC is present, expand the inner container
 .has-toc article .inner {
-  position: relative;
-}
+  max-width: calc(64rem + 8vw + #{$toc-width} + #{$toc-gap});
+  padding: 0 2rem;
 
-// Article wrapper with TOC - content stays centered
-.article-with-toc {
-  display: block;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-}
-
-// Main content area - centered with normal max-width
-.article-content {
-  max-width: calc(64rem + 8vw);
-  width: 100%;
-  margin: 0 auto;
-}
-
-// Desktop TOC Sidebar - fixed position on the right with more gap
-.toc-sidebar {
-  position: fixed;
-  top: $toc-offset-top;
-  right: calc((100vw - 64rem - 8vw) / 2 - #{$toc-width} - #{$toc-gap-from-content});
-  width: $toc-width;
-  max-height: calc(100vh - #{$toc-offset-top} - 4rem);
-  z-index: 100;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: $toc-transition;
-
-  &.is-visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  @media only screen and (max-width: $toc-breakpoint) {
+    max-width: calc(64rem + 8vw);
   }
+}
 
-  // Hide on smaller screens
-  @media only screen and (max-width: 1500px) {
+// Article wrapper - flex layout with content taking priority
+.article-with-toc {
+  display: flex;
+  align-items: flex-start;
+  gap: $toc-gap;
+
+  @media only screen and (max-width: $toc-breakpoint) {
+    display: block;
+  }
+}
+
+// Main content area - takes up available space, max-width for readability
+.article-content {
+  flex: 1;
+  max-width: calc(64rem + 8vw);
+  min-width: 0;
+}
+
+// Desktop TOC Sidebar - flex item with sticky content
+.toc-sidebar {
+  flex-shrink: 0;
+  width: $toc-width;
+  align-self: stretch;  // Full height of flex container
+
+  @media only screen and (max-width: $toc-breakpoint) {
     display: none;
   }
 }
 
-// TOC Container - minimal design (no card)
-.toc-container {
-  padding: 0;
-  overflow-y: auto;
+// Sticky wrapper - this is what actually sticks
+.toc-sticky {
+  position: sticky;
+  top: $toc-offset-top;
   max-height: calc(100vh - #{$toc-offset-top} - 2rem);
+  overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-background-contrast) transparent;
 
@@ -77,10 +78,15 @@ $toc-breakpoint-small: 480px;
   }
 }
 
-// TOC Header - minimal, just bold text
+// TOC Container
+.toc-container {
+  padding: 0;
+}
+
+// TOC Header
 .toc-header {
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--color-background-contrast);
 }
 
@@ -89,10 +95,10 @@ $toc-breakpoint-small: 480px;
   display: none;
 }
 
-// TOC Title - simple bold text like Ghost
+// TOC Title
 .toc-title {
   font-family: var(--gh-font-body);
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: var(--color-content-main);
   margin: 0;
@@ -117,14 +123,14 @@ $toc-breakpoint-small: 480px;
   }
 }
 
-// TOC Link - refined minimal style
+// TOC Link
 .toc-link {
   display: block;
-  padding: 0.4rem 0;
-  font-size: 1.3rem;
-  line-height: 1.5;
+  padding: 0.5rem 0;
+  font-size: 1.5rem;
+  line-height: 1.6;
   font-weight: 400;
-  color: color-mix(in srgb, var(--color-content-main) 55%, transparent);
+  color: color-mix(in srgb, var(--color-content-main) 60%, transparent);
   text-decoration: none;
   transition: color 0.15s ease;
   word-break: break-word;
@@ -138,15 +144,15 @@ $toc-breakpoint-small: 480px;
     font-weight: 500;
   }
 
-  // Heading level indentation - subtle hierarchy
+  // Heading level indentation
   &[data-level="3"] {
-    padding-left: 0.75rem;
-    font-size: 1.25rem;
+    padding-left: 1rem;
+    font-size: 1.4rem;
   }
 
   &[data-level="4"] {
-    padding-left: 1.5rem;
-    font-size: 1.2rem;
+    padding-left: 2rem;
+    font-size: 1.35rem;
   }
 }
 
@@ -198,7 +204,7 @@ $toc-breakpoint-small: 480px;
     height: 2.4rem;
   }
 
-  @media only screen and (max-width: 1500px) {
+  @media only screen and (max-width: $toc-breakpoint) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -233,7 +239,7 @@ $toc-breakpoint-small: 480px;
     visibility: visible;
   }
 
-  @media only screen and (max-width: 1500px) {
+  @media only screen and (max-width: $toc-breakpoint) {
     display: block;
   }
 }
@@ -263,7 +269,7 @@ $toc-breakpoint-small: 480px;
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
   }
 
-  @media only screen and (max-width: 1500px) {
+  @media only screen and (max-width: $toc-breakpoint) {
     display: block;
   }
 }
@@ -423,7 +429,7 @@ $toc-breakpoint-small: 480px;
 .toc-open {
   overflow: hidden;
 
-  @media only screen and (min-width: 1501px) {
+  @media only screen and (min-width: #{$toc-breakpoint + 1px}) {
     overflow: auto;
   }
 }
@@ -445,11 +451,11 @@ $toc-breakpoint-small: 480px;
 .toc-sidebar-fallback {
   position: fixed;
   top: $toc-offset-top;
-  right: calc((100vw - 64rem - 8vw) / 2 - #{$toc-width} - #{$toc-gap-from-content});
+  right: 2rem;
   width: $toc-width;
   max-height: calc(100vh - #{$toc-offset-top} - 4rem);
 
-  @media only screen and (max-width: 1500px) {
+  @media only screen and (max-width: $toc-breakpoint) {
     display: none;
   }
 }
