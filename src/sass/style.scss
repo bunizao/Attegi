@@ -184,17 +184,18 @@ textarea {
 		font-weight: 400;
 	}
 
-	blockquote * {
+	// Optimized: use child selector instead of universal selector
+	blockquote > * {
 		margin: 0 0 1em;
 		font-family: inherit;
 		color: inherit;
 	}
 
-	blockquote *:first-child {
+	blockquote > :first-child {
 		margin-top: 0;
 	}
 
-	blockquote *:last-child {
+	blockquote > :last-child {
 		margin-bottom: 0;
 	}
 
@@ -1029,12 +1030,21 @@ textarea {
 		height: 100%;
 	}
 
-	.kg-gallery-row:not(:first-of-type) {
+	// Optimized: split :not() into separate rules for better performance
+	.kg-gallery-row {
 		margin: 0.75em 0 0;
 	}
 
-	.kg-gallery-image:not(:first-of-type) {
+	.kg-gallery-row:first-of-type {
+		margin: 0;
+	}
+
+	.kg-gallery-image {
 		margin: 0 0 0 0.75em;
+	}
+
+	.kg-gallery-image:first-of-type {
+		margin: 0;
 	}
 
 	// KG Embed
