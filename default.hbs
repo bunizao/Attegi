@@ -11,6 +11,10 @@
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+	{{!-- Resource Hints --}}
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
 		<script>
 			// Preload theme class ASAP to avoid light flash
 			(function instantTheme() {
@@ -53,7 +57,8 @@
 		</script>
 
 	{{!-- Styles'n'Scripts --}}
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css" media="print" onload="this.media='all'" />
+	<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css" /></noscript>
 	<style>
 		a.nav-menu,
 		a.nav-search,
