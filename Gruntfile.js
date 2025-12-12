@@ -75,6 +75,17 @@ module.exports = function(grunt) {
         src: '<%=  config.cssTargetDir %>/*.css'
       }
     },
+    cssmin: {
+      dist: {
+        options: {
+          level: 2,
+          specialComments: 0
+        },
+        files: {
+          '<%= config.cssTargetDir %>/style.css': '<%= config.cssTargetDir %>/style.css'
+        }
+      }
+    },
     uglify: {
       main: {
         files: {
@@ -149,6 +160,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'sass:dist',
     'postcss:dist',
+    'cssmin:dist',
     'copy:dist',
     'uglify:main',
     'uglify:post',
