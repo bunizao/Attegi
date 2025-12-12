@@ -5071,3 +5071,40 @@ a.post-tag-chip {
 		height: 36px;
 	}
 }
+
+/* ==========================================================================
+   Reading Progress Bar
+   ========================================================================== */
+
+.progress-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background: rgba(0, 0, 0, 0.05);
+	z-index: 9999;
+	pointer-events: none;
+
+	&.complete {
+		opacity: 0;
+		transition: opacity 0.5s ease 0.3s;
+	}
+}
+
+.theme-dark .progress-container {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.progress-bar {
+	height: 100%;
+	width: 0%;
+	background: var(--ghost-accent-color);
+	transition: width 0.1s ease-out;
+	border-radius: 0 2px 2px 0;
+}
+
+/* Hide progress bar when TOC is present (TOC has its own progress indicator) */
+.has-toc .progress-container {
+	display: none;
+}
