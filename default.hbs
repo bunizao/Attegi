@@ -57,8 +57,8 @@
 		</script>
 
 	{{!-- Styles'n'Scripts --}}
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css" media="print" onload="this.media='all'" />
-	<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css" /></noscript>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/css/glightbox.min.css" media="print" onload="this.media='all'" />
+	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/css/glightbox.min.css" /></noscript>
 	<style>
 		a.nav-menu,
 		a.nav-search,
@@ -242,7 +242,7 @@
 
 	{{!-- Load basic scripts --}}
 	<script defer src="{{asset "js/script.js"}}"></script>
-	<script defer src="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/js/glightbox.min.js"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 			// Wrap gallery images with lightbox links
@@ -278,6 +278,31 @@
 
 	{{!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. --}}
 	{{{block "scripts"}}}
+
+	{{!-- Capture Ghost portal URL for lazy loading --}}
+	{{#if @site.members_enabled}}
+	<script>
+		// Intercept Ghost portal script injection for lazy loading
+		(function() {
+			var observer = new MutationObserver(function(mutations) {
+				mutations.forEach(function(mutation) {
+					mutation.addedNodes.forEach(function(node) {
+						if (node.tagName === 'SCRIPT' && node.src && node.src.indexOf('portal') !== -1) {
+							// Capture portal URL
+							window.ghost = window.ghost || {};
+							window.ghost.portal = node.src;
+							// Remove the script to prevent auto-loading
+							node.remove();
+							// Stop observing once we found it
+							observer.disconnect();
+						}
+					});
+				});
+			});
+			observer.observe(document.documentElement, { childList: true, subtree: true });
+		})();
+	</script>
+	{{/if}}
 
 	{{!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag --}}
 	{{ghost_foot}}
