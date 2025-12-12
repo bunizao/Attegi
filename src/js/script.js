@@ -192,4 +192,64 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
   theme();
+
+/* ==========================================================================
+   Lazy load Ghost Portal
+   ========================================================================== */
+
+  (function lazyLoadPortal() {
+    'use strict';
+
+    // Check if members are enabled
+    if (!document.querySelector('[data-portal]')) return;
+
+    var portalButtons = document.querySelectorAll('[data-portal]');
+    var portalLoaded = false;
+    var portalLoading = false;
+    var portalUrl = window.ghost && window.ghost.portal ? window.ghost.portal : null;
+
+    function loadPortalScript() {
+      if (portalLoaded || portalLoading || !portalUrl) return;
+      portalLoading = true;
+
+      var script = document.createElement('script');
+      script.src = portalUrl;
+      script.async = true;
+      script.setAttribute('data-ghost', portalUrl);
+      script.onload = function() {
+        portalLoaded = true;
+        portalLoading = false;
+      };
+      script.onerror = function() {
+        portalLoading = false;
+        console.error('Failed to load Ghost Portal');
+      };
+      document.body.appendChild(script);
+    }
+
+    // Add click listeners to all portal buttons
+    portalButtons.forEach(function(button) {
+      // Load on click
+      button.addEventListener('click', function(e) {
+        if (!portalLoaded && !portalLoading) {
+          e.preventDefault();
+          loadPortalScript();
+          // Retry click after portal loads
+          setTimeout(function() {
+            button.click();
+          }, 500);
+        }
+      }, { passive: false });
+
+      // Preload on hover for better UX
+      button.addEventListener('mouseenter', function() {
+        loadPortalScript();
+      }, { once: true, passive: true });
+
+      // Preload on focus (keyboard navigation)
+      button.addEventListener('focus', function() {
+        loadPortalScript();
+      }, { once: true, passive: true });
+    });
+  })();
 });
