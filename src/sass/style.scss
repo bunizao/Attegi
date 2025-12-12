@@ -5073,38 +5073,116 @@ a.post-tag-chip {
 }
 
 /* ==========================================================================
-   Reading Progress Bar
+   Back to Top Button with Progress Ring (Liquid Glass Design)
    ========================================================================== */
 
-.progress-container {
+.back-to-top {
 	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 3px;
-	background: rgba(0, 0, 0, 0.05);
-	z-index: 9999;
-	pointer-events: none;
+	bottom: 32px;
+	right: 32px;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	cursor: pointer;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(20px);
+	transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 
-	&.complete {
-		opacity: 0;
-		transition: opacity 0.5s ease 0.3s;
+	// Liquid glass effect
+	background: rgba(255,255,255,0.08);
+	border: none;
+	box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+	-webkit-backdrop-filter: url(#liquid-glass);
+	backdrop-filter: url(#liquid-glass);
+
+	&.is-visible {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+
+	&:hover {
+		transform: translateY(-2px);
+	}
+
+	&:active {
+		transform: translateY(0);
 	}
 }
 
-.theme-dark .progress-container {
-	background: rgba(255, 255, 255, 0.1);
+// Dark theme
+.theme-dark .back-to-top {
+	background: rgba(255,255,255,0.1);
+	box-shadow: 0 16px 32px rgba(0,0,0,0.25);
 }
 
-.progress-bar {
-	height: 100%;
-	width: 0%;
-	background: var(--ghost-accent-color);
-	transition: width 0.1s ease-out;
-	border-radius: 0 2px 2px 0;
+/* Progress ring */
+.back-to-top .progress-ring {
+	position: absolute;
+	width: 48px;
+	height: 48px;
+	transform: rotate(-90deg);
 }
 
-/* Hide progress bar when TOC is present (TOC has its own progress indicator) */
-.has-toc .progress-container {
+.back-to-top .progress-ring__bg {
+	fill: none;
+	stroke: rgba(0, 0, 0, 0.08);
+	stroke-width: 2;
+}
+
+.theme-dark .back-to-top .progress-ring__bg {
+	stroke: rgba(255, 255, 255, 0.1);
+}
+
+.back-to-top .progress-ring__progress {
+	fill: none;
+	stroke: var(--ghost-accent-color);
+	stroke-width: 2.5;
+	stroke-linecap: round;
+	stroke-dasharray: 125.6; /* 2 * PI * 20 */
+	stroke-dashoffset: 125.6;
+	transition: stroke-dashoffset 0.1s ease-out;
+}
+
+/* Arrow icon */
+.back-to-top__icon {
+	width: 20px;
+	height: 20px;
+	color: rgba(0, 0, 0, 0.6);
+	position: relative;
+	z-index: 1;
+}
+
+.theme-dark .back-to-top__icon {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+/* Hide when TOC is present */
+.has-toc .back-to-top {
 	display: none;
+}
+
+/* Mobile adjustments */
+@media only screen and (max-width: 768px) {
+	.back-to-top {
+		bottom: 24px;
+		right: 24px;
+		width: 44px;
+		height: 44px;
+	}
+
+	.back-to-top .progress-ring {
+		width: 44px;
+		height: 44px;
+	}
+
+	.back-to-top__icon {
+		width: 18px;
+		height: 18px;
+	}
 }

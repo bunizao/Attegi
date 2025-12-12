@@ -1,9 +1,15 @@
 {{!< default}}
 
-{{!-- Reading progress bar --}}
-<div class="progress-container">
-	<div class="progress-bar"></div>
-</div>
+{{!-- Back to top button with progress ring (shown when no TOC) --}}
+<button class="back-to-top" aria-label="Back to top">
+	<svg class="progress-ring" viewBox="0 0 44 44">
+		<circle class="progress-ring__bg" cx="22" cy="22" r="20"></circle>
+		<circle class="progress-ring__progress" cx="22" cy="22" r="20"></circle>
+	</svg>
+	<svg class="back-to-top__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<polyline points="18 15 12 9 6 15"></polyline>
+	</svg>
+</button>
 
 {{!-- Everything inside the #post tags pulls data from the post --}}
 {{#post}}
@@ -202,4 +208,75 @@
 <script defer src="{{asset "js/post.js"}}" data-highlight="{{asset "js/highlight.pack.js"}}"></script>
 <script defer src="{{asset "js/tocbot.min.js"}}"></script>
 <script defer src="{{asset "js/toc.js"}}"></script>
+<script>
+(function() {
+	var btn = document.querySelector('.back-to-top');
+	var progress = btn ? btn.querySelector('.progress-ring__progress') : null;
+	var content = document.querySelector('.post-content');
+	if (!btn || !progress || !content) return;
+
+	var circumference = 2 * Math.PI * 20; // r=20
+	var articleTop = 0;
+	var articleHeight = 0;
+	var isVisible = false;
+
+	function updateProgress() {
+		var rect = content.getBoundingClientRect();
+		articleTop = rect.top + window.pageYOffset;
+		articleHeight = rect.height;
+
+		var scrollY = window.pageYOffset;
+		var windowHeight = window.innerHeight;
+		var scrollableHeight = articleHeight - windowHeight;
+
+		// Calculate progress (0 to 1)
+		var progressValue = 0;
+		if (scrollableHeight > 0) {
+			progressValue = Math.max(0, Math.min((scrollY - articleTop + windowHeight * 0.3) / scrollableHeight, 1));
+		}
+
+		// Update progress ring
+		var offset = circumference * (1 - progressValue);
+		progress.style.strokeDashoffset = offset;
+
+		// Show/hide button based on scroll position
+		var shouldShow = scrollY > 200;
+		if (shouldShow !== isVisible) {
+			isVisible = shouldShow;
+			btn.classList.toggle('is-visible', shouldShow);
+		}
+	}
+
+	// Scroll to top on click
+	btn.addEventListener('click', function() {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	});
+
+	// Throttled scroll handler
+	var ticking = false;
+	function onScroll() {
+		if (!ticking) {
+			window.requestAnimationFrame(function() {
+				updateProgress();
+				ticking = false;
+			});
+			ticking = true;
+		}
+	}
+
+	window.addEventListener('scroll', onScroll, { passive: true });
+	window.addEventListener('resize', onScroll, { passive: true });
+
+	// Initial update
+	updateProgress();
+
+	// Show button after a short delay
+	setTimeout(function() {
+		if (window.pageYOffset > 200) {
+			btn.classList.add('is-visible');
+			isVisible = true;
+		}
+	}, 500);
+})();
+</script>
 {{/contentFor}}
