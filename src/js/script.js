@@ -124,7 +124,9 @@ document.addEventListener("DOMContentLoaded", function() {
       container.style.flex = ratio + ' 1 0%';
     });
   }
-  gallery();
+
+  // Defer gallery calculation to next event loop
+  setTimeout(gallery, 0);
 
 /* ==========================================================================
    Theme
@@ -191,13 +193,16 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
   }
-  theme();
+
+  // Defer theme toggle setup to next event loop (theme is already set in <head>)
+  setTimeout(theme, 0);
 
 /* ==========================================================================
    Lazy load Ghost Portal
    ========================================================================== */
 
-  (function lazyLoadPortal() {
+  // Defer portal button setup to next event loop
+  setTimeout(function lazyLoadPortal() {
     'use strict';
 
     // Check if members are enabled
@@ -251,5 +256,5 @@ document.addEventListener("DOMContentLoaded", function() {
         loadPortalScript();
       }, { once: true, passive: true });
     });
-  })();
+  }, 0);
 });
