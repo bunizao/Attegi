@@ -166,22 +166,7 @@
 					{{/if}}
 					{{navigation}}
 					<a class="nav-search" href="#search" role="button" aria-label="{{t "Search"}}" data-ghost-search><i class="icon icon-search" aria-hidden="true">{{> "icons/icon-search"}}</i></a>
-					{{#if @site.members_enabled}}
-						<span class="nav-members">
-							{{#unless @member}}
-								{{#unless @site.members_invite_only}}
-									<a class="nav-button-secondary" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
-								{{#unless hideSubscribeButton}}
-									<a class="nav-button-primary" href="#/portal/signup" data-portal="signup">{{t "Subscribe"}}</a>
-								{{/unless}}
-							{{else}}
-								<a class="nav-button-primary" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
-							{{/unless}}
-						{{else}}
-							<a class="nav-button-secondary" href="#/portal/account" data-portal="account">{{t "Account"}}</a>
-						{{/unless}}
-					</span>
-				{{/if}}
+					{{!-- Member buttons removed as requested --}}
 			</nav>
 
 				<div class="nav-wrapper-control">
