@@ -5,13 +5,16 @@ document.addEventListener("DOMContentLoaded", function() {
   var navClose = document.querySelector(".nav-close");
 
   function setMenuState(isOpen) {
-    documentElement.classList.toggle("menu-active", isOpen);
-    if (navMenu) {
-      navMenu.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    }
-    if (navClose) {
-      navClose.setAttribute("aria-hidden", isOpen ? "false" : "true");
-    }
+    // Use RAF to batch DOM operations and sync with browser repaint
+    requestAnimationFrame(function() {
+      documentElement.classList.toggle("menu-active", isOpen);
+      if (navMenu) {
+        navMenu.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      }
+      if (navClose) {
+        navClose.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      }
+    });
   }
 
   function toggleMenu(event) {
@@ -116,12 +119,15 @@ document.addEventListener("DOMContentLoaded", function() {
   function gallery() {
     'use strict';
     var images = document.querySelectorAll('.kg-gallery-image img');
-    images.forEach(function(image) {
-      var container = image.closest('.kg-gallery-image');
-      var width = image.attributes.width.value;
-      var height = image.attributes.height.value;
-      var ratio = width / height;
-      container.style.flex = ratio + ' 1 0%';
+    // Batch all style changes in a single RAF to avoid multiple reflows
+    requestAnimationFrame(function() {
+      images.forEach(function(image) {
+        var container = image.closest('.kg-gallery-image');
+        var width = image.attributes.width.value;
+        var height = image.attributes.height.value;
+        var ratio = width / height;
+        container.style.flex = ratio + ' 1 0%';
+      });
     });
   }
 
@@ -139,32 +145,41 @@ document.addEventListener("DOMContentLoaded", function() {
     var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     function system() {
-      documentElement.classList.remove('theme-dark', 'theme-light');
-      if (prefersDark) {
-        documentElement.classList.add('theme-dark');
-      }
+      // Use RAF to batch theme changes and sync with browser repaint
+      requestAnimationFrame(function() {
+        documentElement.classList.remove('theme-dark', 'theme-light');
+        if (prefersDark) {
+          documentElement.classList.add('theme-dark');
+        }
+        if (toggleText) {
+          toggleText.textContent = toggle.getAttribute('data-system');
+        }
+      });
       localStorage.setItem('attegi_theme', 'system');
-      if (toggleText) {
-        toggleText.textContent = toggle.getAttribute('data-system');
-      }
     }
 
     function dark() {
-      documentElement.classList.remove('theme-light');
-      documentElement.classList.add('theme-dark');
+      // Use RAF to batch theme changes and sync with browser repaint
+      requestAnimationFrame(function() {
+        documentElement.classList.remove('theme-light');
+        documentElement.classList.add('theme-dark');
+        if (toggleText) {
+          toggleText.textContent = toggle.getAttribute('data-dark');
+        }
+      });
       localStorage.setItem('attegi_theme', 'dark');
-      if (toggleText) {
-        toggleText.textContent = toggle.getAttribute('data-dark');
-      }
     }
 
     function light() {
-      documentElement.classList.remove('theme-dark');
-      documentElement.classList.add('theme-light');
+      // Use RAF to batch theme changes and sync with browser repaint
+      requestAnimationFrame(function() {
+        documentElement.classList.remove('theme-dark');
+        documentElement.classList.add('theme-light');
+        if (toggleText) {
+          toggleText.textContent = toggle.getAttribute('data-light');
+        }
+      });
       localStorage.setItem('attegi_theme', 'light');
-      if (toggleText) {
-        toggleText.textContent = toggle.getAttribute('data-light');
-      }
     }
 
     switch (localStorage.getItem('attegi_theme')) {
