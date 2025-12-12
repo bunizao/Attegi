@@ -4926,3 +4926,148 @@ a.post-tag-chip {
 .link-card:hover .link-card-image img {
 	transform: scale(1.05);
 }
+
+/* ==========================================================================
+   GLightbox - Clean Style (like Format theme)
+   ========================================================================== */
+
+/* Gallery image hover effect */
+.kg-gallery-image img,
+.kg-image-card img {
+	cursor: zoom-in;
+	transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1);
+	border-radius: 8px;
+}
+
+.kg-gallery-image img:hover,
+.kg-image-card img:hover {
+	transform: scale(1.01);
+}
+
+/* GLightbox - Clean white background */
+.glightbox-container .goverlay {
+	background: rgba(250, 250, 250, 0.98) !important;
+}
+
+.theme-dark .glightbox-container .goverlay {
+	background: rgba(20, 20, 20, 0.98) !important;
+}
+
+/* Image container - smaller sizing */
+.glightbox-container .gslide {
+	padding: 80px !important;
+}
+
+.glightbox-container .gslide-image img {
+	max-width: 70vw !important;
+	max-height: 70vh !important;
+	border-radius: 0;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Navigation arrows - more visible */
+.glightbox-container .gnext,
+.glightbox-container .gprev {
+	width: 44px;
+	height: 44px;
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	border: none;
+	transition: all 0.2s ease;
+
+	svg {
+		fill: #fff;
+		width: 18px;
+		height: 18px;
+	}
+
+	&:hover {
+		background: rgba(0, 0, 0, 0.7);
+	}
+}
+
+.theme-dark .glightbox-container .gnext,
+.theme-dark .glightbox-container .gprev {
+	background: rgba(255, 255, 255, 0.3);
+
+	svg {
+		fill: #fff;
+	}
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.5);
+	}
+}
+
+/* Close button - more visible */
+.glightbox-container .gclose {
+	width: 40px;
+	height: 40px;
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	border: none;
+	top: 20px;
+	right: 20px;
+	transition: all 0.2s ease;
+
+	svg {
+		fill: #fff;
+		width: 16px;
+		height: 16px;
+	}
+
+	&:hover {
+		background: rgba(0, 0, 0, 0.7);
+	}
+}
+
+.theme-dark .glightbox-container .gclose {
+	background: rgba(255, 255, 255, 0.3);
+
+	svg {
+		fill: #fff;
+	}
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.5);
+	}
+}
+
+/* Counter - bottom center */
+.glightbox-container .gslide-title,
+.glightbox-container .gslide-desc {
+	display: none;
+}
+
+/* Show slide counter */
+.glightbox-container .gcounter {
+	font-family: var(--gh-font-body);
+	font-size: 1.3rem;
+	color: rgba(0, 0, 0, 0.5);
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.theme-dark .glightbox-container .gcounter {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+/* Mobile adjustments */
+@media only screen and (max-width: 768px) {
+	.glightbox-container .gslide {
+		padding: 20px !important;
+	}
+
+	.glightbox-container .gslide-image img {
+		max-width: 95vw !important;
+		max-height: 80vh !important;
+	}
+
+	.glightbox-container .gnext,
+	.glightbox-container .gprev {
+		width: 36px;
+		height: 36px;
+	}
+}

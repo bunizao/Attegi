@@ -53,6 +53,7 @@
 		</script>
 
 	{{!-- Styles'n'Scripts --}}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css" />
 	<style>
 		a.nav-menu,
 		a.nav-search,
@@ -223,6 +224,39 @@
 
 	{{!-- Load basic scripts --}}
 	<script defer src="{{asset "js/script.js"}}"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/js/glightbox.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			// Wrap gallery images with lightbox links
+			var galleryImages = document.querySelectorAll('.kg-gallery-image img, .kg-image-card img');
+			galleryImages.forEach(function(img) {
+				if (!img.closest('a')) {
+					var wrapper = document.createElement('a');
+					wrapper.href = img.src;
+					wrapper.classList.add('glightbox');
+					wrapper.setAttribute('data-gallery', img.closest('.kg-gallery-card') ? 'gallery' : 'images');
+					img.parentNode.insertBefore(wrapper, img);
+					wrapper.appendChild(img);
+				}
+			});
+
+			if (typeof GLightbox !== 'undefined') {
+				var lightbox = GLightbox({
+					selector: '.glightbox',
+					touchNavigation: true,
+					loop: true,
+					closeOnOutsideClick: true,
+					openEffect: 'fade',
+					closeEffect: 'fade',
+					cssEf498: 'clean',
+					zoomable: true,
+					draggable: true,
+					dragAutoSnap: true,
+					preload: true
+				});
+			}
+		});
+	</script>
 
 	{{!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. --}}
 	{{{block "scripts"}}}
