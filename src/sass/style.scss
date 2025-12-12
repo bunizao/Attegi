@@ -2001,8 +2001,8 @@ textarea {
 	z-index: 10;
 
 	&.archive-box {
-		padding-bottom: calc(3rem + 1.5vw);
-		margin-bottom: calc(3rem + 1.5vw);
+		padding-bottom: calc(3.5rem + 1.75vw);
+		margin-bottom: calc(2.5rem + 1.25vw);
 		border-bottom: 1px solid var(--color-background-contrast);
 	}
 
