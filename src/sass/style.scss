@@ -140,7 +140,7 @@ img {
 }
 
 // Content visibility for below-fold content (improves initial render)
-.post-nav,
+// Note: .post-nav excluded to prevent border clipping on hover effects
 .post-comments,
 .post-footer {
 	content-visibility: auto;
@@ -3220,6 +3220,7 @@ iframe.gh-portal-triggerbtn-iframe {
 				inset: -0.5rem -2rem;
 				border-radius: 1.25rem;
 				background: var(--color-background-secondary);
+				border: 1px solid var(--color-background-contrast);
 				opacity: 0;
 				transform: scale(0.98);
 				transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
