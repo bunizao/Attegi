@@ -57,8 +57,19 @@
 			})();
 		</script>
 
-	{{!-- Styles'n'Scripts --}}
+	{{!-- Critical CSS - Inlined for faster FCP and reduced CLS --}}
 	<style>
+		/* Critical layout styles to prevent CLS */
+		html{font-size:62.5%}
+		body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;margin:0;background:var(--color-background-main,#fff)}
+		img{max-width:100%;height:auto}
+		.nav-header{position:absolute;top:0;left:0;width:100%;z-index:400}
+		.nav-header .logo img{width:auto;height:4rem}
+		.post-meta-avatar{width:3.6rem;height:3.6rem;flex-shrink:0}
+		.blog-cover,.post-cover{contain:layout style paint;contain-intrinsic-size:100vw 50vh}
+		.kg-bookmark-thumbnail{aspect-ratio:1.2/1;min-height:160px}
+		.kg-embed-card iframe[src*="youtube"],.kg-embed-card iframe[src*="vimeo"]{aspect-ratio:16/9;width:100%;height:auto}
+		/* Link styles */
 		a.nav-menu,
 		a.nav-search,
 		.post-meta-author a,
@@ -78,6 +89,9 @@
 			color: inherit;
 			text-decoration: none;
 		}
+		/* Skeleton loading animation */
+		.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:skeleton-loading 1.5s ease-in-out infinite;border-radius:4px}
+		@keyframes skeleton-loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
 	</style>
 	<link rel="stylesheet" href="{{asset "css/style.css"}}" />
 	<script>
@@ -287,31 +301,6 @@
 
 	{{!-- The #block helper will pull in data from the #contentFor other template files. In this case, there's some JavaScript which we only want to use in post.hbs, but it needs to be included down here, after jQuery has already loaded. --}}
 	{{{block "scripts"}}}
-
-	{{!-- Capture Ghost portal URL for lazy loading --}}
-	{{#if @site.members_enabled}}
-	<script>
-		// Intercept Ghost portal script injection for lazy loading
-		(function() {
-			var observer = new MutationObserver(function(mutations) {
-				mutations.forEach(function(mutation) {
-					mutation.addedNodes.forEach(function(node) {
-						if (node.tagName === 'SCRIPT' && node.src && node.src.indexOf('portal') !== -1) {
-							// Capture portal URL
-							window.ghost = window.ghost || {};
-							window.ghost.portal = node.src;
-							// Remove the script to prevent auto-loading
-							node.remove();
-							// Stop observing once we found it
-							observer.disconnect();
-						}
-					});
-				});
-			});
-			observer.observe(document.documentElement, { childList: true, subtree: true });
-		})();
-	</script>
-	{{/if}}
 
 	{{!-- Ghost outputs important scripts and data with this tag - it should always be the very last thing before the closing body tag --}}
 	{{ghost_foot}}

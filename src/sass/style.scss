@@ -37,6 +37,116 @@ body {
 	background: var(--color-background-main);
 }
 
+/* ==========================================================================
+   CLS Prevention - Layout Shift Optimization (Sukka's Best Practices)
+   ========================================================================== */
+
+// Prevent CLS from images by reserving space with aspect-ratio
+img {
+	// Modern browsers: use aspect-ratio for intrinsic sizing
+	// This prevents layout shift when images load
+	max-width: 100%;
+	height: auto;
+
+	// Smooth fade-in for lazy-loaded images
+	&[loading="lazy"] {
+		opacity: 1;
+		transition: opacity 0.3s ease;
+	}
+}
+
+// Ghost image cards - prevent CLS with aspect-ratio
+.kg-image-card {
+	img {
+		aspect-ratio: attr(width) / attr(height);
+	}
+}
+
+// Gallery images - maintain aspect ratio
+.kg-gallery-image {
+	img {
+		aspect-ratio: attr(width) / attr(height);
+	}
+}
+
+// Bookmark card thumbnail - fixed aspect ratio to prevent CLS
+.kg-bookmark-thumbnail {
+	aspect-ratio: 1.2 / 1;
+	min-height: 160px;
+}
+
+// Embed cards - use padding-bottom technique for 16:9 aspect ratio
+.kg-embed-card {
+	position: relative;
+
+	// YouTube, Vimeo, and other video embeds
+	iframe[src*="youtube"],
+	iframe[src*="vimeo"],
+	iframe[src*="player"] {
+		aspect-ratio: 16 / 9;
+		width: 100%;
+		height: auto;
+	}
+}
+
+// Author avatars - fixed size to prevent CLS
+.post-meta-avatar {
+	width: 3.6rem;
+	height: 3.6rem;
+	flex-shrink: 0;
+}
+
+// Navigation logo - fixed height to prevent CLS
+.nav-header .logo img {
+	width: auto;
+	height: 4rem;
+}
+
+// Cover images - use contain-intrinsic-size for better LCP
+.blog-cover,
+.post-cover {
+	contain: layout style paint;
+	contain-intrinsic-size: 100vw 50vh;
+}
+
+// Prevent font swap CLS with size-adjust fallback
+// This is handled in _fonts.scss but we add extra protection here
+@supports (font-size-adjust: 1) {
+	body {
+		font-size-adjust: 0.5;
+	}
+}
+
+// Skeleton loading placeholder for dynamic content
+.skeleton {
+	background: linear-gradient(
+		90deg,
+		var(--color-background-secondary) 25%,
+		var(--color-background-contrast) 50%,
+		var(--color-background-secondary) 75%
+	);
+	background-size: 200% 100%;
+	animation: skeleton-loading 1.5s ease-in-out infinite;
+	border-radius: 4px;
+}
+
+@keyframes skeleton-loading {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
+// Content visibility for below-fold content (improves initial render)
+.post-nav,
+.post-comments,
+.post-footer {
+	content-visibility: auto;
+	contain-intrinsic-size: auto 300px;
+}
+
 button,
 input,
 select,
