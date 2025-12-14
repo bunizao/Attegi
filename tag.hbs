@@ -32,7 +32,11 @@
               {{img_url tag.feature_image size="l"}} 960w,
               {{img_url tag.feature_image size="xl"}} 1920w"
       src="{{img_url tag.feature_image size="xl"}}"
-			alt="{{tag.name}}" />
+			alt="{{tag.name}}"
+			loading="eager"
+			decoding="async"
+			fetchpriority="high"
+			sizes="(max-width: 960px) 100vw, 960px" />
 		</div>
 		{{/if}}
 	</div>

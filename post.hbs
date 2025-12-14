@@ -145,7 +145,6 @@
 
       {{#if @site.members_enabled}}
       <section class="post-subscribe">
-				<p>{{t "Get the latest posts delivered right to your inbox."}}</p>
         {{#unless @member}}
         	{{subscribe_form placeholder=(t "Your email address") form_class="post-subscribe-form" input_class="post-subscribe-input" button_class="post-subscribe-button"}}
         {{/unless}}

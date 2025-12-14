@@ -21,7 +21,7 @@
 			{{!-- Author avatar with SVG fallback for missing profile image --}}
 			{{#if profile_image}}
 				<figure class="archive-avatar">
-					<img src="{{profile_image}}" alt="{{name}}" />
+					<img src="{{profile_image}}" alt="{{name}}" loading="eager" decoding="async" />
 				</figure>
 			{{else}}
 				<figure class="archive-avatar avatar" aria-label="{{name}}">
@@ -60,7 +60,11 @@
               {{img_url cover_image size="l"}} 960w,
               {{img_url cover_image size="xl"}} 1920w"
       src="{{img_url cover_image size="xl"}}"
-			alt="{{name}}" />
+			alt="{{name}}"
+			loading="eager"
+			decoding="async"
+			fetchpriority="high"
+			sizes="(max-width: 960px) 100vw, 960px" />
 		</div>
 		{{/if}}
 	</div>
