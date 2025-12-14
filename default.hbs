@@ -12,8 +12,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 	{{!-- Resource Hints --}}
+	{{!-- Preconnect to external CDNs used by Ghost and theme --}}
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 	<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+	{{!-- Preload critical CSS to reduce render-blocking --}}
+	<link rel="preload" href="{{asset "css/style.css"}}" as="style" />
 	{{!-- Note: GLightbox is NOT preloaded here, it's loaded conditionally only when images exist --}}
 
 		<script>
@@ -266,8 +271,6 @@
 				var css = document.createElement('link');
 				css.rel = 'stylesheet';
 				css.href = 'https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/css/glightbox.min.css';
-				css.integrity = 'sha512-QLFZ4V6pN2B3ZGLgmJYh+/1phLz/+1qBbYJCZfV+K3+/5ZAH+eYwSM0Z5xvXvBgtW3qNzN+SzJPJ+FQ+rCsUXg==';
-				css.crossOrigin = 'anonymous';
 				document.head.appendChild(css);
 
 				// Wrap images
@@ -285,8 +288,6 @@
 				// Load JS
 				var script = document.createElement('script');
 				script.src = 'https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/js/glightbox.min.js';
-				script.integrity = 'sha512-RBWI5Qf647bcVhqbEnRoL4KuUT+Liz+oG5jtF+HP05Oa5088M9G0GxG0uoHR9Aws6RV39RWZJ1Mfey1lFNtRaQ==';
-				script.crossOrigin = 'anonymous';
 				script.onload = function() {
 					if (typeof GLightbox !== 'undefined') {
 						GLightbox({
