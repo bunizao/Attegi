@@ -2465,6 +2465,78 @@ textarea {
 	}
 }
 
+// Sticky logo - appears on scroll, clean and minimal
+.sticky-logo {
+	position: fixed;
+	top: 1.5rem;
+	left: 1.5rem;
+	z-index: 500;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-8px);
+	transition:
+		opacity 0.25s ease-out,
+		visibility 0.25s ease-out,
+		transform 0.25s ease-out;
+
+	// Hide on tablet and mobile
+	@media only screen and (max-width: $breakpoint-medium) {
+		display: none;
+	}
+
+	// Smaller logo on medium screens (720px - 1100px) to avoid content overlap
+	@media only screen and (min-width: $breakpoint-medium) and (max-width: 1100px) {
+		top: 0.8rem;
+		left: 0.8rem;
+
+		img {
+			height: 2.4rem;
+		}
+	}
+
+	// Medium-large screens (1100px - 1400px)
+	@media only screen and (min-width: 1100px) and (max-width: 1400px) {
+		top: 1rem;
+		left: 1rem;
+
+		img {
+			height: 3rem;
+		}
+	}
+
+	&.is-visible {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+
+	a {
+		display: block;
+		text-decoration: none;
+		transition: transform 0.2s ease-out;
+
+		&:hover {
+			transform: scale(1.05);
+		}
+
+		&:active {
+			transform: scale(0.98);
+		}
+	}
+
+	img {
+		display: block;
+		width: auto;
+		height: 3.6rem;
+		filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+		transition: filter 0.2s ease-out;
+	}
+
+	a:hover img {
+		filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+	}
+}
+
 .nav-header {
 
 	ul {

@@ -113,6 +113,50 @@ document.addEventListener("DOMContentLoaded", function() {
   }, { passive: true });
 
 /* ==========================================================================
+   Sticky Logo
+   ========================================================================== */
+
+  (function initStickyLogo() {
+    var navHeader = document.querySelector('.nav-header');
+    var originalLogo = document.querySelector('.nav-header .logo');
+    if (!originalLogo) return;
+
+    // Create sticky logo element
+    var stickyLogo = document.createElement('div');
+    stickyLogo.className = 'sticky-logo';
+    stickyLogo.innerHTML = originalLogo.innerHTML;
+    document.body.appendChild(stickyLogo);
+
+    var scrollThreshold = 100; // Show after scrolling 100px
+    var isVisible = false;
+    var stickyTicking = false;
+
+    function updateStickyLogo() {
+      var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      var shouldShow = scrollY > scrollThreshold;
+
+      if (shouldShow !== isVisible) {
+        isVisible = shouldShow;
+        requestAnimationFrame(function() {
+          stickyLogo.classList.toggle('is-visible', isVisible);
+        });
+      }
+    }
+
+    function requestStickyUpdate() {
+      if (stickyTicking) return;
+      stickyTicking = true;
+      requestAnimationFrame(function() {
+        updateStickyLogo();
+        stickyTicking = false;
+      });
+    }
+
+    window.addEventListener('scroll', requestStickyUpdate, { passive: true });
+    updateStickyLogo(); // Initial check
+  })();
+
+/* ==========================================================================
    Gallery
    ========================================================================== */
 

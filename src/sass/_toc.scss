@@ -18,10 +18,10 @@ $toc-breakpoint-small: 480px;
 // Desktop TOC Sidebar - fixed position on the left side of viewport
 .toc-sidebar {
   position: fixed;
-  top: $toc-offset-top;
+  top: 7rem; // Leave space for sticky logo
   left: calc((100vw - 64rem - 8vw) / 2 - #{$toc-width} - 2.5rem);
   width: $toc-width;
-  max-height: calc(100vh - #{$toc-offset-top} - 2rem);
+  max-height: calc(100vh - 7rem - 2rem);
   overflow-y: auto;
   scrollbar-width: none;
   opacity: 0;
