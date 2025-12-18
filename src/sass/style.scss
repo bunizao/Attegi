@@ -5218,8 +5218,8 @@ a.post-tag-chip {
 	background: rgba(255,255,255,0.08);
 	border: none;
 	box-shadow: 0 16px 32px rgba(0,0,0,0.12);
-	-webkit-backdrop-filter: url(#liquid-glass);
-	backdrop-filter: url(#liquid-glass);
+	-webkit-backdrop-filter: blur(12px) saturate(180%);
+	backdrop-filter: blur(12px) saturate(180%);
 
 	&.is-visible {
 		opacity: 1;

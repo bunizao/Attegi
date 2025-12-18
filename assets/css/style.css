@@ -666,14 +666,19 @@ html.theme-dark {
   width: 4.4rem;
   height: 4.4rem;
   z-index: 200;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.25);
   border: none;
   border-radius: 50%;
   color: var(--color-content-main);
   cursor: pointer;
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
-  -webkit-backdrop-filter: url(#liquid-glass);
-  backdrop-filter: url(#liquid-glass);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+}
+.theme-dark .toc-mobile-trigger {
+  background: rgba(30, 30, 30, 0.25);
+}
+.toc-mobile-trigger {
   transition: all 0.25s ease;
   opacity: 0;
   visibility: hidden;
@@ -5676,8 +5681,8 @@ a.post-tag-chip:hover {
   background: rgba(255, 255, 255, 0.08);
   border: none;
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
-  -webkit-backdrop-filter: url(#liquid-glass);
-  backdrop-filter: url(#liquid-glass);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
 }
 .back-to-top.is-visible {
   opacity: 1;

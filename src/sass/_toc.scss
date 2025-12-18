@@ -140,14 +140,18 @@ $toc-breakpoint-small: 480px;
   width: 4.4rem;
   height: 4.4rem;
   z-index: 200;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.25);
   border: none;
   border-radius: 50%;
   color: var(--color-content-main);
   cursor: pointer;
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
-  -webkit-backdrop-filter: url(#liquid-glass);
-  backdrop-filter: url(#liquid-glass);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+
+  .theme-dark & {
+    background: rgba(30,30,30,0.25);
+  }
   transition: $toc-transition;
   opacity: 0;
   visibility: hidden;
