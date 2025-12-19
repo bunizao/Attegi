@@ -292,6 +292,73 @@
     }
   }
 
+  /**
+   * Detect if cover image is bright and apply contrast enhancement
+   * Samples the bottom portion of the image where text overlays
+   */
+  function setupCoverBrightnessDetection() {
+    var postHeader = doc.querySelector('.post-header.has-cover');
+    var coverImg = postHeader ? postHeader.querySelector('.post-cover img') : null;
+    if (!postHeader || !coverImg) return;
+
+    function analyzeBrightness(img) {
+      var canvas = doc.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Sample the bottom 40% of the image (where text typically overlays)
+      var sampleHeight = Math.floor(img.naturalHeight * 0.4);
+      var sampleY = img.naturalHeight - sampleHeight;
+
+      // Use a smaller sample size for performance
+      var sampleWidth = Math.min(img.naturalWidth, 100);
+      var scaledHeight = Math.min(sampleHeight, 60);
+
+      canvas.width = sampleWidth;
+      canvas.height = scaledHeight;
+
+      try {
+        ctx.drawImage(
+          img,
+          0, sampleY, img.naturalWidth, sampleHeight,  // source
+          0, 0, sampleWidth, scaledHeight               // destination
+        );
+
+        var imageData = ctx.getImageData(0, 0, sampleWidth, scaledHeight);
+        var data = imageData.data;
+        var totalBrightness = 0;
+        var pixelCount = data.length / 4;
+
+        // Calculate average brightness using perceived luminance formula
+        for (var i = 0; i < data.length; i += 4) {
+          var r = data[i];
+          var g = data[i + 1];
+          var b = data[i + 2];
+          // Perceived brightness: 0.299*R + 0.587*G + 0.114*B
+          totalBrightness += (0.299 * r + 0.587 * g + 0.114 * b);
+        }
+
+        var avgBrightness = totalBrightness / pixelCount;
+
+        // If brightness > 160 (out of 255), consider it a light image
+        if (avgBrightness > 160) {
+          postHeader.classList.add('light-cover');
+        }
+      } catch (e) {
+        // Canvas security error (cross-origin image) - skip detection
+      }
+    }
+
+    // Check if image is already loaded
+    if (coverImg.complete && coverImg.naturalWidth > 0) {
+      analyzeBrightness(coverImg);
+    } else {
+      coverImg.addEventListener('load', function() {
+        analyzeBrightness(coverImg);
+      });
+    }
+  }
+
   function init() {
     var postContent = doc.querySelector('.post-content');
     if (!postContent) return;
@@ -304,6 +371,7 @@
     setupProgress(postContent);
     setupShare();
     setupDisqus();
+    setupCoverBrightnessDetection();
   }
 
   onReady(init);
