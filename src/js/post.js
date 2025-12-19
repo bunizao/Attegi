@@ -209,8 +209,16 @@
 
     function update() {
       var viewportHeight = window.innerHeight || doc.documentElement.clientHeight;
-      var postBottom = content.offsetTop + content.offsetHeight;
-      var progress = 100 - (((postBottom - (window.scrollY + viewportHeight) + viewportHeight / 3) / (postBottom - viewportHeight + viewportHeight / 3)) * 100);
+      var viewportMiddle = window.scrollY + viewportHeight / 2;
+      var contentTop = content.offsetTop;
+      var contentBottom = contentTop + content.offsetHeight;
+
+      // Progress starts when viewport middle reaches content top
+      // Progress ends when viewport middle reaches content bottom
+      var scrollableDistance = contentBottom - contentTop;
+      var scrolledDistance = viewportMiddle - contentTop;
+
+      var progress = (scrolledDistance / scrollableDistance) * 100;
       var clamped = Math.max(0, Math.min(progress, 120));
       progressBar.style.width = Math.min(clamped, 100) + '%';
       progressContainer.classList.toggle('complete', clamped > 100);

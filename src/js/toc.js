@@ -488,7 +488,7 @@
 
   /**
    * Update progress ring on mobile trigger button
-   * Progress is based on article content, not entire page
+   * Progress is based on viewport middle position within article content
    */
   function updateProgressRing() {
     if (!elements.mobileTrigger) return;
@@ -498,16 +498,19 @@
 
     var scrollTop = win.pageYOffset || doc.documentElement.scrollTop;
     var viewportHeight = win.innerHeight;
+    var viewportMiddle = scrollTop + viewportHeight / 2;
 
-    // Calculate progress based on article content area
+    // Calculate progress based on viewport middle position
+    // Progress starts when viewport middle reaches article top
+    // Progress ends when viewport middle reaches article bottom
     var articleStart = state.articleTop;
     var articleEnd = state.articleBottom;
-    var articleHeight = articleEnd - articleStart - viewportHeight;
+    var scrollableDistance = articleEnd - articleStart;
 
     var progress = 0;
-    if (articleHeight > 0) {
-      var scrolledInArticle = scrollTop - articleStart;
-      progress = Math.max(0, Math.min(scrolledInArticle / articleHeight, 1));
+    if (scrollableDistance > 0) {
+      var scrolledDistance = viewportMiddle - articleStart;
+      progress = Math.max(0, Math.min(scrolledDistance / scrollableDistance, 1));
     }
 
     var circumference = 2 * Math.PI * 20;
