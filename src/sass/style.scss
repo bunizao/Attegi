@@ -4286,24 +4286,6 @@ iframe.gh-portal-triggerbtn-iframe {
 	color: var(--color-content-secondary);
 }
 
-.extra-pagination {
-	display: none;
-}
-
-.paged .extra-pagination {
-	display: block;
-
-	.pagination-box {
-		border-bottom: 1px solid var(--color-background-contrast);
-	}
-}
-
-@media (hover: hover) and (pointer: fine) {
-	.theme-dark .paged .extra-pagination .pagination-box:hover {
-		border-bottom-color: transparent;
-	}
-}
-
 /* ==========================================================================
    Minimal Post Layout - Homepage Redesign
    ========================================================================== */
