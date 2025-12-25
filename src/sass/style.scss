@@ -9,6 +9,7 @@
 $breakpoint-large: 960px;
 $breakpoint-medium: 640px;
 $breakpoint-small: 480px;
+$breakpoint-xsmall: 390px;
 $inner: calc(64rem + 8vw);
 /* ==========================================================================
    Basics
@@ -3512,6 +3513,42 @@ iframe.gh-portal-triggerbtn-iframe {
 	color: var(--color-content-secondary);
 	font-weight: 400;
 	font-variant-numeric: tabular-nums;
+}
+
+// Responsive post-meta for narrow viewports (iPhone Pro and smaller)
+@media only screen and (max-width: $breakpoint-xsmall) {
+	.post-header .post-meta,
+	.post-meta {
+		flex-wrap: nowrap;
+		gap: 8px;
+		font-size: 14px;
+
+		// Prevent avatar from shrinking
+		.post-meta-avatars {
+			flex-shrink: 0;
+		}
+
+		// Allow author name to truncate if needed
+		.post-meta-author {
+			flex-shrink: 1;
+			min-width: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		// Keep date/reading time together, allow truncation
+		time {
+			flex-shrink: 0;
+			white-space: nowrap;
+		}
+	}
+
+	// Smaller avatar on very narrow screens
+	.post-meta-avatar {
+		width: 3rem;
+		height: 3rem;
+	}
 }
 .post-header {
 	position: relative;
