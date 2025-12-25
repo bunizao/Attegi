@@ -9,7 +9,7 @@
 $breakpoint-large: 960px;
 $breakpoint-medium: 640px;
 $breakpoint-small: 480px;
-$breakpoint-xsmall: 390px;
+$breakpoint-xsmall: 420px;
 $inner: calc(64rem + 8vw);
 /* ==========================================================================
    Basics
@@ -3520,8 +3520,8 @@ iframe.gh-portal-triggerbtn-iframe {
 	.post-header .post-meta,
 	.post-meta {
 		flex-wrap: nowrap;
-		gap: 8px;
-		font-size: 14px;
+		gap: 6px;
+		font-size: 13px;
 
 		// Prevent avatar from shrinking
 		.post-meta-avatars {
@@ -3532,6 +3532,7 @@ iframe.gh-portal-triggerbtn-iframe {
 		.post-meta-author {
 			flex-shrink: 1;
 			min-width: 0;
+			max-width: 5em;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
@@ -3546,8 +3547,8 @@ iframe.gh-portal-triggerbtn-iframe {
 
 	// Smaller avatar on very narrow screens
 	.post-meta-avatar {
-		width: 3rem;
-		height: 3rem;
+		width: 2.8rem;
+		height: 2.8rem;
 	}
 }
 .post-header {
