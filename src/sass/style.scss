@@ -4444,16 +4444,66 @@ a.post-tag-chip {
 /* ==========================================================================
    Error 404 Page - Creative Space Theme
    ========================================================================== */
+
+/* Full-screen error page layout - no scrolling */
+.is-error-page {
+	overflow: hidden;
+
+	body {
+		overflow: hidden;
+	}
+
+	.page-wrapper {
+		min-height: 100vh;
+		max-height: 100vh;
+		overflow: hidden;
+	}
+
+	.nav-footer {
+		display: none;
+	}
+
+	/* Mobile: allow scrolling for recommendations */
+	@media only screen and (max-width: $breakpoint-small) {
+		overflow-y: auto;
+
+		body {
+			overflow-y: auto;
+		}
+
+		.page-wrapper {
+			max-height: none;
+			overflow: visible;
+		}
+
+		/* Hide scrollbar but keep functionality */
+		& {
+			scrollbar-width: none; /* Firefox */
+			-ms-overflow-style: none; /* IE/Edge */
+
+			&::-webkit-scrollbar {
+				display: none; /* Chrome/Safari */
+			}
+		}
+	}
+}
+
 .error-page {
-	min-height: calc(100vh - 20rem);
+	min-height: calc(100vh - 8rem);
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 6rem 0;
+	padding: 0;
 
 	.inner {
 		width: 100%;
 		max-width: 72rem;
+	}
+
+	/* Mobile: align to top so 404 content is visible first */
+	@media only screen and (max-width: $breakpoint-small) {
+		align-items: flex-start;
+		padding-top: 8rem;
 	}
 }
 
@@ -4669,6 +4719,10 @@ a.post-tag-chip {
 /* Recommendations Section */
 .error-recommendations {
 	margin-top: 2rem;
+
+	@media only screen and (max-width: $breakpoint-small) {
+		padding-bottom: 4rem; // Extra space for mobile browser toolbars
+	}
 }
 
 .recommendations-title {
