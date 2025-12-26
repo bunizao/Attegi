@@ -217,12 +217,16 @@
 	var btn = document.querySelector('.back-to-top');
 	var progress = btn ? btn.querySelector('.progress-ring__progress') : null;
 	var content = document.querySelector('.post-content');
+	var footer = document.querySelector('.nav-footer');
 	if (!btn || !progress || !content) return;
 
 	var circumference = 2 * Math.PI * 20; // r=20
 	var articleTop = 0;
 	var articleHeight = 0;
 	var isVisible = false;
+	var defaultBottom = 32; // Default bottom position in px
+	var btnHeight = 48; // Button height
+	var safeMargin = 16; // Extra margin from footer
 
 	function updateProgress() {
 		var rect = content.getBoundingClientRect();
@@ -248,6 +252,21 @@
 		if (shouldShow !== isVisible) {
 			isVisible = shouldShow;
 			btn.classList.toggle('is-visible', shouldShow);
+		}
+
+		// Avoid footer overlap
+		if (footer) {
+			var footerRect = footer.getBoundingClientRect();
+			var footerTop = footerRect.top;
+			var btnBottom = windowHeight - defaultBottom - btnHeight;
+
+			// If button would overlap footer, move it up
+			if (footerTop < windowHeight && footerTop < btnBottom + btnHeight + safeMargin) {
+				var newBottom = windowHeight - footerTop + safeMargin;
+				btn.style.bottom = newBottom + 'px';
+			} else {
+				btn.style.bottom = defaultBottom + 'px';
+			}
 		}
 	}
 

@@ -216,21 +216,49 @@
 
 			{{{body}}}
 
-			<div class="nav-footer">
-				<nav class="nav-wrapper" aria-label="{{t "Footer"}}">
-					<span class="nav-copy">
-						
-						<span class="nav-title">{{@site.title}} &copy; {{date format='YYYY'}}</span>
-						<a aria-label="RSS" href="{{@site.url}}/rss/" title="RSS"><i class="icon icon-rss" aria-hidden="true">{{> "icons/icon-rss"}}</i></a>
-						{{#if @site.twitter}}<a aria-label="Twitter" href="{{social_url type='twitter'}}" title="{{@site.twitter}}"><i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i></a>{{/if}}
-						{{#if @site.facebook}}<a aria-label="Facebook" href="{{social_url type='facebook'}}" title="{{@site.facebook}}"><i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i></a>{{/if}}
-					</span>
-					{{#if @site.secondary_navigation}}
-					{{navigation type="secondary"}}
+			<footer class="nav-footer">
+				<div class="footer-main">
+					{{!-- Left: Copyright --}}
+					<div class="footer-left">
+						<span class="footer-copyright">&copy; {{date format='YYYY'}} {{@site.title}}</span>
+						<span class="footer-credits">Published with <a href="https://ghost.org">Ghost</a> & <a href="https://github.com/bunizao/attegi">Attegi</a></span>
+					</div>
+
+					{{!-- Center: Custom text (supports HTML) --}}
+					{{#if @custom.footer_text}}
+					<div class="footer-center">
+						<span class="footer-custom-text">{{{@custom.footer_text}}}</span>
+					</div>
 					{{/if}}
-					<span class="nav-credits">{{t "Published with"}} <a href="https://ghost.org">Ghost</a> &bull; {{t "Theme" }} <a href="https://github.com/bunizao/attegi">Attegi</a> &bull; <a class="menu-item js-theme" href="#" data-system="System" data-dark="Dark" data-light="Light"><span class="theme-icon"></span><span class="theme-text">System</span> </a> </span>
-				</nav>
-			</div>
+
+					{{!-- Right: Social + Theme toggle --}}
+					<div class="footer-right">
+						<div class="footer-social">
+							<a class="social-link" aria-label="RSS" href="{{@site.url}}/rss/" title="RSS">
+								<i class="icon icon-rss" aria-hidden="true">{{> "icons/icon-rss"}}</i>
+							</a>
+							{{#if @site.twitter}}<a class="social-link" aria-label="X" href="{{social_url type='twitter'}}" title="X" target="_blank" rel="noopener">
+								<i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i>
+							</a>{{/if}}
+							{{#if @site.facebook}}<a class="social-link" aria-label="Facebook" href="{{social_url type='facebook'}}" title="Facebook" target="_blank" rel="noopener">
+								<i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i>
+							</a>{{/if}}
+							{{#if @custom.instagram_url}}<a class="social-link" aria-label="Instagram" href="{{@custom.instagram_url}}" title="Instagram" target="_blank" rel="noopener">
+								<i class="icon icon-instagram" aria-hidden="true">{{> "icons/icon-instagram"}}</i>
+							</a>{{/if}}
+							{{#if @custom.github_url}}<a class="social-link" aria-label="GitHub" href="{{@custom.github_url}}" title="GitHub" target="_blank" rel="noopener">
+								<i class="icon icon-github" aria-hidden="true">{{> "icons/icon-github"}}</i>
+							</a>{{/if}}
+						</div>
+						<span class="footer-divider"></span>
+						<button class="theme-toggle js-theme" aria-label="{{t "Toggle theme"}}" data-system="System" data-dark="Dark" data-light="Light">
+							<i class="icon theme-icon-sun" aria-hidden="true">{{> "icons/icon-sun"}}</i>
+							<i class="icon theme-icon-moon" aria-hidden="true">{{> "icons/icon-moon"}}</i>
+							<i class="icon theme-icon-monitor" aria-hidden="true">{{> "icons/icon-monitor"}}</i>
+						</button>
+					</div>
+				</div>
+			</footer>
 
 		</section>
 	</div>

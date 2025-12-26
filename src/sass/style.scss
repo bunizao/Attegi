@@ -1946,15 +1946,7 @@ textarea {
 	}
 }
 
-/* Social Media Specific Icons */
-.icon-twitter,
-.icon-x { color: var(--color-social-twitter); }
-.icon-facebook { color: var(--color-social-facebook); }
-.icon-instagram { color: var(--color-social-instagram); }
-.icon-linkedin { color: var(--color-social-linkedin); }
-.icon-github { color: var(--color-social-github); }
-.icon-youtube { color: var(--color-social-youtube); }
-.icon-rss { color: var(--color-social-rss); }
+/* Social Media Icons - unified color, inherits from parent */
 
 @keyframes fadein {
 	0% {
@@ -3079,163 +3071,193 @@ iframe.gh-portal-triggerbtn-iframe {
 .nav-footer {
 	position: relative;
 	z-index: 20;
-	padding-top: calc(3rem + 2vw);
-	padding-bottom: 3rem;
+	padding: calc(3rem + 2vw) 4rem 3rem;
 	margin-top: auto;
-	font-size: 1.6em;
-	line-height: 2rem;
+	font-size: 1.6rem;
+	line-height: 1.6;
 	color: var(--color-content-secondary);
 
-	.inner {
-		max-width: none;
-		padding: 0 4rem;
-	}
-
 	a {
-		display: inline-block;
 		color: var(--color-content-secondary);
 		text-decoration: none;
-		font-weight: 400;
-		cursor: pointer;
+		transition: color 0.2s ease;
 
-		&:focus,
-		&:hover {
+		&:hover,
+		&:focus {
 			color: var(--color-content-main);
 		}
 	}
 }
 
-.nav-footer .nav-wrapper {
+/* Footer Main Content - Three Column Layout */
+.footer-main {
 	display: flex;
-	flex-wrap: wrap;
-	padding: 0 4rem;
-	gap: 3rem;
+	justify-content: space-between;
+	align-items: center;
+	gap: 2rem;
 
 	@media only screen and (max-width: $breakpoint-medium) {
 		flex-direction: column;
 		text-align: center;
+		gap: 1.5rem;
 	}
 }
 
-.nav-footer ul {
-	position: relative;
+/* Footer Left (Copyright + Credits) */
+.footer-left {
 	display: flex;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	gap: 3rem;
+	flex-direction: column;
+	gap: 0.25rem;
+	flex: 1;
 
 	@media only screen and (max-width: $breakpoint-medium) {
-		justify-content: center;
-	}
-
-	&:last-child {
-		justify-content: flex-end;
-	}
-	@media only screen and (min-width: $breakpoint-medium) {
-		&:before {
-			content: '•';
-		}
+		align-items: center;
+		order: 3;
 	}
 }
 
-.nav-footer li {
-	position: relative;
+.footer-copyright {
+	font-weight: 500;
+	font-size: 1.4rem;
+	color: var(--color-content-main);
+}
 
-	&.active a {
-		color: var(--color-content-main);
-		font-weight: 500;
-	}
+.footer-credits {
+	font-size: 1.3rem;
+	color: var(--color-content-secondary);
 
 	a {
-		display: block;
-		margin: 0;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		text-decoration: none;
-		font-weight: 400;
-		cursor: pointer;
+		font-weight: 500;
 	}
 }
 
-.nav-copy {
+/* Footer Center (Custom Text) */
+.footer-center {
+	flex: 1;
 	display: flex;
 	justify-content: center;
-	white-space: nowrap;
-	gap: 1rem;
-}
-
-.nav-credits {
-	flex-shrink: 0;
-	display: block;
-	margin-left: auto;
+	text-align: center;
 
 	@media only screen and (max-width: $breakpoint-medium) {
-		margin-right: auto;
-	}
-
-	a {
-		color: inherit;
-		text-decoration: none;
-		font-weight: 500;
+		order: 1;
+		width: 100%;
 	}
 }
 
-.theme-icon {
-	position: relative;
-	top: -1px;
-	display: inline-block;
-	vertical-align: middle;
-	width: 1.25em;
-	height: 1.25em;
-	border: 1px solid var(--color-content-secondary);
-	box-sizing: border-box;
-	margin: 0 0.75rem 0 .25rem;
-	border-radius: 2rem;
-	overflow: hidden;
-	transition: linear 0.2s background-color;
+.footer-custom-text {
+	font-size: 1.4rem;
+	color: var(--color-content-secondary);
+	line-height: 1.5;
 }
 
-.theme-icon:after {
-	content: '';
-	position: absolute;
-	left: 50%;
-	width: 100%;
-	height: 100%;
-	background: var(--color-content-secondary);
-	transition: linear 0.2s all;
-}
+/* Footer Right (Social + Theme Toggle) */
+.footer-right {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex: 1;
+	justify-content: flex-end;
 
-.theme-dark {
-	.theme-icon {
-		border: 0;
-		background: #EB3;
-	}
-
-	.theme-icon:after {
-		left: -25%;
-		border-radius: 2rem;
-		background: #229;
+	@media only screen and (max-width: $breakpoint-medium) {
+		order: 2;
+		justify-content: center;
 	}
 }
 
-.theme-light {
-	.theme-icon {
-		border: 0;
-		background: #6BF;
+/* Footer Divider */
+.footer-divider {
+	width: 1px;
+	height: 1.6rem;
+	background: var(--color-background-contrast);
+	margin: 0 0.5rem;
+}
+
+/* Social Links */
+.footer-social {
+	display: flex;
+	align-items: center;
+	gap: 0;
+}
+
+.social-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 3.6rem;
+	height: 3.6rem;
+	border-radius: 50%;
+	color: var(--color-content-secondary);
+	transition: all 0.2s ease;
+
+	&:hover,
+	&:focus {
+		color: var(--color-content-main);
+		background: var(--color-background-contrast);
 	}
 
-	.theme-icon:after {
-		left: 20%;
-		top: 20%;
-		width: 60%;
-		height: 60%;
-		border-radius: 2rem;
-		background: #FF3;
+	svg {
+		width: 1.8rem;
+		height: 1.8rem;
 	}
 }
 
-.theme-text {}
+/* Theme Toggle Button */
+.theme-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 3.6rem;
+	height: 3.6rem;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: transparent;
+	color: var(--color-content-secondary);
+	cursor: pointer;
+	transition: all 0.2s ease;
+
+	&:hover,
+	&:focus {
+		color: var(--color-content-main);
+		background: var(--color-background-contrast);
+		outline: none;
+	}
+
+	svg {
+		width: 1.8rem;
+		height: 1.8rem;
+	}
+}
+
+/* Theme icon visibility */
+.theme-icon-sun,
+.theme-icon-moon,
+.theme-icon-monitor {
+	display: none;
+}
+
+/* Default (system): show monitor icon */
+.theme-icon-monitor {
+	display: block;
+}
+
+/* Dark mode: show moon */
+.theme-dark .theme-icon-monitor {
+	display: none;
+}
+
+.theme-dark .theme-icon-moon {
+	display: block;
+}
+
+/* Light mode: show sun */
+.theme-light .theme-icon-monitor {
+	display: none;
+}
+
+.theme-light .theme-icon-sun {
+	display: block;
+}
 
 /* ==========================================================================
    Index - Modern Homepage Layout
@@ -5433,7 +5455,7 @@ a.post-tag-chip {
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY(20px);
-	transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+	transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, bottom 0.3s ease;
 
 	// Liquid glass effect
 	background: rgba(255,255,255,0.08);

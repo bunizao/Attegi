@@ -2,7 +2,7 @@
   "name": "attegi",
   "description": "Attegi is an elegant and dynamic Ghost theme, with a modern design, deep support for Ghost, and specially optimized for mobile devices.",
   "demo": "https://attegi.tutuis.me",
-  "version": "6.9.7",
+  "version": "6.9.9",
   "engines": {
     "ghost": ">=5.0.0"
   },
@@ -100,6 +100,18 @@
         ],
         "default": "Default",
         "group": "post"
+      },
+      "instagram_url": {
+        "type": "text",
+        "description": "Instagram profile URL (e.g., https://instagram.com/username)"
+      },
+      "github_url": {
+        "type": "text",
+        "description": "GitHub profile URL (e.g., https://github.com/username)"
+      },
+      "footer_text": {
+        "type": "text",
+        "description": "Custom text displayed in footer center (supports HTML)"
       }
     }
   },
