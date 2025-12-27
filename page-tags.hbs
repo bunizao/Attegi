@@ -45,6 +45,7 @@
                                         src="{{img_url feature_image size="m"}}"
                                         alt="{{name}}"
                                         loading="lazy"
+                                        crossorigin="anonymous"
                                     />
                                     <div class="tag-card-header">
                                         <div class="tag-card-image">
@@ -64,9 +65,9 @@
                                 </a>
 
                                 {{!-- Post previews with glassmorphism for image cards --}}
-                                {{#get "posts" limit="3" filter="tag:{{slug}}" include="authors"}}
+                                {{#get "posts" limit="all" filter="tag:{{slug}}" include="authors"}}
                                     {{#if posts}}
-                                        <div class="tag-card-posts">
+                                        <div class="tag-card-posts" data-total="{{posts.length}}">
                                             {{#foreach posts}}
                                                 <a href="{{url}}" class="tag-post-preview">
                                                     <span class="tag-post-title">{{title}}</span>
@@ -104,9 +105,9 @@
 
                             {{!-- Post previews for cards without image --}}
                             {{#unless feature_image}}
-                                {{#get "posts" limit="3" filter="tag:{{slug}}" include="authors"}}
+                                {{#get "posts" limit="all" filter="tag:{{slug}}" include="authors"}}
                                     {{#if posts}}
-                                        <div class="tag-card-posts">
+                                        <div class="tag-card-posts" data-total="{{posts.length}}">
                                             {{#foreach posts}}
                                                 <a href="{{url}}" class="tag-post-preview">
                                                     <span class="tag-post-title">{{title}}</span>
@@ -151,3 +152,115 @@
     });
 })();
 </script>
+
+{{!-- Extract dominant color from background images for has-image cards --}}
+<script>
+(function() {
+    // Extract dominant color from image using canvas
+    function getDominantColor(img, callback) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const size = 50; // Sample size for performance
+        canvas.width = size;
+        canvas.height = size;
+
+        try {
+            ctx.drawImage(img, 0, 0, size, size);
+            const imageData = ctx.getImageData(0, 0, size, size).data;
+
+            let r = 0, g = 0, b = 0, count = 0;
+
+            // Sample pixels, skip very dark and very light ones
+            for (let i = 0; i < imageData.length; i += 16) { // Sample every 4th pixel
+                const pr = imageData[i];
+                const pg = imageData[i + 1];
+                const pb = imageData[i + 2];
+                const brightness = (pr + pg + pb) / 3;
+
+                // Skip very dark or very light pixels
+                if (brightness > 30 && brightness < 220) {
+                    r += pr;
+                    g += pg;
+                    b += pb;
+                    count++;
+                }
+            }
+
+            if (count > 0) {
+                r = Math.round(r / count);
+                g = Math.round(g / count);
+                b = Math.round(b / count);
+
+                // Boost saturation slightly for more vibrant border
+                const max = Math.max(r, g, b);
+                const min = Math.min(r, g, b);
+                const satBoost = 1.2;
+
+                if (max !== min) {
+                    const mid = (max + min) / 2;
+                    r = Math.min(255, Math.round(mid + (r - mid) * satBoost));
+                    g = Math.min(255, Math.round(mid + (g - mid) * satBoost));
+                    b = Math.min(255, Math.round(mid + (b - mid) * satBoost));
+                }
+
+                callback(`rgb(${r}, ${g}, ${b})`);
+            } else {
+                callback(null);
+            }
+        } catch (e) {
+            // CORS or other error
+            callback(null);
+        }
+    }
+
+    // Process each has-image card
+    document.querySelectorAll('.tag-card.has-image').forEach(card => {
+        const img = card.querySelector('.tag-card-bg > img');
+        if (!img) return;
+
+        const processImage = () => {
+            getDominantColor(img, (color) => {
+                if (color) {
+                    card.style.setProperty('--tag-image-color', color);
+                }
+            });
+        };
+
+        if (img.complete) {
+            processImage();
+        } else {
+            img.addEventListener('load', processImage);
+        }
+    });
+})();
+</script>
+
+{{!-- Scrollable posts container --}}
+<script>
+(function() {
+    const VISIBLE_COUNT = 3;
+
+    document.querySelectorAll('.tag-card-posts').forEach(container => {
+        const posts = container.querySelectorAll('.tag-post-preview');
+        const total = posts.length;
+
+        if (total <= VISIBLE_COUNT) return;
+
+        // Wrap posts in a scrollable container
+        const scrollWrapper = document.createElement('div');
+        scrollWrapper.className = 'tag-posts-scroll';
+
+        // Move all posts into the scroll wrapper
+        posts.forEach(post => {
+            scrollWrapper.appendChild(post);
+        });
+
+        // Insert scroll wrapper at the beginning of container
+        container.insertBefore(scrollWrapper, container.firstChild);
+
+        // Add scrollable class to container
+        container.classList.add('is-scrollable');
+    });
+})();
+</script>
+

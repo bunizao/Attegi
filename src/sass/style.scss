@@ -140,6 +140,15 @@ img {
 	}
 }
 
+@keyframes bounce {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(3px);
+	}
+}
+
 // Content visibility for below-fold content (improves initial render)
 // Note: .post-nav excluded to prevent border clipping on hover effects
 .post-comments,
@@ -5778,8 +5787,8 @@ a.post-tag-chip {
 		border-color: var(--tag-color);
 	}
 
-	// Card with accent color
-	&.has-accent {
+	// Card with accent color (only for cards WITHOUT image)
+	&.has-accent:not(.has-image) {
 		border-color: color-mix(in srgb, var(--tag-color) 25%, var(--color-background-contrast));
 
 		&:hover {
@@ -5806,16 +5815,25 @@ a.post-tag-chip {
 	&.has-image {
 		position: relative;
 		overflow: hidden;
-		display: flex;
-		flex-direction: column;
+		min-height: 26rem; // Ensure enough space for image display
+		// Use image-derived color for border/shadow, fallback to subtle gray
+		--image-color: var(--tag-image-color, rgba(0, 0, 0, 0.15));
+		border-color: transparent;
+		background: #000; // Black background to prevent white line at bottom
 
-		// Background image covers entire card
+		&:hover {
+			border-color: color-mix(in srgb, var(--image-color) 50%, transparent);
+			box-shadow: 0 8px 24px color-mix(in srgb, var(--image-color) 25%, rgba(0, 0, 0, 0.1));
+		}
+
+		// Background image covers entire card (absolute positioned)
 		.tag-card-bg {
-			position: relative;
-			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
 			width: 100%;
-			min-height: 12rem;
-			flex-shrink: 0;
+			height: 100%;
+			z-index: 1;
 
 			> img:first-of-type {
 				position: absolute;
@@ -5833,35 +5851,19 @@ a.post-tag-chip {
 				width: 100%;
 				height: 100%;
 			}
-
-			// Subtle gradient overlay
-			&::after {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				background: linear-gradient(
-					to bottom,
-					rgba(0, 0, 0, 0.1) 0%,
-					rgba(0, 0, 0, 0.35) 100%
-				);
-				pointer-events: none;
-			}
 		}
 
-		// Header - no glass, just floating on image
+		// Header - floating on image, aligned with non-image cards
 		.tag-card-header {
 			position: absolute;
-			top: 1.25rem;
-			left: 1.25rem;
+			top: 2rem;
+			left: 2rem;
 			right: auto;
 			bottom: auto;
 			z-index: 3;
 			display: flex;
 			align-items: center;
-			gap: 1rem;
+			gap: 1.5rem;
 			padding: 0;
 			background: none;
 			backdrop-filter: none;
@@ -5873,9 +5875,9 @@ a.post-tag-chip {
 
 		// Only the icon has glass background
 		.tag-card-image {
-			width: 4rem;
-			height: 4rem;
-			border-radius: 0.75rem;
+			width: 5rem;
+			height: 5rem;
+			border-radius: 1rem;
 			border: none;
 			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 			background: rgba(255, 255, 255, 0.9);
@@ -5893,7 +5895,7 @@ a.post-tag-chip {
 
 		.tag-card-name {
 			color: #fff;
-			font-size: 1.6em;
+			font-size: 1.8em;
 			font-weight: 700;
 			text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 			margin: 0;
@@ -5902,43 +5904,87 @@ a.post-tag-chip {
 		.tag-card-count {
 			color: rgba(255, 255, 255, 0.9);
 			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-			font-size: 1.2em;
+			font-size: 1.3em;
 		}
 
-		// Posts list with glassmorphism - below image, not absolute
+		// Posts list with liquid glass effect - no white overlay
 		.tag-card-posts {
-			position: relative;
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
 			z-index: 3;
-			background: rgba(245, 245, 245, 0.75);
-			backdrop-filter: blur(16px) saturate(180%);
-			-webkit-backdrop-filter: blur(16px) saturate(180%);
+			background: rgba(0, 0, 0, 0.15);
+			backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
+			-webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
 			border-radius: 0;
-			box-shadow: none;
+			box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.3);
 			overflow: hidden;
 			border: none;
 			margin: 0;
+
+			// Scrollable posts container
+			&.is-scrollable {
+				.tag-posts-scroll {
+					max-height: 9.5rem; // ~3 posts visible
+					overflow-y: auto;
+					scroll-behavior: smooth;
+					scrollbar-width: thin;
+					scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+
+					&::-webkit-scrollbar {
+						width: 4px;
+					}
+
+					&::-webkit-scrollbar-track {
+						background: transparent;
+					}
+
+					&::-webkit-scrollbar-thumb {
+						background: rgba(255, 255, 255, 0.3);
+						border-radius: 2px;
+
+						&:hover {
+							background: rgba(255, 255, 255, 0.5);
+						}
+					}
+				}
+
+				// Remove the white gradient overlay for image cards
+				&::after {
+					display: none;
+				}
+			}
 		}
 
 		.tag-post-preview {
-			border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-			padding: 0.85rem 1.25rem;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+			padding: 0.85rem 1.5rem;
 
 			&:last-child {
 				border-bottom: none;
 			}
 
 			&:hover {
-				background: rgba(0, 0, 0, 0.03);
+				background: rgba(255, 255, 255, 0.1);
+
+				.tag-post-title {
+					color: #fff;
+				}
 			}
 		}
 
 		.tag-post-title {
-			color: #1a1a1a;
+			color: rgba(255, 255, 255, 0.95);
 			font-weight: 500;
+			font-size: 1.5em;
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+			transition: color 0.15s ease;
 		}
 
 		.tag-post-date {
-			color: #666;
+			color: rgba(255, 255, 255, 0.7);
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 		}
 
 		// Hover effect
@@ -6046,22 +6092,30 @@ a.post-tag-chip {
 		}
 
 		.tag-card-posts {
-			background: rgba(30, 32, 36, 0.75);
+			background: rgba(0, 0, 0, 0.25);
+			box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.15);
 
 			.tag-post-preview {
-				border-bottom-color: rgba(255, 255, 255, 0.08);
+				border-bottom-color: rgba(255, 255, 255, 0.1);
 
 				&:hover {
-					background: rgba(255, 255, 255, 0.05);
+					background: rgba(255, 255, 255, 0.08);
 				}
 			}
+		}
+	}
+}
 
-			.tag-post-title {
-				color: #f5f5f5;
-			}
+// Dark mode for non-image card scrollable posts
+.theme-dark .tag-card-posts.is-scrollable {
+	.tag-posts-scroll {
+		scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 
-			.tag-post-date {
-				color: #999;
+		&::-webkit-scrollbar-thumb {
+			background: rgba(255, 255, 255, 0.2);
+
+			&:hover {
+				background: rgba(255, 255, 255, 0.3);
 			}
 		}
 	}
@@ -6109,15 +6163,15 @@ a.post-tag-chip {
 	border-radius: 1rem;
 	flex-shrink: 0;
 	background: linear-gradient(135deg,
-		color-mix(in srgb, var(--ghost-accent-color) 15%, var(--color-background-main)),
-		color-mix(in srgb, var(--ghost-accent-color) 8%, var(--color-background-main))
+		color-mix(in srgb, var(--tag-color, var(--ghost-accent-color)) 15%, var(--color-background-main)),
+		color-mix(in srgb, var(--tag-color, var(--ghost-accent-color)) 8%, var(--color-background-main))
 	);
-	border: 1px solid color-mix(in srgb, var(--ghost-accent-color) 20%, transparent);
+	border: 1px solid color-mix(in srgb, var(--tag-color, var(--ghost-accent-color)) 20%, transparent);
 
 	svg {
 		width: 2.4rem;
 		height: 2.4rem;
-		color: var(--ghost-accent-color);
+		color: var(--tag-color, var(--ghost-accent-color));
 	}
 }
 
@@ -6135,7 +6189,8 @@ a.post-tag-chip {
 	color: var(--color-content-lead);
 	transition: color 0.2s ease;
 
-	.tag-card:hover & {
+	// Only change color on hover for cards WITHOUT image
+	.tag-card:not(.has-image):hover & {
 		color: var(--tag-color, var(--ghost-accent-color));
 	}
 }
@@ -6161,6 +6216,52 @@ a.post-tag-chip {
 .tag-card-posts {
 	border-top: 1px solid var(--color-background-contrast);
 	padding: 0;
+	position: relative;
+
+	// Scrollable posts container for non-image cards
+	&.is-scrollable {
+		.tag-posts-scroll {
+			max-height: 11.5rem; // ~3 posts height
+			overflow-y: auto;
+			scroll-behavior: smooth;
+			scrollbar-width: thin;
+			scrollbar-color: color-mix(in srgb, var(--ghost-accent-color) 30%, transparent) transparent;
+
+			&::-webkit-scrollbar {
+				width: 4px;
+			}
+
+			&::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background: color-mix(in srgb, var(--ghost-accent-color) 30%, transparent);
+				border-radius: 2px;
+
+				&:hover {
+					background: color-mix(in srgb, var(--ghost-accent-color) 50%, transparent);
+				}
+			}
+		}
+
+		// Fade gradient at bottom to indicate more content
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 2rem;
+			background: linear-gradient(
+				to bottom,
+				transparent,
+				var(--color-background-secondary)
+			);
+			pointer-events: none;
+			z-index: 2;
+		}
+	}
 }
 
 .tag-post-preview {
