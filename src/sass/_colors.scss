@@ -7,6 +7,16 @@
   --color-content-main: #374151;
   --color-content-secondary: #73777D;
 
+  /* Mobile menu colors - Always dark style */
+  --color-menu-bg: rgba(28, 30, 32, 0.88);
+  --color-menu-bg-solid: rgba(28, 30, 32, 0.98);
+  --color-menu-text: rgba(255, 255, 255, 0.9);
+  --color-menu-text-hover: #fff;
+  --color-menu-border: rgba(255, 255, 255, 0.08);
+  --color-menu-shadow: rgba(0, 0, 0, 0.25);
+  --color-menu-item-line: rgba(255, 255, 255, 0.25);
+  --color-menu-item-hover-bg: rgba(255, 255, 255, 0.05);
+
   /* Semantic colors */
   --color-highlight: #FEF3C7;
   --color-social-twitter: #1da1f2;
@@ -32,6 +42,16 @@
   --color-content-main: #E2E6EB;
   --color-content-secondary: #B6BBC4;
 
+  /* Mobile menu colors - Dark theme */
+  --color-menu-bg: rgba(28, 30, 32, 0.88);
+  --color-menu-bg-solid: rgba(28, 30, 32, 0.98);
+  --color-menu-text: rgba(255, 255, 255, 0.9);
+  --color-menu-text-hover: #fff;
+  --color-menu-border: rgba(255, 255, 255, 0.08);
+  --color-menu-shadow: rgba(0, 0, 0, 0.25);
+  --color-menu-item-line: rgba(255, 255, 255, 0.25);
+  --color-menu-item-hover-bg: rgba(255, 255, 255, 0.05);
+
   /* Semantic colors - adjusted for dark mode */
   --color-highlight: #fbbf24;
   --color-social-twitter: #1da1f2;
@@ -52,5 +72,15 @@
     --color-content-lead: #F6F7FA;
     --color-content-main: #E2E6EB;
     --color-content-secondary: #B6BBC4;
+
+    /* Mobile menu colors - Dark theme (system preference) */
+    --color-menu-bg: rgba(28, 30, 32, 0.88);
+    --color-menu-bg-solid: rgba(28, 30, 32, 0.98);
+    --color-menu-text: rgba(255, 255, 255, 0.9);
+    --color-menu-text-hover: #fff;
+    --color-menu-border: rgba(255, 255, 255, 0.08);
+    --color-menu-shadow: rgba(0, 0, 0, 0.25);
+    --color-menu-item-line: rgba(255, 255, 255, 0.25);
+    --color-menu-item-hover-bg: rgba(255, 255, 255, 0.05);
   }
 }

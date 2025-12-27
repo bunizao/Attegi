@@ -2277,17 +2277,21 @@ textarea {
 	left: 0;
 	width: 100%;
 	z-index: 400;
+	-webkit-transition: none;
 	transition: none;
 	@media only screen and (max-width: $breakpoint-medium) {
+		-webkit-transform: translate3d(0,-100%,0);
 		transform: translate3d(0,-100%,0);
 	}
 }
 
 .menu-ready .nav-header {
-	transition: all ease-out 0.3s;
+	-webkit-transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-out;
+	transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-out;
 }
 
 .menu-active .nav-header {
+	-webkit-transform: translate3d(0,0,0);
 	transform: translate3d(0,0,0);
 }
 
@@ -2299,12 +2303,23 @@ textarea {
 	width: 100%;
 	height: 100%;
 	display: none;
-	background: var(--color-background-overlay);
+	opacity: 0;
+	background: rgba(0, 0, 0, 0.5);
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	-webkit-transition: opacity 0.3s ease-out;
+	transition: opacity 0.3s ease-out;
+
+	// Fallback for browsers without backdrop-filter
+	@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+		background: rgba(0, 0, 0, 0.7);
+	}
 }
 
 .menu-active .nav-close {
 	@media only screen and (max-width: $breakpoint-medium) {
 		display: block;
+		opacity: 1;
 	}
 }
 
@@ -2319,7 +2334,8 @@ textarea {
 	color: var(--color-content-secondary);
 	border-top: 1px solid rgba(0,0,0,0);
 	box-sizing: border-box;
-	transition: all linear 0.1s;
+	-webkit-transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
 	@media only screen and (max-width: $breakpoint-medium) {
 		display: block;
@@ -2332,6 +2348,16 @@ textarea {
 		height: 6rem;
 		padding: 0 4rem;
 		max-width: none;
+
+		@media only screen and (max-width: $breakpoint-small) {
+			padding: 0 2.5rem;
+			height: 5.5rem;
+		}
+
+		@media only screen and (max-width: $breakpoint-xsmall) {
+			padding: 0 2rem;
+			height: 5rem;
+		}
 	}
 
 	a {
@@ -2347,22 +2373,51 @@ textarea {
 		text-decoration: none;
 		font-weight: 400;
 		cursor: pointer;
-		transition: color linear 0.1s;
+		-webkit-transition: color 0.2s ease-out;
+		transition: color 0.2s ease-out;
 
 		&:focus,
 		&:hover {
 			color: var(--color-content-main);
 		}
 
+		// Hamburger icon container
 		.icon {
+			position: relative;
 			margin-right: 1rem;
-			font-size: 2rem;
 			width: 2rem;
 			height: 2rem;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
 		}
 
 		span {
 			display: inline;
+		}
+	}
+
+	// Hamburger lines styling
+	.icon.icon-menu {
+		width: 2rem;
+		height: 1.4rem;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: stretch;
+
+		.hamburger-line {
+			display: block;
+			width: 100%;
+			height: 2px;
+			background: currentColor;
+			border-radius: 2px;
+			-webkit-transform-origin: center;
+			transform-origin: center;
+			-webkit-transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease-out;
+			transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease-out;
 		}
 	}
 }
@@ -2382,16 +2437,43 @@ textarea {
 }
 
 .menu-active .nav-header .nav-wrapper-control {
-	background: #222426;
-	color: rgba(255, 255, 255, 0.8);
-	border-top: 1px solid rgba(255,255,255,0.1);
+	background: var(--color-menu-bg);
+	-webkit-backdrop-filter: blur(16px) saturate(180%);
+	backdrop-filter: blur(16px) saturate(180%);
+	color: var(--color-menu-text);
+	border-top: 1px solid var(--color-menu-border);
+	box-shadow: 0 4px 24px var(--color-menu-shadow);
+
+	// Fallback for browsers without backdrop-filter
+	@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+		background: var(--color-menu-bg-solid);
+	}
 
 	a {
-		color: rgba(255, 255, 255, 0.8);
+		color: var(--color-menu-text);
 
 		&:focus,
 		&:hover {
-			color: white;
+			color: var(--color-menu-text-hover);
+		}
+	}
+
+	// Hamburger to X transformation
+	.icon-menu {
+		.hamburger-line:nth-child(1) {
+			-webkit-transform: translateY(6px) rotate(45deg);
+			transform: translateY(6px) rotate(45deg);
+		}
+
+		.hamburger-line:nth-child(2) {
+			opacity: 0;
+			-webkit-transform: scaleX(0);
+			transform: scaleX(0);
+		}
+
+		.hamburger-line:nth-child(3) {
+			-webkit-transform: translateY(-6px) rotate(-45deg);
+			transform: translateY(-6px) rotate(-45deg);
 		}
 	}
 }
@@ -2404,15 +2486,62 @@ textarea {
 	overflow-y: auto;
 
 	@media only screen and (max-width: $breakpoint-medium) {
-		background: #222426;
+		background: var(--color-menu-bg);
+		-webkit-backdrop-filter: blur(20px) saturate(180%);
+		backdrop-filter: blur(20px) saturate(180%);
 		flex-direction: column;
 		align-items: flex-start;
+		padding: 2rem 4rem 3rem;
+		box-shadow: 0 8px 32px var(--color-menu-shadow);
+
+		// Fallback for browsers without backdrop-filter
+		@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+			background: var(--color-menu-bg-solid);
+		}
+	}
+
+	@media only screen and (max-width: $breakpoint-small) {
+		padding: 1.5rem 2.5rem 2.5rem;
+	}
+
+	@media only screen and (max-width: $breakpoint-xsmall) {
+		padding: 1.2rem 2rem 2rem;
 	}
 }
 
 .menu-active .nav-header .nav-wrapper {
 	@media only screen and (max-width: $breakpoint-medium) {
 		display: flex;
+	}
+}
+
+// Staggered animation - show items when menu is active
+.menu-active .nav-header li {
+	@media only screen and (max-width: $breakpoint-medium) {
+		opacity: 1;
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+	}
+}
+
+// Also animate nav-members with stagger
+.nav-members {
+	@media only screen and (max-width: $breakpoint-medium) {
+		opacity: 0;
+		-webkit-transform: translateY(12px);
+		transform: translateY(12px);
+		-webkit-transition: opacity 0.35s ease-out, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+		transition: opacity 0.35s ease-out, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+		-webkit-transition-delay: 0.25s;
+		transition-delay: 0.25s;
+	}
+}
+
+.menu-active .nav-members {
+	@media only screen and (max-width: $breakpoint-medium) {
+		opacity: 1;
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
 	}
 }
 
@@ -2554,6 +2683,23 @@ textarea {
 		position: relative;
 	margin-right: 3rem;
 
+	// Staggered animation for mobile menu items
+	@media only screen and (max-width: $breakpoint-medium) {
+		opacity: 0;
+		-webkit-transform: translateY(12px);
+		transform: translateY(12px);
+		-webkit-transition: opacity 0.35s ease-out, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+		transition: opacity 0.35s ease-out, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+		// Staggered delays for each item
+		@for $i from 1 through 10 {
+			&:nth-child(#{$i}) {
+				-webkit-transition-delay: #{0.05 + ($i * 0.04)}s;
+				transition-delay: #{0.05 + ($i * 0.04)}s;
+			}
+		}
+	}
+
 	&.active {
 		font-weight: 700;
 
@@ -2586,7 +2732,7 @@ textarea {
 
 		a {
 			@media only screen and (max-width: $breakpoint-medium) {
-				color: white;
+				color: var(--color-menu-text-hover);
 				font-weight: 700;
 			}
 		}
@@ -2598,7 +2744,7 @@ textarea {
 			font-weight: 400;
 
 			@media only screen and (max-width: $breakpoint-medium) {
-				color: rgba(255,255,255,0.9);
+				color: var(--color-menu-text);
 				font-size: 2rem;
 				font-weight: 400;
 				padding: 1rem 0 1rem 4rem;
@@ -2615,12 +2761,12 @@ textarea {
 					margin-left: 6px;
 					margin-top: -1px;
 					border-radius: 2px;
-					background: rgba(255,255,255,0.25);
+					background: var(--color-menu-item-line);
 				}
 
 				&:focus,
 				&:hover {
-					color: white;
+					color: var(--color-menu-text-hover);
 				}
 			}
 		}
@@ -2644,7 +2790,7 @@ textarea {
 			color: var(--color-content-main);
 
 			@media only screen and (max-width: $breakpoint-medium) {
-				color: rgba(255,255,255,0.9);
+				color: var(--color-menu-text);
 			}
 		}
 	}
@@ -2997,11 +3143,16 @@ iframe.gh-portal-triggerbtn-iframe {
 	}
 
 	@media only screen and (max-width: $breakpoint-medium) {
+		// Pre-set background to transparent to avoid layout shift on hover
+		background: transparent;
+		border-radius: 0.75rem;
+		margin: 0 -1rem;
+		padding-left: calc(4rem + 1rem); // Original 4rem + margin compensation
+		padding-right: 1rem;
+
 		&:hover {
-			background: rgba(255,255,255,0.05);
-			border-radius: 0.5rem;
+			background: var(--color-menu-item-hover-bg);
 			transform: none;
-			font-weight: 500;
 		}
 	}
 }
@@ -5548,5 +5699,49 @@ a.post-tag-chip {
 	.back-to-top__icon {
 		width: 18px;
 		height: 18px;
+	}
+}
+
+
+/* ==========================================================================
+   Reduced Motion Support - Accessibility
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+	// Disable all navigation animations
+	.nav-header,
+	.nav-header li,
+	.nav-members,
+	.nav-close,
+	.nav-header .nav-wrapper-control,
+	.nav-header .nav-wrapper-control .icon-menu .hamburger-line {
+		-webkit-transition: none !important;
+		transition: none !important;
+		-webkit-animation: none !important;
+		animation: none !important;
+	}
+
+	// Ensure menu items are visible without animation
+	.nav-header li {
+		opacity: 1 !important;
+		-webkit-transform: none !important;
+		transform: none !important;
+	}
+
+	.nav-members {
+		opacity: 1 !important;
+		-webkit-transform: none !important;
+		transform: none !important;
+	}
+
+	// Hamburger lines - instant state change
+	.nav-header .nav-wrapper-control .icon-menu .hamburger-line {
+		-webkit-transition-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+	}
+
+	// Overlay - instant show/hide
+	.nav-close {
+		-webkit-transition-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
 	}
 }
