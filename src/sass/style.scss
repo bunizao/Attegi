@@ -5931,6 +5931,9 @@ a.post-tag-chip {
 					scroll-behavior: smooth;
 					scrollbar-width: thin;
 					scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+					-webkit-overflow-scrolling: touch; // Smooth momentum scrolling on iOS
+					overscroll-behavior: contain; // Prevent scroll chaining
+					touch-action: pan-y; // Allow vertical touch scrolling
 
 					&::-webkit-scrollbar {
 						width: 4px;
@@ -6226,6 +6229,9 @@ a.post-tag-chip {
 			scroll-behavior: smooth;
 			scrollbar-width: thin;
 			scrollbar-color: color-mix(in srgb, var(--ghost-accent-color) 30%, transparent) transparent;
+			-webkit-overflow-scrolling: touch; // Smooth momentum scrolling on iOS
+			overscroll-behavior: contain; // Prevent scroll chaining
+			touch-action: pan-y; // Allow vertical touch scrolling
 
 			&::-webkit-scrollbar {
 				width: 4px;
