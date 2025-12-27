@@ -1,0 +1,19 @@
+{
+  "name": "attegi-og-image",
+  "version": "1.0.0",
+  "description": "Dynamic OG image generation service for Attegi Ghost theme",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@vercel/og": "^0.6.3",
+    "next": "^14.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "typescript": "^5.0.0"
+  }
+}
