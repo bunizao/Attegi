@@ -1,0 +1,153 @@
+{{!< default}}
+
+{{!--
+    page-tags.hbs
+    -------------
+    Custom page template for displaying all tags with post previews.
+    To use: Create a page in Ghost admin with URL slug "tags"
+
+    Supports:
+    - Tag accent color (set in Ghost admin)
+    - Tag feature image (set in Ghost admin)
+    - Custom icon: In tag's Code Injection header, add:
+      <template data-tag-icon>YOUR_SVG_HERE</template>
+--}}
+
+<header class="blog-header">
+    <div class="inner">
+        <div class="tags-page-header">
+            <span class="tags-page-label">{{t "Browse"}}</span>
+            <h1 class="tags-page-title">{{t "Topics"}}</h1>
+            <p class="tags-page-description">{{t "Explore all topics and discover content that interests you"}}</p>
+        </div>
+    </div>
+</header>
+
+<div id="tags-index" class="container">
+    <main class="content" role="main">
+        <div class="inner">
+            <div class="tags-grid">
+                {{#get "tags" limit="all" include="count.posts,codeinjection_head" filter="visibility:public" order="created_at desc"}}
+                    {{#foreach tags}}
+                        <article class="tag-card{{#if feature_image}} has-image{{/if}}{{#if accent_color}} has-accent{{/if}}"
+                            data-tag-slug="{{slug}}"
+                            {{#if accent_color}}style="--tag-accent-color: {{accent_color}};"{{/if}}>
+
+                            {{!-- Hidden container for tag's code injection (to extract icon) --}}
+                            {{#if codeinjection_head}}
+                                <div class="tag-code-injection" hidden>{{{codeinjection_head}}}</div>
+                            {{/if}}
+
+                            {{!-- Banner image at top --}}
+                            {{#if feature_image}}
+                                <a href="{{url}}" class="tag-card-bg">
+                                    <img
+                                        src="{{img_url feature_image size="m"}}"
+                                        alt="{{name}}"
+                                        loading="lazy"
+                                    />
+                                    <div class="tag-card-header">
+                                        <div class="tag-card-image">
+                                            <img
+                                                src="{{img_url feature_image size="s"}}"
+                                                alt="{{name}}"
+                                                loading="lazy"
+                                            />
+                                        </div>
+                                        <div class="tag-card-info">
+                                            <h2 class="tag-card-name">{{name}}</h2>
+                                            <span class="tag-card-count">
+                                                {{plural count.posts empty=(t "No posts") singular=(t "% post") plural=(t "% posts")}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                {{!-- Post previews with glassmorphism for image cards --}}
+                                {{#get "posts" limit="3" filter="tag:{{slug}}" include="authors"}}
+                                    {{#if posts}}
+                                        <div class="tag-card-posts">
+                                            {{#foreach posts}}
+                                                <a href="{{url}}" class="tag-post-preview">
+                                                    <span class="tag-post-title">{{title}}</span>
+                                                    <span class="tag-post-date">{{date format="MMM D"}}</span>
+                                                </a>
+                                            {{/foreach}}
+                                        </div>
+                                    {{/if}}
+                                {{/get}}
+                            {{/if}}
+
+                            {{!-- Standard card content (no image) --}}
+                            {{#unless feature_image}}
+                                <a href="{{url}}" class="tag-card-link">
+                                    <div class="tag-card-header">
+                                        <div class="tag-card-icon"{{#if accent_color}} style="background: linear-gradient(135deg, {{accent_color}}26, {{accent_color}}12); border-color: {{accent_color}}33;"{{/if}}>
+                                            {{!-- Default tag icon, can be replaced via JS --}}
+                                            <svg class="tag-icon-default" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"{{#if accent_color}} style="color: {{accent_color}};"{{/if}}>
+                                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                            </svg>
+                                        </div>
+                                        <div class="tag-card-info">
+                                            <h2 class="tag-card-name">{{name}}</h2>
+                                            <span class="tag-card-count">
+                                                {{plural count.posts empty=(t "No posts") singular=(t "% post") plural=(t "% posts")}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {{#if description}}
+                                        <p class="tag-card-description">{{description}}</p>
+                                    {{/if}}
+                                </a>
+                            {{/unless}}
+
+                            {{!-- Post previews for cards without image --}}
+                            {{#unless feature_image}}
+                                {{#get "posts" limit="3" filter="tag:{{slug}}" include="authors"}}
+                                    {{#if posts}}
+                                        <div class="tag-card-posts">
+                                            {{#foreach posts}}
+                                                <a href="{{url}}" class="tag-post-preview">
+                                                    <span class="tag-post-title">{{title}}</span>
+                                                    <span class="tag-post-date">{{date format="MMM D"}}</span>
+                                                </a>
+                                            {{/foreach}}
+                                        </div>
+                                    {{/if}}
+                                {{/get}}
+                            {{/unless}}
+                        </article>
+                    {{/foreach}}
+                {{/get}}
+            </div>
+        </div>
+    </main>
+</div>
+
+{{!-- Tag Icons Script: Extract icons from each tag's Code Injection --}}
+<script>
+(function() {
+    document.querySelectorAll('.tag-card').forEach(card => {
+        const codeInjection = card.querySelector('.tag-code-injection');
+        const iconContainer = card.querySelector('.tag-card-icon');
+
+        if (codeInjection && iconContainer) {
+            // Look for <template data-tag-icon> or <svg data-tag-icon>
+            const iconTemplate = codeInjection.querySelector('[data-tag-icon]');
+            if (iconTemplate) {
+                const defaultIcon = iconContainer.querySelector('.tag-icon-default');
+                if (defaultIcon) {
+                    // Get icon content (from template or direct SVG)
+                    const iconContent = iconTemplate.tagName === 'TEMPLATE'
+                        ? iconTemplate.innerHTML
+                        : iconTemplate.outerHTML;
+                    defaultIcon.outerHTML = iconContent;
+                }
+            }
+            // Clean up
+            codeInjection.remove();
+        }
+    });
+})();
+</script>
