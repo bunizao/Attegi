@@ -120,6 +120,10 @@
       "og_service_theme": {
         "type": "text",
         "description": "Optional theme name for the OG image service."
+      },
+      "og_service_version": {
+        "type": "text",
+        "description": "Optional OG image cache buster (change to force refresh on social platforms)."
       }
     }
   },
