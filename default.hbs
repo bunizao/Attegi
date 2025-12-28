@@ -189,10 +189,10 @@
 			<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode tag.name}}&site={{encode @site.title}}{{#if tag.description}}&excerpt={{encode tag.description}}{{/if}}&tag={{encode tag.name}}{{#if tag.feature_image}}&image={{encode (img_url tag.feature_image absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode @site.icon}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}">
 		{{/is}}
 		{{#is "author"}}
-			{{#author}}
-				<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode name}}&site={{encode @site.title}}{{#if bio}}&excerpt={{encode bio}}{{/if}}&author={{encode name}}{{#if cover_image}}&image={{encode (img_url cover_image absolute="true")}}{{else}}{{#if profile_image}}&image={{encode (img_url profile_image absolute="true")}}{{/if}}{{/if}}{{#if @site.icon}}&icon={{encode @site.icon}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}">
-				<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode name}}&site={{encode @site.title}}{{#if bio}}&excerpt={{encode bio}}{{/if}}&author={{encode name}}{{#if cover_image}}&image={{encode (img_url cover_image absolute="true")}}{{else}}{{#if profile_image}}&image={{encode (img_url profile_image absolute="true")}}{{/if}}{{/if}}{{#if @site.icon}}&icon={{encode @site.icon}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}">
-			{{/author}}
+			{{#if author}}
+				<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode author.name}}&site={{encode @site.title}}{{#if author.bio}}&excerpt={{encode author.bio}}{{/if}}&author={{encode author.name}}{{#if author.cover_image}}&image={{encode (img_url author.cover_image absolute="true")}}{{else}}{{#if author.profile_image}}&image={{encode (img_url author.profile_image absolute="true")}}{{/if}}{{/if}}{{#if @site.icon}}&icon={{encode @site.icon}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}">
+				<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode author.name}}&site={{encode @site.title}}{{#if author.bio}}&excerpt={{encode author.bio}}{{/if}}&author={{encode author.name}}{{#if author.cover_image}}&image={{encode (img_url author.cover_image absolute="true")}}{{else}}{{#if author.profile_image}}&image={{encode (img_url author.profile_image absolute="true")}}{{/if}}{{/if}}{{#if @site.icon}}&icon={{encode @site.icon}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}">
+			{{/if}}
 		{{/is}}
 	{{/if}}
 

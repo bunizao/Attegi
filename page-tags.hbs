@@ -27,7 +27,7 @@
     <main class="content" role="main">
         <div class="inner">
             <div class="tags-grid">
-                {{#get "tags" limit="all" include="count.posts,codeinjection_head" filter="visibility:public" order="created_at desc"}}
+                {{#get "tags" limit="100" include="count.posts,codeinjection_head" filter="visibility:public" order="created_at desc"}}
                     {{#foreach tags}}
                         <article class="tag-card{{#if feature_image}} has-image{{/if}}{{#if accent_color}} has-accent{{/if}}"
                             data-tag-slug="{{slug}}"
@@ -65,7 +65,7 @@
                                 </a>
 
                                 {{!-- Post previews with glassmorphism for image cards --}}
-                                {{#get "posts" limit="all" filter="tag:{{slug}}" include="authors"}}
+                                {{#get "posts" limit="100" filter="tag:{{slug}}" include="authors"}}
                                     {{#if posts}}
                                         <div class="tag-card-posts" data-total="{{posts.length}}">
                                             {{#foreach posts}}
@@ -105,7 +105,7 @@
 
                             {{!-- Post previews for cards without image --}}
                             {{#unless feature_image}}
-                                {{#get "posts" limit="all" filter="tag:{{slug}}" include="authors"}}
+                                {{#get "posts" limit="100" filter="tag:{{slug}}" include="authors"}}
                                     {{#if posts}}
                                         <div class="tag-card-posts" data-total="{{posts.length}}">
                                             {{#foreach posts}}
@@ -263,4 +263,3 @@
     });
 })();
 </script>
-
