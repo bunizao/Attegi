@@ -170,7 +170,10 @@
 		{{/if}}
 	{{/match}}
 
+	{{ghost_head}}
+
 	{{!-- Optional OG image service override (post/page/tag/author) --}}
+	{{!-- Placed AFTER ghost_head to override Ghost's default og:image --}}
 	{{#if @custom.og_service_url}}
 		{{#is "post"}}
 			{{#post}}
@@ -195,8 +198,6 @@
 			{{/primary_author}}
 		{{/is}}
 	{{/if}}
-
-	{{ghost_head}}
 </head>
 
 <body class="{{body_class}}">
