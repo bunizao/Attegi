@@ -209,7 +209,14 @@
 	{{/if}}
 </head>
 
-<body class="{{body_class}}">
+<body class="{{body_class}}"
+	data-i18n-copy="{{t "Copy"}}"
+	data-i18n-copied="{{t "Copied!"}}"
+	data-i18n-copy-code="{{t "Copy code"}}"
+	data-i18n-toc-label="{{t "Table of Contents"}}"
+	data-i18n-on-this-page="{{t "On this page"}}"
+	data-i18n-open-toc="{{t "Open table of contents"}}"
+	data-i18n-close-toc="{{t "Close table of contents"}}">
 
 	<div class="viewport">
 			<div class="nav-header">
@@ -257,7 +264,7 @@
 					{{!-- Left: Copyright --}}
 					<div class="footer-left">
 						<span class="footer-copyright">&copy; {{date format='YYYY'}} {{@site.title}}</span>
-						<span class="footer-credits">Published with <a href="https://ghost.org">Ghost</a> & <a href="https://github.com/bunizao/attegi">Attegi</a></span>
+						<span class="footer-credits">{{t "Published with"}} <a href="https://ghost.org">Ghost</a> & <a href="https://github.com/bunizao/attegi">Attegi</a></span>
 					</div>
 
 					{{!-- Center: Custom text (supports HTML) --}}
@@ -270,24 +277,24 @@
 					{{!-- Right: Social + Theme toggle --}}
 					<div class="footer-right">
 						<div class="footer-social">
-							<a class="social-link" aria-label="RSS" href="{{@site.url}}/rss/" title="RSS">
+							<a class="social-link" aria-label="{{t "RSS"}}" href="{{@site.url}}/rss/" title="{{t "RSS"}}">
 								<i class="icon icon-rss" aria-hidden="true">{{> "icons/icon-rss"}}</i>
 							</a>
-							{{#if @site.twitter}}<a class="social-link" aria-label="X" href="{{social_url type='twitter'}}" title="X" target="_blank" rel="noopener">
+							{{#if @site.twitter}}<a class="social-link" aria-label="{{t "Twitter"}}" href="{{social_url type='twitter'}}" title="{{t "Twitter"}}" target="_blank" rel="noopener">
 								<i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i>
 							</a>{{/if}}
-							{{#if @site.facebook}}<a class="social-link" aria-label="Facebook" href="{{social_url type='facebook'}}" title="Facebook" target="_blank" rel="noopener">
+							{{#if @site.facebook}}<a class="social-link" aria-label="{{t "Facebook"}}" href="{{social_url type='facebook'}}" title="{{t "Facebook"}}" target="_blank" rel="noopener">
 								<i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i>
 							</a>{{/if}}
-							{{#if @custom.instagram_url}}<a class="social-link" aria-label="Instagram" href="{{@custom.instagram_url}}" title="Instagram" target="_blank" rel="noopener">
+							{{#if @custom.instagram_url}}<a class="social-link" aria-label="{{t "Instagram"}}" href="{{@custom.instagram_url}}" title="{{t "Instagram"}}" target="_blank" rel="noopener">
 								<i class="icon icon-instagram" aria-hidden="true">{{> "icons/icon-instagram"}}</i>
 							</a>{{/if}}
-							{{#if @custom.github_url}}<a class="social-link" aria-label="GitHub" href="{{@custom.github_url}}" title="GitHub" target="_blank" rel="noopener">
+							{{#if @custom.github_url}}<a class="social-link" aria-label="{{t "GitHub"}}" href="{{@custom.github_url}}" title="{{t "GitHub"}}" target="_blank" rel="noopener">
 								<i class="icon icon-github" aria-hidden="true">{{> "icons/icon-github"}}</i>
 							</a>{{/if}}
 						</div>
 						<span class="footer-divider"></span>
-						<button class="theme-toggle js-theme" aria-label="{{t "Toggle theme"}}" data-system="System" data-dark="Dark" data-light="Light">
+						<button class="theme-toggle js-theme" aria-label="{{t "Toggle theme"}}" data-system="{{t "System"}}" data-dark="{{t "Dark"}}" data-light="{{t "Light"}}">
 							<i class="icon theme-icon-sun" aria-hidden="true">{{> "icons/icon-sun"}}</i>
 							<i class="icon theme-icon-moon" aria-hidden="true">{{> "icons/icon-moon"}}</i>
 							<i class="icon theme-icon-monitor" aria-hidden="true">{{> "icons/icon-monitor"}}</i>

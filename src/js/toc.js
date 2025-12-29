@@ -31,6 +31,22 @@
     mobileList: null
   };
 
+  function getI18n(key, fallback) {
+    var body = doc.body;
+    if (!body) return fallback;
+    var value = body.getAttribute('data-i18n-' + key);
+    return value || fallback;
+  }
+
+  function getTocLabels() {
+    return {
+      tocLabel: getI18n('toc-label', 'Table of Contents'),
+      onThisPage: getI18n('on-this-page', 'On this page'),
+      openToc: getI18n('open-toc', 'Open table of contents'),
+      closeToc: getI18n('close-toc', 'Close table of contents')
+    };
+  }
+
   /**
    * Initialize TOC
    */
@@ -237,20 +253,22 @@
    * Create TOC DOM elements
    */
   function createTOCElements() {
+    var labels = getTocLabels();
+
     // Create desktop sidebar
-    createDesktopTOC();
+    createDesktopTOC(labels);
 
     // Create mobile TOC
-    createMobileTOC();
+    createMobileTOC(labels);
   }
 
   /**
    * Create desktop sidebar TOC
    */
-  function createDesktopTOC() {
+  function createDesktopTOC(labels) {
     var sidebar = doc.createElement('aside');
     sidebar.className = 'toc-sidebar';
-    sidebar.setAttribute('aria-label', 'Table of Contents');
+    sidebar.setAttribute('aria-label', labels.tocLabel);
 
     var container = doc.createElement('div');
     container.className = 'toc-container';
@@ -258,7 +276,10 @@
     // Header
     var header = doc.createElement('div');
     header.className = 'toc-header';
-    header.innerHTML = '<h3 class="toc-title">On this page</h3>';
+    var title = doc.createElement('h3');
+    title.className = 'toc-title';
+    title.textContent = labels.onThisPage;
+    header.appendChild(title);
 
     // List - tocbot will populate this
     var list = doc.createElement('nav');
@@ -277,11 +298,11 @@
   /**
    * Create mobile TOC (trigger button, overlay, mini panel)
    */
-  function createMobileTOC() {
+  function createMobileTOC(labels) {
     // Trigger button with progress ring
     var trigger = doc.createElement('button');
     trigger.className = 'toc-mobile-trigger';
-    trigger.setAttribute('aria-label', 'Open table of contents');
+    trigger.setAttribute('aria-label', labels.openToc);
 
     // Progress ring SVG (circumference = 2 * PI * radius, radius = 20)
     var circumference = 2 * Math.PI * 20;
@@ -308,17 +329,20 @@
     var drawer = doc.createElement('div');
     drawer.className = 'toc-mobile-drawer';
     drawer.setAttribute('role', 'dialog');
-    drawer.setAttribute('aria-label', 'Table of Contents');
+    drawer.setAttribute('aria-label', labels.tocLabel);
 
     // Panel header
     var header = doc.createElement('div');
     header.className = 'toc-mobile-header';
-    header.innerHTML = '<h3 class="toc-mobile-title">On this page</h3>';
+    var mobileTitle = doc.createElement('h3');
+    mobileTitle.className = 'toc-mobile-title';
+    mobileTitle.textContent = labels.onThisPage;
+    header.appendChild(mobileTitle);
 
     // Close button
     var closeBtn = doc.createElement('button');
     closeBtn.className = 'toc-mobile-close';
-    closeBtn.setAttribute('aria-label', 'Close table of contents');
+    closeBtn.setAttribute('aria-label', labels.closeToc);
     closeBtn.innerHTML =
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
         '<line x1="18" y1="6" x2="6" y2="18"></line>' +
