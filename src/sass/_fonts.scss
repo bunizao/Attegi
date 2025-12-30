@@ -1,71 +1,44 @@
-/* Remote @font-face blocks removed to avoid external requests; using system stacks below. */
-
 /* ==========================================================================
-   Ghost Font System Variables - Multi-language Support
+   Ghost Font System Variables - Industry Standard System Font Stack
    ========================================================================== */
 
 :root {
-  /* Primary font stack - optimized for readability across languages */
-  /* -apple-system ensures best CJK font selection on Apple devices */
+  /* Heading font stack */
   --gh-font-heading:
-    -apple-system,                 /* System font - auto selects PingFang for CJK */
-    BlinkMacSystemFont,            /* Chrome on macOS */
-    'Segoe UI',                    /* Windows */
-    'Microsoft YaHei',             /* 微软雅黑 - Windows CJK */
-    'PingFang SC',                 /* Chinese simplified - explicit fallback */
-    'Hiragino Sans',               /* Japanese - Apple */
-    'Noto Sans SC',                /* Google Noto - Chinese */
-    'Noto Sans JP',                /* Google Noto - Japanese */
-    'Source Han Sans SC',          /* Adobe 思源黑体 */
-    sans-serif;
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
 
-  /* Body font stack - optimized for readability and performance */
+  /* Body font stack - same as Bootstrap 5 / Tailwind standard */
   --gh-font-body:
-    'Fira Sans',                   /* Primary sans-serif for Latin */
-    -apple-system,                 /* iOS system font */
-    'SF Pro Display',              /* macOS system font */
-    'SF Pro Text',                 /* macOS text variant */
-    'Helvetica Neue',              /* Apple fallback */
-    'PingFang SC',                 /* Chinese simplified - Apple */
-    'PingFang TC',                 /* Chinese traditional - Apple */
-    'PingFang HK',                 /* Chinese Hong Kong - Apple */
-    'Hiragino Sans',               /* Japanese - Apple */
-    'Hiragino Kaku Gothic ProN',   /* Japanese fallback */
-    'Hiragino Kaku Gothic Pro',    /* Japanese fallback 2 */
-    'YuGothic',                    /* Japanese system */
-    'Yu Gothic',                   /* Japanese system variant */
-    'Microsoft YaHei',             /* Chinese simplified - Windows */
-    'Microsoft JhengHei',          /* Chinese traditional - Windows */
-    'Malgun Gothic',               /* Korean - Windows */
-    'Apple SD Gothic Neo',         /* Korean - Apple */
-    'Roboto',                      /* Android system */
-    'Noto Sans CJK SC',           /* Google Noto - Chinese simplified */
-    'Noto Sans CJK TC',           /* Google Noto - Chinese traditional */
-    'Noto Sans CJK JP',           /* Google Noto - Japanese */
-    'Noto Sans CJK KR',           /* Google Noto - Korean */
-    'Source Han Sans SC',          /* Adobe - Chinese simplified */
-    'Source Han Sans TC',          /* Adobe - Chinese traditional */
-    'Source Han Sans',             /* Adobe - General CJK */
-    'Segoe UI',                    /* Windows system */
-    'Ubuntu',                      /* Linux */
-    'Cantarell',                   /* GNOME */
-    'Oxygen',                      /* KDE */
-    'Liberation Sans',             /* Linux fallback */
-    'DejaVu Sans',                 /* Linux fallback 2 */
-    'Helvetica',                   /* General fallback */
-    'Arial',                       /* Universal fallback */
-    sans-serif;
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    'Noto Sans',
+    'Liberation Sans',
+    sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
 
   /* Monospace font stack */
   --gh-font-mono:
-    'SF Mono',                     /* macOS monospace */
-    'Monaco',                      /* macOS fallback */
-    'Cascadia Code',               /* Windows modern */
-    'Roboto Mono',                 /* Android */
-    'Consolas',                    /* Windows */
-    'Liberation Mono',             /* Linux */
-    'Menlo',                       /* macOS older */
-    'DejaVu Sans Mono',           /* Linux fallback */
-    'Courier New',                 /* Universal fallback */
+    ui-monospace,
+    'SF Mono',
+    'Cascadia Code',
+    'Roboto Mono',
+    Menlo,
+    Monaco,
+    Consolas,
+    'Liberation Mono',
+    'Courier New',
     monospace;
 }

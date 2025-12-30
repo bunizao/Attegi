@@ -215,6 +215,8 @@
 
     function applyHighlight() {
       if (!window.hljs) return;
+      // Suppress security warnings for code blocks from trusted Ghost editor
+      window.hljs.configure({ ignoreUnescapedHTML: true });
       Array.prototype.forEach.call(blocks, function (code) {
         window.hljs.highlightElement(code);
 
