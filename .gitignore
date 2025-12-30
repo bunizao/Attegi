@@ -5,3 +5,4 @@ docker-compose.yml
 /.playwright-mcp
 # keep theme assets images tracked
 /.lighthouseci
+/cloudflare-worker

@@ -109,6 +109,22 @@
         "type": "text",
         "description": "GitHub profile URL (e.g., https://github.com/username)"
       },
+      "telegram_url": {
+        "type": "text",
+        "description": "Telegram profile or channel URL (e.g., https://t.me/username)"
+      },
+      "discord_url": {
+        "type": "text",
+        "description": "Discord server invite URL (e.g., https://discord.gg/invite)"
+      },
+      "bluesky_url": {
+        "type": "text",
+        "description": "Bluesky profile URL (e.g., https://bsky.app/profile/username)"
+      },
+      "email_address": {
+        "type": "text",
+        "description": "Contact email address (e.g., hello@example.com)"
+      },
       "footer_text": {
         "type": "text",
         "description": "Custom text displayed in footer center (supports HTML)"

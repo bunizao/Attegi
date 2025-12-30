@@ -292,6 +292,18 @@
 							{{#if @custom.github_url}}<a class="social-link" aria-label="{{t "GitHub"}}" href="{{@custom.github_url}}" title="{{t "GitHub"}}" target="_blank" rel="noopener">
 								<i class="icon icon-github" aria-hidden="true">{{> "icons/icon-github"}}</i>
 							</a>{{/if}}
+							{{#if @custom.telegram_url}}<a class="social-link" aria-label="{{t "Telegram"}}" href="{{@custom.telegram_url}}" title="{{t "Telegram"}}" target="_blank" rel="noopener">
+								<i class="icon icon-telegram" aria-hidden="true">{{> "icons/icon-telegram"}}</i>
+							</a>{{/if}}
+							{{#if @custom.discord_url}}<a class="social-link" aria-label="{{t "Discord"}}" href="{{@custom.discord_url}}" title="{{t "Discord"}}" target="_blank" rel="noopener">
+								<i class="icon icon-discord" aria-hidden="true">{{> "icons/icon-discord"}}</i>
+							</a>{{/if}}
+							{{#if @custom.bluesky_url}}<a class="social-link" aria-label="{{t "Bluesky"}}" href="{{@custom.bluesky_url}}" title="{{t "Bluesky"}}" target="_blank" rel="noopener">
+								<i class="icon icon-bluesky" aria-hidden="true">{{> "icons/icon-bluesky"}}</i>
+							</a>{{/if}}
+							{{#if @custom.email_address}}<a class="social-link" aria-label="{{t "Email"}}" href="mailto:{{@custom.email_address}}" title="{{t "Email"}}">
+								<i class="icon icon-mail" aria-hidden="true">{{> "icons/icon-mail"}}</i>
+							</a>{{/if}}
 						</div>
 						<span class="footer-divider"></span>
 						<button class="theme-toggle js-theme" aria-label="{{t "Toggle theme"}}" data-system="{{t "System"}}" data-dark="{{t "Dark"}}" data-light="{{t "Light"}}">
