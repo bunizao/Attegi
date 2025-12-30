@@ -3634,7 +3634,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	margin: 4px 0 12px;
 	padding: 0;
 	border-bottom: none;
-	font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "WenQuanYi Micro Hei", ui-sans-serif, system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	font-family: var(--gh-font-body);
 	font-weight: 400;
 }
 
