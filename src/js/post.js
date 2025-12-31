@@ -32,10 +32,33 @@
       'video'
     ];
 
+    function getNumericAttribute(node, name) {
+      var value = node.getAttribute(name);
+      if (!value) return null;
+      // Extract numeric part from values like "640", "640px", "100%"
+      var match = value.match(/^(\d+(?:\.\d+)?)/);
+      if (!match) return null;
+      var numberValue = parseFloat(match[1]);
+      // Ignore percentage values as they don't represent actual dimensions
+      if (value.indexOf('%') !== -1) return null;
+      return numberValue > 0 ? numberValue : null;
+    }
+
+    function getEmbedPadding(node) {
+      var width = getNumericAttribute(node, 'width');
+      var height = getNumericAttribute(node, 'height');
+      if (!width || !height) return null;
+      return (height / width) * 100;
+    }
+
     function wrapNode(node) {
       if (node.closest('.js-reframe')) return;
       var wrapper = doc.createElement('div');
       wrapper.className = 'js-reframe';
+      var padding = getEmbedPadding(node);
+      if (padding) {
+        wrapper.style.paddingBottom = padding.toFixed(4) + '%';
+      }
       node.parentNode.insertBefore(wrapper, node);
       wrapper.appendChild(node);
     }
@@ -416,6 +439,74 @@
     }
   }
 
+  /**
+   * Detect portrait videos and apply special styling
+   * Also fixes padding for videos without numeric width/height attributes
+   */
+  function setupPortraitVideos() {
+    var videoCards = doc.querySelectorAll('.kg-video-card');
+    if (!videoCards.length) return;
+
+    Array.prototype.forEach.call(videoCards, function(card) {
+      var video = card.querySelector('video');
+      if (!video) return;
+
+      function applyPortraitStyle() {
+        var width = video.videoWidth;
+        var height = video.videoHeight;
+        if (!width || !height) return;
+
+        // Check if portrait (height > width)
+        if (height > width) {
+          card.classList.add('kg-video-portrait');
+        }
+
+        // Fix padding for .js-reframe wrapper if it wasn't set correctly
+        // This handles cases where width/height attributes were missing or non-numeric
+        var wrapper = video.closest('.js-reframe');
+        if (wrapper) {
+          var currentPadding = wrapper.style.paddingBottom;
+          // If no padding was set, calculate from actual video dimensions
+          if (!currentPadding || currentPadding === '0%' || currentPadding === '') {
+            var padding = (height / width) * 100;
+            wrapper.style.paddingBottom = padding.toFixed(4) + '%';
+          }
+        }
+      }
+
+      if (video.readyState >= 1) {
+        applyPortraitStyle();
+      } else {
+        video.addEventListener('loadedmetadata', applyPortraitStyle);
+      }
+    });
+  }
+
+  /**
+   * Detect portrait images and apply special styling
+   */
+  function setupPortraitImages() {
+    var imageCards = doc.querySelectorAll('.kg-image-card');
+    if (!imageCards.length) return;
+
+    Array.prototype.forEach.call(imageCards, function(card) {
+      var img = card.querySelector('.kg-image');
+      if (!img) return;
+
+      function applyPortraitStyle() {
+        if (img.naturalHeight > img.naturalWidth) {
+          card.classList.add('kg-image-portrait');
+        }
+      }
+
+      if (img.complete && img.naturalWidth > 0) {
+        applyPortraitStyle();
+      } else {
+        img.addEventListener('load', applyPortraitStyle);
+      }
+    });
+  }
+
   function init() {
     var postContent = doc.querySelector('.post-content');
     if (!postContent) return;
@@ -429,6 +520,8 @@
     setupShare();
     setupDisqus();
     setupCoverBrightnessDetection();
+    setupPortraitVideos();
+    setupPortraitImages();
   }
 
   onReady(init);

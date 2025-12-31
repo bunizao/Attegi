@@ -1076,7 +1076,7 @@ textarea {
 		&:not(.kg-width-wide):not(.kg-width-full) {
 			.kg-image {
 				max-width: 100%;
-				border-radius: 0.5rem;
+				border-radius: 1rem;
 			}
 		}
 
@@ -1149,6 +1149,13 @@ textarea {
 
 		.kg-image {
 			margin: 0 auto;
+		}
+
+		// Portrait images - limit height on desktop
+		&.kg-image-portrait .kg-image {
+			max-height: 80vh;
+			width: auto;
+			max-width: 100%;
 		}
 
 		.kg-image-full + figcaption {
@@ -1241,6 +1248,23 @@ textarea {
 
 		video {
 			border-radius: 1rem;
+			object-fit: contain;
+		}
+
+		// Portrait video (9:16) - constrained size, centered
+		&.kg-video-portrait {
+			background: transparent;
+			max-height: 80vh;
+
+			.kg-video-container {
+				max-width: min(100%, 45vh);
+				max-height: 80vh;
+				margin: 0 auto;
+			}
+
+			video {
+				max-height: 80vh;
+			}
 		}
 	}
 
@@ -5619,13 +5643,13 @@ a.post-tag-chip {
 	transform: scale(1.01);
 }
 
-/* GLightbox - Clean white background */
+/* GLightbox - Semi-transparent background */
 .glightbox-container .goverlay {
-	background: rgba(0, 0, 0, 0.92) !important;
+	background: rgba(0, 0, 0, 0.75) !important;
 }
 
 .theme-dark .glightbox-container .goverlay {
-	background: rgba(0, 0, 0, 0.95) !important;
+	background: rgba(0, 0, 0, 0.8) !important;
 }
 
 /* Image container - smaller sizing */

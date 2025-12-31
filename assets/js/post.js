@@ -1,1 +1,528 @@
-(()=>{var w=document;function d(e,t){var n=w.body;return n&&n.getAttribute("data-i18n-"+e)||t}var e,i={javascript:"JavaScript",js:"JavaScript",typescript:"TypeScript",ts:"TypeScript",python:"Python",py:"Python",java:"Java",c:"C",cpp:"C++",csharp:"C#",cs:"C#",go:"Go",rust:"Rust",ruby:"Ruby",rb:"Ruby",php:"PHP",swift:"Swift",kotlin:"Kotlin",scala:"Scala",r:"R",sql:"SQL",html:"HTML",xml:"XML",css:"CSS",scss:"SCSS",sass:"Sass",less:"Less",json:"JSON",yaml:"YAML",yml:"YAML",markdown:"Markdown",md:"Markdown",bash:"Bash",shell:"Shell",sh:"Shell",zsh:"Zsh",powershell:"PowerShell",ps1:"PowerShell",dockerfile:"Dockerfile",docker:"Docker",nginx:"Nginx",apache:"Apache",lua:"Lua",perl:"Perl",haskell:"Haskell",elixir:"Elixir",erlang:"Erlang",clojure:"Clojure",lisp:"Lisp",scheme:"Scheme",ocaml:"OCaml",fsharp:"F#",dart:"Dart",groovy:"Groovy",julia:"Julia",matlab:"MATLAB",objectivec:"Objective-C",objc:"Objective-C",assembly:"Assembly",asm:"Assembly",vb:"Visual Basic",vbnet:"VB.NET",graphql:"GraphQL",toml:"TOML",ini:"INI",makefile:"Makefile",cmake:"CMake",diff:"Diff",plaintext:"Plain Text",text:"Plain Text"};function u(r){return new Promise(function(e,t){try{var n=w.createElement("textarea"),a=(n.value=r,n.setAttribute("readonly",""),n.style.position="fixed",n.style.top="-9999px",n.style.left="-9999px",w.body.appendChild(n),n.focus(),n.select(),n.setSelectionRange(0,n.value.length),w.execCommand&&w.execCommand("copy"));w.body.removeChild(n),a?e():t(new Error("Copy failed"))}catch(e){t(e)}})}function y(e,t){var n,a;function r(e,n,t){var a=d("copy","Copy"),r=d("copied","Copied!"),o=d("copy-code","Copy code"),i=w.createElement("div"),l=(i.className="code-header",w.createElement("span")),s=(l.className="code-lang",l.textContent=t||"",i.appendChild(l),w.createElement("button"));function c(e){s.innerHTML=e?'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>':'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';var t=w.createElement("span");t.textContent=e?r:a,s.appendChild(t)}s.className="code-copy-btn",s.setAttribute("aria-label",o),c(!1),s.addEventListener("click",function(){var e,t=n.textContent||n.innerText;e=t,(navigator.clipboard&&window.isSecureContext?navigator.clipboard.writeText(e).catch(function(){return u(e)}):u(e)).then(function(){s.classList.add("copied"),c(!0),setTimeout(function(){s.classList.remove("copied"),c(!1)},2e3)}).catch(function(){})}),i.appendChild(s),e.insertBefore(i,e.firstChild)}function o(){window.hljs&&(window.hljs.configure({ignoreUnescapedHTML:!0}),Array.prototype.forEach.call(n,function(e){window.hljs.highlightElement(e);var t,n=e.parentElement;n.querySelector(".code-header")||(t=(t=(t=e.className)&&t.match(/language-(\w+)/i))?(t=t[1].toLowerCase(),i[t]||t.charAt(0).toUpperCase()+t.slice(1)):null,r(n,e,t))}))}e&&(n=e.querySelectorAll("pre code")).length&&(window.hljs?"requestIdleCallback"in window?window.requestIdleCallback(o,{timeout:300}):setTimeout(o,0):t&&((a=w.createElement("script")).src=t,a.defer=!0,a.onload=function(){o()},"requestIdleCallback"in window?window.requestIdleCallback(function(){w.body.appendChild(a)},{timeout:500}):setTimeout(function(){w.body.appendChild(a)},0)))}e=function(){var t,n,e,a,r,o,i,l,s,u,c,d=w.querySelector(".post-content");function h(e){var t;e.closest(".js-reframe")||((t=w.createElement("div")).className="js-reframe",e.parentNode.insertBefore(t,e),t.appendChild(e))}function p(){var e=window.innerHeight||w.documentElement.clientHeight,t=n.offsetTop,e=Math.max(0,Math.min((window.scrollY+e/2-t)/(t+n.offsetHeight-t)*100,120));a.style.width=Math.min(e,100)+"%",r.classList.toggle("complete",100<e)}function m(){e||(e=!0,window.requestAnimationFrame(function(){p(),e=!1}))}function f(){var e;i||(i=!0,(e=w.createElement("script")).src="https://"+s+".disqus.com/embed.js",e.async=!0,e.setAttribute("data-timestamp",String(Date.now())),w.body.appendChild(e))}function v(e){var t=w.createElement("canvas"),n=t.getContext("2d");if(n){var a=Math.floor(.4*e.naturalHeight),r=e.naturalHeight-a,o=Math.min(e.naturalWidth,100),i=Math.min(a,60);t.width=o,t.height=i;try{n.drawImage(e,0,r,e.naturalWidth,a,0,0,o,i);for(var l=n.getImageData(0,0,o,i).data,s=0,c=l.length/4,d=0;d<l.length;d+=4)s+=.299*l[d]+.587*l[d+1]+.114*l[d+2];160<s/c&&u.classList.add("light-cover")}catch(e){}}}d&&(o=(o=w.currentScript||null)?o.getAttribute("data-highlight"):"",(t=d)&&['iframe[src*="youtube.com"]','iframe[src*="youtu.be"]','iframe[src*="vimeo.com"]','iframe[src*="bilibili.com"]','iframe[src*="player.spotify.com"]','iframe[src*="soundcloud.com"]','iframe[src*="music.163.com"]','iframe[src*="qq.com"]',"object","embed","video"].forEach(function(e){e=t.querySelectorAll(e);Array.prototype.forEach.call(e,h)}),y(d,o),n=d,a=w.querySelector(".progress-bar"),r=w.querySelector(".progress-container"),a&&r&&n&&(e=!1,["scroll","resize","orientationchange"].forEach(function(e){window.addEventListener(e,m,{passive:!0})}),p()),(o=w.getElementById("share-button"))&&(navigator.share?o.addEventListener("click",function(e){e.preventDefault(),navigator.share({title:w.title,url:window.location.href}).catch(function(){})}):(o.setAttribute("aria-hidden","true"),o.setAttribute("tabindex","-1"),o.style.display="none")),d=w.getElementById("disqus_thread"),s=d&&d.dataset?d.dataset.disqusShortname:"",d&&s&&(i=!1,"IntersectionObserver"in window?(l=new IntersectionObserver(function(e){e.forEach(function(e){e.isIntersecting&&(f(),l.disconnect())})},{rootMargin:"400px 0px"})).observe(d):(window.addEventListener("scroll",f,{passive:!0}),window.addEventListener("touchstart",f,{passive:!0}))),u=w.querySelector(".post-header.has-cover"),c=u?u.querySelector(".post-cover img"):null,u)&&c&&(c.complete&&0<c.naturalWidth?v(c):c.addEventListener("load",function(){v(c)}))},"loading"===w.readyState?w.addEventListener("DOMContentLoaded",e):e()})();
+(function () {
+  var doc = document;
+
+  function getI18n(key, fallback) {
+    var body = doc.body;
+    if (!body) return fallback;
+    var value = body.getAttribute('data-i18n-' + key);
+    return value || fallback;
+  }
+
+  function onReady(fn) {
+    if (doc.readyState === 'loading') {
+      doc.addEventListener('DOMContentLoaded', fn);
+    } else {
+      fn();
+    }
+  }
+
+  function wrapEmbeds(container) {
+    if (!container) return;
+    var selectors = [
+      'iframe[src*="youtube.com"]',
+      'iframe[src*="youtu.be"]',
+      'iframe[src*="vimeo.com"]',
+      'iframe[src*="bilibili.com"]',
+      'iframe[src*="player.spotify.com"]',
+      'iframe[src*="soundcloud.com"]',
+      'iframe[src*="music.163.com"]',
+      'iframe[src*="qq.com"]',
+      'object',
+      'embed',
+      'video'
+    ];
+
+    function getNumericAttribute(node, name) {
+      var value = node.getAttribute(name);
+      if (!value) return null;
+      // Extract numeric part from values like "640", "640px", "100%"
+      var match = value.match(/^(\d+(?:\.\d+)?)/);
+      if (!match) return null;
+      var numberValue = parseFloat(match[1]);
+      // Ignore percentage values as they don't represent actual dimensions
+      if (value.indexOf('%') !== -1) return null;
+      return numberValue > 0 ? numberValue : null;
+    }
+
+    function getEmbedPadding(node) {
+      var width = getNumericAttribute(node, 'width');
+      var height = getNumericAttribute(node, 'height');
+      if (!width || !height) return null;
+      return (height / width) * 100;
+    }
+
+    function wrapNode(node) {
+      if (node.closest('.js-reframe')) return;
+      var wrapper = doc.createElement('div');
+      wrapper.className = 'js-reframe';
+      var padding = getEmbedPadding(node);
+      if (padding) {
+        wrapper.style.paddingBottom = padding.toFixed(4) + '%';
+      }
+      node.parentNode.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
+    }
+
+    selectors.forEach(function (selector) {
+      var nodes = container.querySelectorAll(selector);
+      Array.prototype.forEach.call(nodes, wrapNode);
+    });
+  }
+
+  // Language display name mapping
+  var languageNames = {
+    'javascript': 'JavaScript',
+    'js': 'JavaScript',
+    'typescript': 'TypeScript',
+    'ts': 'TypeScript',
+    'python': 'Python',
+    'py': 'Python',
+    'java': 'Java',
+    'c': 'C',
+    'cpp': 'C++',
+    'csharp': 'C#',
+    'cs': 'C#',
+    'go': 'Go',
+    'rust': 'Rust',
+    'ruby': 'Ruby',
+    'rb': 'Ruby',
+    'php': 'PHP',
+    'swift': 'Swift',
+    'kotlin': 'Kotlin',
+    'scala': 'Scala',
+    'r': 'R',
+    'sql': 'SQL',
+    'html': 'HTML',
+    'xml': 'XML',
+    'css': 'CSS',
+    'scss': 'SCSS',
+    'sass': 'Sass',
+    'less': 'Less',
+    'json': 'JSON',
+    'yaml': 'YAML',
+    'yml': 'YAML',
+    'markdown': 'Markdown',
+    'md': 'Markdown',
+    'bash': 'Bash',
+    'shell': 'Shell',
+    'sh': 'Shell',
+    'zsh': 'Zsh',
+    'powershell': 'PowerShell',
+    'ps1': 'PowerShell',
+    'dockerfile': 'Dockerfile',
+    'docker': 'Docker',
+    'nginx': 'Nginx',
+    'apache': 'Apache',
+    'lua': 'Lua',
+    'perl': 'Perl',
+    'haskell': 'Haskell',
+    'elixir': 'Elixir',
+    'erlang': 'Erlang',
+    'clojure': 'Clojure',
+    'lisp': 'Lisp',
+    'scheme': 'Scheme',
+    'ocaml': 'OCaml',
+    'fsharp': 'F#',
+    'dart': 'Dart',
+    'groovy': 'Groovy',
+    'julia': 'Julia',
+    'matlab': 'MATLAB',
+    'objectivec': 'Objective-C',
+    'objc': 'Objective-C',
+    'assembly': 'Assembly',
+    'asm': 'Assembly',
+    'vb': 'Visual Basic',
+    'vbnet': 'VB.NET',
+    'graphql': 'GraphQL',
+    'toml': 'TOML',
+    'ini': 'INI',
+    'makefile': 'Makefile',
+    'cmake': 'CMake',
+    'diff': 'Diff',
+    'plaintext': 'Plain Text',
+    'text': 'Plain Text'
+  };
+
+  function getLanguageDisplayName(langClass) {
+    if (!langClass) return null;
+    var match = langClass.match(/language-(\w+)/i);
+    if (!match) return null;
+    var lang = match[1].toLowerCase();
+    return languageNames[lang] || lang.charAt(0).toUpperCase() + lang.slice(1);
+  }
+
+  function legacyCopy(text) {
+    return new Promise(function(resolve, reject) {
+      try {
+        var textarea = doc.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.top = '-9999px';
+        textarea.style.left = '-9999px';
+        doc.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+        var successful = doc.execCommand && doc.execCommand('copy');
+        doc.body.removeChild(textarea);
+        if (successful) {
+          resolve();
+        } else {
+          reject(new Error('Copy failed'));
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  function copyToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text)['catch'](function() {
+        return legacyCopy(text);
+      });
+    }
+    return legacyCopy(text);
+  }
+
+  function highlightCode(container, highlightUrl) {
+    if (!container) return;
+    var blocks = container.querySelectorAll('pre code');
+    if (!blocks.length) return;
+
+    function createCodeHeader(pre, code, langName) {
+      var copyLabel = getI18n('copy', 'Copy');
+      var copiedLabel = getI18n('copied', 'Copied!');
+      var copyAria = getI18n('copy-code', 'Copy code');
+      var copyIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+      var copiedIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+      var header = doc.createElement('div');
+      header.className = 'code-header';
+
+      // Language label
+      var lang = doc.createElement('span');
+      lang.className = 'code-lang';
+      lang.textContent = langName || '';
+      header.appendChild(lang);
+
+      // Copy button
+      var btn = doc.createElement('button');
+      btn.className = 'code-copy-btn';
+      btn.setAttribute('aria-label', copyAria);
+
+      function setCopyButtonState(isCopied) {
+        btn.innerHTML = isCopied ? copiedIcon : copyIcon;
+        var label = doc.createElement('span');
+        label.textContent = isCopied ? copiedLabel : copyLabel;
+        btn.appendChild(label);
+      }
+
+      setCopyButtonState(false);
+
+      btn.addEventListener('click', function() {
+        var text = code.textContent || code.innerText;
+        copyToClipboard(text).then(function() {
+          btn.classList.add('copied');
+          setCopyButtonState(true);
+          setTimeout(function() {
+            btn.classList.remove('copied');
+            setCopyButtonState(false);
+          }, 2000);
+        })['catch'](function() {});
+      });
+
+      header.appendChild(btn);
+      pre.insertBefore(header, pre.firstChild);
+    }
+
+    function applyHighlight() {
+      if (!window.hljs) return;
+      // Suppress security warnings for code blocks from trusted Ghost editor
+      window.hljs.configure({ ignoreUnescapedHTML: true });
+      Array.prototype.forEach.call(blocks, function (code) {
+        window.hljs.highlightElement(code);
+
+        var pre = code.parentElement;
+
+        // Add header with language and copy button
+        if (!pre.querySelector('.code-header')) {
+          var langName = getLanguageDisplayName(code.className);
+          createCodeHeader(pre, code, langName);
+        }
+      });
+    }
+
+    if (window.hljs) {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(applyHighlight, { timeout: 300 });
+      } else {
+        setTimeout(applyHighlight, 0);
+      }
+      return;
+    }
+
+    if (!highlightUrl) return;
+    var script = doc.createElement('script');
+    script.src = highlightUrl;
+    script.defer = true;
+    script.onload = function () {
+      applyHighlight();
+    };
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(function () {
+        doc.body.appendChild(script);
+      }, { timeout: 500 });
+    } else {
+      setTimeout(function () {
+        doc.body.appendChild(script);
+      }, 0);
+    }
+  }
+
+  function setupProgress(content) {
+    var progressBar = doc.querySelector('.progress-bar');
+    var progressContainer = doc.querySelector('.progress-container');
+    if (!progressBar || !progressContainer || !content) return;
+
+    var ticking = false;
+
+    function update() {
+      var viewportHeight = window.innerHeight || doc.documentElement.clientHeight;
+      var viewportMiddle = window.scrollY + viewportHeight / 2;
+      var contentTop = content.offsetTop;
+      var contentBottom = contentTop + content.offsetHeight;
+
+      // Progress starts when viewport middle reaches content top
+      // Progress ends when viewport middle reaches content bottom
+      var scrollableDistance = contentBottom - contentTop;
+      var scrolledDistance = viewportMiddle - contentTop;
+
+      var progress = (scrolledDistance / scrollableDistance) * 100;
+      var clamped = Math.max(0, Math.min(progress, 120));
+      progressBar.style.width = Math.min(clamped, 100) + '%';
+      progressContainer.classList.toggle('complete', clamped > 100);
+    }
+
+    function requestTick() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        update();
+        ticking = false;
+      });
+    }
+
+    ['scroll', 'resize', 'orientationchange'].forEach(function (evt) {
+      window.addEventListener(evt, requestTick, { passive: true });
+    });
+
+    update();
+  }
+
+  function setupShare() {
+    var shareButton = doc.getElementById('share-button');
+    if (!shareButton) return;
+    if (!navigator.share) {
+      shareButton.setAttribute('aria-hidden', 'true');
+      shareButton.setAttribute('tabindex', '-1');
+      shareButton.style.display = 'none';
+      return;
+    }
+
+    shareButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      navigator.share({
+        title: doc.title,
+        url: window.location.href
+      })['catch'](function () {});
+    });
+  }
+
+  function setupDisqus() {
+    var thread = doc.getElementById('disqus_thread');
+    var shortname = thread && thread.dataset ? thread.dataset.disqusShortname : '';
+    if (!thread || !shortname) return;
+
+    var loaded = false;
+
+    function loadDisqus() {
+      if (loaded) return;
+      loaded = true;
+      var script = doc.createElement('script');
+      script.src = 'https://' + shortname + '.disqus.com/embed.js';
+      script.async = true;
+      script.setAttribute('data-timestamp', String(Date.now()));
+      doc.body.appendChild(script);
+    }
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            loadDisqus();
+            observer.disconnect();
+          }
+        });
+      }, { rootMargin: '400px 0px' });
+      observer.observe(thread);
+    } else {
+      window.addEventListener('scroll', loadDisqus, { passive: true });
+      window.addEventListener('touchstart', loadDisqus, { passive: true });
+    }
+  }
+
+  /**
+   * Detect if cover image is bright and apply contrast enhancement
+   * Samples the bottom portion of the image where text overlays
+   */
+  function setupCoverBrightnessDetection() {
+    var postHeader = doc.querySelector('.post-header.has-cover');
+    var coverImg = postHeader ? postHeader.querySelector('.post-cover img') : null;
+    if (!postHeader || !coverImg) return;
+
+    function analyzeBrightness(img) {
+      var canvas = doc.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Sample the bottom 40% of the image (where text typically overlays)
+      var sampleHeight = Math.floor(img.naturalHeight * 0.4);
+      var sampleY = img.naturalHeight - sampleHeight;
+
+      // Use a smaller sample size for performance
+      var sampleWidth = Math.min(img.naturalWidth, 100);
+      var scaledHeight = Math.min(sampleHeight, 60);
+
+      canvas.width = sampleWidth;
+      canvas.height = scaledHeight;
+
+      try {
+        ctx.drawImage(
+          img,
+          0, sampleY, img.naturalWidth, sampleHeight,  // source
+          0, 0, sampleWidth, scaledHeight               // destination
+        );
+
+        var imageData = ctx.getImageData(0, 0, sampleWidth, scaledHeight);
+        var data = imageData.data;
+        var totalBrightness = 0;
+        var pixelCount = data.length / 4;
+
+        // Calculate average brightness using perceived luminance formula
+        for (var i = 0; i < data.length; i += 4) {
+          var r = data[i];
+          var g = data[i + 1];
+          var b = data[i + 2];
+          // Perceived brightness: 0.299*R + 0.587*G + 0.114*B
+          totalBrightness += (0.299 * r + 0.587 * g + 0.114 * b);
+        }
+
+        var avgBrightness = totalBrightness / pixelCount;
+
+        // If brightness > 160 (out of 255), consider it a light image
+        if (avgBrightness > 160) {
+          postHeader.classList.add('light-cover');
+        }
+      } catch (e) {
+        // Canvas security error (cross-origin image) - skip detection
+      }
+    }
+
+    // Check if image is already loaded
+    if (coverImg.complete && coverImg.naturalWidth > 0) {
+      analyzeBrightness(coverImg);
+    } else {
+      coverImg.addEventListener('load', function() {
+        analyzeBrightness(coverImg);
+      });
+    }
+  }
+
+  /**
+   * Detect portrait videos and apply special styling
+   * Also fixes padding for videos without numeric width/height attributes
+   */
+  function setupPortraitVideos() {
+    var videoCards = doc.querySelectorAll('.kg-video-card');
+    if (!videoCards.length) return;
+
+    Array.prototype.forEach.call(videoCards, function(card) {
+      var video = card.querySelector('video');
+      if (!video) return;
+
+      function applyPortraitStyle() {
+        var width = video.videoWidth;
+        var height = video.videoHeight;
+        if (!width || !height) return;
+
+        // Check if portrait (height > width)
+        if (height > width) {
+          card.classList.add('kg-video-portrait');
+        }
+
+        // Fix padding for .js-reframe wrapper if it wasn't set correctly
+        // This handles cases where width/height attributes were missing or non-numeric
+        var wrapper = video.closest('.js-reframe');
+        if (wrapper) {
+          var currentPadding = wrapper.style.paddingBottom;
+          // If no padding was set, calculate from actual video dimensions
+          if (!currentPadding || currentPadding === '0%' || currentPadding === '') {
+            var padding = (height / width) * 100;
+            wrapper.style.paddingBottom = padding.toFixed(4) + '%';
+          }
+        }
+      }
+
+      if (video.readyState >= 1) {
+        applyPortraitStyle();
+      } else {
+        video.addEventListener('loadedmetadata', applyPortraitStyle);
+      }
+    });
+  }
+
+  /**
+   * Detect portrait images and apply special styling
+   */
+  function setupPortraitImages() {
+    var imageCards = doc.querySelectorAll('.kg-image-card');
+    if (!imageCards.length) return;
+
+    Array.prototype.forEach.call(imageCards, function(card) {
+      var img = card.querySelector('.kg-image');
+      if (!img) return;
+
+      function applyPortraitStyle() {
+        if (img.naturalHeight > img.naturalWidth) {
+          card.classList.add('kg-image-portrait');
+        }
+      }
+
+      if (img.complete && img.naturalWidth > 0) {
+        applyPortraitStyle();
+      } else {
+        img.addEventListener('load', applyPortraitStyle);
+      }
+    });
+  }
+
+  function init() {
+    var postContent = doc.querySelector('.post-content');
+    if (!postContent) return;
+
+    var currentScript = doc.currentScript || null;
+    var highlightUrl = currentScript ? currentScript.getAttribute('data-highlight') : '';
+
+    wrapEmbeds(postContent);
+    highlightCode(postContent, highlightUrl);
+    setupProgress(postContent);
+    setupShare();
+    setupDisqus();
+    setupCoverBrightnessDetection();
+    setupPortraitVideos();
+    setupPortraitImages();
+  }
+
+  onReady(init);
+})();
