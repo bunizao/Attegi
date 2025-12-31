@@ -1373,6 +1373,8 @@ textarea {
 		min-height: 160px;
 		flex-shrink: 0;
 		overflow: hidden;
+		border-radius: 0 1rem 1rem 0; // Match card's right corners
+		aspect-ratio: auto; // Override global aspect-ratio to prevent layout issues
 
 		@media only screen and (max-width: $breakpoint-medium) {
 			min-width: 120px;
@@ -3230,7 +3232,7 @@ iframe.gh-portal-triggerbtn-iframe {
 .nav-header .nav-wrapper-control a {
 	border-radius: 0.5rem;
 	transition: all ease-out 0.2s;
-	font-size: 2em;
+	font-size: 1.6rem;
 
 	&:active {
 		transform: scale(0.98);
@@ -3460,6 +3462,12 @@ iframe.gh-portal-triggerbtn-iframe {
 	svg {
 		width: 1.8rem;
 		height: 1.8rem;
+	}
+
+	.icon-rss svg {
+		width: 2.2rem;
+		height: 2.2rem;
+		transform: translate(0.22rem, -0.16rem);
 	}
 }
 

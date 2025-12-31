@@ -165,12 +165,41 @@ document.addEventListener("DOMContentLoaded", function() {
     var images = document.querySelectorAll('.kg-gallery-image img');
     // Batch all style changes in a single RAF to avoid multiple reflows
     requestAnimationFrame(function() {
-      images.forEach(function(image) {
-        var container = image.closest('.kg-gallery-image');
-        var width = image.attributes.width.value;
-        var height = image.attributes.height.value;
-        var ratio = width / height;
-        container.style.flex = ratio + ' 1 0%';
+      Array.prototype.forEach.call(images, function(image) {
+        function getNumericValue(value) {
+          if (!value) return null;
+          var numberValue = parseFloat(value);
+          if (isNaN(numberValue)) return null;
+          return numberValue > 0 ? numberValue : null;
+        }
+
+        function getImageRatio(img) {
+          var widthAttr = getNumericValue(img.getAttribute('width'));
+          var heightAttr = getNumericValue(img.getAttribute('height'));
+          if (widthAttr && heightAttr) return widthAttr / heightAttr;
+          if (img.naturalWidth && img.naturalHeight) {
+            return img.naturalWidth / img.naturalHeight;
+          }
+          return null;
+        }
+
+        function applyRatio(img) {
+          var container = img.closest('.kg-gallery-image');
+          if (!container) return;
+          var ratio = getImageRatio(img);
+          if (!ratio) return;
+          container.style.flex = ratio + ' 1 0%';
+        }
+
+        if (image.complete && image.naturalWidth > 0) {
+          applyRatio(image);
+        } else {
+          var onLoad = function () {
+            applyRatio(image);
+            image.removeEventListener('load', onLoad);
+          };
+          image.addEventListener('load', onLoad);
+        }
       });
     });
   }

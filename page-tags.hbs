@@ -35,7 +35,7 @@
 
                             {{!-- Hidden container for tag's code injection (to extract icon) --}}
                             {{#if codeinjection_head}}
-                                <div class="tag-code-injection" hidden>{{{codeinjection_head}}}</div>
+                                <template class="tag-code-injection">{{{codeinjection_head}}}</template>
                             {{/if}}
 
                             {{!-- Banner image at top --}}
@@ -65,7 +65,7 @@
                                 </a>
 
                                 {{!-- Post previews with glassmorphism for image cards --}}
-                                {{#get "posts" limit="100" filter="tag:{{slug}}" include="authors"}}
+                                {{#get "posts" limit="10" filter="tag:{{slug}}" include="authors"}}
                                     {{#if posts}}
                                         <div class="tag-card-posts" data-total="{{posts.length}}">
                                             {{#foreach posts}}
@@ -105,7 +105,7 @@
 
                             {{!-- Post previews for cards without image --}}
                             {{#unless feature_image}}
-                                {{#get "posts" limit="100" filter="tag:{{slug}}" include="authors"}}
+                                {{#get "posts" limit="10" filter="tag:{{slug}}" include="authors"}}
                                     {{#if posts}}
                                         <div class="tag-card-posts" data-total="{{posts.length}}">
                                             {{#foreach posts}}
@@ -135,7 +135,8 @@
 
         if (codeInjection && iconContainer) {
             // Look for <template data-tag-icon> or <svg data-tag-icon>
-            const iconTemplate = codeInjection.querySelector('[data-tag-icon]');
+            const source = codeInjection.content || codeInjection;
+            const iconTemplate = source.querySelector('[data-tag-icon]');
             if (iconTemplate) {
                 const defaultIcon = iconContainer.querySelector('.tag-icon-default');
                 if (defaultIcon) {

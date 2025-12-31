@@ -35,12 +35,10 @@
     function getNumericAttribute(node, name) {
       var value = node.getAttribute(name);
       if (!value) return null;
-      // Extract numeric part from values like "640", "640px", "100%"
-      var match = value.match(/^(\d+(?:\.\d+)?)/);
-      if (!match) return null;
-      var numberValue = parseFloat(match[1]);
-      // Ignore percentage values as they don't represent actual dimensions
-      if (value.indexOf('%') !== -1) return null;
+      var trimmed = value.trim();
+      if (!trimmed || /%$/.test(trimmed)) return null;
+      var numberValue = parseFloat(trimmed);
+      if (isNaN(numberValue)) return null;
       return numberValue > 0 ? numberValue : null;
     }
 
@@ -51,16 +49,39 @@
       return (height / width) * 100;
     }
 
+    function applyWrapperPadding(wrapper, padding) {
+      if (!wrapper || !padding) return;
+      wrapper.style.paddingBottom = padding.toFixed(4) + '%';
+    }
+
+    function applyVideoPadding(video, wrapper) {
+      if (!video || !wrapper) return;
+      if (!video.videoWidth || !video.videoHeight) return;
+      applyWrapperPadding(wrapper, (video.videoHeight / video.videoWidth) * 100);
+    }
+
     function wrapNode(node) {
       if (node.closest('.js-reframe')) return;
       var wrapper = doc.createElement('div');
       wrapper.className = 'js-reframe';
       var padding = getEmbedPadding(node);
       if (padding) {
-        wrapper.style.paddingBottom = padding.toFixed(4) + '%';
+        applyWrapperPadding(wrapper, padding);
       }
       node.parentNode.insertBefore(wrapper, node);
       wrapper.appendChild(node);
+
+      if (!padding && node.tagName && node.tagName.toLowerCase() === 'video') {
+        var applyOnce = function () {
+          applyVideoPadding(node, wrapper);
+          node.removeEventListener('loadedmetadata', applyOnce);
+        };
+        if (node.readyState >= 1) {
+          applyOnce();
+        } else {
+          node.addEventListener('loadedmetadata', applyOnce);
+        }
+      }
     }
 
     selectors.forEach(function (selector) {
