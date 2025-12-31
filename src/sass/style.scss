@@ -27,8 +27,8 @@ html.menu-active {
 
 body {
 	font-family: var(--gh-font-body);
-	font-size: 1em;
-	line-height: 1.75em;
+	font-size: 1em; // Keep at 1em to avoid cascading em unit issues
+	line-height: 1.75;
 	font-weight: 400;
 	color: var(--color-content-main);
 	text-rendering: optimizeLegibility;
@@ -36,6 +36,9 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: hidden;
 	background: var(--color-background-main);
+	/* Improved text rendering for CJK */
+	font-feature-settings: "kern" 1, "liga" 1;
+	-webkit-text-size-adjust: 100%;
 }
 
 /* ==========================================================================
@@ -165,8 +168,18 @@ textarea {
 }
 
 .post-content {
-	font-size: 1.8em;
-	line-height: 1.75em;
+	font-size: var(--font-size-base, 1.9rem);
+	line-height: var(--line-height-body, 1.7);
+	letter-spacing: var(--letter-spacing-normal, 0);
+
+	/* Responsive font sizing for better readability */
+	@media only screen and (max-width: $breakpoint-medium) {
+		font-size: 1.75rem;
+	}
+
+	@media only screen and (max-width: $breakpoint-small) {
+		font-size: 1.65rem;
+	}
 
 	a:not([class]) {
 		color: inherit;
@@ -187,39 +200,39 @@ textarea {
 	h4,
 	h5,
 	h6 {
-		margin: 0 0 2.5rem;
-		line-height: 1.25em;
+		margin: 2em 0 0.8em;
+		line-height: var(--line-height-heading, 1.35);
 		font-family: var(--gh-font-heading);
 		text-rendering: optimizeLegibility;
 		color: var(--color-content-lead);
+		letter-spacing: var(--letter-spacing-tight, -0.022em);
 	}
 
 	h1 {
-		font-size: 1.8em;
-		text-indent: -1px;
+		font-size: 2.2em;
 		font-weight: 700;
+		margin-top: 1.5em;
 	}
 
 	h2 {
-		font-size: 1.5em;
-		text-indent: -1px;
+		font-size: 1.85em;
 		font-weight: 600;
 	}
 
 	h3 {
-		font-size: 1.3em;
+		font-size: 1.5em;
 		font-weight: 600;
 	}
 
 	h4 {
-		font-size: 1.2em;
-		font-weight: 500;
+		font-size: 1.35em;
+		font-weight: 600;
 	}
 
 	h5,
 	h6 {
-		font-size: 1.1em;
-		font-weight: 500;
+		font-size: 1.2em;
+		font-weight: 600;
 	}
 
 	h1 a,
@@ -232,13 +245,13 @@ textarea {
 	}
 
 	p {
-		margin: 0 0 2.5rem;
+		margin: 0 0 1.5em;
 	}
 
 	ol,
 	ul {
-		margin: 0 0 2.5rem;
-		padding-left: 2em;
+		margin: 0 0 1.5em;
+		padding-left: 1.8em;
 		box-sizing: border-box;
 	}
 
@@ -675,7 +688,8 @@ textarea {
 		display: block;
 		max-width: 100%;
 		height: auto;
-		margin: 0 0 2.5rem;
+		margin: 1.5em 0;
+		border-radius: 0.5rem;
 	}
 
 	.fluid-width-video-wrapper {
@@ -907,16 +921,18 @@ textarea {
 		color: var(--color-content-secondary);
 		max-width: $inner;
 		margin: auto;
-		font-size: 0.75em;
-		line-height: 2em;
-		padding: 2rem 0;
+		font-size: 0.85em;
+		line-height: 1.6;
+		padding: 1em 0 1.5em;
+		text-align: center;
 
 		&:after {
 			content: '';
 			position: absolute;
-			left: 0;
+			left: 50%;
+			transform: translateX(-50%);
 			bottom: 0;
-			width: 8rem;
+			width: 4rem;
 			height: 1px;
 			background: var(--color-background-contrast);
 		}
@@ -1050,28 +1066,54 @@ textarea {
 		}
 	}
 
-	// KG Image
+	// KG Image - Apple Newsroom style, contained within content width
 
 	.kg-image-card {
 		max-width: none !important;
+		margin: 1.5em 0;
+
+		/* Default: image stays within content width */
+		&:not(.kg-width-wide):not(.kg-width-full) {
+			.kg-image {
+				max-width: 100%;
+				border-radius: 0.5rem;
+			}
+		}
 
 		&.kg-width-wide {
-			max-width: calc(72rem + 24vw) !important;
+			max-width: calc(100% + 8rem) !important;
 			min-width: 100%;
-			width: calc(100vw - 4rem);
+			width: calc(100% + 8rem);
+			margin-left: -4rem;
+			margin-right: -4rem;
+
+			@media only screen and (max-width: $breakpoint-medium) {
+				max-width: 100% !important;
+				width: 100%;
+				margin-left: 0;
+				margin-right: 0;
+			}
+
+			.kg-image {
+				border-radius: 0.75rem;
+
+				@media only screen and (max-width: $breakpoint-medium) {
+					border-radius: 0.5rem;
+				}
+			}
 
 			figcaption {
-				padding-left: 6rem;
-				padding-right: 6rem;
+				padding-left: 4rem;
+				padding-right: 4rem;
 				@media only screen and (max-width: $breakpoint-medium) {
-					padding-left: 2rem;
-					padding-right: 2rem;
+					padding-left: 0;
+					padding-right: 0;
 				}
 
 				&:after {
-					margin-left: 6rem;
+					margin-left: 4rem;
 					@media only screen and (max-width: $breakpoint-medium) {
-						margin-left: 2rem;
+						margin-left: 0;
 					}
 				}
 			}
@@ -1081,6 +1123,12 @@ textarea {
 			max-width: none;
 			width: 100vw;
 			margin-top: 2em;
+			margin-left: calc(-50vw + 50%);
+			margin-right: calc(-50vw + 50%);
+
+			.kg-image {
+				border-radius: 0;
+			}
 
 			figcaption {
 				padding-left: 8rem;
@@ -1108,26 +1156,35 @@ textarea {
 		}
 	}
 
-	// KG Gallery
+	// KG Gallery - Apple Newsroom inspired, proportional to content width
 
 	.kg-gallery-card {
-		max-width: calc(72rem + 24vw) !important;
+		max-width: calc(100% + 6rem) !important;
 		min-width: 100%;
-		width: calc(100vw - 4rem);
+		width: calc(100% + 6rem);
+		margin-left: -3rem;
+		margin-right: -3rem;
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			max-width: 100% !important;
+			width: 100%;
+			margin-left: 0;
+			margin-right: 0;
+		}
 
 		figcaption {
-			padding-left: 6rem;
-			padding-right: 6rem;
+			padding-left: 3rem;
+			padding-right: 3rem;
+			text-align: center;
 			@media only screen and (max-width: $breakpoint-medium) {
-				padding-left: 2rem;
-				padding-right: 2rem;
+				padding-left: 0;
+				padding-right: 0;
 			}
 
 			&:after {
-				margin-left: 6rem;
-				@media only screen and (max-width: $breakpoint-medium) {
-					margin-left: 2rem;
-				}
+				left: 50%;
+				transform: translateX(-50%);
+				margin-left: 0;
 			}
 		}
 	}
@@ -1135,12 +1192,14 @@ textarea {
 	.kg-gallery-container {
 		display: flex;
 		flex-direction: column;
+		gap: 0.5rem;
 	}
 
 	.kg-gallery-row {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
+		gap: 0.5rem;
 	}
 
 	.kg-gallery-image img {
@@ -1148,11 +1207,12 @@ textarea {
 		margin: 0;
 		width: 100%;
 		height: 100%;
+		border-radius: 0.5rem;
 	}
 
 	// Optimized: split :not() into separate rules for better performance
 	.kg-gallery-row {
-		margin: 0.75em 0 0;
+		margin: 0;
 	}
 
 	.kg-gallery-row:first-of-type {
@@ -1160,11 +1220,28 @@ textarea {
 	}
 
 	.kg-gallery-image {
-		margin: 0 0 0 0.75em;
+		margin: 0;
 	}
 
 	.kg-gallery-image:first-of-type {
 		margin: 0;
+	}
+
+	// KG Video
+
+	.kg-video-card {
+		margin: 0 0 2.5rem;
+		border-radius: 1rem;
+		overflow: hidden;
+
+		.kg-video-container {
+			border-radius: 1rem;
+			overflow: hidden;
+		}
+
+		video {
+			border-radius: 1rem;
+		}
 	}
 
 	// KG Embed
@@ -1243,7 +1320,7 @@ textarea {
 	.kg-bookmark-title {
 		font-family: var(--gh-font-heading);
 		color: var(--color-content-lead);
-		font-size: 1.1em;
+		font-size: 1.8rem;
 		line-height: 1.3;
 		font-weight: 700;
 		letter-spacing: 0;
@@ -1253,7 +1330,7 @@ textarea {
 
 	.kg-bookmark-description {
 		display: -webkit-box;
-		font-size: 0.9em;
+		font-size: 1.5rem;
 		line-height: 1.5;
 		font-weight: 400;
 		margin-top: 0.5rem;
@@ -1303,8 +1380,8 @@ textarea {
 		text-rendering: optimizeLegibility;
 		display: flex;
 		align-items: center;
-		font-size: 0.85em;
-		line-height: 1.66667em;
+		font-size: 1.4rem;
+		line-height: 1.5;
 		color: var(--color-content-main);
 		font-weight: 400;
 		margin-top: 1rem;
@@ -1313,8 +1390,8 @@ textarea {
 	}
 
 	.kg-bookmark-icon {
-		width: 1.5em;
-		height: 1.5em;
+		width: 2rem;
+		height: 2rem;
 		margin: 0 0.5rem 0 0;
 		border-radius: 4px;
 		flex-shrink: 0;
@@ -2085,8 +2162,8 @@ textarea {
 	padding: 0;
 	font-family: var(--gh-font-heading);
 	font-weight: 700;
-	font-size: 4.5em;
-	line-height: 1em;
+	font-size: clamp(3.6rem, 4vw + 1.2rem, 5.2rem);
+	line-height: 1.05;
 	text-decoration: none;
 	color: var(--color-content-lead);
 }
@@ -2099,8 +2176,8 @@ textarea {
 	display: block;
 	margin-top: 1.5rem;
 	padding: 0;
-	font-size: 3em;
-	line-height: 1.33334em;
+	font-size: clamp(1.8rem, 1.2vw + 1.1rem, 2.6rem);
+	line-height: 1.4;
 	color: var(--color-content-secondary);
 }
 
@@ -2288,6 +2365,7 @@ textarea {
 	z-index: 400;
 	-webkit-transition: none;
 	transition: none;
+	font-size: 1.6rem; // keep nav sizing steady regardless of body scale
 	@media only screen and (max-width: $breakpoint-medium) {
 		-webkit-transform: translate3d(0,-100%,0);
 		transform: translate3d(0,-100%,0);
@@ -2374,7 +2452,7 @@ textarea {
 		display: flex;
 		align-items: center;
 		padding: 1rem 0;
-		font-size: 1.6em;
+		font-size: 1.5rem;
 		line-height: 2rem;
 		color: var(--color-content-secondary);
 		white-space: nowrap;
@@ -2784,7 +2862,7 @@ textarea {
 	a {
 		display: block;
 		padding: 1rem 0;
-		font-size: 1.6em;
+		font-size: 1.6rem;
 		line-height: 2rem;
 		color: var(--color-content-secondary);
 		white-space: nowrap;
@@ -4164,8 +4242,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	text-align: left;
 	background: var(--color-background-secondary);
 	border: 1px solid var(--color-background-contrast);
-	border-top: 1px solid var(--color-background-contrast);
-	border-bottom: 1px solid var(--color-background-contrast);
+	border-radius: 1.5rem;
 	box-sizing: border-box;
 
 	@media only screen and (max-width: $breakpoint-medium) {
@@ -4174,6 +4251,7 @@ iframe.gh-portal-triggerbtn-iframe {
 		background: transparent;
 		border-left: 0;
 		border-right: 0;
+		border-radius: 0;
 	}
 }
 
@@ -4208,6 +4286,74 @@ iframe.gh-portal-triggerbtn-iframe {
 	color: var(--color-content-secondary);
 	font-size: 1.4em;
 	line-height: 1.2;
+}
+
+/* Ghost Comments / Portal buttons - keep in sync with accent color */
+.post-comments {
+	.gh-btn,
+	.gh-btn-icon {
+		background: var(--ghost-accent-color);
+		border-color: var(--ghost-accent-color);
+		color: #fff;
+
+		&:hover,
+		&:focus {
+			filter: brightness(0.92);
+			color: #fff;
+		}
+	}
+
+	.gh-btn-outline {
+		background: transparent;
+		color: var(--ghost-accent-color);
+		border-color: color-mix(in srgb, var(--ghost-accent-color) 60%, transparent);
+
+		&:hover,
+		&:focus {
+			background: color-mix(in srgb, var(--ghost-accent-color) 10%, transparent);
+		}
+	}
+
+	/* Ghost Comments CTA buttons */
+	.gh-comments {
+		.gh-btn,
+		.gh-btn-icon {
+			background: var(--ghost-accent-color);
+			border-color: var(--ghost-accent-color);
+			color: #fff;
+
+			&:hover,
+			&:focus {
+				filter: brightness(0.92);
+				color: #fff;
+			}
+		}
+
+		.gh-btn-outline,
+		.gh-comments-cta-signin,
+		.gh-comments-cta-signup {
+			color: var(--ghost-accent-color);
+
+			a {
+				color: var(--ghost-accent-color);
+
+				&:hover,
+				&:focus {
+					opacity: 0.85;
+				}
+			}
+		}
+
+		.gh-btn-outline {
+			background: transparent;
+			border-color: color-mix(in srgb, var(--ghost-accent-color) 60%, transparent);
+
+			&:hover,
+			&:focus {
+				background: color-mix(in srgb, var(--ghost-accent-color) 10%, transparent);
+			}
+		}
+	}
 }
 
 /* ==========================================================================
@@ -5204,6 +5350,8 @@ a.post-tag-chip {
 			border: none;
 			border-radius: 0;
 			flex-direction: row;
+			align-items: stretch;
+			gap: 0;
 
 			@media only screen and (max-width: $breakpoint-medium) {
 				flex-direction: row;
@@ -5222,7 +5370,7 @@ a.post-tag-chip {
 
 	.kg-bookmark-title {
 		font-family: var(--gh-font-heading);
-		font-size: 1.1em;
+		font-size: 1.8rem;
 		font-weight: 700;
 		line-height: 1.3;
 		color: var(--color-content-lead);
@@ -5230,7 +5378,7 @@ a.post-tag-chip {
 	}
 
 	.kg-bookmark-description {
-		font-size: 0.9em;
+		font-size: 1.5rem;
 		line-height: 1.5;
 		color: var(--color-content-secondary);
 		margin-top: 0.5rem;
@@ -5240,13 +5388,13 @@ a.post-tag-chip {
 
 	.kg-bookmark-metadata {
 		margin-top: 1rem;
-		font-size: 0.85em;
+		font-size: 1.4rem;
 		gap: 0.5rem;
 	}
 
 	.kg-bookmark-icon {
-		width: 1.5em;
-		height: 1.5em;
+		width: 2rem;
+		height: 2rem;
 		margin: 0 0.5rem 0 0;
 		border-radius: 4px;
 		flex-shrink: 0;
@@ -5278,6 +5426,8 @@ a.post-tag-chip {
 		max-width: 220px;
 		max-height: none;
 		flex-shrink: 0;
+		overflow: hidden;
+		min-height: 140px;
 
 		@media only screen and (max-width: $breakpoint-medium) {
 			min-width: 120px;
@@ -5298,6 +5448,7 @@ a.post-tag-chip {
 			object-fit: cover;
 			border-radius: 0;
 			transition: transform ease-out 0.3s;
+			margin: 0;
 		}
 	}
 
@@ -5470,90 +5621,88 @@ a.post-tag-chip {
 
 /* GLightbox - Clean white background */
 .glightbox-container .goverlay {
-	background: rgba(250, 250, 250, 0.98) !important;
+	background: rgba(0, 0, 0, 0.92) !important;
 }
 
 .theme-dark .glightbox-container .goverlay {
-	background: rgba(20, 20, 20, 0.98) !important;
+	background: rgba(0, 0, 0, 0.95) !important;
 }
 
 /* Image container - smaller sizing */
 .glightbox-container .gslide {
-	padding: 80px !important;
+	padding: 60px !important;
 }
 
 .glightbox-container .gslide-image img {
-	max-width: 70vw !important;
-	max-height: 70vh !important;
-	border-radius: 0;
-	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+	max-width: 85vw !important;
+	max-height: 85vh !important;
+	border-radius: 0.5rem;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
-/* Navigation arrows - more visible */
+/* Navigation arrows - glassmorphism style */
 .glightbox-container .gnext,
-.glightbox-container .gprev {
-	width: 44px;
-	height: 44px;
-	background: rgba(0, 0, 0, 0.5);
-	border-radius: 50%;
-	border: none;
-	transition: all 0.2s ease;
+.glightbox-container .gprev,
+.glightbox-clean-dark .gnext,
+.glightbox-clean-dark .gprev {
+	width: 50px !important;
+	height: 50px !important;
+	background: rgba(255, 255, 255, 0.15) !important;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border-radius: 50% !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+	transition: all 0.25s ease !important;
+	opacity: 1 !important;
 
 	svg {
-		fill: #fff;
-		width: 18px;
-		height: 18px;
+		fill: #fff !important;
+		width: 20px !important;
+		height: 20px !important;
+		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 	}
 
 	&:hover {
-		background: rgba(0, 0, 0, 0.7);
+		background: rgba(255, 255, 255, 0.25) !important;
+		transform: scale(1.05);
 	}
 }
 
-.theme-dark .glightbox-container .gnext,
-.theme-dark .glightbox-container .gprev {
-	background: rgba(255, 255, 255, 0.3);
-
-	svg {
-		fill: #fff;
-	}
-
-	&:hover {
-		background: rgba(255, 255, 255, 0.5);
-	}
+.glightbox-container .gprev,
+.glightbox-clean-dark .gprev {
+	left: 20px !important;
 }
 
-/* Close button - more visible */
-.glightbox-container .gclose {
-	width: 40px;
-	height: 40px;
-	background: rgba(0, 0, 0, 0.5);
-	border-radius: 50%;
-	border: none;
-	top: 20px;
-	right: 20px;
-	transition: all 0.2s ease;
-
-	svg {
-		fill: #fff;
-		width: 16px;
-		height: 16px;
-	}
-
-	&:hover {
-		background: rgba(0, 0, 0, 0.7);
-	}
+.glightbox-container .gnext,
+.glightbox-clean-dark .gnext {
+	right: 20px !important;
 }
 
-.theme-dark .glightbox-container .gclose {
-	background: rgba(255, 255, 255, 0.3);
+/* Close button - glassmorphism style */
+.glightbox-container .gclose,
+.glightbox-clean-dark .gclose {
+	width: 44px !important;
+	height: 44px !important;
+	background: rgba(255, 255, 255, 0.15) !important;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border-radius: 50% !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+	top: 20px !important;
+	right: 20px !important;
+	transition: all 0.25s ease !important;
+	opacity: 1 !important;
 
 	svg {
-		fill: #fff;
+		fill: #fff !important;
+		width: 18px !important;
+		height: 18px !important;
+		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 	}
 
 	&:hover {
-		background: rgba(255, 255, 255, 0.5);
+		background: rgba(255, 255, 255, 0.25) !important;
+		transform: scale(1.05);
 	}
 }
 
@@ -5567,15 +5716,15 @@ a.post-tag-chip {
 .glightbox-container .gcounter {
 	font-family: var(--gh-font-body);
 	font-size: 1.3rem;
-	color: rgba(0, 0, 0, 0.5);
+	color: rgba(255, 255, 255, 0.7);
 	position: absolute;
 	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
-}
-
-.theme-dark .glightbox-container .gcounter {
-	color: rgba(255, 255, 255, 0.5);
+	background: rgba(0, 0, 0, 0.4);
+	padding: 0.5rem 1.2rem;
+	border-radius: 2rem;
+	backdrop-filter: blur(10px);
 }
 
 /* Mobile adjustments */
@@ -5586,13 +5735,23 @@ a.post-tag-chip {
 
 	.glightbox-container .gslide-image img {
 		max-width: 95vw !important;
-		max-height: 80vh !important;
+		max-height: 85vh !important;
 	}
 
 	.glightbox-container .gnext,
-	.glightbox-container .gprev {
-		width: 36px;
-		height: 36px;
+	.glightbox-container .gprev,
+	.glightbox-clean-dark .gnext,
+	.glightbox-clean-dark .gprev {
+		width: 40px !important;
+		height: 40px !important;
+	}
+
+	.glightbox-container .gclose,
+	.glightbox-clean-dark .gclose {
+		width: 38px !important;
+		height: 38px !important;
+		top: 15px !important;
+		right: 15px !important;
 	}
 }
 

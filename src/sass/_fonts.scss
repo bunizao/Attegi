@@ -1,36 +1,47 @@
 /* ==========================================================================
-   Ghost Font System Variables - Industry Standard System Font Stack
+   Ghost Font System Variables - Apple Newsroom Inspired Typography
    ========================================================================== */
 
 :root {
-  /* Heading font stack */
+  /*
+   * Heading font stack - SF Pro Display style
+   * Optimized for both English and Chinese readability
+   */
   --gh-font-heading:
-    system-ui,
     -apple-system,
     BlinkMacSystemFont,
+    'SF Pro Display',
+    'SF Pro Text',
+    system-ui,
     'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
+    'PingFang SC',
+    'Hiragino Sans GB',
+    'Microsoft YaHei',
+    'Noto Sans SC',
     sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
 
-  /* Body font stack - same as Bootstrap 5 / Tailwind standard */
+  /*
+   * Body font stack - Optimized for long-form reading
+   * Chinese fonts prioritized for CJK content
+   */
   --gh-font-body:
-    system-ui,
     -apple-system,
     BlinkMacSystemFont,
+    'SF Pro Text',
+    system-ui,
     'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    'Noto Sans',
-    'Liberation Sans',
+    'PingFang SC',
+    'Hiragino Sans GB',
+    'Microsoft YaHei',
+    'Noto Sans SC',
+    'Source Han Sans SC',
     sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
 
   /* Monospace font stack */
   --gh-font-mono:
+    'JetBrains Mono',
     ui-monospace,
     'SF Mono',
     'Cascadia Code',
@@ -41,4 +52,24 @@
     'Liberation Mono',
     'Courier New',
     monospace;
+
+  /*
+   * Typography Scale - Apple Newsroom inspired
+   * Base: 17px for optimal reading on screens
+   */
+  --font-size-base: 1.9rem;
+  --font-size-sm: 1.7rem;
+  --font-size-xs: 1.5rem;
+  --font-size-lg: 2.1rem;
+  --font-size-xl: 2.5rem;
+
+  /* Line heights optimized for CJK + Latin mixed content */
+  --line-height-body: 1.7;
+  --line-height-heading: 1.32;
+  --line-height-tight: 1.22;
+
+  /* Letter spacing */
+  --letter-spacing-tight: -0.022em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.02em;
 }

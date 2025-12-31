@@ -31,6 +31,10 @@
   --liquid-glass-bg:
     radial-gradient(180% 140% at 20% 20%, rgba(255,255,255,0.18), rgba(255,255,255,0.02)),
     linear-gradient(135deg, #6a7cff, #7bf3d0, #ff9fd3);
+
+  /* Ghost portal/comments brand color - mirror accent */
+  --brandcolor: var(--ghost-accent-color, #14b8a6);
+  --brand-color: var(--ghost-accent-color, #14b8a6); /* some Portal builds read this name */
 }
 
 .theme-dark:root {
@@ -61,6 +65,10 @@
   --color-social-github: #555; /* Lighter for dark mode */
   --color-social-youtube: #ff0000;
   --color-social-rss: #ff6600;
+
+  /* Ghost portal/comments brand color - mirror accent */
+  --brandcolor: var(--ghost-accent-color, #14b8a6);
+  --brand-color: var(--ghost-accent-color, #14b8a6);
 }
 
 @media (prefers-color-scheme: dark) {
