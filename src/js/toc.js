@@ -19,7 +19,9 @@
     isOpen: false,
     isVisible: false,
     articleTop: 0,
-    articleBottom: 0
+    articleBottom: 0,
+    lastScrollTop: 0,
+    isScrollingDown: false
   };
 
   // DOM Elements
@@ -393,6 +395,18 @@
     var scrollTop = win.pageYOffset || doc.documentElement.scrollTop;
     var viewportHeight = win.innerHeight;
 
+    // Detect scroll direction
+    var scrollDelta = scrollTop - state.lastScrollTop;
+    var isScrollingDown = scrollDelta > 0;
+
+    // Only update if scroll direction changed and scrolled more than 5px
+    if (Math.abs(scrollDelta) > 5 && isScrollingDown !== state.isScrollingDown) {
+      state.isScrollingDown = isScrollingDown;
+      updateMobileTriggerVisibility();
+    }
+
+    state.lastScrollTop = scrollTop;
+
     // Recalculate article bounds
     var postContent = doc.querySelector('.post-content');
     if (postContent) {
@@ -420,6 +434,28 @@
   }
 
   /**
+   * Update mobile trigger button visibility based on scroll direction
+   */
+  function updateMobileTriggerVisibility() {
+    if (!elements.mobileTrigger) return;
+
+    var scrollTop = win.pageYOffset || doc.documentElement.scrollTop;
+
+    // Don't hide if at the top of the page (less than 200px)
+    if (scrollTop < 200) {
+      elements.mobileTrigger.classList.remove('is-hidden-scroll');
+      return;
+    }
+
+    // Hide when scrolling down, show when scrolling up
+    if (state.isScrollingDown) {
+      elements.mobileTrigger.classList.add('is-hidden-scroll');
+    } else {
+      elements.mobileTrigger.classList.remove('is-hidden-scroll');
+    }
+  }
+
+  /**
    * Setup event listeners
    */
   function setupEventListeners() {
@@ -428,8 +464,26 @@
       updateTOCVisibility();
       updateProgressRing();
     }, 100);
-    win.addEventListener('scroll', throttledUpdate, { passive: true });
-    win.addEventListener('resize', throttledUpdate, { passive: true });
+
+    // Use passive listeners for better performance
+    var scrollOptions = { passive: true };
+
+    // Add webkit-specific optimization
+    if ('webkitRequestAnimationFrame' in win) {
+      scrollOptions.passive = true;
+    }
+
+    win.addEventListener('scroll', throttledUpdate, scrollOptions);
+    win.addEventListener('resize', throttledUpdate, scrollOptions);
+
+    // iOS Safari specific: handle orientation change
+    win.addEventListener('orientationchange', function() {
+      setTimeout(function() {
+        calculateArticleBounds();
+        updateTOCVisibility();
+        updateProgressRing();
+      }, 100);
+    }, scrollOptions);
 
     // Initial progress ring update
     updateProgressRing();
@@ -469,8 +523,11 @@
     elements.mobileOverlay.classList.add('is-open');
     elements.mobileDrawer.classList.add('is-open');
 
-    // Scroll to active item in mobile panel
-    scrollMobileTOCToActiveItem();
+    // Scroll to active item after animation completes
+    // Use setTimeout to avoid layout thrashing during animation
+    setTimeout(function() {
+      scrollMobileTOCToActiveItem();
+    }, 250);
   }
 
   /**
@@ -491,15 +548,19 @@
     var activeLink = elements.mobileList.querySelector('.toc-mobile-link.is-active');
     if (!content || !activeLink) return;
 
-    var contentRect = content.getBoundingClientRect();
-    var linkRect = activeLink.getBoundingClientRect();
-    var linkTop = linkRect.top - contentRect.top + content.scrollTop;
-    var targetScroll = linkTop - (contentRect.height / 2) + (linkRect.height / 2);
-    var maxScroll = content.scrollHeight - contentRect.height;
+    // Use requestAnimationFrame to avoid layout thrashing
+    requestAnimationFrame(function() {
+      var contentRect = content.getBoundingClientRect();
+      var linkRect = activeLink.getBoundingClientRect();
+      var linkTop = linkRect.top - contentRect.top + content.scrollTop;
+      var targetScroll = linkTop - (contentRect.height / 2) + (linkRect.height / 2);
+      var maxScroll = content.scrollHeight - contentRect.height;
 
-    content.scrollTo({
-      top: Math.max(0, Math.min(targetScroll, maxScroll)),
-      behavior: 'smooth'
+      // Use instant scroll on first open to avoid stutter
+      content.scrollTo({
+        top: Math.max(0, Math.min(targetScroll, maxScroll)),
+        behavior: 'auto'
+      });
     });
   }
 

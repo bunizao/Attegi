@@ -140,31 +140,61 @@ $toc-breakpoint-small: 480px;
   width: 4.4rem;
   height: 4.4rem;
   z-index: 200;
-  background: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.85);
   border: none;
   border-radius: 50%;
   color: var(--color-content-main);
   cursor: pointer;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  backdrop-filter: blur(12px) saturate(180%);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.08);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
 
   .theme-dark & {
-    background: rgba(30,30,30,0.25);
+    background: rgba(30,30,30,0.85);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.2),
+      0 4px 16px rgba(0, 0, 0, 0.25),
+      0 8px 32px rgba(0, 0, 0, 0.3);
   }
   transition: $toc-transition;
   opacity: 0;
   visibility: hidden;
   transform: scale(0.9);
 
+  // WebKit optimizations
+  -webkit-transform: scale(0.9);
+  -webkit-transition: all 0.25s ease;
+  will-change: transform, opacity;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
   &.is-visible {
     opacity: 1;
     visibility: visible;
     transform: scale(1);
+    -webkit-transform: scale(1);
   }
 
   &:active {
     transform: scale(0.95);
+    -webkit-transform: scale(0.95);
+  }
+
+  &:hover {
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.06),
+      0 8px 24px rgba(0, 0, 0, 0.08),
+      0 16px 48px rgba(0, 0, 0, 0.1);
+
+    .theme-dark & {
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.25),
+        0 8px 24px rgba(0, 0, 0, 0.3),
+        0 16px 48px rgba(0, 0, 0, 0.35);
+    }
   }
 
   // Icon
@@ -178,6 +208,14 @@ $toc-breakpoint-small: 480px;
     opacity: 0;
     visibility: hidden;
     transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+  }
+
+  // Hide when scrolling down (slide to right)
+  &.is-hidden-scroll {
+    opacity: 0;
+    transform: translateX(8rem) scale(0.9);
+    -webkit-transform: translateX(8rem) scale(0.9);
   }
 
   @media only screen and (max-width: $toc-breakpoint) {
@@ -222,25 +260,46 @@ $toc-breakpoint-small: 480px;
   width: min(32rem, calc(100vw - 3rem));
   max-height: min(50vh, 40rem);
   background: var(--color-background-main);
-  border: 1px solid var(--color-background-contrast);
+  border: 1px solid color-mix(in srgb, var(--color-background-contrast) 50%, transparent);
   border-radius: 1.2rem;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 16px 48px rgba(0, 0, 0, 0.12);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(1rem) scale(0.95);
+  transform: translateY(1.5rem) scale(0.92);
   transform-origin: bottom right;
-  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+
+  // WebKit optimizations
+  -webkit-transform: translateY(1.5rem) scale(0.92);
+  -webkit-transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                      visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                      -webkit-transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 
   &.is-open {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
+    -webkit-transform: translateY(0) scale(1);
   }
 
   .theme-dark & {
     background: var(--color-background-secondary);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    border-color: color-mix(in srgb, var(--color-background-contrast) 30%, transparent);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.2),
+      0 8px 24px rgba(0, 0, 0, 0.3),
+      0 16px 48px rgba(0, 0, 0, 0.4);
   }
 
   @media only screen and (max-width: $toc-breakpoint) {
@@ -258,6 +317,8 @@ $toc-breakpoint-small: 480px;
   background: transparent;
   opacity: 0;
   visibility: hidden;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.is-open {
     opacity: 1;
@@ -333,6 +394,10 @@ $toc-breakpoint-small: 480px;
   flex: 1;
   min-height: 0;
   scrollbar-width: none;
+
+  // Performance optimizations
+  will-change: scroll-position;
+  contain: layout style paint;
 
   &::-webkit-scrollbar {
     display: none;
