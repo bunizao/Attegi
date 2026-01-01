@@ -4174,11 +4174,84 @@ iframe.gh-portal-triggerbtn-iframe {
    ========================================================================== */
 .post-footer {
 	margin: 12rem 0 6rem;
+}
 
-	&:after {
-		clear: both;
-		content: '';
-		display: table;
+/* ==========================================================================
+   Not By AI Badge
+   ========================================================================== */
+.notbyai-badge {
+	display: block;
+	margin: 0 0 2rem;
+
+	a {
+		display: inline-block;
+		text-decoration: none;
+
+		&:hover {
+			opacity: 0.85;
+		}
+	}
+
+	svg {
+		display: block;
+		width: auto;
+		height: 42px;
+		max-width: 100%;
+
+		@media only screen and (max-width: $breakpoint-small) {
+			height: 36px;
+		}
+	}
+
+	// Theme-aware badge variants
+	&__icon {
+		display: block;
+
+		// Light theme: show white badge (for dark backgrounds)
+		&--theme-light {
+			display: block;
+
+			.theme-dark & {
+				display: none;
+			}
+
+			@media (prefers-color-scheme: dark) {
+				html:not(.theme-light) & {
+					display: none;
+				}
+			}
+		}
+
+		// Dark theme: show black badge (for light backgrounds)
+		&--theme-dark {
+			display: none;
+
+			.theme-dark & {
+				display: block;
+			}
+
+			@media (prefers-color-scheme: dark) {
+				html:not(.theme-light) & {
+					display: block;
+				}
+			}
+		}
+	}
+}
+
+/* ==========================================================================
+   Post Footer Layout - Flexbox for all combinations
+   ========================================================================== */
+.post-footer-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 2rem;
+
+	@media only screen and (max-width: $breakpoint-medium) {
+		flex-direction: column;
+		gap: 2rem;
 	}
 }
 
@@ -4191,16 +4264,14 @@ iframe.gh-portal-triggerbtn-iframe {
 }
 
 .post-share {
-	position: relative;
-	max-width: 33.33333%;
-	float: right;
 	display: flex;
+	align-items: center;
 	gap: 1rem;
+	order: 2;
 
 	@media only screen and (max-width: $breakpoint-medium) {
-		max-width: none;
-		float: none;
-		margin-bottom: 2rem;
+		order: 1;
+		width: 100%;
 	}
 }
 
@@ -4220,10 +4291,6 @@ iframe.gh-portal-triggerbtn-iframe {
 	text-decoration: none;
 	border-radius: 2em;
 	transition: all ease 0.2s;
-	@media only screen and (max-width: $breakpoint-medium) {
-		margin-left: 0;
-		margin-right: 0.66667em;
-	}
 
 	&:focus,
 	&:hover {
@@ -4233,15 +4300,16 @@ iframe.gh-portal-triggerbtn-iframe {
 }
 
 .post-tags {
-	position: relative;
-	max-width: 66.66666%;
-	float: left;
 	display: flex;
 	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5em;
+	flex: 1;
+	order: 1;
+
 	@media only screen and (max-width: $breakpoint-medium) {
-		max-width: none;
-		float: none;
-		margin-bottom: 2rem;
+		order: 2;
+		width: 100%;
 	}
 }
 
@@ -4517,6 +4585,7 @@ iframe.gh-portal-triggerbtn-iframe {
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		width: 100%;
 	}
 
 	i.icon {
@@ -4538,6 +4607,12 @@ iframe.gh-portal-triggerbtn-iframe {
 	.post-nav-title {
 		margin-bottom: 0.5rem;
 		color: var(--ghost-accent-color);
+		display: block;
+		-webkit-line-clamp: unset;
+		-webkit-box-orient: unset;
+		overflow: visible;
+		text-overflow: clip;
+		width: 100%;
 	}
 
 	.post-nav-excerpt {

@@ -87,7 +87,19 @@
 				{{content}}
 			</section>
 
-			<section class="post-footer">
+		<section class="post-footer">
+
+			{{!-- Not By AI Badge - Above all footer content --}}
+			{{> "notbyai-badge"}}
+
+			{{!-- Flexbox container for Share + Tags --}}
+			<div class="post-footer-meta">
+				{{#if tags}}
+				<aside class="post-tags">
+					<span class="post-info-label">{{t "Topic"}}</span>
+					{{tags separator=" "}}
+				</aside>
+				{{/if}}
 
 				{{#match @custom.post_share "Native"}}
 					<div class="post-share">
@@ -113,15 +125,9 @@
 						</a>
 					</div>
 				{{/match}}
+			</div>
 
-				{{#if tags}}
-				<aside class="post-tags">
-					<span class="post-info-label">{{t "Topic"}}</span>
-					{{tags separator=" "}}
-				</aside>
-				{{/if}}
-
-			</section>
+		</section>
 
 			{{#if comments}}
 			<section class="post-comments">
