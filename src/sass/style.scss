@@ -4311,6 +4311,11 @@ iframe.gh-portal-triggerbtn-iframe {
 		order: 2;
 		width: 100%;
 	}
+
+	// Hide the entire tags section if there are no tag links (only internal tags)
+	&:not(:has(a)) {
+		display: none;
+	}
 }
 
 .post-tags a {

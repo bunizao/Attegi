@@ -1,37 +1,17 @@
 {{!-- Not By AI Badge Component
      Displays a badge indicating content was created by humans
-     Controlled by internal tags: #not-by-ai, #not-by-ai-written, #not-by-ai-authored, etc.
+     Controlled by internal tag: #not-by-ai
      Theme-aware: light/dark badge variants swap with the site theme
 --}}
 
-{{#has tag="#not-by-ai, #not-by-ai-written, #not-by-ai-authored, #not-by-ai-created, #not-by-ai-researched, #not-by-ai-coded"}}
+{{#has tag="#not-by-ai"}}
 <aside class="notbyai-badge" aria-label="{{t "This content was created by humans"}}">
 	<a href="https://notbyai.fyi/" target="_blank" rel="noopener noreferrer" title="{{t "This content was created by humans"}}">
 		<span class="notbyai-badge__icon notbyai-badge__icon--theme-light" aria-hidden="true">
-			{{#has tag="#not-by-ai-authored"}}
-				{{> "icons/notbyai/authored-white"}}
-			{{else}}{{#has tag="#not-by-ai-created"}}
-				{{> "icons/notbyai/created-white"}}
-			{{else}}{{#has tag="#not-by-ai-researched"}}
-				{{> "icons/notbyai/researched-white"}}
-			{{else}}{{#has tag="#not-by-ai-coded"}}
-				{{> "icons/notbyai/coded-white"}}
-			{{else}}
-				{{> "icons/notbyai/written-white"}}
-			{{/has}}{{/has}}{{/has}}{{/has}}
+			{{> "icons/notbyai/written-white"}}
 		</span>
 		<span class="notbyai-badge__icon notbyai-badge__icon--theme-dark" aria-hidden="true">
-			{{#has tag="#not-by-ai-authored"}}
-				{{> "icons/notbyai/authored-black"}}
-			{{else}}{{#has tag="#not-by-ai-created"}}
-				{{> "icons/notbyai/created-black"}}
-			{{else}}{{#has tag="#not-by-ai-researched"}}
-				{{> "icons/notbyai/researched-black"}}
-			{{else}}{{#has tag="#not-by-ai-coded"}}
-				{{> "icons/notbyai/coded-black"}}
-			{{else}}
-				{{> "icons/notbyai/written-black"}}
-			{{/has}}{{/has}}{{/has}}{{/has}}
+			{{> "icons/notbyai/written-black"}}
 		</span>
 	</a>
 </aside>
