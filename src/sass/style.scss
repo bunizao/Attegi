@@ -2555,7 +2555,7 @@ textarea {
 	backdrop-filter: blur(16px) saturate(180%);
 	color: var(--color-menu-text);
 	border-top: 1px solid var(--color-menu-border);
-	box-shadow: 0 4px 24px var(--color-menu-shadow);
+	box-shadow: none;
 
 	// Fallback for browsers without backdrop-filter
 	@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
@@ -2605,7 +2605,7 @@ textarea {
 		flex-direction: column;
 		align-items: flex-start;
 		padding: 2rem 4rem 3rem;
-		box-shadow: 0 8px 32px var(--color-menu-shadow);
+		box-shadow: none;
 
 		// Fallback for browsers without backdrop-filter
 		@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
