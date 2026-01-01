@@ -6,3 +6,4 @@ docker-compose.yml
 # keep theme assets images tracked
 /.lighthouseci
 /cloudflare-worker
+CLAUDE.md
