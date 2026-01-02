@@ -64,17 +64,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    postcss: {
-      options: {
-        map: false
-      },
-      dev: {
-        src: '<%=  config.cssTargetDir %>/*.css'
-      },
-      dist: {
-        src: '<%=  config.cssTargetDir %>/*.css'
-      }
-    },
     cssmin: {
       dist: {
         options: {
@@ -112,7 +101,7 @@ module.exports = function(grunt) {
     watch: {
       css: {
         files: '<%=  config.cssSrcDir %>/**/*.scss',
-        tasks: ['sass:dev', 'copy:dev', 'postcss:dev']
+        tasks: ['sass:dev', 'copy:dev']
       },
       js: {
         files: '<%=  config.jsSrcDir %>/**/*.js',
@@ -159,7 +148,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'sass:dist',
-    'postcss:dist',
     'cssmin:dist',
     'copy:dist',
     'uglify:main',
@@ -168,7 +156,6 @@ module.exports = function(grunt) {
   ]);
   grunt.registerTask('default', [
     'sass:dev',
-    'postcss:dev',
     'copy:dev',
     'uglify:main',
     'uglify:post',
