@@ -101,15 +101,12 @@
 				</aside>
 				{{/if}}
 
-				{{#match @custom.post_share "Native"}}
-					<div class="post-share">
+					<div class="post-share js-share-native" hidden>
 						<span class="post-info-label">{{t "Share"}}</span>
 						<button aria-label="{{t "Share"}} {{t "Article"}}" class="post-share-button" id="share-button"><i class="icon icon-share" aria-hidden="true">{{> "icons/icon-share"}}</i></button>
 					</div>
-				{{/match}}
 
-				{{#match @custom.post_share "Default"}}
-					<div class="post-share">
+					<div class="post-share js-share-default" hidden>
 						<span class="post-info-label">{{t "Share"}}</span>
 						<a title="{{t "Twitter"}}" aria-label="{{t "Twitter"}}" class="twitter" href="https://twitter.com/share?text={{encode title}}&url={{url absolute="true"}}" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
 							<i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i>
@@ -124,10 +121,23 @@
 							<i class="icon icon-mail" aria-hidden="true">{{> "icons/icon-mail"}}</i>
 						</a>
 					</div>
-				{{/match}}
-			</div>
+				</div>
 
-		</section>
+				<script>
+				(function() {
+					var sharePref = '{{@custom.post_share}}';
+					var nativeShare = document.querySelector('.js-share-native');
+					var defaultShare = document.querySelector('.js-share-default');
+					if (sharePref === 'Native' && nativeShare) {
+						nativeShare.hidden = false;
+					}
+					if (sharePref === 'Default' && defaultShare) {
+						defaultShare.hidden = false;
+					}
+				})();
+				</script>
+
+			</section>
 
 			{{#if comments}}
 			<section class="post-comments">

@@ -37,19 +37,19 @@
 				<span class="archive-description">{{{bio}}}</span>
 			{{else}}
 				<span class="archive-description archive-description-fallback">{{t "Posts by"}} {{name}}</span>
-			{{/if}}
-				<span class="archive-links">
-					{{#if website}}
-						<a target="_blank" rel="noopener noreferrer" href="{{website}}" title="{{t "Website"}}"><i class="icon icon-globe">{{> "icons/icon-globe"}}</i><span>{{t "Website"}}</span></a>
-					{{/if}}
-					{{#if twitter}}
-						<a target="_blank" rel="noopener noreferrer" href="{{social_url type='twitter'}}" title="{{t "Twitter"}}"><i class="icon icon-twitter">{{> "icons/icon-twitter"}}</i><span>{{t "Twitter"}}</span></a>
-					{{/if}}
-					{{#if facebook}}
-						<a target="_blank" rel="noopener noreferrer" href="{{social_url type='facebook'}}" title="{{t "Facebook"}}"><i class="icon icon-facebook">{{> "icons/icon-facebook"}}</i><span>{{t "Facebook"}}</span></a>
-					{{/if}}
-				</span>
-		</div>
+		{{/if}}
+			<span class="archive-links">
+				{{#if website}}
+					<a target="_blank" rel="noopener noreferrer" href="{{website}}" title="{{t "Website"}}"><i class="icon icon-globe">{{> "icons/icon-globe"}}</i><span>{{t "Website"}}</span></a>
+				{{/if}}
+				{{#if twitter}}
+					<a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{twitter}}" title="{{t "Twitter"}}"><i class="icon icon-twitter">{{> "icons/icon-twitter"}}</i><span>{{t "Twitter"}}</span></a>
+				{{/if}}
+				{{#if facebook}}
+					<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/{{facebook}}" title="{{t "Facebook"}}"><i class="icon icon-facebook">{{> "icons/icon-facebook"}}</i><span>{{t "Facebook"}}</span></a>
+				{{/if}}
+			</span>
+	</div>
 
 
 		{{#if cover_image}}

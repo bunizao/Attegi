@@ -136,49 +136,49 @@
 			var siteUrl = '{{@site.url}}';
 	</script>
 
-	{{#match @custom.color_scheme "Dark"}}
-		<script>
-			if (!localStorage.getItem('attegi_theme')) {
-				localStorage.setItem('attegi_theme', 'dark');
-				document.documentElement.classList.add('theme-dark');
-			}
-		</script>
-		<style>.js-theme {display:none!important;}</style>
-	{{/match}}
+	<script>
+		(function () {
+			var colorScheme = '{{@custom.color_scheme}}';
+			var darkAccent = '{{@custom.darkmode_accent_color}}';
+			var hasStored = !!localStorage.getItem('attegi_theme');
 
-	{{#match @custom.color_scheme "Light"}}
-		<script>
-			if (!localStorage.getItem('attegi_theme')) {
-				localStorage.setItem('attegi_theme', 'light');
-				document.documentElement.classList.add('theme-light');
-			}
-		</script>
-		<style>.js-theme {display:none!important;}</style>
-	{{/match}}
-
-	{{#match @custom.color_scheme "System"}}
-		<script>
-			if (!localStorage.getItem('attegi_theme')) {
-				localStorage.setItem('attegi_theme', 'system');
-				document.documentElement.classList.remove('theme-dark', 'theme-light');
-			}
-		</script>
-	{{/match}}
-
-	{{#match @custom.color_scheme "!=" "Light"}}
-		{{#if @custom.darkmode_accent_color}}
-			<style>
-				.theme-dark:root {
-				  --ghost-accent-color: {{@custom.darkmode_accent_color}};
+			if (!hasStored) {
+				if (colorScheme === 'Dark') {
+					localStorage.setItem('attegi_theme', 'dark');
+					document.documentElement.classList.add('theme-dark');
+				} else if (colorScheme === 'Light') {
+					localStorage.setItem('attegi_theme', 'light');
+					document.documentElement.classList.add('theme-light');
+				} else if (colorScheme === 'System') {
+					localStorage.setItem('attegi_theme', 'system');
+					document.documentElement.classList.remove('theme-dark', 'theme-light');
 				}
-				@media (prefers-color-scheme: dark) {
-				  html:not(.theme-light):root {
-				    --ghost-accent-color: {{@custom.darkmode_accent_color}};
-				  }
-				}
-			</style>
-		{{/if}}
-	{{/match}}
+			}
+
+			// Hide theme toggle if a fixed scheme is enforced
+			if (colorScheme === 'Dark' || colorScheme === 'Light') {
+				var hideThemeStyle = document.createElement('style');
+				hideThemeStyle.textContent = '.js-theme {display:none!important;}';
+				document.head.appendChild(hideThemeStyle);
+			}
+
+			// Apply dark accent color when not forcing Light
+			if (darkAccent && colorScheme !== 'Light') {
+				var accentStyle = document.createElement('style');
+				accentStyle.textContent = `
+					.theme-dark:root {
+					  --ghost-accent-color: ${darkAccent};
+					}
+					@media (prefers-color-scheme: dark) {
+					  html:not(.theme-light):root {
+					    --ghost-accent-color: ${darkAccent};
+					  }
+					}
+				`;
+				document.head.appendChild(accentStyle);
+			}
+		})();
+	</script>
 
 	{{ghost_head}}
 
@@ -287,15 +287,15 @@
 					{{!-- Right: Social + Theme toggle --}}
 					<div class="footer-right">
 						<div class="footer-social">
-							<a class="social-link" aria-label="{{t "RSS"}}" href="{{@site.url}}/rss/" title="{{t "RSS"}}">
-								<i class="icon icon-rss" aria-hidden="true">{{> "icons/icon-rss"}}</i>
-							</a>
-							{{#if @site.twitter}}<a class="social-link" aria-label="{{t "Twitter"}}" href="{{social_url type='twitter'}}" title="{{t "Twitter"}}" target="_blank" rel="noopener">
-								<i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i>
-							</a>{{/if}}
-							{{#if @site.facebook}}<a class="social-link" aria-label="{{t "Facebook"}}" href="{{social_url type='facebook'}}" title="{{t "Facebook"}}" target="_blank" rel="noopener">
-								<i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i>
-							</a>{{/if}}
+								<a class="social-link" aria-label="{{t "RSS"}}" href="{{@site.url}}/rss/" title="{{t "RSS"}}">
+									<i class="icon icon-rss" aria-hidden="true">{{> "icons/icon-rss"}}</i>
+								</a>
+								{{#if @site.twitter}}<a class="social-link" aria-label="{{t "Twitter"}}" href="https://twitter.com/{{@site.twitter}}" title="{{t "Twitter"}}" target="_blank" rel="noopener">
+									<i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i>
+								</a>{{/if}}
+								{{#if @site.facebook}}<a class="social-link" aria-label="{{t "Facebook"}}" href="https://www.facebook.com/{{@site.facebook}}" title="{{t "Facebook"}}" target="_blank" rel="noopener">
+									<i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i>
+								</a>{{/if}}
 							{{#if @custom.instagram_url}}<a class="social-link" aria-label="{{t "Instagram"}}" href="{{@custom.instagram_url}}" title="{{t "Instagram"}}" target="_blank" rel="noopener">
 								<i class="icon icon-instagram" aria-hidden="true">{{> "icons/icon-instagram"}}</i>
 							</a>{{/if}}

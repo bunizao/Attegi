@@ -2,7 +2,7 @@
   "name": "attegi",
   "description": "Attegi is an elegant and dynamic Ghost theme, with a modern design, deep support for Ghost, and specially optimized for mobile devices.",
   "demo": "https://attegi.tutuis.me",
-  "version": "6.9.10",
+  "version": "6.9.11",
   "engines": {
     "ghost": ">=5.0.0"
   },
@@ -101,47 +101,41 @@
       },
       "instagram_url": {
         "type": "text",
-        "description": "Instagram profile URL (e.g., https://instagram.com/username)"
+        "description": "The following information will be displayed in the page footer."
       },
       "github_url": {
-        "type": "text",
-        "description": "GitHub profile URL (e.g., https://github.com/username)"
+        "type": "text"
       },
       "telegram_url": {
-        "type": "text",
-        "description": "Telegram profile or channel URL (e.g., https://t.me/username)"
+        "type": "text"
       },
       "discord_url": {
-        "type": "text",
-        "description": "Discord server invite URL (e.g., https://discord.gg/invite)"
+        "type": "text"
       },
       "bluesky_url": {
-        "type": "text",
-        "description": "Bluesky profile URL (e.g., https://bsky.app/profile/username)"
+        "type": "text"
       },
       "email_address": {
-        "type": "text",
-        "description": "Contact email address (e.g., hello@example.com)"
+        "type": "text"
       },
       "footer_text": {
         "type": "text",
-        "description": "Custom text displayed in footer center (supports HTML)"
+        "description": "Custom text displayed in footer center. HTML snippets can be inserted."
       },
       "og_service_url": {
         "type": "text",
-        "description": "Optional OG image service endpoint base (leave empty to use Ghost defaults)."
+        "description": "Optional OG image service base URL. Leave empty to use Ghost defaults."
       },
       "og_service_theme": {
         "type": "text",
         "description": "Optional theme name for the OG image service."
-      },
-      "og_service_version": {
-        "type": "text",
-        "description": "Optional OG image cache buster (change to force refresh on social platforms)."
       }
     }
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "dependencies": {
+    "handlebars": "^4.7.8"
+  }
 }
