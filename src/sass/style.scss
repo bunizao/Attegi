@@ -4269,6 +4269,11 @@ iframe.gh-portal-triggerbtn-iframe {
 	gap: 1rem;
 	order: 2;
 
+	// Ensure hidden attribute works
+	&[hidden] {
+		display: none !important;
+	}
+
 	@media only screen and (max-width: $breakpoint-medium) {
 		order: 1;
 		width: 100%;
@@ -5903,6 +5908,13 @@ a.post-tag-chip {
 		opacity: 1;
 		visibility: visible;
 		transform: translateY(0);
+	}
+
+	// Hide when scrolling down (slide to right)
+	&.is-hidden-scroll {
+		opacity: 0;
+		transform: translateX(8rem) scale(0.9);
+		-webkit-transform: translateX(8rem) scale(0.9);
 	}
 
 	&:hover {

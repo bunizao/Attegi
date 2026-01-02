@@ -128,12 +128,18 @@
 					var sharePref = '{{@custom.post_share}}';
 					var nativeShare = document.querySelector('.js-share-native');
 					var defaultShare = document.querySelector('.js-share-default');
+
+					// Hide both by default
+					if (nativeShare) nativeShare.hidden = true;
+					if (defaultShare) defaultShare.hidden = true;
+
+					// Show only the selected share type
 					if (sharePref === 'Native' && nativeShare) {
 						nativeShare.hidden = false;
-					}
-					if (sharePref === 'Default' && defaultShare) {
+					} else if (sharePref === 'Default' && defaultShare) {
 						defaultShare.hidden = false;
 					}
+					// If sharePref === 'Disabled', both remain hidden
 				})();
 				</script>
 
@@ -156,12 +162,14 @@
       {{#if @site.members_enabled}}
       <section class="post-subscribe">
         {{#unless @member}}
+        	<p class="post-subscribe-text">{{#if @custom.email_signup_text}}{{@custom.email_signup_text}}{{else}}{{t "Sign up for more like this."}}{{/if}}</p>
         	{{subscribe_form placeholder=(t "Your email address") form_class="post-subscribe-form" input_class="post-subscribe-input" button_class="post-subscribe-button"}}
         {{/unless}}
       </section>
       {{/if}}
 
 			{{!-- Links to Previous/Next posts --}}
+			{{#unless (match @custom.show_recent_posts_footer "=" false)}}
 			<aside class="post-nav">
 
 				{{!-- If there's a next post, display it; otherwise show home link --}}
@@ -205,6 +213,7 @@
 				{{/prev_post}}
 				<div class="clear"></div>
 			</aside>
+			{{/unless}}
 
 		</div>
 	</article>
@@ -232,6 +241,8 @@
 	var defaultBottom = 32; // Default bottom position in px
 	var btnHeight = 48; // Button height
 	var safeMargin = 16; // Extra margin from footer
+	var lastScrollTop = 0;
+	var isScrollingDown = false;
 
 	function updateProgress() {
 		var rect = content.getBoundingClientRect();
@@ -251,6 +262,18 @@
 		// Update progress ring
 		var offset = circumference * (1 - progressValue);
 		progress.style.strokeDashoffset = offset;
+
+		// Detect scroll direction
+		var scrollDelta = scrollY - lastScrollTop;
+		var currentScrollingDown = scrollDelta > 0;
+
+		// Only update if scroll direction changed and scrolled more than 5px
+		if (Math.abs(scrollDelta) > 5 && currentScrollingDown !== isScrollingDown) {
+			isScrollingDown = currentScrollingDown;
+			updateButtonVisibility(scrollY);
+		}
+
+		lastScrollTop = scrollY;
 
 		// Show/hide button based on scroll position
 		var shouldShow = scrollY > 200;
@@ -275,6 +298,21 @@
 		}
 	}
 
+	function updateButtonVisibility(scrollY) {
+		// Don't hide if at the top of the page (less than 200px)
+		if (scrollY < 200) {
+			btn.classList.remove('is-hidden-scroll');
+			return;
+		}
+
+		// Hide when scrolling down, show when scrolling up
+		if (isScrollingDown) {
+			btn.classList.add('is-hidden-scroll');
+		} else {
+			btn.classList.remove('is-hidden-scroll');
+		}
+	}
+
 	// Scroll to top on click
 	btn.addEventListener('click', function() {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -294,6 +332,13 @@
 
 	window.addEventListener('scroll', onScroll, { passive: true });
 	window.addEventListener('resize', onScroll, { passive: true });
+
+	// Handle orientation change
+	window.addEventListener('orientationchange', function() {
+		setTimeout(function() {
+			updateProgress();
+		}, 100);
+	}, { passive: true });
 
 	// Initial update
 	updateProgress();

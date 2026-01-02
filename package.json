@@ -80,28 +80,13 @@
         ],
         "default": "System"
       },
-      "disqus_shortname": {
-        "type": "text",
-        "default": "",
-        "group": "post"
-      },
       "darkmode_accent_color": {
         "type": "color",
         "default": "#82C0CC"
       },
-      "post_share": {
-        "type": "select",
-        "options": [
-          "Default",
-          "Native",
-          "Disabled"
-        ],
-        "default": "Default",
-        "group": "post"
-      },
       "instagram_url": {
         "type": "text",
-        "description": "The following information will be displayed in the page footer."
+        "description": "Social media links displayed in the page footer."
       },
       "github_url": {
         "type": "text"
@@ -129,6 +114,31 @@
       "og_service_theme": {
         "type": "text",
         "description": "Optional theme name for the OG image service."
+      },
+      "email_signup_text": {
+        "type": "text",
+        "default": "Sign up for more like this.",
+        "group": "post"
+      },
+      "show_recent_posts_footer": {
+        "type": "boolean",
+        "default": true,
+        "group": "post"
+      },
+      "disqus_shortname": {
+        "type": "text",
+        "default": "",
+        "group": "post"
+      },
+      "post_share": {
+        "type": "select",
+        "options": [
+          "Default",
+          "Native",
+          "Disabled"
+        ],
+        "default": "Default",
+        "group": "post"
       }
     }
   },
