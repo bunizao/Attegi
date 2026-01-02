@@ -212,6 +212,16 @@
     var blocks = container.querySelectorAll('pre code');
     if (!blocks.length) return;
 
+    function sanitizeHighlightUrl(url) {
+      if (!url) return '';
+      try {
+        var parsed = new URL(url, doc.baseURI);
+        return parsed.origin === location.origin ? parsed.href : '';
+      } catch (err) {
+        return '';
+      }
+    }
+
     function createCodeHeader(pre, code, langName) {
       var copyLabel = getI18n('copy', 'Copy');
       var copiedLabel = getI18n('copied', 'Copied!');
@@ -283,6 +293,7 @@
       return;
     }
 
+    highlightUrl = sanitizeHighlightUrl(highlightUrl);
     if (!highlightUrl) return;
     var script = doc.createElement('script');
     script.src = highlightUrl;

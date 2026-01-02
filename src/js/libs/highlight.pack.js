@@ -371,7 +371,7 @@ contains:[{begin:/\(\)/},_]
 match:[/const|var|let/,/\s+/,t,/\s*/,/=\s*/,/(async\s*)?/,n.lookahead(O)],
 keywords:"async",className:{1:"keyword",3:"title.function"},contains:[_]}
 ;return{name:"Javascript",aliases:["js","jsx","mjs","cjs"],keywords:i,exports:{
-PARAMS_CONTAINS:p,CLASS_REFERENCE:f},illegal:/#(?![$_A-z])/,
+PARAMS_CONTAINS:p,CLASS_REFERENCE:f},illegal:/#(?![$_A-Za-z])/,
 contains:[e.SHEBANG({label:"shebang",binary:"node",relevance:5}),{
 label:"use_strict",className:"meta",relevance:10,
 begin:/^\s*['"]use (strict|asm)['"]/
@@ -736,7 +736,7 @@ aliases:["html","xhtml","rss","atom","xjb","xsd","xsl","plist","wsf","svg"],
 case_insensitive:!0,unicodeRegex:!0,contains:[{className:"meta",begin:/<![a-z]/,
 end:/>/,relevance:10,contains:[i,o,s,r,{begin:/\[/,end:/\]/,contains:[{
 className:"meta",begin:/<![a-z]/,end:/>/,contains:[i,r,o,s]}]}]
-},e.COMMENT(/<!--/,/-->/,{relevance:10}),{begin:/<!\[CDATA\[/,end:/\]\]>/,
+},e.COMMENT(/<!--/,/--!?>/,{relevance:10}),{begin:/<!\[CDATA\[/,end:/\]\]>/,
 relevance:10},a,{className:"meta",end:/\?>/,variants:[{begin:/<\?xml/,
 relevance:10,contains:[o]},{begin:/<\?[a-z][a-z0-9]+/}]},{className:"tag",
 begin:/<style(?=\s|>)/,end:/>/,keywords:{name:"style"},contains:[l],starts:{

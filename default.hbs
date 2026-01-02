@@ -104,16 +104,26 @@
 		(function () {
 			var isLocal = /localhost|127\.0\.0\.1/.test(location.hostname);
 			if (!isLocal) return;
+
+			function isAnalyticsHost(url) {
+				try {
+					var host = new URL(url, location.href).hostname;
+					return host === 'google-analytics.com' || host.endsWith('.google-analytics.com');
+				} catch (e) {
+					return false;
+				}
+			}
+
 			var nativeSendBeacon = navigator.sendBeacon ? navigator.sendBeacon.bind(navigator) : null;
 			navigator.sendBeacon = function (url, data) {
-				if (typeof url === 'string' && url.indexOf('google-analytics.com') !== -1) return true;
+				if (typeof url === 'string' && isAnalyticsHost(url)) return true;
 				return nativeSendBeacon ? nativeSendBeacon(url, data) : false;
 			};
 			if (window.fetch) {
 				var origFetch = window.fetch.bind(window);
 				window.fetch = function (input, init) {
 					var url = (typeof input === 'string') ? input : (input && input.url);
-					if (url && url.indexOf('google-analytics.com') !== -1) {
+					if (url && isAnalyticsHost(url)) {
 						return Promise.resolve(new Response('', { status: 204, statusText: 'blocked' }));
 					}
 					return origFetch(input, init);
