@@ -63,7 +63,7 @@ jobs:
           ls -lh dist/attegi.zip
 
       - name: Upload theme zip
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ steps.package.outputs.name }}-v${{ steps.package.outputs.version }}
           path: dist/attegi.zip
