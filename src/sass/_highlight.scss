@@ -8,7 +8,7 @@
     --code-bg: #f8f9fa;
     --code-border: #e1e4e8;
     --code-text: #24292e;
-    --code-comment: #6a737d;
+    --code-comment: #5a6570;
     --code-keyword: #d73a49;
     --code-string: #22863a;
     --code-number: #005cc5;
@@ -24,12 +24,12 @@
     --code-punctuation: #24292e;
     --code-builtin: #005cc5;
     --code-type: #d73a49;
-    --code-meta: #6a737d;
+    --code-meta: #5a6570;
     --code-regexp: #032f62;
     --code-deletion: #b31d28;
     --code-addition: #22863a;
     --code-label-bg: #f8f9fa;
-    --code-label-text: #6a737d;
+    --code-label-text: #5a6570;
     --code-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
@@ -101,11 +101,40 @@ html.theme-dark {
     background: var(--code-bg);
 }
 
+/* Bash/Shell specific enhancements */
+.language-bash,
+.language-sh,
+.language-shell {
+    .hljs-meta {
+        color: var(--code-comment);
+        font-weight: 400;
+    }
+
+    // Built-in commands (cd, ls, mkdir, etc.)
+    .hljs-built_in {
+        color: var(--code-keyword);
+        font-weight: 600;
+    }
+
+    // Strings and paths
+    .hljs-string {
+        color: var(--code-string);
+        font-weight: 400;
+    }
+
+    // Variables ($VAR, ${VAR})
+    .hljs-variable {
+        color: var(--code-variable);
+        font-weight: 500;
+    }
+}
+
 /* Comments */
 .hljs-comment,
 .hljs-quote {
     color: var(--code-comment);
     font-style: italic;
+    opacity: 0.85;
 }
 
 /* Keywords */

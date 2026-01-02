@@ -520,15 +520,18 @@ textarea {
 	code,
 	tt {
 		position: relative;
-		margin: 0 1px;
-		padding: 4px 8px;
+		margin: 0 0.15em;
+		padding: 0.2em 0.4em;
 		font-family: var(--gh-font-mono);
-		font-size: 0.75em;
+		font-size: 0.875em;
+		font-weight: 500;
 		background: var(--color-background-secondary);
 		border: 1px solid var(--color-background-contrast);
-		border-radius: 4px;
-		top: -2px;
+		border-radius: 0.3em;
+		color: var(--color-content-main);
 		white-space: pre-wrap;
+		vertical-align: baseline;
+		line-height: 1.4;
 	}
 
 	pre {
@@ -4261,6 +4264,9 @@ iframe.gh-portal-triggerbtn-iframe {
 	line-height: 3rem;
 	font-weight: 400;
 	color: var(--color-content-secondary);
+	display: inline-flex;
+	align-items: center;
+	min-height: 3rem;
 }
 
 .post-share {
@@ -4307,7 +4313,7 @@ iframe.gh-portal-triggerbtn-iframe {
 .post-tags {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center;
+	align-items: baseline;
 	gap: 0.5em;
 	flex: 1;
 	order: 1;
@@ -4324,7 +4330,9 @@ iframe.gh-portal-triggerbtn-iframe {
 }
 
 .post-tags a {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	margin-right: 0.5em;
 	margin-bottom: 0.5em;
 	padding: 0 1.5rem;
@@ -4334,6 +4342,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	font-size: 1.6em;
 	font-weight: 500;
 	line-height: 3rem;
+	min-height: 3rem;
 	text-align: center;
 	text-decoration: none;
 	border-radius: 2em;
