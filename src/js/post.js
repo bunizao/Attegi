@@ -827,7 +827,30 @@
     }
 
     function normalizeGhostImagePath(pathname) {
-      return pathname.replace(/\/content\/images\/size\/w\d+\//, '/content/images/');
+      return pathname
+        .replace(/\/content\/images\/size\/w\d+\//, '/content/images/')
+        .replace(/\/content\/images\/format\/[^/]+\//, '/content/images/');
+    }
+
+    function applyGhostImageFormat(url, format) {
+      var formatted = new URL(url.href);
+      formatted.searchParams.delete('format');
+      formatted.pathname = formatted.pathname.replace(
+        /(\/content\/images\/size\/w\d+\/)(?:format\/[^/]+\/)?/,
+        '$1format/' + format + '/'
+      );
+      return formatted;
+    }
+
+    function buildFormatProbeUrl(url, format) {
+      var probe = new URL(url.href);
+      probe.searchParams.delete('format');
+
+      if (!/\/content\/images\/size\/w\d+\//.test(probe.pathname)) {
+        probe.pathname = probe.pathname.replace('/content/images/', '/content/images/size/w50/');
+      }
+
+      return applyGhostImageFormat(probe, format);
     }
 
     function getFirstSrcsetCandidate(srcset) {
@@ -884,12 +907,9 @@
         return Promise.resolve(results);
       }
 
-      base.searchParams.delete('format');
-
       var formats = ['avif', 'webp'];
       return Promise.all(formats.map(function (format) {
-        var testUrl = new URL(base.href);
-        testUrl.searchParams.set('format', format);
+        var testUrl = buildFormatProbeUrl(base, format);
         return fetch(testUrl.toString(), { method: 'HEAD', cache: 'no-store' })
           .then(function (response) {
             return response.ok;
@@ -930,7 +950,7 @@
           return '';
         }
         if (!isGhostContentImage(parsed)) return '';
-        parsed.searchParams.set('format', format);
+        parsed = applyGhostImageFormat(parsed, format);
         formattedCandidates.push(parsed.toString() + (descriptor ? ' ' + descriptor : ''));
       }
 
@@ -960,7 +980,7 @@
         var width = widths[i];
         var sizedUrl = new URL(url.href);
         sizedUrl.pathname = basePath.replace('/content/images/', '/content/images/size/w' + width + '/');
-        sizedUrl.searchParams.set('format', format);
+        sizedUrl = applyGhostImageFormat(sizedUrl, format);
         results.push(sizedUrl.toString() + ' ' + width + 'w');
       }
 
