@@ -3974,6 +3974,17 @@ iframe.gh-portal-triggerbtn-iframe {
 	}
 }
 
+.post-meta-details {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	white-space: nowrap;
+}
+
+.post-meta-sep {
+	flex-shrink: 0;
+}
+
 .post-meta time {
 	color: var(--color-content-secondary);
 	font-weight: 400;
@@ -4004,9 +4015,8 @@ iframe.gh-portal-triggerbtn-iframe {
 		}
 
 		// Keep date/reading time together, allow truncation
-		time {
+		.post-meta-details {
 			flex-shrink: 0;
-			white-space: nowrap;
 		}
 	}
 

@@ -57,7 +57,7 @@
 					{{#unless @first}}{{#if @last}} & {{else}}, {{/if}}{{/unless}}<a href="{{url}}">{{name}}</a>
 				{{/foreach}}
 			</h4>
-			<time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMM DD, YYYY"}}</time> &bull; {{reading_time minute=(t "1 min read") minutes=(t "% min read")}}
+			<span class="post-meta-details"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMM DD, YYYY"}}</time><span class="post-meta-sep" aria-hidden="true">•</span><span class="post-meta-reading">{{reading_time minute=(t "1 min read") minutes=(t "% min read")}}</span></span>
 		</div>
 		{{#if feature_image}}
 		<div class="post-cover cover">
