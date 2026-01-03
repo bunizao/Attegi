@@ -1,0 +1,11 @@
+{{#if format}}
+{{img_url image size="s" format=format quality=quality}} 320w,
+{{img_url image size="m" format=format quality=quality}} 640w,
+{{img_url image size="l" format=format quality=quality}} 960w{{#if include_xl}},
+{{img_url image size="xl" format=format quality=quality}} 1920w{{/if}}
+{{else}}
+{{img_url image size="s" quality=quality}} 320w,
+{{img_url image size="m" quality=quality}} 640w,
+{{img_url image size="l" quality=quality}} 960w{{#if include_xl}},
+{{img_url image size="xl" quality=quality}} 1920w{{/if}}
+{{/if}}

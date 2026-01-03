@@ -237,7 +237,7 @@
 				<nav class="nav-wrapper" aria-label="{{t "Main"}}">
 					{{#if @site.logo}}
 						<span class="logo">
-							<a href="{{@site.url}}" title="{{t "Home"}}"><img src="{{@site.logo}}" alt="{{t "Logo"}}" /></a>
+							<a href="{{@site.url}}" title="{{t "Home"}}"><img src="{{img_url @site.logo size="s"}}" alt="{{t "Logo"}}" /></a>
 						</span>
 					{{/if}}
 					{{navigation}}
@@ -367,7 +367,7 @@
 				// Load CSS
 				var css = document.createElement('link');
 				css.rel = 'stylesheet';
-				css.href = 'https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/css/glightbox.min.css';
+				css.href = '{{asset "css/glightbox.min.css"}}';
 				document.head.appendChild(css);
 
 				// Wrap images
@@ -384,7 +384,7 @@
 
 				// Load JS
 				var script = document.createElement('script');
-				script.src = 'https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/js/glightbox.min.js';
+				script.src = '{{asset "js/glightbox.min.js"}}';
 				script.onload = function() {
 					if (typeof GLightbox !== 'undefined') {
 						GLightbox({

@@ -616,7 +616,7 @@
     });
   }
 
-  function setupContentImagesWebp(container) {
+  function setupContentImagesFormats(container) {
     if (!container) return;
 
     function parseImageSizes() {
@@ -658,7 +658,7 @@
       return pathname.replace(/\/content\/images\/size\/w\d+\//, '/content/images/');
     }
 
-    function buildWebpSrcsetFromExisting(srcset) {
+    function buildFormatSrcsetFromExisting(srcset, format) {
       var candidates = srcset.split(',').map(function (item) {
         return item.trim();
       }).filter(Boolean);
@@ -669,7 +669,7 @@
       });
       if (!allSized) return '';
 
-      var webpCandidates = [];
+      var formattedCandidates = [];
       for (var i = 0; i < candidates.length; i += 1) {
         var parts = candidates[i].split(/\s+/);
         var candidateUrl = parts.shift();
@@ -681,11 +681,11 @@
           return '';
         }
         if (!isGhostContentImage(parsed)) return '';
-        parsed.searchParams.set('format', 'webp');
-        webpCandidates.push(parsed.toString() + (descriptor ? ' ' + descriptor : ''));
+        parsed.searchParams.set('format', format);
+        formattedCandidates.push(parsed.toString() + (descriptor ? ' ' + descriptor : ''));
       }
 
-      return webpCandidates.join(', ');
+      return formattedCandidates.join(', ');
     }
 
     function getSizedWidths(img, widths) {
@@ -699,7 +699,7 @@
       return filtered.length ? filtered : [maxWidth];
     }
 
-    function buildWebpSrcsetFromSizes(url, widths) {
+    function buildFormatSrcsetFromSizes(url, widths, format) {
       if (!widths.length) return '';
       var basePath = normalizeGhostImagePath(url.pathname);
       if (!/\/content\/images\//.test(basePath)) return '';
@@ -709,22 +709,22 @@
         var width = widths[i];
         var sizedUrl = new URL(url.href);
         sizedUrl.pathname = basePath.replace('/content/images/', '/content/images/size/w' + width + '/');
-        sizedUrl.searchParams.set('format', 'webp');
+        sizedUrl.searchParams.set('format', format);
         results.push(sizedUrl.toString() + ' ' + width + 'w');
       }
 
       return results.join(', ');
     }
 
-    function buildWebpSrcset(img, url, widths) {
+    function buildFormatSrcset(img, url, widths, format) {
       var existingSrcset = img.getAttribute('srcset');
       if (existingSrcset) {
-        var fromExisting = buildWebpSrcsetFromExisting(existingSrcset);
+        var fromExisting = buildFormatSrcsetFromExisting(existingSrcset, format);
         if (fromExisting) return fromExisting;
       }
 
       var sizedWidths = getSizedWidths(img, widths);
-      return buildWebpSrcsetFromSizes(url, sizedWidths);
+      return buildFormatSrcsetFromSizes(url, sizedWidths, format);
     }
 
     function run() {
@@ -745,24 +745,36 @@
         }
         if (!isGhostContentImage(parsed)) return;
 
-        var webpSrcset = buildWebpSrcset(img, parsed, imageWidths);
-        if (!webpSrcset) return;
+        var avifSrcset = buildFormatSrcset(img, parsed, imageWidths, 'avif');
+        var webpSrcset = buildFormatSrcset(img, parsed, imageWidths, 'webp');
+        if (!avifSrcset && !webpSrcset) return;
 
         var picture = doc.createElement('picture');
-        var source = doc.createElement('source');
-        source.type = 'image/webp';
-        source.srcset = webpSrcset;
-
         var sizes = img.getAttribute('sizes');
-        if (sizes) {
-          source.setAttribute('sizes', sizes);
+        if (avifSrcset) {
+          var avifSource = doc.createElement('source');
+          avifSource.type = 'image/avif';
+          avifSource.srcset = avifSrcset;
+          if (sizes) {
+            avifSource.setAttribute('sizes', sizes);
+          }
+          picture.appendChild(avifSource);
+        }
+
+        if (webpSrcset) {
+          var webpSource = doc.createElement('source');
+          webpSource.type = 'image/webp';
+          webpSource.srcset = webpSrcset;
+          if (sizes) {
+            webpSource.setAttribute('sizes', sizes);
+          }
+          picture.appendChild(webpSource);
         }
 
         var parent = img.parentNode;
         if (!parent) return;
 
         parent.insertBefore(picture, img);
-        picture.appendChild(source);
         picture.appendChild(img);
       });
     }
@@ -793,7 +805,7 @@
     setupCoverBrightnessDetection();
     setupPortraitVideos();
     setupPortraitImages();
-    setupContentImagesWebp(postContent);
+    setupContentImagesFormats(postContent);
   }
 
   onReady(init);

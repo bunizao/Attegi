@@ -26,17 +26,27 @@
 
 		{{#if tag.feature_image}}
 		<div class="blog-cover cover">
-			<img
-			srcset="{{img_url tag.feature_image size="s"}} 320w,
-              {{img_url tag.feature_image size="m"}} 640w,
-              {{img_url tag.feature_image size="l"}} 960w,
-              {{img_url tag.feature_image size="xl"}} 1920w"
-      src="{{img_url tag.feature_image size="xl"}}"
-			alt="{{tag.name}}"
-			loading="eager"
-			decoding="async"
-			fetchpriority="high"
-			sizes="(max-width: 960px) 100vw, 960px" />
+			<picture>
+				<source
+					type="image/avif"
+					srcset="{{> "srcset" image=tag.feature_image format="avif" quality="50" include_xl=true}}"
+					sizes="(max-width: 960px) 100vw, 960px" />
+				<source
+					type="image/webp"
+					srcset="{{> "srcset" image=tag.feature_image format="webp" quality="50" include_xl=true}}"
+					sizes="(max-width: 960px) 100vw, 960px" />
+				<source
+					srcset="{{> "srcset" image=tag.feature_image quality="50" include_xl=true}}"
+					sizes="(max-width: 960px) 100vw, 960px" />
+				<img
+					srcset="{{> "srcset" image=tag.feature_image quality="50" include_xl=true}}"
+					src="{{img_url tag.feature_image size="xl" quality="50"}}"
+					alt="{{tag.name}}"
+					loading="eager"
+					decoding="async"
+					fetchpriority="high"
+					sizes="(max-width: 960px) 100vw, 960px" />
+			</picture>
 		</div>
 		{{/if}}
 	</div>

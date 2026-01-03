@@ -24,6 +24,12 @@ module.exports = function(grunt) {
         }, {
           dest: 'assets/js/highlight.pack.js',
           src: 'src/js/libs/highlight.pack.js'
+        }, {
+          dest: 'assets/js/glightbox.min.js',
+          src: 'src/js/libs/glightbox.min.js'
+        }, {
+          dest: 'assets/css/glightbox.min.css',
+          src: 'src/sass/glightbox.min.css'
         }]
       },
       dist: {
@@ -35,6 +41,12 @@ module.exports = function(grunt) {
         }, {
           dest: 'assets/js/highlight.pack.js',
           src: 'src/js/libs/highlight.pack.js'
+        }, {
+          dest: 'assets/js/glightbox.min.js',
+          src: 'src/js/libs/glightbox.min.js'
+        }, {
+          dest: 'assets/css/glightbox.min.css',
+          src: 'src/sass/glightbox.min.css'
         }]
       }
     },
