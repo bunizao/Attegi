@@ -364,6 +364,46 @@
 				var galleryImages = document.querySelectorAll('.kg-gallery-image img, .kg-image-card img');
 				if (galleryImages.length === 0) return; // No images, skip loading
 
+				function getLargestSrcFromSrcset(srcset) {
+					if (!srcset) return '';
+					var candidates = srcset.split(',').map(function (item) {
+						return item.trim();
+					}).filter(Boolean);
+					var bestUrl = '';
+					var bestWidth = 0;
+					candidates.forEach(function (candidate) {
+						var parts = candidate.split(/\s+/);
+						var url = parts.shift();
+						var width = 0;
+						parts.forEach(function (part) {
+							if (part.slice(-1) === 'w') {
+								var parsed = parseInt(part, 10);
+								if (!isNaN(parsed)) {
+									width = parsed;
+								}
+							}
+						});
+						if (url && width > bestWidth) {
+							bestWidth = width;
+							bestUrl = url;
+						}
+					});
+					return bestUrl;
+				}
+
+				function isGhostOriginal(src) {
+					return /\/content\/images\//.test(src) && !/\/content\/images\/size\//.test(src);
+				}
+
+				function pickLightboxSource(img) {
+					var src = img.getAttribute('src') || img.src;
+					if (!src) return '';
+					if (isGhostOriginal(src)) return src;
+					var srcset = img.getAttribute('srcset');
+					var largest = getLargestSrcFromSrcset(srcset);
+					return largest || src;
+				}
+
 				// Load CSS
 				var css = document.createElement('link');
 				css.rel = 'stylesheet';
@@ -374,7 +414,8 @@
 				galleryImages.forEach(function(img) {
 					if (!img.closest('a')) {
 						var wrapper = document.createElement('a');
-						wrapper.href = img.src;
+						var lightboxSrc = pickLightboxSource(img);
+						wrapper.href = lightboxSrc || img.src;
 						wrapper.classList.add('glightbox');
 						wrapper.setAttribute('data-gallery', img.closest('.kg-gallery-card') ? 'gallery' : 'images');
 						img.parentNode.insertBefore(wrapper, img);

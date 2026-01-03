@@ -407,25 +407,40 @@
   /**
    * Lazy-load Ghost native comments to avoid upfront JS weight
    */
-  function setupLazyComments() {
-    var template = doc.getElementById('ghost-comments-template');
-    var placeholder = doc.querySelector('[data-comments-placeholder]');
-    var trigger = doc.querySelector('.js-load-comments');
-    if (!template || !placeholder || !trigger) return;
+    function setupLazyComments() {
+      var template = doc.getElementById('ghost-comments-template');
+      var placeholder = doc.querySelector('[data-comments-placeholder]');
+      var trigger = doc.querySelector('.js-load-comments');
+      if (!template || !placeholder || !trigger) return;
 
-    var hasLoaded = false;
+      var hasLoaded = false;
 
-    function activateScripts(container, scripts) {
-      Array.prototype.forEach.call(scripts, function (original) {
-        var replacement = doc.createElement('script');
-        Array.prototype.forEach.call(original.attributes, function (attr) {
-          replacement.setAttribute(attr.name, attr.value);
-        });
-        replacement.textContent = original.textContent;
-        if (original.src) {
-          replacement.src = original.src;
+      function normalizeScriptType(value) {
+        if (!value) return '';
+        if (/text\/javascript/i.test(value)) {
+          return 'text/javascript';
         }
-        container.appendChild(replacement);
+        return value;
+      }
+
+      function activateScripts(container, scripts) {
+        Array.prototype.forEach.call(scripts, function (original) {
+          var replacement = doc.createElement('script');
+          Array.prototype.forEach.call(original.attributes, function (attr) {
+            if (attr.name === 'type') {
+              var normalizedType = normalizeScriptType(attr.value);
+              if (normalizedType) {
+                replacement.setAttribute('type', normalizedType);
+              }
+              return;
+            }
+            replacement.setAttribute(attr.name, attr.value);
+          });
+          replacement.textContent = original.textContent;
+          if (original.src) {
+            replacement.src = original.src;
+          }
+          container.appendChild(replacement);
       });
     }
 
@@ -682,8 +697,20 @@
       return unique;
     }
 
+    function hasFileExtension(pathname) {
+      var filename = pathname.split('/').pop();
+      return !!(filename && filename.indexOf('.') !== -1);
+    }
+
+    function isExcludedGhostPath(pathname) {
+      return /\/content\/images\/(?:size\/w\d+\/)?(?:thumbnail|icon)\//.test(pathname);
+    }
+
     function isGhostContentImage(url) {
-      return /\/content\/images\//.test(url.pathname);
+      if (!/\/content\/images\//.test(url.pathname)) return false;
+      if (isExcludedGhostPath(url.pathname)) return false;
+      if (!hasFileExtension(url.pathname)) return false;
+      return true;
     }
 
     function normalizeGhostImagePath(pathname) {
@@ -735,6 +762,8 @@
       if (!widths.length) return '';
       var basePath = normalizeGhostImagePath(url.pathname);
       if (!/\/content\/images\//.test(basePath)) return '';
+      if (isExcludedGhostPath(basePath)) return '';
+      if (!hasFileExtension(basePath)) return '';
 
       var results = [];
       for (var i = 0; i < widths.length; i += 1) {
