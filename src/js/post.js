@@ -810,6 +810,28 @@
       return unique;
     }
 
+    function getContentImageFormatPreference() {
+      var body = doc.body;
+      var attr = body ? body.getAttribute('data-image-formats') : '';
+      var value = attr ? attr.trim().toLowerCase() : '';
+      if (!value) {
+        return { enabled: false, formats: [] };
+      }
+      if (value === 'auto') {
+        return { enabled: true, formats: ['avif', 'webp'] };
+      }
+      if (value === 'disabled' || value === 'off' || value === 'false' || value === 'none') {
+        return { enabled: false, formats: [] };
+      }
+      if (value === 'webp only' || value === 'webp' || value === 'webp-only') {
+        return { enabled: true, formats: ['webp'] };
+      }
+      if (value === 'avif only' || value === 'avif' || value === 'avif-only') {
+        return { enabled: true, formats: ['avif'] };
+      }
+      return { enabled: true, formats: ['avif', 'webp'] };
+    }
+
     function hasFileExtension(pathname) {
       var filename = pathname.split('/').pop();
       return !!(filename && filename.indexOf('.') !== -1);
@@ -880,11 +902,16 @@
       return sample;
     }
 
-    function detectFormatSupport(sampleUrl) {
+    function detectFormatSupport(sampleUrl, formats) {
       var cached = window.__attegiImageFormats;
       if (cached) return Promise.resolve(cached);
 
       var results = { avif: false, webp: false };
+      var formatsToTest = formats && formats.length ? formats : ['avif', 'webp'];
+      if (!formatsToTest.length) {
+        window.__attegiImageFormats = results;
+        return Promise.resolve(results);
+      }
 
       // Skip detection if no sample URL or fetch API unavailable
       if (!sampleUrl || !window.fetch) {
@@ -907,8 +934,7 @@
         return Promise.resolve(results);
       }
 
-      var formats = ['avif', 'webp'];
-      return Promise.all(formats.map(function (format) {
+      return Promise.all(formatsToTest.map(function (format) {
         var testUrl = buildFormatProbeUrl(base, format);
         return fetch(testUrl.toString(), { method: 'HEAD', cache: 'no-store' })
           .then(function (response) {
@@ -1002,8 +1028,11 @@
       var imageWidths = parseImageSizes();
       var images = container.querySelectorAll('img');
       var sampleUrl = getSampleImageUrl(images);
+      var formatPreference = getContentImageFormatPreference();
 
-      detectFormatSupport(sampleUrl).then(function (formatSupport) {
+      if (!formatPreference.enabled) return;
+
+      detectFormatSupport(sampleUrl, formatPreference.formats).then(function (formatSupport) {
         if (!formatSupport.avif && !formatSupport.webp) return;
 
         Array.prototype.forEach.call(images, function (img) {

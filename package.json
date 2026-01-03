@@ -2,7 +2,7 @@
   "name": "attegi",
   "description": "Attegi is an elegant and dynamic Ghost theme, with a modern design, deep support for Ghost, and specially optimized for mobile devices.",
   "demo": "https://attegi.tutuis.me",
-  "version": "6.9.11",
+  "version": "6.9.12",
   "engines": {
     "ghost": ">=5.0.0"
   },
@@ -125,9 +125,15 @@
         "default": true,
         "group": "post"
       },
-      "disqus_shortname": {
-        "type": "text",
-        "default": "",
+      "content_image_formats": {
+        "type": "select",
+        "options": [
+          "Disabled",
+          "Auto",
+          "WebP only"
+        ],
+        "default": "Disabled",
+        "description": "This option can automatically compress images to save bandwidth. Auto = AVIF preferred and WEBP as a fallback. Disabled = no conversion. AVIF decode can cause high server load, use with caution.",
         "group": "post"
       },
       "post_share": {
@@ -138,6 +144,11 @@
           "Disabled"
         ],
         "default": "Default",
+        "group": "post"
+      },
+      "disqus_shortname": {
+        "type": "text",
+        "default": "",
         "group": "post"
       }
     }
