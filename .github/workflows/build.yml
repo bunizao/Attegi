@@ -62,11 +62,22 @@ jobs:
           echo "📦 Package size: $SIZE (${SIZE_KB}KB)"
           ls -lh dist/attegi.zip
 
-      - name: Upload theme zip
+      - name: Prepare artifact contents
+        run: |
+          rm -rf dist/artifact
+          mkdir -p dist/artifact
+          python - <<'PY'
+          import zipfile
+
+          with zipfile.ZipFile('dist/attegi.zip') as zf:
+              zf.extractall('dist/artifact')
+          PY
+
+      - name: Upload theme artifact
         uses: actions/upload-artifact@v6
         with:
           name: ${{ steps.package.outputs.name }}-v${{ steps.package.outputs.version }}
-          path: dist/attegi.zip
+          path: dist/artifact
           retention-days: 90
 
       - name: Create release and attach zip
