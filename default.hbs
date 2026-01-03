@@ -387,7 +387,7 @@
 				script.src = '{{asset "js/glightbox.min.js"}}';
 				script.onload = function() {
 					if (typeof GLightbox !== 'undefined') {
-						GLightbox({
+						var lightbox = GLightbox({
 							selector: '.glightbox',
 							touchNavigation: true,
 							loop: true,
@@ -397,7 +397,103 @@
 							zoomable: true,
 							draggable: true,
 							dragAutoSnap: true,
-							preload: true
+							preload: true,
+							// Enhanced touch settings for better mobile experience
+							touchFollowAxis: true,
+							moreLength: 0
+						});
+
+						// Add WebKit-specific gesture enhancements
+						lightbox.on('open', function() {
+							var container = document.querySelector('.gslide-media');
+							if (!container) return;
+
+							var img = container.querySelector('img');
+							if (!img) return;
+
+							// Variables for pinch-to-zoom
+							var initialDistance = 0;
+							var currentScale = 1;
+							var lastTapTime = 0;
+							var doubleTapDelay = 300;
+
+							// Get distance between two touch points
+							function getDistance(touches) {
+								var dx = touches[0].clientX - touches[1].clientX;
+								var dy = touches[0].clientY - touches[1].clientY;
+								return Math.sqrt(dx * dx + dy * dy);
+							}
+
+							// Handle pinch-to-zoom
+							function handleTouchStart(e) {
+								if (e.touches.length === 2) {
+									e.preventDefault();
+									initialDistance = getDistance(e.touches);
+								}
+							}
+
+							function handleTouchMove(e) {
+								if (e.touches.length === 2) {
+									e.preventDefault();
+									var currentDistance = getDistance(e.touches);
+									var scale = currentDistance / initialDistance;
+									currentScale = Math.max(1, Math.min(scale * currentScale, 4));
+
+									if (img.style) {
+										img.style.transform = 'scale(' + currentScale + ')';
+										img.style.transition = 'none';
+									}
+								}
+							}
+
+							function handleTouchEnd(e) {
+								if (e.touches.length < 2) {
+									initialDistance = 0;
+									if (currentScale < 1.1) {
+										currentScale = 1;
+										if (img.style) {
+											img.style.transform = 'scale(1)';
+											img.style.transition = 'transform 0.3s ease';
+										}
+									}
+								}
+
+								// Handle double-tap to zoom
+								if (e.touches.length === 0 && e.changedTouches.length === 1) {
+									var currentTime = new Date().getTime();
+									var tapLength = currentTime - lastTapTime;
+
+									if (tapLength < doubleTapDelay && tapLength > 0) {
+										e.preventDefault();
+										if (currentScale > 1) {
+											currentScale = 1;
+											if (img.style) {
+												img.style.transform = 'scale(1)';
+												img.style.transition = 'transform 0.3s ease';
+											}
+										} else {
+											currentScale = 2;
+											if (img.style) {
+												img.style.transform = 'scale(2)';
+												img.style.transition = 'transform 0.3s ease';
+											}
+										}
+									}
+									lastTapTime = currentTime;
+								}
+							}
+
+							// Add event listeners
+							container.addEventListener('touchstart', handleTouchStart, { passive: false });
+							container.addEventListener('touchmove', handleTouchMove, { passive: false });
+							container.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+							// Cleanup on close
+							lightbox.on('close', function() {
+								container.removeEventListener('touchstart', handleTouchStart);
+								container.removeEventListener('touchmove', handleTouchMove);
+								container.removeEventListener('touchend', handleTouchEnd);
+							});
 						});
 					}
 				};

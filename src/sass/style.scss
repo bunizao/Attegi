@@ -1451,10 +1451,9 @@ textarea {
 		@media only screen and (max-width: $breakpoint-small) {
 			min-width: 100%;
 			max-width: 100%;
-			height: 0; // Use padding-bottom for aspect ratio
-			padding-bottom: 50%; // 2:1 aspect ratio for better mobile display
+			height: auto; // Changed from 0 to auto
+			aspect-ratio: 2 / 1; // Use aspect-ratio instead of padding-bottom
 			border-radius: 1.25rem 1.25rem 0 0; // Top corners on mobile
-			aspect-ratio: auto; // Disable aspect-ratio, use padding-bottom instead
 			order: 1; // Thumbnail above content on mobile
 		}
 	}
@@ -1469,6 +1468,11 @@ textarea {
 		border-radius: 0;
 		margin: 0; // Override .post-content img margin
 		transition: transform ease-out 0.3s;
+
+		@media only screen and (max-width: $breakpoint-small) {
+			// Ensure image displays correctly on mobile
+			display: block;
+		}
 	}
 
 	// Only apply hover effect on desktop
@@ -5820,10 +5824,9 @@ a.post-tag-chip {
 		@media only screen and (max-width: $breakpoint-small) {
 			min-width: 100%;
 			max-width: 100%;
-			height: 0; // Use padding-bottom for aspect ratio
-			padding-bottom: 50%; // 2:1 aspect ratio for better mobile display
+			height: auto; // Changed from 0 to auto
+			aspect-ratio: 2 / 1; // Use aspect-ratio instead of padding-bottom
 			border-radius: 1.25rem 1.25rem 0 0; // Top corners on mobile
-			aspect-ratio: auto; // Disable aspect-ratio, use padding-bottom instead
 			order: 1; // Thumbnail above content on mobile
 		}
 
@@ -5837,6 +5840,11 @@ a.post-tag-chip {
 			border-radius: 0;
 			margin: 0; // Override .post-content img margin
 			transition: transform ease-out 0.3s;
+
+			@media only screen and (max-width: $breakpoint-small) {
+				// Ensure image displays correctly on mobile
+				display: block;
+			}
 		}
 	}
 }
@@ -6015,13 +6023,25 @@ a.post-tag-chip {
 /* Image container - smaller sizing */
 .glightbox-container .gslide {
 	padding: 60px !important;
+	// Enable smooth scrolling on iOS
+	-webkit-overflow-scrolling: touch;
+	overflow: hidden;
 }
 
 .glightbox-container .gslide-image img {
 	max-width: 85vw !important;
 	max-height: 85vh !important;
+	width: auto !important;
+	height: auto !important;
+	object-fit: contain !important;
 	border-radius: 0.5rem;
 	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+	// WebKit gesture enhancements
+	touch-action: pan-x pan-y pinch-zoom;
+	-webkit-user-select: none;
+	user-select: none;
+	transform-origin: center center;
+	will-change: transform;
 }
 
 /* Navigation arrows - glassmorphism style */
@@ -6115,11 +6135,18 @@ a.post-tag-chip {
 @media only screen and (max-width: 768px) {
 	.glightbox-container .gslide {
 		padding: 20px !important;
+		// Enhanced touch handling on mobile
+		touch-action: manipulation;
 	}
 
 	.glightbox-container .gslide-image img {
 		max-width: 95vw !important;
 		max-height: 85vh !important;
+		width: auto !important;
+		height: auto !important;
+		object-fit: contain !important;
+		// Optimize for mobile gestures
+		-webkit-touch-callout: none;
 	}
 
 	.glightbox-container .gnext,

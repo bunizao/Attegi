@@ -436,32 +436,64 @@
       trigger.setAttribute('aria-expanded', 'true');
       trigger.classList.add('is-loading');
 
-      Promise.resolve().then(function () {
-        var content = template.content || template;
-        var fragment = content ? content.cloneNode(true) : null;
-        if (!fragment) {
+      // Use setTimeout to ensure DOM is ready
+      setTimeout(function () {
+        try {
+          // Enhanced template content extraction for WebKit compatibility
+          var content = null;
+          if (template.content && template.content.cloneNode) {
+            // Modern browsers with proper template support
+            content = template.content.cloneNode(true);
+          } else if (template.innerHTML) {
+            // Fallback for older WebKit versions
+            var tempDiv = doc.createElement('div');
+            tempDiv.innerHTML = template.innerHTML;
+            content = doc.createDocumentFragment();
+            while (tempDiv.firstChild) {
+              content.appendChild(tempDiv.firstChild);
+            }
+          }
+
+          if (!content) {
+            hasLoaded = false;
+            trigger.classList.remove('is-loading');
+            trigger.removeAttribute('aria-busy');
+            return;
+          }
+
+          // Extract and store scripts before appending
+          var fragmentScripts = content.querySelectorAll ? content.querySelectorAll('script') : [];
+          var storedScripts = [];
+          Array.prototype.forEach.call(fragmentScripts, function (script) {
+            storedScripts.push(script);
+            if (script.parentNode) {
+              script.parentNode.removeChild(script);
+            }
+          });
+
+          // Append content to placeholder
+          placeholder.appendChild(content);
+
+          // Activate scripts after a short delay to ensure DOM is ready
+          setTimeout(function () {
+            activateScripts(placeholder, storedScripts);
+          }, 50);
+
+          trigger.classList.add('is-loaded');
+          trigger.setAttribute('hidden', 'true');
+          trigger.removeAttribute('aria-busy');
+        } catch (err) {
+          // Fallback: directly insert template innerHTML
           hasLoaded = false;
           trigger.classList.remove('is-loading');
           trigger.removeAttribute('aria-busy');
-          return;
-        }
-
-        var fragmentScripts = fragment.querySelectorAll ? fragment.querySelectorAll('script') : [];
-        var storedScripts = [];
-        Array.prototype.forEach.call(fragmentScripts, function (script) {
-          storedScripts.push(script);
-          if (script.parentNode) {
-            script.parentNode.removeChild(script);
+          if (template.innerHTML) {
+            placeholder.innerHTML = template.innerHTML;
+            trigger.classList.add('is-loaded');
+            trigger.setAttribute('hidden', 'true');
           }
-        });
-
-        placeholder.appendChild(fragment);
-        activateScripts(placeholder, storedScripts);
-
-        trigger.classList.add('is-loaded');
-        trigger.setAttribute('hidden', 'true');
-        trigger.removeAttribute('aria-busy');
-      });
+        }
+      }, 100);
     }
 
     trigger.addEventListener('click', function () {
