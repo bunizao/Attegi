@@ -663,6 +663,119 @@
     });
   }
 
+  /**
+   * Fix footnote navigation by adding proper links and IDs
+   * Handles cases where Ghost markdown renderer strips href attributes
+   */
+  function setupFootnotes(container) {
+    if (!container) return;
+
+    // Find all superscript elements that look like footnote references
+    var sups = container.querySelectorAll('sup');
+    var footnoteRefs = [];
+
+    Array.prototype.forEach.call(sups, function(sup) {
+      var text = sup.textContent.trim();
+      var match = text.match(/^\[(\d+)\]$/);
+      if (match) {
+        footnoteRefs.push({
+          element: sup,
+          number: parseInt(match[1], 10)
+        });
+      }
+    });
+
+    if (!footnoteRefs.length) return;
+
+    // Find the footnote list (usually the last <ol> in the content)
+    var lists = container.querySelectorAll('ol');
+    var footnoteList = null;
+
+    // Look for a list that has items with back-reference links (↩︎)
+    Array.prototype.forEach.call(lists, function(list) {
+      var items = list.querySelectorAll('li');
+      var hasBackRefs = false;
+      Array.prototype.forEach.call(items, function(item) {
+        if (item.textContent.indexOf('↩︎') !== -1) {
+          hasBackRefs = true;
+        }
+      });
+      if (hasBackRefs) {
+        footnoteList = list;
+      }
+    });
+
+    if (!footnoteList) return;
+
+    var footnoteItems = footnoteList.querySelectorAll('li');
+    if (footnoteItems.length !== footnoteRefs.length) return;
+
+    // Hide redundant horizontal rules before footnotes
+    // Ghost markdown renderer adds <hr> tags before footnotes
+    var prev = footnoteList.previousElementSibling;
+    var hrCount = 0;
+    while (prev && prev.tagName === 'HR' && hrCount < 2) {
+      prev.classList.add('footnote-separator');
+      prev = prev.previousElementSibling;
+      hrCount++;
+    }
+
+    // Add IDs to footnote list items and fix back-reference links
+    Array.prototype.forEach.call(footnoteItems, function(item, index) {
+      var number = index + 1;
+      var footnoteId = 'fn' + number;
+      var refId = 'fnref' + number;
+
+      // Add ID to the list item
+      if (!item.id) {
+        item.id = footnoteId;
+      }
+
+      // Fix the back-reference link
+      var backLink = item.querySelector('a');
+      if (backLink && backLink.textContent.indexOf('↩︎') !== -1) {
+        backLink.href = '#' + refId;
+        backLink.setAttribute('aria-label', 'Back to reference ' + number);
+      }
+    });
+
+    // Convert footnote references to links
+    footnoteRefs.forEach(function(ref) {
+      var number = ref.number;
+      var refId = 'fnref' + number;
+      var footnoteId = 'fn' + number;
+
+      // Add ID to the reference
+      ref.element.id = refId;
+
+      // Reuse wrapper link when Ghost outputs <a><sup>[n]</sup></a>
+      var wrapperLink = ref.element.parentElement;
+      if (wrapperLink && wrapperLink.tagName === 'A') {
+        wrapperLink.href = '#' + footnoteId;
+        wrapperLink.setAttribute('aria-label', 'Footnote ' + number);
+        return;
+      }
+
+      // Check if there's already a link inside
+      var existingLink = ref.element.querySelector('a');
+      if (existingLink) {
+        existingLink.href = '#' + footnoteId;
+        existingLink.setAttribute('aria-label', 'Footnote ' + number);
+        return;
+      }
+
+      // Create a link element
+      var link = doc.createElement('a');
+      link.href = '#' + footnoteId;
+      link.textContent = '[' + number + ']';
+      link.setAttribute('aria-label', 'Footnote ' + number);
+
+      // Replace the text content with the link
+      ref.element.textContent = '';
+      ref.element.appendChild(link);
+    });
+  }
+
   function setupContentImagesFormats(container) {
     if (!container) return;
 
@@ -949,6 +1062,7 @@
     setupCoverBrightnessDetection();
     setupPortraitVideos();
     setupPortraitImages();
+    setupFootnotes(postContent);
     setupContentImagesFormats(postContent);
   }
 
