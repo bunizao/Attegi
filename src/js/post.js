@@ -405,6 +405,83 @@
   }
 
   /**
+   * Lazy-load Ghost native comments to avoid upfront JS weight
+   */
+  function setupLazyComments() {
+    var template = doc.getElementById('ghost-comments-template');
+    var placeholder = doc.querySelector('[data-comments-placeholder]');
+    var trigger = doc.querySelector('.js-load-comments');
+    if (!template || !placeholder || !trigger) return;
+
+    var hasLoaded = false;
+
+    function activateScripts(container, scripts) {
+      Array.prototype.forEach.call(scripts, function (original) {
+        var replacement = doc.createElement('script');
+        Array.prototype.forEach.call(original.attributes, function (attr) {
+          replacement.setAttribute(attr.name, attr.value);
+        });
+        replacement.textContent = original.textContent;
+        if (original.src) {
+          replacement.src = original.src;
+        }
+        container.appendChild(replacement);
+      });
+    }
+
+    function loadComments() {
+      if (hasLoaded) return;
+      hasLoaded = true;
+      trigger.setAttribute('aria-busy', 'true');
+      trigger.setAttribute('aria-expanded', 'true');
+      trigger.classList.add('is-loading');
+
+      Promise.resolve().then(function () {
+        var content = template.content || template;
+        var fragment = content ? content.cloneNode(true) : null;
+        if (!fragment) {
+          hasLoaded = false;
+          trigger.classList.remove('is-loading');
+          trigger.removeAttribute('aria-busy');
+          return;
+        }
+
+        var fragmentScripts = fragment.querySelectorAll ? fragment.querySelectorAll('script') : [];
+        var storedScripts = [];
+        Array.prototype.forEach.call(fragmentScripts, function (script) {
+          storedScripts.push(script);
+          if (script.parentNode) {
+            script.parentNode.removeChild(script);
+          }
+        });
+
+        placeholder.appendChild(fragment);
+        activateScripts(placeholder, storedScripts);
+
+        trigger.classList.add('is-loaded');
+        trigger.setAttribute('hidden', 'true');
+        trigger.removeAttribute('aria-busy');
+      });
+    }
+
+    trigger.addEventListener('click', function () {
+      loadComments();
+    });
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            loadComments();
+            observer.disconnect();
+          }
+        });
+      }, { rootMargin: '200px 0px' });
+      observer.observe(placeholder);
+    }
+  }
+
+  /**
    * Detect if cover image is bright and apply contrast enhancement
    * Samples the bottom portion of the image where text overlays
    */
@@ -551,6 +628,7 @@
     setupProgress(postContent);
     setupShare();
     setupDisqus();
+    setupLazyComments();
     setupCoverBrightnessDetection();
     setupPortraitVideos();
     setupPortraitImages();

@@ -2252,6 +2252,14 @@ textarea {
 	display: flex;
 	align-items: center;
 
+	picture {
+		display: block;
+		width: 100%;
+		height: 100%;
+		flex: 1 1 auto;
+		align-self: stretch;
+	}
+
 	&:after {
 		content: '';
 		position: absolute;
@@ -3965,6 +3973,14 @@ iframe.gh-portal-triggerbtn-iframe {
 	display: flex;
 	align-items: center;
 
+	picture {
+		display: block;
+		width: 100%;
+		height: 100%;
+		flex: 1 1 auto;
+		align-self: stretch;
+	}
+
 	img {
 		position: relative;
 		display: block;
@@ -4499,6 +4515,47 @@ iframe.gh-portal-triggerbtn-iframe {
 	color: var(--color-content-secondary);
 	font-size: 1.4em;
 	line-height: 1.2;
+}
+
+.post-comments-load {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.8rem;
+	margin: 0 0 1.6rem;
+	padding: 1.1rem 1.8rem;
+	border-radius: 999px;
+	border: 1px solid var(--ghost-accent-color);
+	background: var(--ghost-accent-color);
+	color: #fff;
+	font-weight: 700;
+	font-size: 1.5em;
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+	appearance: none;
+
+	&:hover,
+	&:focus {
+		transform: translateY(-1px);
+		box-shadow: 0 12px 30px color-mix(in srgb, var(--ghost-accent-color) 28%, transparent);
+	}
+
+	&:active {
+		transform: translateY(0);
+		box-shadow: none;
+	}
+
+	&.is-loading {
+		opacity: 0.82;
+		pointer-events: none;
+	}
+
+	&.is-loaded {
+		display: none;
+	}
+}
+
+.post-comments-container {
+	margin-top: 2rem;
 }
 
 /* Ghost Comments / Portal buttons - keep in sync with accent color */
@@ -5552,64 +5609,164 @@ a.post-tag-chip {
 		margin: 0;
 		border-radius: 1.5rem;
 		overflow: hidden;
-		transition: all ease-out 0.25s;
+		transition: all ease-out 0.3s;
 		background: var(--color-background-secondary);
 		border: 1px solid var(--color-background-contrast);
-		box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+		box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 
-		&:hover {
-			transform: translateY(-4px);
-			box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-			border-color: var(--ghost-accent-color);
+		// Desktop hover effect
+		@media (hover: hover) and (pointer: fine) {
+			&:hover {
+				transform: translateY(-4px);
+				box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+				border-color: color-mix(in srgb, var(--ghost-accent-color) 50%, var(--color-background-contrast));
+
+				.kg-bookmark-title {
+					color: var(--ghost-accent-color);
+				}
+
+				.kg-bookmark-description {
+					opacity: 1;
+				}
+
+				.kg-bookmark-thumbnail img {
+					transform: scale(1.05);
+				}
+			}
+		}
+
+		// Mobile: subtle active state
+		@media (hover: none) and (pointer: coarse) {
+			&:active {
+				transform: scale(0.98);
+				box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+			}
 		}
 
 		a.kg-bookmark-container,
 		a.kg-bookmark-container:hover {
-			min-height: auto;
+			display: flex;
+			text-decoration: none;
+			min-height: 160px;
 			background: transparent;
 			border: none;
 			border-radius: 0;
-			flex-direction: row;
-			align-items: stretch;
-			gap: 0;
+			box-shadow: none !important;
+			overflow: hidden;
+			// Touch-friendly minimum tap target
+			min-height: 44px;
 
-			@media only screen and (max-width: $breakpoint-medium) {
-				flex-direction: row;
+			// Mobile: vertical layout for better readability
+			@media only screen and (max-width: $breakpoint-small) {
+				flex-direction: column;
+				min-height: auto;
 			}
 		}
 	}
 
 	.kg-bookmark-content {
-		padding: 2rem 2.5rem;
+		text-rendering: optimizeLegibility;
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		align-items: flex-start;
 		justify-content: center;
+		padding: 2rem 2.5rem;
+		color: var(--color-content-secondary);
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			padding: 1.75rem 2rem;
+		}
 
 		@media only screen and (max-width: $breakpoint-small) {
-			padding: 1.5rem;
+			padding: 1.5rem 1.5rem 1.25rem; // Optimized padding for mobile
+			order: 2; // Content below thumbnail on mobile
 		}
 	}
 
 	.kg-bookmark-title {
 		font-family: var(--gh-font-heading);
-		font-size: 1.8rem;
-		font-weight: 700;
-		line-height: 1.3;
 		color: var(--color-content-lead);
-		margin-bottom: 0.5rem;
+		font-size: 2rem;
+		line-height: 1.4;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		margin-bottom: 0.75rem;
+		text-align: left;
+		// Better text wrapping
+		word-break: break-word;
+		overflow-wrap: break-word;
+		hyphens: auto;
+		// Smooth transition for hover effects
+		transition: color 0.2s ease;
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			font-size: 1.8rem;
+			line-height: 1.35;
+			margin-bottom: 0.6rem;
+		}
+
+		@media only screen and (max-width: $breakpoint-small) {
+			font-size: 1.6rem;
+			margin-bottom: 0.5rem;
+			line-height: 1.35;
+			letter-spacing: -0.01em;
+		}
 	}
 
 	.kg-bookmark-description {
+		display: -webkit-box;
 		font-size: 1.5rem;
-		line-height: 1.5;
-		color: var(--color-content-secondary);
-		margin-top: 0.5rem;
+		line-height: 1.6;
+		font-weight: 400;
+		margin-top: 0;
 		max-height: none;
+		overflow-y: hidden;
 		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		color: var(--color-content-secondary);
+		text-align: left;
+		opacity: 0.9;
+		// Better text wrapping
+		word-break: break-word;
+		overflow-wrap: break-word;
+		// Smooth transition
+		transition: opacity 0.2s ease;
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			font-size: 1.4rem;
+			line-height: 1.55;
+		}
+
+		@media only screen and (max-width: $breakpoint-small) {
+			font-size: 1.35rem;
+			-webkit-line-clamp: 2;
+			line-height: 1.5;
+		}
 	}
 
 	.kg-bookmark-metadata {
-		margin-top: 1rem;
+		text-rendering: optimizeLegibility;
+		display: flex;
+		align-items: center;
 		font-size: 1.4rem;
+		line-height: 1.5;
+		color: var(--color-content-main);
+		font-weight: 400;
+		margin-top: 1rem;
+		flex-wrap: wrap;
 		gap: 0.5rem;
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			font-size: 1.3rem;
+			margin-top: 0.75rem;
+		}
+
+		@media only screen and (max-width: $breakpoint-small) {
+			font-size: 1.25rem; // Optimized for mobile
+			margin-top: 0.65rem;
+			gap: 0.4rem;
+		}
 	}
 
 	.kg-bookmark-icon {
@@ -5618,6 +5775,12 @@ a.post-tag-chip {
 		margin: 0 0.5rem 0 0;
 		border-radius: 4px;
 		flex-shrink: 0;
+
+		@media only screen and (max-width: $breakpoint-small) {
+			width: 1.8rem;
+			height: 1.8rem;
+			margin: 0 0.4rem 0 0;
+		}
 	}
 
 	.kg-bookmark-author {
@@ -5642,20 +5805,26 @@ a.post-tag-chip {
 
 	.kg-bookmark-thumbnail {
 		position: relative;
-		min-width: 200px;
-		max-width: 240px;
+		min-width: 240px;
+		max-width: 280px;
 		flex-shrink: 0;
 		overflow: hidden;
-		aspect-ratio: 4 / 3; // Standard 4:3 aspect ratio for thumbnails
+		border-radius: 0 1rem 1rem 0; // Match card's right corners
+		aspect-ratio: 4 / 3; // Classic 4:3 aspect ratio for balanced display
 
 		@media only screen and (max-width: $breakpoint-medium) {
-			min-width: 140px;
-			max-width: 180px;
+			min-width: 180px;
+			max-width: 220px;
 		}
 
 		@media only screen and (max-width: $breakpoint-small) {
-			min-width: 110px;
-			max-width: 140px;
+			min-width: 100%;
+			max-width: 100%;
+			height: 0; // Use padding-bottom for aspect ratio
+			padding-bottom: 50%; // 2:1 aspect ratio for better mobile display
+			border-radius: 1.25rem 1.25rem 0 0; // Top corners on mobile
+			aspect-ratio: auto; // Disable aspect-ratio, use padding-bottom instead
+			order: 1; // Thumbnail above content on mobile
 		}
 
 		img {
@@ -5666,13 +5835,9 @@ a.post-tag-chip {
 			height: 100%;
 			object-fit: cover;
 			border-radius: 0;
+			margin: 0; // Override .post-content img margin
 			transition: transform ease-out 0.3s;
-			margin: 0;
 		}
-	}
-
-	.kg-bookmark-card:hover .kg-bookmark-thumbnail img {
-		transform: scale(1.05);
 	}
 }
 

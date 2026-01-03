@@ -57,17 +57,29 @@
 		</div>
 		{{#if feature_image}}
 		<div class="post-cover cover">
-			<img
-			srcset="{{img_url feature_image size="s"}} 320w,
-              {{img_url feature_image size="m"}} 640w,
-              {{img_url feature_image size="l"}} 960w,
-              {{img_url feature_image size="xl"}} 1920w"
-      src="{{img_url feature_image size="xl"}}"
-			alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
-			loading="eager"
-			decoding="async"
-			fetchpriority="high"
-			sizes="(max-width: 960px) 100vw, 960px" />
+			<picture>
+				<source
+					type="image/webp"
+					srcset="{{img_url feature_image size="s" format="webp" quality="50"}} 320w,
+									{{img_url feature_image size="m" format="webp" quality="50"}} 640w,
+									{{img_url feature_image size="l" format="webp" quality="50"}} 960w"
+					sizes="(max-width: 1100px) 100vw, 1100px" />
+				<source
+					srcset="{{img_url feature_image size="s" quality="50"}} 320w,
+									{{img_url feature_image size="m" quality="50"}} 640w,
+									{{img_url feature_image size="l" quality="50"}} 960w"
+					sizes="(max-width: 1100px) 100vw, 1100px" />
+				<img
+					srcset="{{img_url feature_image size="s" quality="50"}} 320w,
+									{{img_url feature_image size="m" quality="50"}} 640w,
+									{{img_url feature_image size="l" quality="50"}} 960w"
+					sizes="(max-width: 1100px) 100vw, 1100px"
+					src="{{img_url feature_image size="l" quality="50"}}"
+					alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+					loading="eager"
+					decoding="async"
+					fetchpriority="high" />
+			</picture>
 		</div>
 		{{/if}}
 	</div>
@@ -146,12 +158,18 @@
 			</section>
 
 			{{#if comments}}
-			<section class="post-comments">
+			<section class="post-comments" data-comments-section>
 				<header class="post-comments-header">
 					<h3 class="post-comments-title">{{t "Comments"}}</h3>
 					<span class="post-comments-count">{{comment_count autowrap="false" empty=(t "0 comments")}}</span>
 				</header>
-				{{comments title="" count=false}}
+				<button class="post-comments-load js-load-comments" type="button" aria-controls="comments-container" aria-expanded="false">
+					<span class="post-comments-load-label">{{t "Show Comments"}}</span>
+				</button>
+				<div id="comments-container" class="post-comments-container" data-comments-placeholder></div>
+				<template id="ghost-comments-template">
+					{{comments title="" count=false}}
+				</template>
 			</section>
 			{{else if @custom.disqus_shortname}}
 			<section class="post-comments">
@@ -222,6 +240,15 @@
 {{/post}}
 
 {{!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs --}}
+{{#if feature_image}}
+{{#contentFor "head"}}
+<link rel="preload"
+	as="image"
+	href="{{img_url feature_image size="l" quality="50"}}"
+	imagesrcset="{{img_url feature_image size="s" quality="50"}} 320w, {{img_url feature_image size="m" quality="50"}} 640w, {{img_url feature_image size="l" quality="50"}} 960w"
+	imagesizes="(max-width: 1100px) 100vw, 1100px">
+{{/contentFor}}
+{{/if}}
 {{#contentFor "scripts"}}
 <script defer src="{{asset "js/post.js"}}" data-highlight="{{asset "js/highlight.pack.js"}}"></script>
 <script defer src="{{asset "js/tocbot.min.js"}}"></script>

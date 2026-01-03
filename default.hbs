@@ -10,17 +10,14 @@
 	<title>{{meta_title}}</title>
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	{{{block "head"}}}
 
 	{{!-- Resource Hints --}}
 	{{!-- Preconnect to external CDNs used by Ghost and theme --}}
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
 	<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 	<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-	<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 	{{!-- Preload critical CSS to reduce render-blocking --}}
 	<link rel="preload" href="{{asset "css/style.css"}}" as="style" />
 	{{!-- JetBrains Mono for code blocks --}}

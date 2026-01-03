@@ -9,7 +9,14 @@
 --}}
 
 {{#if @site.cover_image}}
-	{{#contentFor "html_class"}}cover-active{{/contentFor}}
+{{#contentFor "html_class"}}cover-active{{/contentFor}}
+{{#contentFor "head"}}
+<link rel="preload"
+	as="image"
+	href="{{img_url @site.cover_image size="l" quality="50"}}"
+	imagesrcset="{{img_url @site.cover_image size="s" quality="50"}} 320w, {{img_url @site.cover_image size="m" quality="50"}} 640w, {{img_url @site.cover_image size="l" quality="50"}} 960w"
+	imagesizes="(max-width: 1100px) 100vw, 1100px">
+{{/contentFor}}
 {{/if}}
 
 <header class="blog-header {{#if @site.cover_image}} has-cover{{/if}}">
@@ -22,17 +29,29 @@
 		</div>
 		{{#if @site.cover_image}}
 		<div class="blog-cover cover">
-			<img
-			srcset="{{img_url @site.cover_image size="s"}} 320w,
-              {{img_url @site.cover_image size="m"}} 640w,
-              {{img_url @site.cover_image size="l"}} 960w,
-              {{img_url @site.cover_image size="xl"}} 1920w"
-      src="{{img_url @site.cover_image size="xl"}}"
-			alt="{{@site.title}}"
-			loading="eager"
-			decoding="async"
-			fetchpriority="high"
-			sizes="(max-width: 960px) 100vw, 960px" />
+			<picture>
+				<source
+					type="image/webp"
+					srcset="{{img_url @site.cover_image size="s" format="webp" quality="50"}} 320w,
+									{{img_url @site.cover_image size="m" format="webp" quality="50"}} 640w,
+									{{img_url @site.cover_image size="l" format="webp" quality="50"}} 960w"
+					sizes="(max-width: 1100px) 100vw, 1100px" />
+				<source
+					srcset="{{img_url @site.cover_image size="s" quality="50"}} 320w,
+									{{img_url @site.cover_image size="m" quality="50"}} 640w,
+									{{img_url @site.cover_image size="l" quality="50"}} 960w"
+					sizes="(max-width: 1100px) 100vw, 1100px" />
+				<img
+					srcset="{{img_url @site.cover_image size="s" quality="50"}} 320w,
+									{{img_url @site.cover_image size="m" quality="50"}} 640w,
+									{{img_url @site.cover_image size="l" quality="50"}} 960w"
+					sizes="(max-width: 1100px) 100vw, 1100px"
+					src="{{img_url @site.cover_image size="l" quality="50"}}"
+					alt="{{@site.title}}"
+					loading="eager"
+					decoding="async"
+					fetchpriority="high" />
+			</picture>
 		</div>
 		{{/if}}
 	</div>
