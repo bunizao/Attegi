@@ -629,11 +629,12 @@ textarea {
 		max-width: 100%;
 		margin: 0 0 2.5rem;
 		border: 1px solid var(--color-background-contrast);
-		background: var(--color-background-secondary);
-		border-radius: 0.75rem;
+		background: var(--color-background-main);
+		border-radius: 1rem;
 		border-collapse: separate;
 		border-spacing: 0;
 		overflow: hidden;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 
 		@media (max-width: $breakpoint-medium) {
 			display: block;
@@ -644,20 +645,46 @@ textarea {
 		td,
 		th {
 			position: relative;
-			padding: 1.5rem;
-			font-size: 0.75em;
-			line-height: 1.33334em;
+			padding: 1.2rem 1.5rem;
+			font-size: 0.85em;
+			line-height: 1.5;
 			border-bottom: 1px solid var(--color-background-contrast);
 			border-right: 1px solid var(--color-background-contrast);
+			vertical-align: middle;
 
 			&:last-child {
 				border-right: none;
 			}
+
+			@media (max-width: $breakpoint-small) {
+				padding: 1rem 1.2rem;
+				font-size: 0.8em;
+			}
 		}
 
-		thead tr:last-child td,
-		thead tr:last-child th {
-			border-bottom: 2px solid var(--color-background-contrast);
+		thead {
+			background: color-mix(in srgb, var(--ghost-accent-color) 5%, var(--color-background-secondary));
+			position: relative;
+
+			&::after {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				height: 2px;
+				background: linear-gradient(
+					90deg,
+					transparent,
+					color-mix(in srgb, var(--ghost-accent-color) 30%, transparent) 50%,
+					transparent
+				);
+			}
+
+			tr:last-child td,
+			tr:last-child th {
+				border-bottom: none;
+			}
 		}
 
 		tbody tr:last-child td,
@@ -667,19 +694,74 @@ textarea {
 
 		th {
 			text-align: left;
-			font-weight: 600;
-			letter-spacing: 0.5px;
-			font-size: 0.75em;
-			line-height: 1.33334em;
+			font-weight: 700;
+			letter-spacing: 0.3px;
+			font-size: 0.9em;
+			line-height: 1.5;
 			color: var(--color-content-lead);
-			background: var(--color-background-main);
+			padding: 1.4rem 1.5rem;
+
+			@media (max-width: $breakpoint-small) {
+				padding: 1.1rem 1.2rem;
+				font-size: 0.85em;
+			}
 		}
 
 		tbody tr {
-			transition: background-color ease-out 0.15s;
+			transition: all ease-out 0.2s;
+			background: var(--color-background-main);
+
+			// Zebra striping for better readability
+			&:nth-child(even) {
+				background: color-mix(in srgb, var(--color-background-secondary) 40%, var(--color-background-main));
+			}
 
 			&:hover {
-				background: var(--color-background-main);
+				background: color-mix(in srgb, var(--ghost-accent-color) 8%, var(--color-background-secondary));
+				transform: scale(1.005);
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+			}
+		}
+
+		// Better cell content styling
+		td {
+			color: var(--color-content-main);
+
+			strong {
+				font-weight: 600;
+				color: var(--color-content-lead);
+			}
+
+			em {
+				font-style: italic;
+				color: var(--color-content-secondary);
+			}
+
+			code {
+				font-size: 0.9em;
+				padding: 0.2em 0.4em;
+				background: var(--color-background-secondary);
+				border-radius: 0.25em;
+			}
+		}
+	}
+
+	// Dark theme adjustments
+	.theme-dark table {
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+
+		thead {
+			background: color-mix(in srgb, var(--ghost-accent-color) 8%, rgba(255, 255, 255, 0.04));
+		}
+
+		tbody tr {
+			&:nth-child(even) {
+				background: rgba(255, 255, 255, 0.02);
+			}
+
+			&:hover {
+				background: color-mix(in srgb, var(--ghost-accent-color) 12%, rgba(255, 255, 255, 0.06));
+				box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 			}
 		}
 	}
