@@ -358,11 +358,17 @@
 	{{!-- Load basic scripts (no defer, placed before </body> for reliability) --}}
 	<script src="{{asset "js/script.js"}}"></script>
 	<script>
-		// Conditionally load GLightbox only if images exist
+		// Conditionally load GLightbox only for gallery images
 		(function() {
 			function initGLightbox() {
-				var galleryImages = document.querySelectorAll('.kg-gallery-image img, .kg-image-card img');
-				if (galleryImages.length === 0) return; // No images, skip loading
+				var galleryImages = document.querySelectorAll('.kg-gallery-image img');
+				if (galleryImages.length === 0) return; // No gallery images, skip loading
+
+				function getNumericValue(value) {
+					if (!value) return null;
+					var parsed = parseInt(value, 10);
+					return isNaN(parsed) ? null : parsed;
+				}
 
 				function getLargestSrcFromSrcset(srcset) {
 					if (!srcset) return '';
@@ -410,14 +416,27 @@
 				css.href = '{{asset "css/glightbox.min.css"}}';
 				document.head.appendChild(css);
 
-				// Wrap images
+				// Wrap gallery images only
 				galleryImages.forEach(function(img) {
 					if (!img.closest('a')) {
 						var wrapper = document.createElement('a');
 						var lightboxSrc = pickLightboxSource(img);
 						wrapper.href = lightboxSrc || img.src;
 						wrapper.classList.add('glightbox');
-						wrapper.setAttribute('data-gallery', img.closest('.kg-gallery-card') ? 'gallery' : 'images');
+						wrapper.setAttribute('data-type', 'image');
+						var width = getNumericValue(img.getAttribute('width')) || img.naturalWidth;
+						var height = getNumericValue(img.getAttribute('height')) || img.naturalHeight;
+						if (width && height) {
+							wrapper.setAttribute('data-width', String(width));
+							wrapper.setAttribute('data-height', String(height));
+						}
+						// Use gallery card's position as unique ID
+						var galleryCard = img.closest('.kg-gallery-card');
+						var galleryId = 'gallery-' + Array.prototype.indexOf.call(
+							document.querySelectorAll('.kg-gallery-card'),
+							galleryCard
+						);
+						wrapper.setAttribute('data-gallery', galleryId);
 						img.parentNode.insertBefore(wrapper, img);
 						wrapper.appendChild(img);
 					}
@@ -430,6 +449,7 @@
 					if (typeof GLightbox !== 'undefined') {
 						var lightbox = GLightbox({
 							selector: '.glightbox',
+							type: 'image',
 							touchNavigation: true,
 							loop: true,
 							closeOnOutsideClick: true,
@@ -445,7 +465,7 @@
 						});
 
 						// Add WebKit-specific gesture enhancements
-						lightbox.on('open', function() {
+						lightbox.on('open', function(slide) {
 							var container = document.querySelector('.gslide-media');
 							if (!container) return;
 

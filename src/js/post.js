@@ -717,6 +717,83 @@
       return pathname.replace(/\/content\/images\/size\/w\d+\//, '/content/images/');
     }
 
+    function getFirstSrcsetCandidate(srcset) {
+      if (!srcset) return '';
+      var candidate = srcset.split(',')[0];
+      if (!candidate) return '';
+      return candidate.trim().split(/\s+/)[0];
+    }
+
+    function getSampleImageUrl(images) {
+      var sample = '';
+      Array.prototype.some.call(images, function (img) {
+        if (!img) return false;
+        var src = img.getAttribute('src');
+        if (!src || /^(data:|blob:)/i.test(src)) return false;
+        var parsed;
+        try {
+          parsed = new URL(src, doc.baseURI);
+        } catch (err) {
+          return false;
+        }
+        if (!isGhostContentImage(parsed)) return false;
+        var srcset = img.getAttribute('srcset');
+        sample = getFirstSrcsetCandidate(srcset) || src;
+        return true;
+      });
+      return sample;
+    }
+
+    function detectFormatSupport(sampleUrl) {
+      var cached = window.__attegiImageFormats;
+      if (cached) return Promise.resolve(cached);
+
+      var results = { avif: false, webp: false };
+
+      // Skip detection if no sample URL or fetch API unavailable
+      if (!sampleUrl || !window.fetch) {
+        window.__attegiImageFormats = results;
+        return Promise.resolve(results);
+      }
+
+      // Skip detection in local development (localhost or 127.0.0.1)
+      var hostname = window.location.hostname;
+      if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+        window.__attegiImageFormats = results;
+        return Promise.resolve(results);
+      }
+
+      var base;
+      try {
+        base = new URL(sampleUrl, doc.baseURI);
+      } catch (err) {
+        window.__attegiImageFormats = results;
+        return Promise.resolve(results);
+      }
+
+      base.searchParams.delete('format');
+
+      var formats = ['avif', 'webp'];
+      return Promise.all(formats.map(function (format) {
+        var testUrl = new URL(base.href);
+        testUrl.searchParams.set('format', format);
+        return fetch(testUrl.toString(), { method: 'HEAD', cache: 'no-store' })
+          .then(function (response) {
+            return response.ok;
+          })
+          .catch(function () {
+            // Silently fail - format not supported
+            return false;
+          })
+          .then(function (ok) {
+            results[format] = ok;
+          });
+      })).then(function () {
+        window.__attegiImageFormats = results;
+        return results;
+      });
+    }
+
     function buildFormatSrcsetFromExisting(srcset, format) {
       var candidates = srcset.split(',').map(function (item) {
         return item.trim();
@@ -791,52 +868,58 @@
     function run() {
       var imageWidths = parseImageSizes();
       var images = container.querySelectorAll('img');
-      Array.prototype.forEach.call(images, function (img) {
-        if (!img || img.closest('picture')) return;
-        if (img.hasAttribute('data-no-webp')) return;
+      var sampleUrl = getSampleImageUrl(images);
 
-        var src = img.getAttribute('src');
-        if (!src || /^(data:|blob:)/i.test(src)) return;
+      detectFormatSupport(sampleUrl).then(function (formatSupport) {
+        if (!formatSupport.avif && !formatSupport.webp) return;
 
-        var parsed;
-        try {
-          parsed = new URL(src, doc.baseURI);
-        } catch (err) {
-          return;
-        }
-        if (!isGhostContentImage(parsed)) return;
+        Array.prototype.forEach.call(images, function (img) {
+          if (!img || img.closest('picture')) return;
+          if (img.hasAttribute('data-no-webp')) return;
 
-        var avifSrcset = buildFormatSrcset(img, parsed, imageWidths, 'avif');
-        var webpSrcset = buildFormatSrcset(img, parsed, imageWidths, 'webp');
-        if (!avifSrcset && !webpSrcset) return;
+          var src = img.getAttribute('src');
+          if (!src || /^(data:|blob:)/i.test(src)) return;
 
-        var picture = doc.createElement('picture');
-        var sizes = img.getAttribute('sizes');
-        if (avifSrcset) {
-          var avifSource = doc.createElement('source');
-          avifSource.type = 'image/avif';
-          avifSource.srcset = avifSrcset;
-          if (sizes) {
-            avifSource.setAttribute('sizes', sizes);
+          var parsed;
+          try {
+            parsed = new URL(src, doc.baseURI);
+          } catch (err) {
+            return;
           }
-          picture.appendChild(avifSource);
-        }
+          if (!isGhostContentImage(parsed)) return;
 
-        if (webpSrcset) {
-          var webpSource = doc.createElement('source');
-          webpSource.type = 'image/webp';
-          webpSource.srcset = webpSrcset;
-          if (sizes) {
-            webpSource.setAttribute('sizes', sizes);
+          var avifSrcset = formatSupport.avif ? buildFormatSrcset(img, parsed, imageWidths, 'avif') : '';
+          var webpSrcset = formatSupport.webp ? buildFormatSrcset(img, parsed, imageWidths, 'webp') : '';
+          if (!avifSrcset && !webpSrcset) return;
+
+          var picture = doc.createElement('picture');
+          var sizes = img.getAttribute('sizes');
+          if (avifSrcset) {
+            var avifSource = doc.createElement('source');
+            avifSource.type = 'image/avif';
+            avifSource.srcset = avifSrcset;
+            if (sizes) {
+              avifSource.setAttribute('sizes', sizes);
+            }
+            picture.appendChild(avifSource);
           }
-          picture.appendChild(webpSource);
-        }
 
-        var parent = img.parentNode;
-        if (!parent) return;
+          if (webpSrcset) {
+            var webpSource = doc.createElement('source');
+            webpSource.type = 'image/webp';
+            webpSource.srcset = webpSrcset;
+            if (sizes) {
+              webpSource.setAttribute('sizes', sizes);
+            }
+            picture.appendChild(webpSource);
+          }
 
-        parent.insertBefore(picture, img);
-        picture.appendChild(img);
+          var parent = img.parentNode;
+          if (!parent) return;
+
+          parent.insertBefore(picture, img);
+          picture.appendChild(img);
+        });
       });
     }
 
