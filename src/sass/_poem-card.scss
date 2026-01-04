@@ -1,0 +1,149 @@
+/* ==========================================================================
+   Poem Card Component - Poetry Display
+   ========================================================================== */
+
+// Import breakpoint variables from parent
+// These are defined in style.scss and need to be passed in
+// or we define them locally for this component
+
+.post-content {
+	.kg-poem-card {
+		position: relative;
+		display: block;
+		align-self: flex-start;
+		width: fit-content;
+		min-width: 300px;
+		max-width: 600px;
+		margin: 0 0 2.5rem;
+		padding: 3rem 3.5rem;
+		background: var(--color-background-secondary);
+		border: 1px solid var(--color-background-contrast);
+		border-radius: 1.5rem;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+
+		@media only screen and (max-width: 640px) {
+			min-width: auto;
+			max-width: 100%;
+			width: 100%;
+			padding: 2.5rem 3rem;
+		}
+
+		@media only screen and (max-width: 480px) {
+			padding: 2rem 2.5rem;
+		}
+	}
+
+	// Poem header section
+	.kg-poem-header {
+		margin-bottom: 1.5rem;
+	}
+
+	.kg-poem-title {
+		font-family: var(--gh-font-heading);
+		font-size: 1.6rem;
+		font-weight: 600;
+		line-height: 1.3;
+		margin: 0;
+		color: var(--color-content-lead);
+
+		@media only screen and (max-width: 480px) {
+			font-size: 1.5rem;
+		}
+	}
+
+	// Divider lines
+	.kg-poem-divider {
+		height: 1px;
+		margin: 1.5rem 0;
+		background: var(--color-background-contrast);
+		opacity: 0.5;
+		border: none;
+	}
+
+	// Poem content container
+	.kg-poem-content {
+		margin: 0;
+	}
+
+	// Individual verse lines
+	.kg-poem-line {
+		font-family: var(--gh-font-body);
+		font-size: 1.5rem;
+		font-weight: 400;
+		line-height: 1.8;
+		margin: 0 0 0.5em;
+		color: var(--color-content-main);
+		font-style: italic;
+
+		@media only screen and (max-width: 640px) {
+			font-size: 1.4rem;
+		}
+
+		@media only screen and (max-width: 480px) {
+			font-size: 1.3rem;
+			line-height: 1.75;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	// Author attribution
+	.kg-poem-author {
+		font-family: var(--gh-font-body);
+		font-size: 1.3rem;
+		font-weight: 500;
+		line-height: 1.5;
+		margin: 1.5rem 0 0;
+		color: var(--color-content-secondary);
+		font-style: normal;
+
+		@media only screen and (max-width: 480px) {
+			font-size: 1.2rem;
+		}
+
+		// Em dash prefix is part of the content
+		// Users should type: — Author Name
+	}
+
+	// Centered layout variant
+	.kg-poem-card.kg-poem-centered {
+		text-align: center;
+
+		.kg-poem-line {
+			text-align: center;
+		}
+
+		.kg-poem-author {
+			text-align: center;
+		}
+	}
+
+	// Optional: Remove italic style variant
+	.kg-poem-card.kg-poem-plain {
+		.kg-poem-line {
+			font-style: normal;
+		}
+	}
+}
+
+// Dark theme adjustments
+.theme-dark .post-content {
+	.kg-poem-card {
+		background: rgba(255, 255, 255, 0.04);
+		border-color: rgba(255, 255, 255, 0.08);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+	}
+}
+
+// System dark mode preference
+@media (prefers-color-scheme: dark) {
+	html:not(.theme-light) .post-content {
+		.kg-poem-card {
+			background: rgba(255, 255, 255, 0.04);
+			border-color: rgba(255, 255, 255, 0.08);
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+		}
+	}
+}

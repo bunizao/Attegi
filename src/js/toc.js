@@ -61,7 +61,10 @@
 
     // Check if there are enough headings
     var headings = postContent.querySelectorAll('h2, h3, h4');
-    if (headings.length < config.minHeadings) return;
+    var tocHeadings = Array.prototype.filter.call(headings, function(heading) {
+      return !heading.closest('.kg-poem-card');
+    });
+    if (tocHeadings.length < config.minHeadings) return;
 
     // Create TOC elements
     createTOCElements();
@@ -72,7 +75,7 @@
         tocSelector: '.toc-list',
         contentSelector: '.post-content',
         headingSelector: 'h2, h3, h4',
-        ignoreSelector: '.js-toc-ignore, .gh-post-upgrade-cta h2',
+        ignoreSelector: '.js-toc-ignore, .kg-poem-card h2, .kg-poem-card h3, .kg-poem-card h4, .gh-post-upgrade-cta h2',
         hasInnerContainers: true,
         linkClass: 'toc-link',
         activeLinkClass: 'is-active',

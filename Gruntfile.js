@@ -108,6 +108,13 @@ module.exports = function(grunt) {
             '<%= config.jsSrcDir %>/toc.js'
           ]
         }
+      },
+      poem: {
+        files: {
+          '<%= config.jsTargetDir %>/poem.js': [
+            '<%= config.jsSrcDir %>/poem.js'
+          ]
+        }
       }
     },
     watch: {
@@ -117,7 +124,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: '<%=  config.jsSrcDir %>/**/*.js',
-        tasks: ['uglify:main', 'uglify:post', 'uglify:toc']
+        tasks: ['uglify:main', 'uglify:post', 'uglify:toc', 'uglify:poem']
       }
     },
     compress: {
@@ -164,7 +171,8 @@ module.exports = function(grunt) {
     'copy:dist',
     'uglify:main',
     'uglify:post',
-    'uglify:toc'
+    'uglify:toc',
+    'uglify:poem'
   ]);
   grunt.registerTask('default', [
     'sass:dev',
@@ -172,6 +180,7 @@ module.exports = function(grunt) {
     'uglify:main',
     'uglify:post',
     'uglify:toc',
+    'uglify:poem',
     'watch'
   ]);
 };
