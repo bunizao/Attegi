@@ -519,6 +519,98 @@ textarea {
 		-webkit-box-decoration-break: clone;
 	}
 
+	abbr[title] {
+		border-bottom: none;
+		text-decoration: underline dotted;
+		text-decoration-thickness: 0.12em;
+		text-underline-offset: 0.2em;
+		text-decoration-color: color-mix(in srgb, var(--color-content-secondary) 70%, var(--ghost-accent-color));
+		cursor: help;
+	}
+
+	sub,
+	sup {
+		font-size: 0.75em;
+		line-height: 0;
+		position: relative;
+		vertical-align: baseline;
+	}
+
+	sup {
+		top: -0.5em;
+	}
+
+	sub {
+		bottom: -0.25em;
+	}
+
+	q {
+		font-style: italic;
+		color: var(--color-content-lead);
+	}
+
+	q::before,
+	q::after {
+		color: var(--color-content-secondary);
+	}
+
+	cite {
+		font-style: italic;
+		color: var(--color-content-secondary);
+	}
+
+	dfn {
+		font-style: italic;
+		font-weight: 600;
+		text-decoration: underline dotted;
+		text-decoration-thickness: 0.12em;
+		text-underline-offset: 0.2em;
+		text-decoration-color: color-mix(in srgb, var(--ghost-accent-color) 35%, var(--color-content-secondary));
+	}
+
+	var {
+		font-family: var(--gh-font-mono);
+		font-style: italic;
+		font-size: 0.9em;
+		color: var(--color-content-lead);
+	}
+
+	samp {
+		font-family: var(--gh-font-mono);
+		font-size: 0.85em;
+		padding: 0.15em 0.4em;
+		border: 1px solid var(--color-background-contrast);
+		border-radius: 0.3em;
+		background: var(--color-background-secondary);
+	}
+
+	ins {
+		text-decoration: none;
+		background: color-mix(in srgb, var(--ghost-accent-color) 12%, var(--color-background-main));
+		border-bottom: 2px solid color-mix(in srgb, var(--ghost-accent-color) 45%, transparent);
+		padding: 0 0.12em;
+		border-radius: 0.2em;
+	}
+
+	del,
+	s {
+		color: var(--color-content-secondary);
+		text-decoration-thickness: 0.1em;
+		text-decoration-color: color-mix(in srgb, var(--color-content-secondary) 70%, transparent);
+	}
+
+	u {
+		text-decoration-thickness: 0.12em;
+		text-underline-offset: 0.2em;
+		text-decoration-color: color-mix(in srgb, var(--ghost-accent-color) 35%, var(--color-content-secondary));
+	}
+
+	time,
+	data {
+		font-variant-numeric: tabular-nums;
+		color: var(--color-content-secondary);
+	}
+
 	code,
 	tt {
 		position: relative;
@@ -616,16 +708,19 @@ textarea {
 	}
 
 	kbd {
-		display: inline-block;
-		margin-bottom: 0.5em;
-		padding: 1px 8px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.1em 0.5em;
 		border: 1px solid var(--color-background-contrast);
-		text-shadow: 0 1px 0 white;
-		font-size: 0.9em;
-		font-weight: bold;
+		font-family: var(--gh-font-mono);
+		font-size: 0.85em;
+		font-weight: 600;
+		line-height: 1.2;
 		background: var(--color-background-secondary);
-		border-radius: 4px;
-		box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 0 white inset;
+		border-radius: 0.35em;
+		box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+		vertical-align: middle;
 	}
 
 	table {
