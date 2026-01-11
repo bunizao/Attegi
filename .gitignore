@@ -7,3 +7,4 @@ docker-compose.yml
 /.lighthouseci
 /cloudflare-worker
 CLAUDE.md
+/.idea

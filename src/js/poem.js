@@ -63,13 +63,13 @@
       });
     } else {
       // Markdown format with <br> tags
-      // Split by <br> tags and extract text nodes
-      const html = blockquote.innerHTML;
-      const parts = html.split(/<br\s*\/?>/i);
+      // Replace <br> tags with newlines, then use textContent to avoid HTML parsing regexes
+      const clone = blockquote.cloneNode(true);
+      clone.querySelectorAll('br').forEach(br => br.replaceWith('\n'));
+      const parts = (clone.textContent || '').split(/\r?\n/);
 
       parts.forEach(part => {
-        // Remove HTML tags and trim
-        const text = part.replace(/<[^>]*>/g, '').trim();
+        const text = part.trim();
         if (text) {
           lines.push(text);
         }

@@ -371,9 +371,16 @@
     });
   }
 
+  function sanitizeDisqusShortname(value) {
+    if (!value) return '';
+    var trimmed = value.trim();
+    return /^[a-z0-9_-]+$/i.test(trimmed) ? trimmed : '';
+  }
+
   function setupDisqus() {
     var thread = doc.getElementById('disqus_thread');
-    var shortname = thread && thread.dataset ? thread.dataset.disqusShortname : '';
+    var rawShortname = thread && thread.dataset ? thread.dataset.disqusShortname : '';
+    var shortname = sanitizeDisqusShortname(rawShortname);
     if (!thread || !shortname) return;
 
     var loaded = false;
@@ -407,41 +414,56 @@
   /**
    * Lazy-load Ghost native comments to avoid upfront JS weight
    */
-    function setupLazyComments() {
-      var template = doc.getElementById('ghost-comments-template');
-      var placeholder = doc.querySelector('[data-comments-placeholder]');
-      var trigger = doc.querySelector('.js-load-comments');
-      if (!template || !placeholder || !trigger) return;
+  function setupLazyComments() {
+    var template = doc.getElementById('ghost-comments-template');
+    var placeholder = doc.querySelector('[data-comments-placeholder]');
+    var trigger = doc.querySelector('.js-load-comments');
+    if (!template || !placeholder || !trigger) return;
 
-      var hasLoaded = false;
+    var hasLoaded = false;
 
-      function normalizeScriptType(value) {
-        if (!value) return '';
-        if (/text\/javascript/i.test(value)) {
-          return 'text/javascript';
-        }
-        return value;
+    function normalizeScriptType(value) {
+      if (!value) return '';
+      if (/text\/javascript/i.test(value)) {
+        return 'text/javascript';
       }
+      return value;
+    }
 
-      function activateScripts(container, scripts) {
-        Array.prototype.forEach.call(scripts, function (original) {
-          var replacement = doc.createElement('script');
-          Array.prototype.forEach.call(original.attributes, function (attr) {
-            if (attr.name === 'type') {
-              var normalizedType = normalizeScriptType(attr.value);
-              if (normalizedType) {
-                replacement.setAttribute('type', normalizedType);
-              }
-              return;
+    function activateScripts(container, scripts) {
+      Array.prototype.forEach.call(scripts, function (original) {
+        var replacement = doc.createElement('script');
+        Array.prototype.forEach.call(original.attributes, function (attr) {
+          if (attr.name === 'type') {
+            var normalizedType = normalizeScriptType(attr.value);
+            if (normalizedType) {
+              replacement.setAttribute('type', normalizedType);
             }
-            replacement.setAttribute(attr.name, attr.value);
-          });
-          replacement.textContent = original.textContent;
-          if (original.src) {
-            replacement.src = original.src;
+            return;
           }
-          container.appendChild(replacement);
+          replacement.setAttribute(attr.name, attr.value);
+        });
+        replacement.textContent = original.textContent;
+        if (original.src) {
+          replacement.src = original.src;
+        }
+        container.appendChild(replacement);
       });
+    }
+
+    function cloneTemplateContent(node) {
+      if (!node) return null;
+      if (node.content && node.content.cloneNode) {
+        return node.content.cloneNode(true);
+      }
+      if (!node.childNodes || !node.childNodes.length) {
+        return null;
+      }
+      var fragment = doc.createDocumentFragment();
+      Array.prototype.forEach.call(node.childNodes, function (child) {
+        fragment.appendChild(child.cloneNode(true));
+      });
+      return fragment.childNodes.length ? fragment : null;
     }
 
     function loadComments() {
@@ -455,19 +477,7 @@
       setTimeout(function () {
         try {
           // Enhanced template content extraction for WebKit compatibility
-          var content = null;
-          if (template.content && template.content.cloneNode) {
-            // Modern browsers with proper template support
-            content = template.content.cloneNode(true);
-          } else if (template.innerHTML) {
-            // Fallback for older WebKit versions
-            var tempDiv = doc.createElement('div');
-            tempDiv.innerHTML = template.innerHTML;
-            content = doc.createDocumentFragment();
-            while (tempDiv.firstChild) {
-              content.appendChild(tempDiv.firstChild);
-            }
-          }
+          var content = cloneTemplateContent(template);
 
           if (!content) {
             hasLoaded = false;
@@ -498,15 +508,9 @@
           trigger.setAttribute('hidden', 'true');
           trigger.removeAttribute('aria-busy');
         } catch (err) {
-          // Fallback: directly insert template innerHTML
           hasLoaded = false;
           trigger.classList.remove('is-loading');
           trigger.removeAttribute('aria-busy');
-          if (template.innerHTML) {
-            placeholder.innerHTML = template.innerHTML;
-            trigger.classList.add('is-loaded');
-            trigger.setAttribute('hidden', 'true');
-          }
         }
       }, 100);
     }

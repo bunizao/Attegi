@@ -124,7 +124,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // Create sticky logo element
     var stickyLogo = document.createElement('div');
     stickyLogo.className = 'sticky-logo';
-    stickyLogo.innerHTML = originalLogo.innerHTML;
+    Array.prototype.forEach.call(originalLogo.childNodes, function (node) {
+      stickyLogo.appendChild(node.cloneNode(true));
+    });
     document.body.appendChild(stickyLogo);
 
     var scrollThreshold = 100; // Show after scrolling 100px
