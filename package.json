@@ -50,7 +50,7 @@
     "grunt-sass": "^4.0.1",
     "load-grunt-tasks": "^5.1.0",
     "postcss": "^8.5.6",
-    "sass": "^1.97.1",
+    "sass": "^1.97.2",
     "tocbot": "^4.36.4"
   },
   "config": {
