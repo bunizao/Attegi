@@ -188,32 +188,7 @@
       </section>
       {{/if}}
 
-			{{!-- Recent posts footer --}}
-			{{#unless (match @custom.show_recent_posts_footer "=" false)}}
-			<aside class="post-nav">
-				{{#get "posts" filter="id:-{{id}}" limit="2"}}
-					{{#foreach posts}}
-						<a class="post-nav-next" href="{{url}}">
-							<section class="post-nav-teaser">
-								<i class="icon icon-star" aria-hidden="true">{{> "icons/icon-star"}}</i>
-								<h2 class="post-nav-title">{{title}}</h2>
-								<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
-								<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
-							</section>
-						</a>
-					{{else}}
-						<a class="post-nav-next post-nav-home" href="{{@site.url}}">
-							<section class="post-nav-teaser">
-								<i class="icon icon-home" aria-label="{{t "Back to home"}}">{{> "icons/icon-home"}}</i>
-								<h2 class="post-nav-title">{{t "Return to Home"}}</h2>
-								<p class="post-nav-excerpt">{{@site.description}}</p>
-							</section>
-						</a>
-					{{/foreach}}
-				{{/get}}
-				<div class="clear"></div>
-			</aside>
-			{{/unless}}
+			{{> "recent-posts"}}
 
 		</div>
 	</article>
