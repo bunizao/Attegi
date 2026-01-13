@@ -1,16 +1,72 @@
 {{!-- Recent posts footer --}}
 {{#match @custom.show_recent_posts_footer "!=" false}}
+{{#is "post"}}
 <aside class="post-nav">
-	{{#get "posts" filter="id:-{{id}}" limit="2"}}
+
+	{{!-- If there's a next post, display it; otherwise show home link --}}
+	{{#next_post}}
+		<a class="post-nav-next" href="{{url}}">
+			<section class="post-nav-teaser">
+				<i class="icon icon-arrow-left" aria-label="{{t "Next post"}}">{{> "icons/icon-arrow-left"}}</i>
+				<h2 class="post-nav-title">{{title}}</h2>
+				<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
+				<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
+			</section>
+		</a>
+	{{else}}
+		<a class="post-nav-next post-nav-home" href="{{@site.url}}">
+			<section class="post-nav-teaser">
+				<i class="icon icon-home" aria-label="{{t "Back to home"}}">{{> "icons/icon-home"}}</i>
+				<h2 class="post-nav-title">{{t "Return to Home"}}</h2>
+				<p class="post-nav-excerpt">{{@site.description}}</p>
+			</section>
+		</a>
+	{{/next_post}}
+
+	{{!-- If there's a previous post, display it; otherwise show home link --}}
+	{{#prev_post}}
+		<a class="post-nav-prev" href="{{url}}">
+			<section class="post-nav-teaser">
+				<i class="icon icon-arrow-right" aria-label="{{t "Previous post"}}">{{> "icons/icon-arrow-right"}}</i>
+				<h2 class="post-nav-title">{{title}}</h2>
+				<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
+				<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
+			</section>
+		</a>
+	{{else}}
+		<a class="post-nav-prev post-nav-home" href="{{@site.url}}">
+			<section class="post-nav-teaser">
+				<i class="icon icon-home" aria-label="{{t "Back to home"}}">{{> "icons/icon-home"}}</i>
+				<h2 class="post-nav-title">{{t "Return to Home"}}</h2>
+				<p class="post-nav-excerpt">{{@site.description}}</p>
+			</section>
+		</a>
+	{{/prev_post}}
+	<div class="clear"></div>
+</aside>
+{{else}}
+<aside class="post-nav">
+	{{#get "posts" limit="2"}}
 		{{#foreach posts}}
-			<a class="post-nav-next" href="{{url}}">
-				<section class="post-nav-teaser">
-					<i class="icon icon-star" aria-hidden="true">{{> "icons/icon-star"}}</i>
-					<h2 class="post-nav-title">{{title}}</h2>
-					<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
-					<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
-				</section>
-			</a>
+			{{#if @first}}
+				<a class="post-nav-next" href="{{url}}">
+					<section class="post-nav-teaser">
+						<i class="icon icon-arrow-left" aria-hidden="true">{{> "icons/icon-arrow-left"}}</i>
+						<h2 class="post-nav-title">{{title}}</h2>
+						<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
+						<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
+					</section>
+				</a>
+			{{else}}
+				<a class="post-nav-prev" href="{{url}}">
+					<section class="post-nav-teaser">
+						<i class="icon icon-arrow-right" aria-hidden="true">{{> "icons/icon-arrow-right"}}</i>
+						<h2 class="post-nav-title">{{title}}</h2>
+						<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
+						<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
+					</section>
+				</a>
+			{{/if}}
 		{{else}}
 			<a class="post-nav-next post-nav-home" href="{{@site.url}}">
 				<section class="post-nav-teaser">
@@ -23,4 +79,5 @@
 	{{/get}}
 	<div class="clear"></div>
 </aside>
+{{/is}}
 {{/match}}
