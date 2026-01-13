@@ -1,5 +1,5 @@
 {{!-- Recent posts footer --}}
-{{#unless (match @custom.show_recent_posts_footer "=" false)}}
+{{#match @custom.show_recent_posts_footer "!=" false}}
 <aside class="post-nav">
 	{{#get "posts" filter="id:-{{id}}" limit="2"}}
 		{{#foreach posts}}
@@ -23,4 +23,4 @@
 	{{/get}}
 	<div class="clear"></div>
 </aside>
-{{/unless}}
+{{/match}}
