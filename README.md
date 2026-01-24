@@ -277,6 +277,7 @@ Attegi/
 - **Docs**: [Ghost Theme Documentation](https://ghost.org/docs/themes/)
 - **Issues**: [GitHub Issues](https://github.com/bunizao/Attegi/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/bunizao/Attegi/discussions)
+- **Paid support & Customization**: Available for technical support and theme customization. [**email**](mailto:me@tutuis.me) me to discuss scope.
 
 ---
 

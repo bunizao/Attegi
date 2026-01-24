@@ -276,6 +276,7 @@ Attegi/
 - **文档**：[Ghost 主题文档](https://ghost.org/docs/themes/)
 - **问题**：[GitHub Issues](https://github.com/bunizao/Attegi/issues)
 - **讨论**：[GitHub Discussions](https://github.com/bunizao/Attegi/discussions)
+- **付费支持与定制**：可提供付费技术支持与主题定制，请向我发送[**邮件**](mailto:me@tutuis.me)沟通需求。
 
 ---
 
