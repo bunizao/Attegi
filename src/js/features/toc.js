@@ -23,6 +23,9 @@ var elements = {
   mobileDrawer: null,
   mobileList: null
 };
+var footer = null;
+var triggerSafeMargin = 16;
+var triggerDefaultBottom = null;
 
 function getTocLabels() {
   return {
@@ -226,10 +229,48 @@ function updateProgressRing() {
   progressCircle.style.strokeDashoffset = circumference * (1 - progress);
 }
 
+function setTriggerDefaultBottom() {
+  if (triggerDefaultBottom !== null || !elements.mobileTrigger) return;
+  var style = window.getComputedStyle(elements.mobileTrigger);
+  var value = parseFloat(style.bottom);
+  triggerDefaultBottom = isNaN(value) ? 32 : value;
+}
+
+function getTriggerDefaultBottom() {
+  return triggerDefaultBottom !== null ? triggerDefaultBottom : 32;
+}
+
+function updateTriggerPosition() {
+  if (!elements.mobileTrigger || !footer) return;
+  setTriggerDefaultBottom();
+
+  var footerRect = footer.getBoundingClientRect();
+  var windowHeight = window.innerHeight;
+  var defaultBottom = getTriggerDefaultBottom();
+  var btnHeight = elements.mobileTrigger.getBoundingClientRect().height || 0;
+  var btnTop = windowHeight - defaultBottom - btnHeight;
+
+  if (footerRect.top < windowHeight && footerRect.top < btnTop + btnHeight + triggerSafeMargin) {
+    var newBottom = windowHeight - footerRect.top + triggerSafeMargin;
+    elements.mobileTrigger.style.bottom = newBottom + 'px';
+  } else {
+    elements.mobileTrigger.style.bottom = defaultBottom + 'px';
+  }
+}
+
 function updateTOCVisibility() {
   if (!elements.sidebar) return;
-  var scrollTop = window.pageYOffset;
+  var scrollTop = window.pageYOffset || doc.documentElement.scrollTop;
   var viewportHeight = window.innerHeight;
+
+  // Detect scroll direction
+  var scrollDelta = scrollTop - state.lastScrollTop;
+  if (Math.abs(scrollDelta) > 5) {
+    state.isScrollingDown = scrollDelta > 0;
+  }
+
+  state.lastScrollTop = scrollTop;
+  updateMobileTriggerVisibility(scrollTop);
 
   var postContent = qs('.post-content');
   if (postContent) {
@@ -250,6 +291,23 @@ function updateTOCVisibility() {
   syncMobileActiveState();
 }
 
+function updateMobileTriggerVisibility(scrollTop) {
+  if (!elements.mobileTrigger) return;
+
+  // Don't hide if at the top of the page (less than 200px)
+  if (scrollTop < 200) {
+    elements.mobileTrigger.classList.remove('is-hidden-scroll');
+    return;
+  }
+
+  // Hide when scrolling down, show when scrolling up
+  if (state.isScrollingDown) {
+    elements.mobileTrigger.classList.add('is-hidden-scroll');
+  } else {
+    elements.mobileTrigger.classList.remove('is-hidden-scroll');
+  }
+}
+
 /**
  * Initialize Table of Contents
  */
@@ -266,6 +324,8 @@ export function initTOC() {
   var labels = getTocLabels();
   createDesktopTOC(labels);
   createMobileTOC(labels);
+  footer = qs('.nav-footer');
+  setTriggerDefaultBottom();
 
   if (typeof tocbot !== 'undefined') {
     tocbot.init({
@@ -296,12 +356,15 @@ export function initTOC() {
   var throttledUpdate = throttle(function() {
     updateTOCVisibility();
     updateProgressRing();
+    updateTriggerPosition();
   }, 100);
 
   window.addEventListener('scroll', throttledUpdate, { passive: true });
   window.addEventListener('resize', throttledUpdate, { passive: true });
   updateTOCVisibility();
   updateProgressRing();
+  updateTriggerPosition();
+  updateMobileTriggerVisibility(window.pageYOffset || doc.documentElement.scrollTop);
 
   elements.mobileTrigger.addEventListener('click', openMobileTOC);
   elements.mobileOverlay.addEventListener('click', closeMobileTOC);
