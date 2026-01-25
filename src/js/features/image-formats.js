@@ -37,11 +37,27 @@ export function setupContentImagesFormats(container) {
     return { enabled: true, formats: ['avif', 'webp'] };
   }
 
-  function isGhostContentImage(url) {
-    if (!/\/content\/images\//.test(url.pathname)) return false;
-    if (/\/content\/images\/(?:size\/w\d+\/)?(?:thumbnail|icon)\//.test(url.pathname)) return false;
-    var filename = url.pathname.split('/').pop();
+  function hasFileExtension(pathname) {
+    var filename = pathname.split('/').pop();
     return !!(filename && filename.indexOf('.') !== -1);
+  }
+
+  function isExcludedGhostPath(pathname) {
+    return /\/content\/images\/(?:size\/w\d+\/)?(?:thumbnail|icon)\//.test(pathname);
+  }
+
+  function normalizeGhostImagePath(pathname) {
+    return pathname
+      .replace(/\/content\/images\/size\/w\d+\//, '/content/images/')
+      .replace(/\/content\/images\/format\/[^/]+\//, '/content/images/');
+  }
+
+  function isGhostContentImage(url) {
+    var basePath = normalizeGhostImagePath(url.pathname);
+    if (!/\/content\/images\//.test(basePath)) return false;
+    if (isExcludedGhostPath(basePath)) return false;
+    if (!hasFileExtension(basePath)) return false;
+    return true;
   }
 
   function applyGhostImageFormat(url, format) {
@@ -73,7 +89,7 @@ export function setupContentImagesFormats(container) {
     }
 
     var hostname = window.location.hostname;
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
       window.__attegiImageFormats = results;
       return Promise.resolve(results);
     }
@@ -127,6 +143,7 @@ export function setupContentImagesFormats(container) {
         catch (e) { return; }
         if (!isGhostContentImage(parsed)) return;
 
+        var basePath = normalizeGhostImagePath(parsed.pathname);
         var picture = doc.createElement('picture');
         var sizes = img.getAttribute('sizes');
 
@@ -137,7 +154,7 @@ export function setupContentImagesFormats(container) {
           // Build srcset for this format
           var srcsetParts = imageWidths.map(function(w) {
             var sizedUrl = new URL(parsed.href);
-            sizedUrl.pathname = parsed.pathname.replace('/content/images/', '/content/images/size/w' + w + '/');
+            sizedUrl.pathname = basePath.replace('/content/images/', '/content/images/size/w' + w + '/');
             sizedUrl = applyGhostImageFormat(sizedUrl, format);
             return sizedUrl.toString() + ' ' + w + 'w';
           });
