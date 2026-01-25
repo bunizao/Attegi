@@ -3,7 +3,7 @@
  * Auto-generates TOC from post headings with scroll spy using tocbot
  */
 
-import { doc, qs, qsa } from '../core/index.js';
+import { doc, qs } from '../core/index.js';
 import { getI18n } from '../core/i18n.js';
 import { throttle } from '../core/perf.js';
 
@@ -176,6 +176,29 @@ function syncMobileActiveState() {
   });
 }
 
+function smoothScrollContainer(container, target, duration) {
+  var start = container.scrollTop;
+  var change = target - start;
+  if (Math.abs(change) < 1) return;
+
+  var startTime = null;
+  var easeInOut = function(t) {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  };
+
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    var elapsed = Math.min((timestamp - startTime) / duration, 1);
+    var eased = easeInOut(elapsed);
+    container.scrollTop = start + change * eased;
+    if (elapsed < 1) {
+      window.requestAnimationFrame(step);
+    }
+  }
+
+  window.requestAnimationFrame(step);
+}
+
 function scrollMobileTOCToActiveItem() {
   if (!elements.mobileDrawer || !elements.mobileList) return;
   var content = elements.mobileDrawer.querySelector('.toc-mobile-content');
@@ -185,27 +208,37 @@ function scrollMobileTOCToActiveItem() {
   requestAnimationFrame(function() {
     var contentRect = content.getBoundingClientRect();
     var linkRect = activeLink.getBoundingClientRect();
-    var linkTop = linkRect.top - contentRect.top + content.scrollTop;
-    var targetScroll = linkTop - (contentRect.height / 2) + (linkRect.height / 2);
-    var maxScroll = content.scrollHeight - contentRect.height;
+    var isVisible = linkRect.top >= contentRect.top + 8 && linkRect.bottom <= contentRect.bottom - 8;
+    if (isVisible) return;
 
-    content.scrollTo({
-      top: Math.max(0, Math.min(targetScroll, maxScroll)),
-      behavior: 'auto'
-    });
+    var linkTop = linkRect.top - contentRect.top + content.scrollTop;
+    var targetScroll = linkTop - contentRect.height * 0.3;
+    var maxScroll = content.scrollHeight - contentRect.height;
+    var clamped = Math.max(0, Math.min(targetScroll, maxScroll));
+
+    smoothScrollContainer(content, clamped, 220);
   });
 }
 
-function openMobileTOC() {
+function openMobileTOC(event) {
+  if (event && event.preventDefault) {
+    event.preventDefault();
+  }
+  if (event && event.stopPropagation) {
+    event.stopPropagation();
+  }
+
   syncMobileActiveState();
+  suppressHoverOnce();
   state.isOpen = true;
   elements.mobileTrigger.classList.add('is-hidden');
   elements.mobileOverlay.classList.add('is-open');
   elements.mobileDrawer.classList.add('is-open');
+  elements.mobileTrigger.blur();
 
   setTimeout(function() {
     scrollMobileTOCToActiveItem();
-  }, 250);
+  }, 200);
 }
 
 function closeMobileTOC() {
@@ -213,6 +246,7 @@ function closeMobileTOC() {
   elements.mobileTrigger.classList.remove('is-hidden');
   elements.mobileOverlay.classList.remove('is-open');
   elements.mobileDrawer.classList.remove('is-open');
+  doc.body.classList.remove('toc-suppress-hover');
 }
 
 function updateProgressRing() {
@@ -306,6 +340,19 @@ function updateMobileTriggerVisibility(scrollTop) {
   } else {
     elements.mobileTrigger.classList.remove('is-hidden-scroll');
   }
+}
+
+function suppressHoverOnce() {
+  doc.body.classList.add('toc-suppress-hover');
+
+  function clear() {
+    doc.body.classList.remove('toc-suppress-hover');
+    doc.removeEventListener('mousemove', clear);
+    doc.removeEventListener('touchstart', clear);
+  }
+
+  doc.addEventListener('mousemove', clear, { once: true });
+  doc.addEventListener('touchstart', clear, { once: true, passive: true });
 }
 
 /**
