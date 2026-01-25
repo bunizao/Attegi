@@ -2,7 +2,7 @@
   "name": "attegi",
   "description": "Attegi is an elegant and dynamic Ghost theme, with a modern design, deep support for Ghost, and specially optimized for mobile devices.",
   "demo": "https://attegi.tutuis.me",
-  "version": "6.9.12",
+  "version": "6.10.0",
   "engines": {
     "ghost": ">=5.0.0"
   },
@@ -52,7 +52,7 @@
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.0.0",
     "cssnano": "^7.1.2",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.27.2",
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^2.0.0",
