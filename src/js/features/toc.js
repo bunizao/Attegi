@@ -71,7 +71,8 @@ function createMobileTOC(labels) {
       '<circle class="toc-progress-ring__progress" cx="22" cy="22" r="20" ' +
         'stroke-dasharray="' + circumference + '" stroke-dashoffset="' + circumference + '"></circle>' +
     '</svg>' +
-    '<svg class="toc-trigger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+    '<svg class="toc-trigger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+      'stroke-linecap="round" stroke-linejoin="round">' +
       '<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line>' +
       '<line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line>' +
       '<line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>' +
@@ -94,7 +95,8 @@ function createMobileTOC(labels) {
   var closeBtn = doc.createElement('button');
   closeBtn.className = 'toc-mobile-close';
   closeBtn.setAttribute('aria-label', labels.closeToc);
-  closeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+  closeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+    'stroke-linecap="round" stroke-linejoin="round">' +
     '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
   header.appendChild(closeBtn);
 
@@ -124,6 +126,11 @@ function copyTocToMobile() {
   var clone = desktopList.cloneNode(true);
   clone.className = 'toc-mobile-list';
 
+  var items = clone.querySelectorAll('.toc-item');
+  Array.prototype.forEach.call(items, function(item) {
+    item.className = item.className.replace('toc-item', 'toc-mobile-item');
+  });
+
   var links = clone.querySelectorAll('.toc-link');
   Array.prototype.forEach.call(links, function(link) {
     link.className = link.className.replace('toc-link', 'toc-mobile-link');
@@ -140,17 +147,62 @@ function copyTocToMobile() {
     });
   });
 
+  var nestedLists = clone.querySelectorAll('.toc-list');
+  Array.prototype.forEach.call(nestedLists, function(list) {
+    list.className = list.className.replace('toc-list', 'toc-mobile-list');
+  });
+
   elements.mobileList.innerHTML = '';
   while (clone.firstChild) {
     elements.mobileList.appendChild(clone.firstChild);
   }
 }
 
+function syncMobileActiveState() {
+  if (!elements.mobileList) return;
+  var activeDesktopLink = qs('.toc-sidebar .toc-link.is-active');
+  var activeHref = activeDesktopLink ? activeDesktopLink.getAttribute('href') : null;
+
+  var mobileLinks = elements.mobileList.querySelectorAll('.toc-mobile-link');
+  Array.prototype.forEach.call(mobileLinks, function(link) {
+    if (activeHref && link.getAttribute('href') === activeHref) {
+      link.classList.add('is-active');
+    } else {
+      link.classList.remove('is-active');
+    }
+  });
+}
+
+function scrollMobileTOCToActiveItem() {
+  if (!elements.mobileDrawer || !elements.mobileList) return;
+  var content = elements.mobileDrawer.querySelector('.toc-mobile-content');
+  var activeLink = elements.mobileList.querySelector('.toc-mobile-link.is-active');
+  if (!content || !activeLink) return;
+
+  requestAnimationFrame(function() {
+    var contentRect = content.getBoundingClientRect();
+    var linkRect = activeLink.getBoundingClientRect();
+    var linkTop = linkRect.top - contentRect.top + content.scrollTop;
+    var targetScroll = linkTop - (contentRect.height / 2) + (linkRect.height / 2);
+    var maxScroll = content.scrollHeight - contentRect.height;
+
+    content.scrollTo({
+      top: Math.max(0, Math.min(targetScroll, maxScroll)),
+      behavior: 'auto'
+    });
+  });
+}
+
 function openMobileTOC() {
+  syncMobileActiveState();
   state.isOpen = true;
   elements.mobileTrigger.classList.add('is-hidden');
   elements.mobileOverlay.classList.add('is-open');
   elements.mobileDrawer.classList.add('is-open');
+
+  setTimeout(function() {
+    scrollMobileTOCToActiveItem();
+  }, 250);
 }
 
 function closeMobileTOC() {
@@ -194,6 +246,8 @@ function updateTOCVisibility() {
     state.isVisible = shouldShow;
     elements.sidebar.classList.toggle('is-visible', shouldShow);
   }
+
+  syncMobileActiveState();
 }
 
 /**
@@ -232,7 +286,11 @@ export function initTOC() {
       orderedList: false,
       onClick: function() { if (state.isOpen) closeMobileTOC(); }
     });
-    setTimeout(copyTocToMobile, 100);
+    setTimeout(function() {
+      copyTocToMobile();
+      syncMobileActiveState();
+      updateTOCVisibility();
+    }, 100);
   }
 
   var throttledUpdate = throttle(function() {
@@ -242,6 +300,7 @@ export function initTOC() {
 
   window.addEventListener('scroll', throttledUpdate, { passive: true });
   window.addEventListener('resize', throttledUpdate, { passive: true });
+  updateTOCVisibility();
   updateProgressRing();
 
   elements.mobileTrigger.addEventListener('click', openMobileTOC);
