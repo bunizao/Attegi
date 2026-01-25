@@ -3,7 +3,7 @@
  * Converts specially formatted blockquotes into poem cards
  */
 
-import { qs, qsa, doc } from '../core/index.js';
+import { qsa, doc } from '../core/index.js';
 
 /**
  * Parse poem blockquote content
