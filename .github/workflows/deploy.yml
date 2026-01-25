@@ -24,9 +24,9 @@ jobs:
 
       - name: Build theme
         run: |
-          npx grunt clean:dist
-          npx grunt build
-          npx grunt compress
+          npm run clean
+          npm run build
+          npm run compress
 
       - name: Validate theme
         run: npx gscan -z dist/attegi.zip
