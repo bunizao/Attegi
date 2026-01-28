@@ -21,7 +21,6 @@ import { setupDisqus, setupLazyComments } from '../features/comments.js';
 import { setupCoverBrightnessDetection } from '../features/cover-detect.js';
 import { setupPortraitVideos, setupPortraitImages } from '../features/portrait-media.js';
 import { setupFootnotes } from '../features/footnotes.js';
-import { setupContentImagesFormats } from '../features/image-formats.js';
 import { initTOC } from '../features/toc.js';
 import { initPoemCards } from '../features/poem-cards.js';
 
@@ -56,7 +55,6 @@ onReady(function() {
   setupPortraitVideos();
   setupPortraitImages();
   setupFootnotes(postContent);
-  setupContentImagesFormats(postContent);
 
   // Initialize TOC (uses tocbot from external script)
   initTOC();

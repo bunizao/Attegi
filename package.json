@@ -139,17 +139,6 @@
         "default": true,
         "group": "post"
       },
-      "content_image_formats": {
-        "type": "select",
-        "options": [
-          "Disabled",
-          "Auto",
-          "WebP only"
-        ],
-        "default": "Disabled",
-        "description": "This option can automatically compress images to save bandwidth. Auto = AVIF preferred and WEBP as a fallback. Disabled = no conversion. AVIF decode can cause high server load, use with caution.",
-        "group": "post"
-      },
       "post_share": {
         "type": "select",
         "options": [
