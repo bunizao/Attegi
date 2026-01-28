@@ -2,7 +2,7 @@
   "name": "attegi",
   "description": "Attegi is an elegant and dynamic Ghost theme, with a modern design, deep support for Ghost, and specially optimized for mobile devices.",
   "demo": "https://attegi.tutuis.me",
-  "version": "6.9.13",
+  "version": "6.10.0",
   "engines": {
     "ghost": ">=5.0.0"
   },
@@ -33,13 +33,26 @@
     "url": "https://github.com/bunizao/Attegi.git"
   },
   "scripts": {
-    "dev": "grunt",
-    "build": "grunt build",
-    "watch": "grunt watch",
-    "compress": "grunt compress"
+    "css:dev": "sass src/sass/style.scss assets/css/style.css --source-map --style=expanded",
+    "css:build": "sass src/sass/style.scss assets/css/style.css --no-source-map --style=compressed && postcss assets/css/style.css -o assets/css/style.css --env production",
+    "css:watch": "sass src/sass/style.scss assets/css/style.css --source-map --style=expanded --watch",
+    "js:dev": "node scripts/build.js --dev",
+    "js:build": "node scripts/build.js --prod",
+    "js:watch": "node scripts/build.js --watch",
+    "dev": "concurrently \"npm run css:watch\" \"npm run js:watch\" --names \"css,js\" --prefix-colors \"magenta,cyan\"",
+    "build": "npm run css:build && npm run js:build",
+    "compress": "npm run build && node scripts/compress.js",
+    "clean": "rm -rf assets/js/*.js assets/css/style.css dist/",
+    "validate": "npx gscan .",
+    "legacy:dev": "grunt",
+    "legacy:build": "grunt build"
   },
   "devDependencies": {
+    "archiver": "^7.0.0",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.0.0",
     "cssnano": "^7.1.2",
+    "esbuild": "^0.27.2",
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^2.0.0",
@@ -50,6 +63,7 @@
     "grunt-sass": "^4.0.1",
     "load-grunt-tasks": "^5.1.0",
     "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.0",
     "sass": "^1.97.3",
     "tocbot": "^4.36.4"
   },

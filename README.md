@@ -245,10 +245,11 @@ docker-compose up -d
 <summary><strong>Build Commands</strong></summary>
 
 ```bash
-yarn dev        # Watch mode
-yarn build      # Production build
-yarn compress   # Create zip
-npx gscan .     # Validate theme
+npm run dev        # Watch mode (CSS + JS concurrent)
+npm run build      # Production build
+npm run compress   # Create zip
+npm run validate   # Validate theme with GScan
+npm run clean      # Remove build artifacts
 ```
 
 </details>
@@ -263,7 +264,11 @@ Attegi/
 ├── partials/      # Template components
 ├── src/
 │   ├── sass/      # Source styles
-│   └── js/        # Source scripts
+│   └── js/        # Modular ES modules
+│       ├── core/      # Shared utilities
+│       ├── features/  # Feature modules
+│       └── entries/   # Bundle entry points
+├── scripts/       # Build tools (esbuild)
 ├── *.hbs          # Templates
 └── package.json
 ```

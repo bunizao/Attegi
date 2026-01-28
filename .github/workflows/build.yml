@@ -20,19 +20,19 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 18
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Clean dist
-        run: npx grunt clean:dist || true
+        run: rm -rf dist/ || true
 
       - name: Build assets
-        run: npx grunt build
+        run: npm run build
 
       - name: Package theme
-        run: npx grunt compress
+        run: npm run compress
 
       - name: Validate theme with GScan
         run: npx gscan -z dist/attegi.zip

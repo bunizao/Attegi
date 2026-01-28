@@ -17,16 +17,16 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 18
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build theme
         run: |
-          npx grunt clean:dist
-          npx grunt build
-          npx grunt compress
+          npm run clean
+          npm run build
+          npm run compress
 
       - name: Validate theme
         run: npx gscan -z dist/attegi.zip

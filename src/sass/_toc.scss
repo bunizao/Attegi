@@ -435,9 +435,11 @@ $toc-breakpoint-small: 480px;
   border-left: 2px solid transparent;
   transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 
-  &:hover {
-    color: var(--color-content-main);
-    background: var(--color-background-contrast);
+  @media (hover: hover) and (pointer: fine) {
+    body:not(.toc-suppress-hover) &:hover {
+      color: var(--color-content-main);
+      background: var(--color-background-contrast);
+    }
   }
 
   &.is-active {
