@@ -6,7 +6,7 @@
   "engines": {
     "ghost": ">=5.0.0"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "screenshots": {
     "desktop": "screenshots/homepage-dark.png",
     "mobile": "screenshots/iphone.png"
