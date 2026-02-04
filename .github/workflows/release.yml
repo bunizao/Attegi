@@ -209,7 +209,7 @@ jobs:
             | Size | ${{ steps.package.outputs.size_kb }} |
             | Ghost Version | ${{ steps.package.outputs.ghost_version }} |
             | Validation | ✅ Passed GScan |
-            | License | MIT |
+            | License | GNU AGPL v3.0 |
 
             ---
             *Release notes generated with GitHub Copilot*
