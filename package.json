@@ -39,7 +39,9 @@
     "js:dev": "node scripts/build.js --dev",
     "js:build": "node scripts/build.js --prod",
     "js:watch": "node scripts/build.js --watch",
+    "serve:hot": "node scripts/dev-hot.js",
     "dev": "concurrently \"npm run css:watch\" \"npm run js:watch\" --names \"css,js\" --prefix-colors \"magenta,cyan\"",
+    "dev:hot": "concurrently \"npm run css:watch\" \"npm run js:watch\" \"npm run serve:hot\" --names \"css,js,hot\" --prefix-colors \"magenta,cyan,green\"",
     "build": "npm run css:build && npm run js:build",
     "compress": "npm run build && node scripts/compress.js",
     "clean": "rm -rf assets/js/*.js assets/css/style.css dist/",
@@ -50,6 +52,7 @@
   "devDependencies": {
     "archiver": "^7.0.0",
     "autoprefixer": "^10.4.24",
+    "browser-sync": "^3.0.4",
     "concurrently": "^9.0.0",
     "cssnano": "^7.1.2",
     "esbuild": "^0.27.2",

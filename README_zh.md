@@ -224,8 +224,35 @@ span.nav-copy { display: none !important; }
 <summary><strong>前置要求</strong></summary>
 
 - Node.js 16+ 和 npm/yarn
+- Ghost 实例（本机 Ghost CLI 或远程开发站点）
 - Docker（可选）
 - Git
+
+</details>
+
+<details>
+<summary><strong>不依赖 Docker 的热重载开发</strong></summary>
+
+```bash
+# 1) 启动 Ghost（或直接使用已有 localhost:2368）
+ghost start --development
+
+# 2) 在本主题仓库启动热重载（代理 + 资源监听）
+npm run dev:hot
+
+# 3) 打开热重载地址（本仓库默认端口）
+# http://localhost:3010
+```
+
+可选环境变量：
+
+```bash
+# Ghost 目标地址（默认 http://127.0.0.1:2368）
+GHOST_DEV_URL=http://127.0.0.1:2368
+
+# 热重载服务端口（本仓库默认 3010）
+DEV_HOT_PORT=3010
+```
 
 </details>
 
@@ -245,6 +272,7 @@ docker-compose up -d
 
 ```bash
 yarn dev        # 监听模式
+yarn dev:hot    # BrowserSync 热重载（代理 Ghost）
 yarn build      # 生产构建
 yarn compress   # 创建 zip
 npx gscan .     # 验证主题

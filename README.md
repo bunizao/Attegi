@@ -225,8 +225,35 @@ span.nav-copy { display: none !important; }
 <summary><strong>Prerequisites</strong></summary>
 
 - Node.js 16+ and npm/yarn
+- Ghost instance (local via Ghost CLI or remote dev site)
 - Docker (optional)
 - Git
+
+</details>
+
+<details>
+<summary><strong>Hot Reload Without Docker</strong></summary>
+
+```bash
+# 1) Start Ghost (or use existing localhost:2368)
+ghost start --development
+
+# 2) In this theme repo, run hot dev (proxy + asset watchers)
+npm run dev:hot
+
+# 3) Open hot-reload URL (default port for this repo)
+# http://localhost:3010
+```
+
+Optional environment variables:
+
+```bash
+# Ghost target URL (defaults to http://127.0.0.1:2368)
+GHOST_DEV_URL=http://127.0.0.1:2368
+
+# Hot-reload server port (defaults to 3010 in this repo)
+DEV_HOT_PORT=3010
+```
 
 </details>
 
@@ -246,6 +273,7 @@ docker-compose up -d
 
 ```bash
 npm run dev        # Watch mode (CSS + JS concurrent)
+npm run dev:hot    # Hot reload via BrowserSync proxy
 npm run build      # Production build
 npm run compress   # Create zip
 npm run validate   # Validate theme with GScan
