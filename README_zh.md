@@ -4,12 +4,12 @@
 
 [![Ghost 5+](https://img.shields.io/badge/Ghost-5%2B-000?logo=ghost&logoColor=white)](https://ghost.org/)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](LICENSE)
-[![Build](https://img.shields.io/badge/build-grunt-orange?logo=grunt&logoColor=white)](Gruntfile.js)
-[![Demo](https://img.shields.io/badge/demo-attegi.tutuis.me-4F46E5)](https://attegi.tutuis.me)
+[![Build (esbuild)](https://github.com/bunizao/Attegi/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/bunizao/Attegi/actions/workflows/build.yml)
+[![Demo](https://img.shields.io/badge/demo-attegi.tuuhub.com-4F46E5)](https://attegi.tuuhub.com)
 
 一款现代、优雅的 Ghost 主题，专注于清晰排版、移动端可读性和对 [Ghost](https://ghost.org) 的深度支持。
 
-**[查看在线演示 →](https://attegi.tutuis.me)**
+**[查看在线演示 →](https://attegi.tuuhub.com)**
 
 [English](README.md)
 
@@ -84,7 +84,7 @@ Attegi 在 [Google PageSpeed Insights](https://pagespeed.web.dev/analysis/https-
 - 支持居中布局和纯文本样式
 - 优雅的悬停效果
 
-**[查看教程 →](https://attegi.tutuis.me/poem-card-tutorial/)**
+**[查看教程 →](https://attegi.tuuhub.com/poem-card-tutorial/)**
 
 ### 现代图片支持
 
@@ -127,7 +127,7 @@ Attegi 在 [Google PageSpeed Insights](https://pagespeed.web.dev/analysis/https-
 
 **设置方法：** 在 Ghost 后台 → 页面中创建新页面，将 slug 设置为 `tags`。
 
-**[查看演示 →](https://attegi.tutuis.me/tags/)**
+**[查看演示 →](https://attegi.tuuhub.com/tags/)**
 
 ### 友链页面模板
 

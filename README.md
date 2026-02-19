@@ -4,12 +4,12 @@
 
 [![Ghost 5+](https://img.shields.io/badge/Ghost-5%2B-000?logo=ghost&logoColor=white)](https://ghost.org/)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](LICENSE)
-[![Build](https://img.shields.io/badge/build-grunt-orange?logo=grunt&logoColor=white)](Gruntfile.js)
-[![Demo](https://img.shields.io/badge/demo-attegi.tutuis.me-4F46E5)](https://attegi.tutuis.me)
+[![Build (esbuild)](https://github.com/bunizao/Attegi/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/bunizao/Attegi/actions/workflows/build.yml)
+[![Demo](https://img.shields.io/badge/demo-attegi.tuuhub.com-4F46E5)](https://attegi.tuuhub.com)
 
 A modern, elegant Ghost theme focused on clean typography, mobile readability, and deep support for [Ghost](https://ghost.org).
 
-**[View Live Demo →](https://attegi.tutuis.me)**
+**[View Live Demo →](https://attegi.tuuhub.com)**
 
 [简体中文](README_zh.md)
 
@@ -84,7 +84,7 @@ Attegi achieves excellent scores on [Google PageSpeed Insights](https://pagespee
 - Centered layout and plain text style options
 - Elegant hover effects
 
-**[View Tutorial →](https://attegi.tutuis.me/poem-card-tutorial/)**
+**[View Tutorial →](https://attegi.tuuhub.com/poem-card-tutorial/)**
 
 ### Modern Image Support
 
@@ -127,7 +127,7 @@ Attegi achieves excellent scores on [Google PageSpeed Insights](https://pagespee
 
 **Setup:** Create a new page in Ghost Admin → Pages, set the slug to `tags`.
 
-**[View Demo →](https://attegi.tutuis.me/tags/)**
+**[View Demo →](https://attegi.tuuhub.com/tags/)**
 
 ### Links Page Template
 
