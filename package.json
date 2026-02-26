@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "archiver": "^7.0.0",
-    "autoprefixer": "^10.4.24",
+    "autoprefixer": "^10.4.27",
     "browser-sync": "^3.0.4",
     "concurrently": "^9.0.0",
     "cssnano": "^7.1.2",
