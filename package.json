@@ -55,7 +55,7 @@
     "browser-sync": "^3.0.4",
     "concurrently": "^9.0.0",
     "cssnano": "^7.1.2",
-    "esbuild": "^0.27.2",
+    "esbuild": "^0.27.3",
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^2.0.0",
