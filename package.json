@@ -65,7 +65,7 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-sass": "^4.1.0",
     "load-grunt-tasks": "^5.1.0",
-    "postcss": "^8.5.6",
+    "postcss": "^8.5.8",
     "postcss-cli": "^11.0.0",
     "sass": "^1.97.3",
     "tocbot": "^4.36.4"
