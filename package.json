@@ -67,7 +67,7 @@
     "load-grunt-tasks": "^5.1.0",
     "postcss": "^8.5.8",
     "postcss-cli": "^11.0.0",
-    "sass": "^1.97.3",
+    "sass": "^1.98.0",
     "tocbot": "^4.36.4"
   },
   "config": {
