@@ -45,9 +45,7 @@
     "build": "npm run css:build && npm run js:build",
     "compress": "npm run build && node scripts/compress.js",
     "clean": "rm -rf assets/js/*.js assets/css/style.css dist/",
-    "validate": "npx gscan .",
-    "legacy:dev": "grunt",
-    "legacy:build": "grunt build"
+    "validate": "npx gscan ."
   },
   "devDependencies": {
     "archiver": "^7.0.0",
@@ -56,15 +54,6 @@
     "concurrently": "^9.0.0",
     "cssnano": "^7.1.2",
     "esbuild": "^0.27.3",
-    "grunt": "^1.5.3",
-    "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-compress": "^2.0.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^5.0.0",
-    "grunt-contrib-uglify": "^5.0.1",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-sass": "^4.1.0",
-    "load-grunt-tasks": "^5.1.0",
     "postcss": "^8.5.8",
     "postcss-cli": "^11.0.0",
     "sass": "^1.97.3",
