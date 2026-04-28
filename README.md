@@ -271,7 +271,7 @@ Ghost still renders the Handlebars templates. This mode avoids running Ghost loc
 <details>
 <summary><strong>Local Preview with Remote Content API</strong></summary>
 
-Use this when you want an Astro-like loop: local templates, local CSS, and local JS with content fetched from a remote Ghost site.
+Use this for a local preview loop: local templates, local CSS, and local JS with content fetched from a remote Ghost site.
 
 ```bash
 cp .env.example .env.local

@@ -270,7 +270,7 @@ Ghost 仍然负责渲染 Handlebars 模板。这个模式不需要本机跑 Ghos
 <details>
 <summary><strong>使用远程 Content API 的本地预览</strong></summary>
 
-如果你想要接近 Astro 的开发循环，用这个模式：本地模板、本地 CSS、本地 JS，内容从远程 Ghost 站点拉取。
+如果你想要本地预览开发循环，用这个模式：本地模板、本地 CSS、本地 JS，内容从远程 Ghost 站点拉取。
 
 ```bash
 cp .env.example .env.local
