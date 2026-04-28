@@ -235,7 +235,7 @@ span.nav-copy { display: none !important; }
 <summary><strong>Hot Reload Without Docker</strong></summary>
 
 ```bash
-# 1) Start Ghost (or use existing localhost:2368)
+# 1) Start Ghost, or point at a remote Ghost site
 ghost start --development
 
 # 2) In this theme repo, run hot dev (proxy + asset watchers)
@@ -248,12 +248,23 @@ npm run dev:hot
 Optional environment variables:
 
 ```bash
-# Ghost target URL (defaults to http://127.0.0.1:2368)
+# Ghost target URL, local or remote (defaults to http://127.0.0.1:2368)
 GHOST_DEV_URL=http://127.0.0.1:2368
 
 # Hot-reload server port (defaults to 3010 in this repo)
 DEV_HOT_PORT=3010
+
+# Serve compiled CSS/JS from this checkout while proxying Ghost-rendered HTML
+DEV_HOT_LOCAL_ASSETS=true
 ```
+
+For lightweight asset work, use a remote dev Ghost instance:
+
+```bash
+GHOST_DEV_URL=https://your-dev-site.example npm run dev:hot
+```
+
+Ghost still renders the Handlebars templates. This mode avoids running Ghost locally and makes local `assets/` changes hot reload, but template changes require the target Ghost site to have the matching theme installed.
 
 </details>
 

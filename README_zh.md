@@ -234,7 +234,7 @@ span.nav-copy { display: none !important; }
 <summary><strong>不依赖 Docker 的热重载开发</strong></summary>
 
 ```bash
-# 1) 启动 Ghost（或直接使用已有 localhost:2368）
+# 1) 启动 Ghost，或指向一个远程 Ghost 站点
 ghost start --development
 
 # 2) 在本主题仓库启动热重载（代理 + 资源监听）
@@ -247,12 +247,23 @@ npm run dev:hot
 可选环境变量：
 
 ```bash
-# Ghost 目标地址（默认 http://127.0.0.1:2368）
+# Ghost 目标地址，可以是本机或远程（默认 http://127.0.0.1:2368）
 GHOST_DEV_URL=http://127.0.0.1:2368
 
 # 热重载服务端口（本仓库默认 3010）
 DEV_HOT_PORT=3010
+
+# 代理 Ghost 渲染的 HTML，同时从当前仓库提供编译后的 CSS/JS
+DEV_HOT_LOCAL_ASSETS=true
 ```
+
+轻量开发资源时，可以直接代理远程开发站点：
+
+```bash
+GHOST_DEV_URL=https://your-dev-site.example npm run dev:hot
+```
+
+Ghost 仍然负责渲染 Handlebars 模板。这个模式不需要本机跑 Ghost，并且本地 `assets/` 改动会热重载；但模板改动需要目标 Ghost 站点安装对应版本的主题。
 
 </details>
 
