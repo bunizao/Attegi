@@ -29,6 +29,7 @@ const excludePatterns = [
   '.gitignore',
   '.gitattributes',
   'Gruntfile.js',
+  'bun.lock',
   'package-lock.json',
   'docker-compose.yml',
   'AGENTS.md',

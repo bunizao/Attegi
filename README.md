@@ -224,7 +224,7 @@ span.nav-copy { display: none !important; }
 <details>
 <summary><strong>Prerequisites</strong></summary>
 
-- Node.js 16+ and npm/yarn
+- Bun 1.3+
 - Ghost instance (local via Ghost CLI or remote dev site)
 - Docker (optional)
 - Git
@@ -239,7 +239,7 @@ span.nav-copy { display: none !important; }
 ghost start --development
 
 # 2) In this theme repo, run hot dev (proxy + asset watchers)
-npm run dev:hot
+bun run dev:hot
 
 # 3) Open hot-reload URL (default port for this repo)
 # http://localhost:3010
@@ -261,7 +261,7 @@ DEV_HOT_LOCAL_ASSETS=true
 For lightweight asset work, use a remote dev Ghost instance:
 
 ```bash
-GHOST_DEV_URL=https://your-dev-site.example npm run dev:hot
+GHOST_DEV_URL=https://your-dev-site.example bun run dev:hot
 ```
 
 Ghost still renders the Handlebars templates. This mode avoids running Ghost locally and makes local `assets/` changes hot reload, but template changes require the target Ghost site to have the matching theme installed.
@@ -276,7 +276,7 @@ Use this for a local preview loop: local templates, local CSS, and local JS with
 ```bash
 cp .env.example .env.local
 # Fill GHOST_CONTENT_API_URL and GHOST_CONTENT_API_KEY in .env.local
-npm run dev:preview
+bun run dev:preview
 ```
 
 Default preview URL:
@@ -287,7 +287,7 @@ http://localhost:3020
 
 This mode renders `.hbs` files locally and hot reloads `assets/`, templates, and locales. It covers the main theme routes: home, posts, pages, tags, authors, `page-tags`, and `page-links`.
 
-It is a development renderer, not Ghost itself. Member portal, comments, search, and exact Ghost image transforms are stubbed or approximated; run `npm run validate` and test in Ghost before shipping a theme zip.
+It is a development renderer, not Ghost itself. Member portal, comments, search, and exact Ghost image transforms are stubbed or approximated; run `bun run validate` and test in Ghost before shipping a theme zip.
 
 </details>
 
@@ -306,12 +306,12 @@ docker-compose up -d
 <summary><strong>Build Commands</strong></summary>
 
 ```bash
-npm run dev        # Watch mode (CSS + JS concurrent)
-npm run dev:hot    # Hot reload via BrowserSync proxy
-npm run build      # Production build
-npm run compress   # Create zip
-npm run validate   # Validate theme with GScan
-npm run clean      # Remove build artifacts
+bun run dev        # Watch mode (CSS + JS concurrent)
+bun run dev:hot    # Hot reload via BrowserSync proxy
+bun run build      # Production build
+bun run compress   # Create zip
+bun run validate   # Validate theme with GScan
+bun run clean      # Remove build artifacts
 ```
 
 </details>

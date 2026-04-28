@@ -46,7 +46,7 @@ const autoOpen = parseBoolean(process.env.DEV_PREVIEW_OPEN);
 
 if (!contentUrl || !contentKey) {
   console.error('\n[preview] Missing Ghost Content API config.');
-  console.error('[preview] Set GHOST_CONTENT_API_URL and GHOST_CONTENT_API_KEY, then run npm run dev:preview.\n');
+  console.error('[preview] Set GHOST_CONTENT_API_URL and GHOST_CONTENT_API_KEY, then run bun run dev:preview.\n');
   process.exit(1);
 }
 

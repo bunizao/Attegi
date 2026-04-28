@@ -6,6 +6,7 @@
   "engines": {
     "ghost": ">=5.0.0"
   },
+  "packageManager": "bun@1.3.13",
   "license": "AGPL-3.0-only",
   "screenshots": {
     "desktop": "screenshots/homepage-dark.png",
@@ -36,18 +37,18 @@
     "css:dev": "sass src/sass/style.scss assets/css/style.css --source-map --style=expanded",
     "css:build": "sass src/sass/style.scss assets/css/style.css --no-source-map --style=compressed && postcss assets/css/style.css -o assets/css/style.css --env production",
     "css:watch": "sass src/sass/style.scss assets/css/style.css --source-map --style=expanded --watch",
-    "js:dev": "node scripts/build.js --dev",
-    "js:build": "node scripts/build.js --prod",
-    "js:watch": "node scripts/build.js --watch",
-    "serve:hot": "node scripts/dev-hot.js",
-    "serve:preview": "node scripts/dev-preview.js",
-    "dev": "concurrently \"npm run css:watch\" \"npm run js:watch\" --names \"css,js\" --prefix-colors \"magenta,cyan\"",
-    "dev:hot": "concurrently \"npm run css:watch\" \"npm run js:watch\" \"npm run serve:hot\" --names \"css,js,hot\" --prefix-colors \"magenta,cyan,green\"",
-    "dev:preview": "concurrently \"npm run css:watch\" \"npm run js:watch\" \"npm run serve:preview\" --names \"css,js,preview\" --prefix-colors \"magenta,cyan,green\"",
-    "build": "npm run css:build && npm run js:build",
-    "compress": "npm run build && node scripts/compress.js",
+    "js:dev": "bun scripts/build.js --dev",
+    "js:build": "bun scripts/build.js --prod",
+    "js:watch": "bun scripts/build.js --watch",
+    "serve:hot": "bun scripts/dev-hot.js",
+    "serve:preview": "bun scripts/dev-preview.js",
+    "dev": "concurrently \"bun run css:watch\" \"bun run js:watch\" --names \"css,js\" --prefix-colors \"magenta,cyan\"",
+    "dev:hot": "concurrently \"bun run css:watch\" \"bun run js:watch\" \"bun run serve:hot\" --names \"css,js,hot\" --prefix-colors \"magenta,cyan,green\"",
+    "dev:preview": "concurrently \"bun run css:watch\" \"bun run js:watch\" \"bun run serve:preview\" --names \"css,js,preview\" --prefix-colors \"magenta,cyan,green\"",
+    "build": "bun run css:build && bun run js:build",
+    "compress": "bun run build && bun scripts/compress.js",
     "clean": "rm -rf assets/js/*.js assets/css/style.css dist/",
-    "validate": "npx gscan ."
+    "validate": "bun run compress && bunx gscan -z dist/attegi.zip"
   },
   "devDependencies": {
     "archiver": "^7.0.0",
