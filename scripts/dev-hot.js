@@ -37,6 +37,7 @@ function parseBoolean(rawValue) {
 const ghostUrl = normalizeUrl(process.env.GHOST_DEV_URL || process.env.GHOST_URL);
 const hotPort = parsePort(process.env.DEV_HOT_PORT, DEFAULT_HOT_PORT);
 const autoOpen = parseBoolean(process.env.DEV_HOT_OPEN);
+const useLocalAssets = !['0', 'false', 'no', 'off'].includes(String(process.env.DEV_HOT_LOCAL_ASSETS || '').trim().toLowerCase());
 const hotProtocol = ghostUrl.startsWith('https://') ? 'https' : 'http';
 
 const watchFiles = [
@@ -52,12 +53,19 @@ console.log('  Attegi Hot Dev Server');
 console.log('========================================');
 console.log(`  Proxy target: ${ghostUrl}`);
 console.log(`  Hot URL:      ${hotProtocol}://localhost:${hotPort}`);
+console.log(`  Local assets: ${useLocalAssets ? 'enabled' : 'disabled'}`);
 console.log('  Watching:     assets + hbs + locales');
 console.log('========================================\n');
 
 browserSync.init(
   {
     proxy: ghostUrl,
+    serveStatic: useLocalAssets ? [
+      {
+        route: '/assets',
+        dir: 'assets'
+      }
+    ] : [],
     port: hotPort,
     open: autoOpen,
     notify: false,
