@@ -269,6 +269,29 @@ Ghost still renders the Handlebars templates. This mode avoids running Ghost loc
 </details>
 
 <details>
+<summary><strong>Local Preview with Remote Content API</strong></summary>
+
+Use this when you want an Astro-like loop: local templates, local CSS, and local JS with content fetched from a remote Ghost site.
+
+```bash
+cp .env.example .env.local
+# Fill GHOST_CONTENT_API_URL and GHOST_CONTENT_API_KEY in .env.local
+npm run dev:preview
+```
+
+Default preview URL:
+
+```bash
+http://localhost:3020
+```
+
+This mode renders `.hbs` files locally and hot reloads `assets/`, templates, and locales. It covers the main theme routes: home, posts, pages, tags, authors, `page-tags`, and `page-links`.
+
+It is a development renderer, not Ghost itself. Member portal, comments, search, and exact Ghost image transforms are stubbed or approximated; run `npm run validate` and test in Ghost before shipping a theme zip.
+
+</details>
+
+<details>
 <summary><strong>Local Development with Docker</strong></summary>
 
 ```bash

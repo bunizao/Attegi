@@ -268,6 +268,29 @@ Ghost 仍然负责渲染 Handlebars 模板。这个模式不需要本机跑 Ghos
 </details>
 
 <details>
+<summary><strong>使用远程 Content API 的本地预览</strong></summary>
+
+如果你想要接近 Astro 的开发循环，用这个模式：本地模板、本地 CSS、本地 JS，内容从远程 Ghost 站点拉取。
+
+```bash
+cp .env.example .env.local
+# 在 .env.local 填入 GHOST_CONTENT_API_URL 和 GHOST_CONTENT_API_KEY
+npm run dev:preview
+```
+
+默认预览地址：
+
+```bash
+http://localhost:3020
+```
+
+这个模式会在本地渲染 `.hbs`，并热重载 `assets/`、模板和语言文件。已覆盖主题的主要路由：首页、文章、页面、标签、作者、`page-tags`、`page-links`。
+
+它是开发预览器，不是 Ghost 本体。会员 Portal、评论、搜索、Ghost 图片转换会被跳过或近似模拟；发布主题 zip 前仍然要跑 `npm run validate` 并在 Ghost 里实测。
+
+</details>
+
+<details>
 <summary><strong>使用 Docker 本地开发</strong></summary>
 
 ```bash
