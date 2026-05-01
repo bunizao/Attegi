@@ -54,7 +54,7 @@
     "concurrently": "^9.0.0",
     "cssnano": "^7.1.5",
     "esbuild": "^0.27.7",
-    "postcss": "^8.5.10",
+    "postcss": "^8.5.13",
     "postcss-cli": "^11.0.0",
     "sass": "^1.99.0",
     "tocbot": "^4.36.4"
