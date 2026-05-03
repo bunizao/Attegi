@@ -43,6 +43,7 @@ const contentKey = process.env.GHOST_CONTENT_API_KEY || process.env.GHOST_API_KE
 const previewPort = parsePort(process.env.DEV_PREVIEW_PORT, DEFAULT_PREVIEW_PORT);
 const renderPort = parsePort(process.env.DEV_PREVIEW_RENDER_PORT, DEFAULT_RENDER_PORT);
 const autoOpen = parseBoolean(process.env.DEV_PREVIEW_OPEN);
+const localeCache = new Map();
 
 if (!contentUrl || !contentKey) {
   console.error('\n[preview] Missing Ghost Content API config.');
@@ -190,9 +191,8 @@ async function handleRequest(request, response) {
     return;
   }
 
-  if (pathname === '/favicon.ico') {
-    response.writeHead(204, { 'Cache-Control': 'no-store' });
-    response.end();
+  if (hasRequestExtension(pathname)) {
+    await serveRemoteAsset(pathname, response);
     return;
   }
 
@@ -203,6 +203,10 @@ async function handleRequest(request, response) {
 function normalizePathname(pathname) {
   if (!pathname || pathname === '/') return '/';
   return pathname.replace(/\/+$/, '') || '/';
+}
+
+function hasRequestExtension(pathname) {
+  return Boolean(path.extname(pathname));
 }
 
 function serveAsset(pathname, response) {
@@ -225,6 +229,24 @@ function serveAsset(pathname, response) {
     'Cache-Control': 'no-store'
   });
   fs.createReadStream(assetPath).pipe(response);
+}
+
+async function serveRemoteAsset(pathname, response) {
+  const remoteUrl = new URL(pathname.replace(/^\/+/, ''), withTrailingSlash(api.siteUrl));
+  const remoteResponse = await fetch(remoteUrl);
+
+  if (!remoteResponse.ok) {
+    response.writeHead(remoteResponse.status || 404, { 'Cache-Control': 'no-store' });
+    response.end('Not found');
+    return;
+  }
+
+  response.writeHead(remoteResponse.status, {
+    'Content-Type': remoteResponse.headers.get('content-type') || 'application/octet-stream',
+    'Cache-Control': 'no-store'
+  });
+
+  response.end(Buffer.from(await remoteResponse.arrayBuffer()));
 }
 
 async function buildRouteModel(pathname) {
@@ -308,6 +330,7 @@ async function buildRouteModel(pathname) {
   const post = await maybe(() => api.postBySlug(slug));
   if (post && post.posts && post.posts[0]) {
     const postModel = decoratePost(post.posts[0], common.site.url, false);
+    postModel.comments = Boolean(common.ghost.commentsEnabled);
     const navPosts = await listPosts({ limit: 20 });
     const navIndex = navPosts.items.findIndex((item) => item.slug === postModel.slug);
     return {
@@ -337,16 +360,19 @@ async function buildRouteModel(pathname) {
 }
 
 async function getCommonContext(pathname) {
-  const settings = await api.settings();
-  const site = buildSite(settings.settings || {});
+  const settingsResponse = await api.settings();
+  const ghostSettings = settingsResponse.settings || {};
+  const site = buildSite(ghostSettings);
   const custom = buildCustomSettings();
+  const previewUrl = `http://localhost:${previewPort}`;
 
-  site.url = `http://localhost:${previewPort}`;
-  site.navigation = decorateNavigation(site.navigation || [], pathname, site.url);
+  site.url = previewUrl;
+  site.navigation = decorateNavigation(site.navigation || [], pathname, previewUrl);
 
   return {
     site,
     custom,
+    ghost: buildGhostContext(ghostSettings),
     currentPath: pathname,
     collections: {},
     member: null,
@@ -357,9 +383,10 @@ async function getCommonContext(pathname) {
 function buildSite(settings) {
   return {
     title: settings.title || 'Ghost',
-    description: settings.description || '',
+    description: settings.description || settings.meta_description || '',
     url: api.siteUrl,
-    locale: settings.locale || 'en',
+    locale: settings.locale || settings.lang || 'en',
+    lang: settings.lang || settings.locale || 'en',
     logo: absolutizeUrl(settings.logo, api.siteUrl),
     icon: absolutizeUrl(settings.icon, api.siteUrl),
     cover_image: absolutizeUrl(settings.cover_image, api.siteUrl),
@@ -368,6 +395,26 @@ function buildSite(settings) {
     members_enabled: Boolean(settings.members_enabled),
     members_invite_only: Boolean(settings.members_invite_only),
     navigation: settings.navigation || []
+  };
+}
+
+function buildGhostContext(settings) {
+  const siteUrl = withTrailingSlash(api.siteUrl);
+
+  return {
+    siteUrl,
+    contentApiUrl: new URL('/ghost/api/content/', siteUrl).toString(),
+    adminUrl: new URL('/ghost/', siteUrl).toString(),
+    webmentionUrl: new URL('/webmentions/receive/', siteUrl).toString(),
+    commentsCountsApiUrl: new URL('/members/api/comments/counts/', siteUrl).toString(),
+    locale: settings.locale || settings.lang || 'en',
+    accentColor: settings.accent_color || '',
+    commentsEnabled: settings.comments_enabled || '',
+    membersEnabled: Boolean(settings.members_enabled),
+    membersInviteOnly: Boolean(settings.members_invite_only),
+    codeinjectionHead: settings.codeinjection_head || '',
+    codeinjectionFoot: settings.codeinjection_foot || '',
+    version: settings.version || ''
   };
 }
 
@@ -407,6 +454,7 @@ function buildPagination(pagination, basePath) {
 }
 
 function decorateNavigation(items, currentPath, siteUrl) {
+  const previewOrigin = new URL(siteUrl).origin;
   return items.map((item) => {
     const itemUrl = item.url || '/';
     const url = itemUrl.startsWith('http') ? itemUrl : new URL(itemUrl, siteUrl).toString();
@@ -416,7 +464,7 @@ function decorateNavigation(items, currentPath, siteUrl) {
       ...item,
       url,
       slug: slugify(item.label || itemPath),
-      current: itemPath === currentPath
+      current: parsed.origin === previewOrigin && itemPath === currentPath
     };
   });
 }
@@ -573,20 +621,50 @@ function registerHelpers() {
   Handlebars.registerHelper('body_class', bodyClassHelper);
   Handlebars.registerHelper('meta_title', metaTitleHelper);
   Handlebars.registerHelper('reading_time', readingTimeHelper);
-  Handlebars.registerHelper('comment_count', () => '0 comments');
-  Handlebars.registerHelper('comments', () => '');
+  Handlebars.registerHelper('comment_count', commentCountHelper);
+  Handlebars.registerHelper('comments', commentsHelper);
   Handlebars.registerHelper('ghost_head', ghostHeadHelper);
-  Handlebars.registerHelper('ghost_foot', () => '');
+  Handlebars.registerHelper('ghost_foot', ghostFootHelper);
   Handlebars.registerHelper('subscribe_form', subscribeFormHelper);
   Handlebars.registerHelper('get', getHelper);
 }
 
 function translate(phrase, options) {
-  let output = String(phrase || '');
-  Object.entries(options.hash || {}).forEach(([key, value]) => {
+  const root = options && options.data ? options.data.root || {} : {};
+  const locale = root.site && root.site.locale ? root.site.locale : 'en';
+  const messages = getLocaleMessages(locale);
+  const hash = options && options.hash ? options.hash : {};
+  let output = Object.prototype.hasOwnProperty.call(messages, phrase) ? messages[phrase] : String(phrase || '');
+  Object.entries(hash).forEach(([key, value]) => {
     output = output.replace(new RegExp(`\\{${key}\\}`, 'g'), value);
   });
   return output;
+}
+
+function getLocaleMessages(locale) {
+  const normalized = String(locale || 'en').trim().toLowerCase().replace(/-/g, '_');
+  const candidates = [normalized];
+
+  if (normalized.includes('_')) {
+    candidates.push(normalized.split('_')[0]);
+  }
+
+  candidates.push('en');
+
+  for (const candidate of candidates) {
+    if (localeCache.has(candidate)) {
+      return localeCache.get(candidate);
+    }
+
+    const filePath = path.join(ROOT, 'locales', `${candidate}.json`);
+    if (!fs.existsSync(filePath)) continue;
+
+    const messages = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    localeCache.set(candidate, messages);
+    return messages;
+  }
+
+  return {};
 }
 
 function imageUrl(image, options) {
@@ -769,7 +847,22 @@ function postClassHelper() {
 
 function bodyClassHelper(options) {
   const routeType = options.data.routeType;
-  return routeType ? `${routeType}-template` : '';
+  const root = options.data.root || {};
+  const classes = [];
+
+  if (routeType) {
+    classes.push(`${routeType}-template`);
+  }
+
+  if (routeType === 'post' && root.post && Array.isArray(root.post.tags)) {
+    root.post.tags.forEach((tag) => {
+      if (tag && tag.slug) {
+        classes.push(`tag-${tag.slug}`);
+      }
+    });
+  }
+
+  return Array.from(new Set(classes)).join(' ');
 }
 
 function metaTitleHelper(options) {
@@ -788,18 +881,79 @@ function readingTimeHelper(options) {
   return `${minutes} min read`;
 }
 
-function ghostHeadHelper(options) {
-  const root = options.data.root || {};
-  const title = escapeHtml(metaTitleHelper(options));
-  const cardsCssUrl = new URL('/public/cards.min.css', api.siteUrl).toString();
-  const cardsJsUrl = new URL('/public/cards.min.js', api.siteUrl).toString();
+function commentCountHelper(options) {
+  const hash = options.hash || {};
+  const postId = this.id || '';
+  const autowrapRaw = hash.autowrap;
+  const autowrap = !(
+    autowrapRaw === false ||
+    String(autowrapRaw || '').trim().toLowerCase() === 'false'
+  );
 
-  return new Handlebars.SafeString([
+  if (!postId) {
+    return hash.empty || '0 comments';
+  }
+
+  return new Handlebars.SafeString(
+    `<script data-ghost-comment-count="${escapeHtml(postId)}" data-ghost-comment-count-empty="${escapeHtml(hash.empty || '0 comments')}" data-ghost-comment-count-singular="${escapeHtml(hash.singular || 'comment')}" data-ghost-comment-count-plural="${escapeHtml(hash.plural || 'comments')}" data-ghost-comment-count-tag="script" data-ghost-comment-count-class-name="" data-ghost-comment-count-autowrap="${autowrap ? 'true' : 'false'}"></script>`
+  );
+}
+
+function commentsHelper(options) {
+  const root = options.data.root || {};
+  const ghost = root.ghost || {};
+  const hash = options.hash || {};
+  const postId = this.id || '';
+
+  if (!postId || !ghost.siteUrl || !contentKey) {
+    return '';
+  }
+
+  return new Handlebars.SafeString(
+    `<script defer src="https://cdn.jsdelivr.net/ghost/comments-ui@~1.4/umd/comments-ui.min.js" data-locale="${escapeHtml(ghost.locale || 'en')}" data-ghost-comments="${escapeHtml(ghost.siteUrl)}" data-api="${escapeHtml(ghost.contentApiUrl || '')}" data-admin="${escapeHtml(ghost.adminUrl || '')}" data-key="${escapeHtml(contentKey)}" data-title="${escapeHtml(hash.title || '')}" data-count="${hash.count === false ? 'false' : 'true'}" data-post-id="${escapeHtml(postId)}" data-color-scheme="auto" data-avatar-saturation="60" data-accent-color="${escapeHtml(ghost.accentColor || '')}" data-comments-enabled="${escapeHtml(ghost.commentsEnabled || '')}" data-publication="${escapeHtml(root.site && root.site.title ? root.site.title : '')}" crossorigin="anonymous"></script>`
+  );
+}
+
+function ghostHeadHelper(options) {
+  const title = escapeHtml(metaTitleHelper(options));
+  const root = options.data.root || {};
+  const ghost = root.ghost || {};
+  const siteUrl = ghost.siteUrl || withTrailingSlash(api.siteUrl);
+  const parts = [
     '<meta name="generator" content="Attegi local preview">',
-    `<meta property="og:title" content="${title}">`,
-    `<link rel="stylesheet" type="text/css" href="${cardsCssUrl}">`,
-    `<script defer src="${cardsJsUrl}"></script>`
-  ].join(''));
+    `<meta property="og:title" content="${title}">`
+  ];
+
+  if (ghost.membersEnabled) {
+    parts.push(
+      `<script defer src="https://cdn.jsdelivr.net/ghost/portal@~2.68/umd/portal.min.js" data-i18n="true" data-ghost="${escapeHtml(siteUrl)}" data-key="${escapeHtml(contentKey || '')}" data-api="${escapeHtml(ghost.contentApiUrl || '')}" data-locale="${escapeHtml(ghost.locale || 'en')}" crossorigin="anonymous"></script>`
+    );
+  }
+
+  parts.push(
+    `<script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.8/umd/sodo-search.min.js" data-key="${escapeHtml(contentKey || '')}" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.8/umd/main.css" data-sodo-search="${escapeHtml(siteUrl)}" data-locale="${escapeHtml(ghost.locale || 'en')}" crossorigin="anonymous"></script>`,
+    `<link href="${escapeHtml(ghost.webmentionUrl || '')}" rel="webmention">`,
+    `<script defer src="${escapeHtml(new URL('/public/cards.min.js', siteUrl).toString())}"></script>`,
+    `<link rel="stylesheet" type="text/css" href="${escapeHtml(new URL('/public/cards.min.css', siteUrl).toString())}">`,
+    `<script defer src="${escapeHtml(new URL('/public/comment-counts.min.js', siteUrl).toString())}" data-ghost-comments-counts-api="${escapeHtml(ghost.commentsCountsApiUrl || '')}"></script>`,
+    `<script defer src="${escapeHtml(new URL('/public/member-attribution.min.js', siteUrl).toString())}"></script>`
+  );
+
+  if (ghost.accentColor) {
+    parts.push(`<style>:root {--ghost-accent-color: ${escapeHtml(ghost.accentColor)};}</style>`);
+  }
+
+  if (ghost.codeinjectionHead) {
+    parts.push(ghost.codeinjectionHead);
+  }
+
+  return new Handlebars.SafeString(parts.join(''));
+}
+
+function ghostFootHelper(options) {
+  const root = options.data.root || {};
+  const ghost = root.ghost || {};
+  return new Handlebars.SafeString(ghost.codeinjectionFoot || '');
 }
 
 function subscribeFormHelper(options) {
@@ -863,6 +1017,10 @@ function absolutizeUrl(value, siteUrl) {
   if (!value) return '';
   if (/^https?:\/\//i.test(value)) return value;
   return new URL(value, siteUrl).toString();
+}
+
+function withTrailingSlash(value) {
+  return /\/$/.test(value) ? value : `${value}/`;
 }
 
 function absolutizeContentAssets(html, siteUrl) {
