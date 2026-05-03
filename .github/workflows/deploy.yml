@@ -31,8 +31,8 @@ jobs:
         run: bunx gscan -z dist/attegi.zip
 
       - name: Deploy to Ghost
-        uses: TryGhost/action-deploy-theme@v1
-        with:
-          api-url: ${{ secrets.GHOST_ADMIN_API_URL }}
-          api-key: ${{ secrets.GHOST_ADMIN_API_KEY }}
-          file: dist/attegi.zip
+        env:
+          GHOST_ADMIN_API_URL: ${{ secrets.GHOST_ADMIN_API_URL }}
+          GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
+          GHOST_ADMIN_API_VERSION: v6.0
+        run: bun scripts/deploy-theme.js dist/attegi.zip
