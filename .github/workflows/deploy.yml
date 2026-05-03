@@ -2,12 +2,22 @@ name: Deploy to Ghost
 
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: Deploy target
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - prod
+          - both
 
 permissions:
   contents: read
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,7 +40,62 @@ jobs:
       - name: Validate theme
         run: bunx gscan -z dist/attegi.zip
 
-      - name: Deploy to Ghost
+      - name: Upload theme artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: attegi-theme-zip
+          path: dist/attegi.zip
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy-dev:
+    if: ${{ inputs.target == 'dev' || inputs.target == 'both' }}
+    needs: build
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+
+      - name: Download theme artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: attegi-theme-zip
+          path: dist
+
+      - name: Deploy to Ghost (dev)
+        env:
+          GHOST_ADMIN_API_URL: ${{ secrets.GHOST_ADMIN_API_URL }}
+          GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
+          GHOST_ADMIN_API_VERSION: v6.0
+        run: bun scripts/deploy-theme.js dist/attegi.zip
+
+  deploy-prod:
+    if: ${{ inputs.target == 'prod' || inputs.target == 'both' }}
+    needs: build
+    environment: prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+
+      - name: Download theme artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: attegi-theme-zip
+          path: dist
+
+      - name: Deploy to Ghost (prod)
         env:
           GHOST_ADMIN_API_URL: ${{ secrets.GHOST_ADMIN_API_URL }}
           GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
