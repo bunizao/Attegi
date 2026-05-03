@@ -12,7 +12,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Get current version
-CURRENT_VERSION=$(node -p "require('./package.json').version")
+CURRENT_VERSION=$(bun -e "console.log(require('./package.json').version)")
 
 echo -e "${GREEN}Current version: ${CURRENT_VERSION}${NC}"
 
@@ -59,7 +59,7 @@ fi
 
 # Update package.json
 echo "Updating package.json..."
-node -e "
+bun -e "
 const fs = require('fs');
 const pkg = require('./package.json');
 pkg.version = '${NEW_VERSION}';

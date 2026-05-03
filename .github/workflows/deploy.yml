@@ -13,23 +13,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
-          cache: npm
+          bun-version: 1.3.13
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build theme
         run: |
-          npm run clean
-          npm run build
-          npm run compress
+          bun run clean
+          bun run build
+          bun run compress
 
       - name: Validate theme
-        run: npx gscan -z dist/attegi.zip
+        run: bunx gscan -z dist/attegi.zip
 
       - name: Deploy to Ghost
         uses: TryGhost/action-deploy-theme@v1

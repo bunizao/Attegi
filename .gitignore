@@ -1,6 +1,9 @@
 .DS_store
 node_modules
 dist/
+.env
+.env.local
+.env.*.local
 docker-compose.yml
 /.playwright-mcp
 /.lighthouseci

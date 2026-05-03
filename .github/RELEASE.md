@@ -65,7 +65,7 @@ Before creating a release, ensure:
 
 - [ ] All changes are committed and pushed
 - [ ] Version number is updated in `package.json`
-- [ ] Theme passes `npx gscan .` validation
+- [ ] Theme passes `bun run validate` validation
 - [ ] Theme has been tested locally
 - [ ] README.md is up to date
 - [ ] CHANGELOG or commit messages are clear
@@ -113,7 +113,7 @@ If you see "Tag already exists", either:
 ### Build fails
 - Check the [Actions tab](../../actions) for error details
 - Ensure all dependencies are in `package.json`
-- Verify GScan passes locally: `npx gscan .`
+- Verify GScan passes locally: `bun run validate`
 
 ### Release not created
 - Ensure you have write permissions to the repository
@@ -126,14 +126,14 @@ If automated release fails, you can create a release manually:
 
 1. **Build locally**
    ```bash
-   npx grunt clean:dist
-   npx grunt build
-   npx grunt compress
+   bun run clean
+   bun run build
+   bun run compress
    ```
 
 2. **Validate**
    ```bash
-   npx gscan -z dist/attegi.zip
+   bunx gscan -z dist/attegi.zip
    ```
 
 3. **Create release on GitHub**
