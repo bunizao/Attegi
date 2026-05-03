@@ -791,7 +791,15 @@ function readingTimeHelper(options) {
 function ghostHeadHelper(options) {
   const root = options.data.root || {};
   const title = escapeHtml(metaTitleHelper(options));
-  return new Handlebars.SafeString(`<meta name="generator" content="Attegi local preview"><meta property="og:title" content="${title}">`);
+  const cardsCssUrl = new URL('/public/cards.min.css', api.siteUrl).toString();
+  const cardsJsUrl = new URL('/public/cards.min.js', api.siteUrl).toString();
+
+  return new Handlebars.SafeString([
+    '<meta name="generator" content="Attegi local preview">',
+    `<meta property="og:title" content="${title}">`,
+    `<link rel="stylesheet" type="text/css" href="${cardsCssUrl}">`,
+    `<script defer src="${cardsJsUrl}"></script>`
+  ].join(''));
 }
 
 function subscribeFormHelper(options) {
