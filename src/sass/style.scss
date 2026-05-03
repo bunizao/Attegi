@@ -1390,7 +1390,7 @@ textarea {
 	.kg-video-card {
 		margin: 0 0 2.5rem;
 		border-radius: 1rem;
-		overflow: hidden;
+		overflow: visible;
 
 		.kg-video-container {
 			border-radius: 1rem;
@@ -1405,7 +1405,6 @@ textarea {
 		// Portrait video (9:16) - constrained size, centered
 		&.kg-video-portrait {
 			background: transparent;
-			max-height: 80vh;
 
 			.kg-video-container {
 				max-width: min(100%, 45vh);
