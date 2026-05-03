@@ -146,6 +146,10 @@ function readJson(fileName) {
   return JSON.parse(fs.readFileSync(path.join(ROOT, fileName), 'utf8'));
 }
 
+function fillCountTemplate(template, value) {
+  return String(template).split('%').join(String(value));
+}
+
 function createGhostApi(siteUrl, key) {
   async function request(resource, params = {}) {
     const apiUrl = new URL(`${siteUrl}/ghost/api/content/${resource.replace(/^\/+/, '')}`);
@@ -701,7 +705,7 @@ function pluralHelper(count, options) {
   const hash = options.hash || {};
   if (value === 0) return hash.empty || '';
   const template = value === 1 ? (hash.singular || '%') : (hash.plural || '%');
-  return String(template).replace('%', value);
+  return fillCountTemplate(template, value);
 }
 
 function urlHelper(options) {
@@ -780,7 +784,7 @@ function readingTimeHelper(options) {
   const minutes = this.reading_time || readingTime(this.html || '');
   const hash = options.hash || {};
   if (minutes === 1 && hash.minute) return hash.minute;
-  if (hash.minutes) return String(hash.minutes).replace('%', minutes);
+  if (hash.minutes) return fillCountTemplate(hash.minutes, minutes);
   return `${minutes} min read`;
 }
 
