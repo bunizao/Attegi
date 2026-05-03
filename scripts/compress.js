@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
 /**
  * Theme Compression Script
@@ -9,13 +9,9 @@ const archiver = require('archiver');
 const fs = require('fs');
 const path = require('path');
 
-// Read package.json for theme name
-const pkg = require('../package.json');
-const themeName = pkg.name || 'attegi';
-
 // Output configuration
 const distDir = path.resolve('dist');
-const outputPath = path.join(distDir, `${themeName}.zip`);
+let outputPath = '';
 
 // Files and directories to exclude
 const excludePatterns = [
@@ -45,6 +41,10 @@ async function compress() {
   console.log('\n========================================');
   console.log('  Attegi Theme Compression');
   console.log('========================================\n');
+
+  const pkg = await Bun.file(path.resolve('package.json')).json();
+  const themeName = pkg.name || 'attegi';
+  outputPath = path.join(distDir, `${themeName}.zip`);
 
   // Ensure dist directory exists
   fs.mkdirSync(distDir, { recursive: true });

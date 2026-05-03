@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
 /**
  * Attegi Theme Build Script
@@ -34,27 +34,34 @@ const isDev = args.includes('--dev') || isWatch;
 const isProduction = args.includes('--prod') || args.includes('--production');
 
 /**
+ * Copy a file using Bun's file APIs.
+ */
+async function copyFile(srcPath, destPath) {
+  fs.mkdirSync(path.dirname(destPath), { recursive: true });
+  await Bun.write(destPath, Bun.file(srcPath));
+}
+
+/**
  * Copy vendor files that should not be bundled
  */
-function copyVendorFiles() {
-  config.vendorCopy.forEach(({ src, dest }) => {
+async function copyVendorFiles() {
+  for (const { src, dest } of config.vendorCopy) {
     const srcPath = path.resolve(src);
     const destPath = path.resolve(dest);
 
     if (fs.existsSync(srcPath)) {
-      fs.mkdirSync(path.dirname(destPath), { recursive: true });
-      fs.copyFileSync(srcPath, destPath);
+      await copyFile(srcPath, destPath);
       console.log(`  Copied: ${src} -> ${dest}`);
     } else {
       console.warn(`  Warning: ${src} not found, skipping...`);
     }
-  });
+  }
 }
 
 /**
  * Copy font files
  */
-function copyFonts() {
+async function copyFonts() {
   const srcDir = path.resolve('src/font');
   const destDir = path.resolve('assets/font');
 
@@ -66,9 +73,9 @@ function copyFonts() {
   fs.mkdirSync(destDir, { recursive: true });
 
   const files = fs.readdirSync(srcDir);
-  files.forEach(file => {
-    fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file));
-  });
+  for (const file of files) {
+    await copyFile(path.join(srcDir, file), path.join(destDir, file));
+  }
 
   console.log(`  Copied ${files.length} font files`);
 }
@@ -76,13 +83,12 @@ function copyFonts() {
 /**
  * Copy CSS vendor files
  */
-function copyCssVendor() {
+async function copyCssVendor() {
   const src = 'src/sass/glightbox.min.css';
   const dest = 'assets/css/glightbox.min.css';
 
   if (fs.existsSync(src)) {
-    fs.mkdirSync(path.dirname(dest), { recursive: true });
-    fs.copyFileSync(src, dest);
+    await copyFile(src, dest);
     console.log(`  Copied: ${src} -> ${dest}`);
   }
 }
@@ -162,9 +168,9 @@ async function build() {
   try {
     // Copy assets
     console.log('\n[Assets] Copying static files...');
-    copyVendorFiles();
-    copyFonts();
-    copyCssVendor();
+    await copyVendorFiles();
+    await copyFonts();
+    await copyCssVendor();
 
     // Build JavaScript
     await buildJS();
