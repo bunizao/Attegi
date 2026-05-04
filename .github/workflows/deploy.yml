@@ -41,7 +41,7 @@ jobs:
         run: bunx gscan -z dist/attegi.zip
 
       - name: Upload theme artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: attegi-theme-zip
           path: dist/attegi.zip
