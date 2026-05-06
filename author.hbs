@@ -19,14 +19,12 @@
 				<span class="archive-count">{{plural ../pagination.total empty=(t "No Posts") singular=(t "% Post") plural=(t "% Posts")}}</span>
 			</span>
 			{{!-- Author avatar with SVG fallback for missing profile image --}}
-			{{#if profile_image}}
-				<figure class="archive-avatar">
-					<picture>
-						<source type="image/avif" srcset="{{img_url profile_image size="s" format="avif" quality="80"}}" />
-						<source type="image/webp" srcset="{{img_url profile_image size="s" format="webp" quality="80"}}" />
-						<img src="{{img_url profile_image size="s" quality="80"}}" alt="{{name}}" loading="eager" decoding="async" />
-					</picture>
-				</figure>
+				{{#if profile_image}}
+					<figure class="archive-avatar">
+						<picture>
+							<img src="{{img_url profile_image size="s" quality="80"}}" alt="{{name}}" loading="eager" decoding="async" />
+						</picture>
+					</figure>
 			{{else}}
 				<figure class="archive-avatar avatar" aria-label="{{name}}">
 					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -59,14 +57,6 @@
 		{{#if cover_image}}
 		<div class="blog-cover cover">
 			<picture>
-				<source
-					type="image/avif"
-					srcset="{{> "srcset" image=cover_image format="avif" quality="50" include_xl=true}}"
-					sizes="(max-width: 960px) 100vw, 960px" />
-				<source
-					type="image/webp"
-					srcset="{{> "srcset" image=cover_image format="webp" quality="50" include_xl=true}}"
-					sizes="(max-width: 960px) 100vw, 960px" />
 				<source
 					srcset="{{> "srcset" image=cover_image quality="50" include_xl=true}}"
 					sizes="(max-width: 960px) 100vw, 960px" />
