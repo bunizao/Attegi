@@ -44,11 +44,13 @@ jobs:
           DESCRIPTION=$(bun -e "console.log(require('./package.json').description)")
           DEMO=$(bun -e "console.log(require('./package.json').demo)")
           GHOST_VERSION=$(bun -e "console.log(require('./package.json').engines.ghost)")
+          LICENSE=$(bun -e "console.log(require('./package.json').license)")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "name=$NAME" >> $GITHUB_OUTPUT
           echo "description=$DESCRIPTION" >> $GITHUB_OUTPUT
           echo "demo=$DEMO" >> $GITHUB_OUTPUT
           echo "ghost_version=$GHOST_VERSION" >> $GITHUB_OUTPUT
+          echo "license=$LICENSE" >> $GITHUB_OUTPUT
 
       - name: Check package size
         id: size
@@ -120,7 +122,7 @@ jobs:
             - **Size**: ${{ steps.size.outputs.size_kb }}
             - **Ghost Version**: ${{ steps.package.outputs.ghost_version }}
             - **Validation**: ✅ Passed GScan
-            - **License**: MIT
+            - **License**: ${{ steps.package.outputs.license }}
 
             ### 📝 What's Changed
 

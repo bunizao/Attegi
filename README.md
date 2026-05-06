@@ -25,7 +25,7 @@ A modern, elegant Ghost theme focused on clean typography, mobile readability, a
 
 - **Dual Theme System** - Light/dark modes with automatic system detection
 - **Mobile Design** - Fully responsive with native WebKit smooth scrolling
-- **Modern Image Support** - AVIF/WebP format with automatic conversion
+- **Responsive Image Support** - Ghost-native image sizes with lazy loading
 - **Code Syntax Highlighting** - Beautiful code blocks with one-click copy
 - **Automatic Table of Contents** - Smart navigation with scroll spy
 - **32 Languages** - Comprehensive internationalization support
@@ -86,15 +86,15 @@ Attegi achieves excellent scores on [Google PageSpeed Insights](https://pagespee
 
 **[View Tutorial →](https://attegi.tuuhub.com/poem-card-tutorial/)**
 
-### Modern Image Support
+### Responsive Image Support
 
-> Next-gen image formats with automatic conversion
+> Stable Ghost-native image delivery for responsive layouts
 
-- AVIF & WebP automatic format detection
-- Fully configurable
-- Lazy loading
-- Enhanced mobile touch interactions
+- Responsive `srcset` image sizes
+- Eager-loading post covers for faster first paint
+- Lazy loading for in-content images
 - Lightbox gallery with `GLightbox`
+- Enhanced mobile touch interactions
 
 ### Table of Contents
 
