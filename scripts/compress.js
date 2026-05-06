@@ -34,6 +34,7 @@ const excludePatterns = [
   '.lighthouseci/**',
   '.playwright-mcp/**',
   'postcss.config.js',
+  'assets/css/*.map',
   '*.log'
 ];
 

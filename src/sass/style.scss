@@ -6551,61 +6551,6 @@ a.post-tag-chip {
 /* ==========================================================================
    Tags Index Page
    ========================================================================== */
-.tags-page-header {
-	position: relative;
-	z-index: 10;
-	text-align: center;
-	padding-bottom: calc(3rem + 1.5vw);
-	margin-bottom: calc(2rem + 1vw);
-	border-bottom: 1px solid var(--color-background-contrast);
-}
-
-.tags-page-label {
-	display: inline-block;
-	margin-bottom: 1rem;
-	font-size: 1.4em;
-	font-weight: 500;
-	text-transform: uppercase;
-	letter-spacing: 0.1em;
-	color: var(--ghost-accent-color);
-}
-
-.tags-page-title {
-	font-family: var(--gh-font-heading);
-	font-size: 4em;
-	font-weight: 700;
-	line-height: 1.1;
-	margin: 0 0 1rem;
-	color: var(--color-content-lead);
-
-	@media only screen and (max-width: $breakpoint-medium) {
-		font-size: 3em;
-	}
-}
-
-.tags-page-description {
-	font-size: 1.8em;
-	line-height: 1.5;
-	color: var(--color-content-secondary);
-	margin: 0 auto;
-	max-width: 50rem;
-
-	@media only screen and (max-width: $breakpoint-medium) {
-		font-size: 1.6em;
-	}
-}
-
-.tags-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-	gap: 2rem;
-
-	@media only screen and (max-width: $breakpoint-small) {
-		grid-template-columns: 1fr;
-		gap: 1.5rem;
-	}
-}
-
 .tag-card {
 	position: relative;
 	background: var(--color-background-secondary);

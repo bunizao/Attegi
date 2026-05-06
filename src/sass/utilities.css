@@ -1,0 +1,10 @@
+@source "../../*.hbs";
+@source "../../partials/**/*.hbs";
+@source "../../src/js/**/*.js";
+
+@theme prefix(tw) {
+  --font-heading: var(--gh-font-heading);
+  --font-body: var(--gh-font-body);
+}
+
+@tailwind utilities;

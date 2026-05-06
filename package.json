@@ -34,9 +34,15 @@
     "url": "https://github.com/bunizao/Attegi.git"
   },
   "scripts": {
-    "css:dev": "sass src/sass/style.scss assets/css/style.css --source-map --style=expanded",
-    "css:build": "sass src/sass/style.scss assets/css/style.css --no-source-map --style=compressed && postcss assets/css/style.css -o assets/css/style.css --env production",
-    "css:watch": "sass src/sass/style.scss assets/css/style.css --source-map --style=expanded --watch",
+    "css:sass:dev": "sass src/sass/style.scss assets/css/style.css --source-map --style=expanded",
+    "css:sass:build": "sass src/sass/style.scss assets/css/style.css --no-source-map --style=compressed && postcss assets/css/style.css -o assets/css/style.css --env production",
+    "css:sass:watch": "sass src/sass/style.scss assets/css/style.css --source-map --style=expanded --watch",
+    "css:utilities:dev": "postcss src/sass/utilities.css -o assets/css/utilities.css -u @tailwindcss/postcss --no-map",
+    "css:utilities:build": "postcss src/sass/utilities.css -o assets/css/utilities.css -u @tailwindcss/postcss -u cssnano --no-map",
+    "css:utilities:watch": "postcss src/sass/utilities.css -o assets/css/utilities.css -u @tailwindcss/postcss --no-map --watch",
+    "css:dev": "bun run css:sass:dev && bun run css:utilities:dev",
+    "css:build": "bun run css:sass:build && bun run css:utilities:build",
+    "css:watch": "bun scripts/dev.js css",
     "js:dev": "bun scripts/build.js --dev",
     "js:build": "bun scripts/build.js --prod",
     "js:watch": "bun scripts/build.js --watch",
@@ -47,10 +53,11 @@
     "dev:preview": "bun scripts/dev.js preview",
     "build": "bun run css:build && bun run js:build",
     "compress": "bun run build && bun scripts/compress.js",
-    "clean": "rm -rf assets/js/*.js assets/css/style.css dist/",
+    "clean": "rm -rf assets/js/*.js assets/css/style.css assets/css/style.css.map assets/css/utilities.css dist/",
     "validate": "bun run compress && bunx gscan -z dist/attegi.zip"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.4",
     "archiver": "^7.0.0",
     "autoprefixer": "^10.5.0",
     "browser-sync": "^3.0.4",
@@ -59,6 +66,7 @@
     "postcss": "^8.5.13",
     "postcss-cli": "^11.0.0",
     "sass": "^1.99.0",
+    "tailwindcss": "^4.2.4",
     "tocbot": "^4.36.4"
   },
   "config": {

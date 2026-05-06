@@ -15,10 +15,10 @@
 
 <header class="blog-header">
     <div class="inner">
-        <div class="tags-page-header">
-            <span class="tags-page-label">{{t "Browse"}}</span>
-            <h1 class="tags-page-title">{{t "Topics"}}</h1>
-            <p class="tags-page-description">{{t "Explore all topics and discover content that interests you"}}</p>
+        <div class="tags-page-header tw:relative tw:z-10 tw:mb-[calc(2rem+1vw)] tw:border-b tw:border-[var(--color-background-contrast)] tw:pb-[calc(3rem+1.5vw)] tw:text-center">
+            <span class="tags-page-label tw:mb-[1rem] tw:inline-block tw:text-[1.4em] tw:font-[500] tw:uppercase tw:tracking-[0.1em] tw:text-[var(--ghost-accent-color)]">{{t "Browse"}}</span>
+            <h1 class="tags-page-title tw:m-[0_0_1rem] tw:font-heading tw:text-[4em] tw:font-[700] tw:leading-[1.1] tw:text-[var(--color-content-lead)] tw:max-[640px]:text-[3em]">{{t "Topics"}}</h1>
+            <p class="tags-page-description tw:m-[0_auto] tw:max-w-[50rem] tw:text-[1.8em] tw:leading-[1.5] tw:text-[var(--color-content-secondary)] tw:max-[640px]:text-[1.6em]">{{t "Explore all topics and discover content that interests you"}}</p>
         </div>
     </div>
 </header>
@@ -26,7 +26,7 @@
 <div id="tags-index" class="container">
     <main class="content" role="main">
         <div class="inner">
-            <div class="tags-grid">
+            <div class="tags-grid tw:grid tw:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] tw:gap-[2rem] tw:max-[480px]:grid-cols-1 tw:max-[480px]:gap-[1.5rem]">
                 {{#get "tags" limit="100" include="count.posts,codeinjection_head" filter="visibility:public" order="created_at desc"}}
                     {{#foreach tags}}
                         <article class="tag-card{{#if feature_image}} has-image{{/if}}{{#if accent_color}} has-accent{{/if}}"
