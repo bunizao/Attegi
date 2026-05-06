@@ -33,7 +33,6 @@ A modern, elegant Ghost theme focused on clean typography, mobile readability, a
 ### Content Features
 
 - **Poem Cards** - Elegant poetry display with Markdown syntax support
-- **Agent-Readable Posts** - Stable post selectors for direct GET extraction
 - **Tags Page Template** - Custom page for browsing all tags with post counts
 - **Links Page Template** - Friend links showcase with animated Möbius symbol
 - **Enhanced Footnotes** - Improved navigation and styling
@@ -96,14 +95,6 @@ Attegi achieves excellent scores on [Google PageSpeed Insights](https://pagespee
 - Lazy loading for in-content images
 - Lightbox gallery with `GLightbox`
 - Enhanced mobile touch interactions
-
-### Agent-Readable Posts
-
-> Stable HTML markers for tools that fetch posts and convert them to Markdown
-
-- Posts expose `attegi:agent-*` metadata in `<head>`
-- Article bodies are marked with `data-agent-content="post"`
-- Agents can fetch the canonical post URL and convert that HTML node to Markdown
 
 ### Table of Contents
 
