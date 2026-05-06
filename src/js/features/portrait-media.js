@@ -12,17 +12,32 @@ export function setupPortraitVideos() {
   var videoCards = qsa('.kg-video-card');
   if (!videoCards.length) return;
 
+  function getNumericAttribute(node, name) {
+    var value = node.getAttribute(name);
+    if (!value) return null;
+    var parsed = parseFloat(value);
+    return parsed > 0 ? parsed : null;
+  }
+
   Array.prototype.forEach.call(videoCards, function(card) {
     var video = card.querySelector('video');
     if (!video) return;
 
+    function getVideoDimensions() {
+      var width = video.videoWidth || getNumericAttribute(video, 'width');
+      var height = video.videoHeight || getNumericAttribute(video, 'height');
+      return { width: width, height: height };
+    }
+
     function applyPortraitStyle() {
-      var width = video.videoWidth;
-      var height = video.videoHeight;
+      var dimensions = getVideoDimensions();
+      var width = dimensions.width;
+      var height = dimensions.height;
       if (!width || !height) return;
 
       if (height > width) {
         card.classList.add('kg-video-portrait');
+        card.style.setProperty('--kg-video-aspect-ratio', width + ' / ' + height);
       }
 
       var wrapper = video.closest('.js-reframe');
@@ -34,9 +49,9 @@ export function setupPortraitVideos() {
       }
     }
 
-    if (video.readyState >= 1) {
-      applyPortraitStyle();
-    } else {
+    applyPortraitStyle();
+
+    if (video.readyState < 1) {
       video.addEventListener('loadedmetadata', applyPortraitStyle);
     }
   });

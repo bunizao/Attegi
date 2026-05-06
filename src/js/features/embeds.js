@@ -56,6 +56,8 @@ export function wrapEmbeds(container) {
 
   function wrapNode(node) {
     if (node.closest('.js-reframe')) return;
+    if (node.tagName && node.tagName.toLowerCase() === 'video' && node.closest('.kg-video-card')) return;
+
     var wrapper = doc.createElement('div');
     wrapper.className = 'js-reframe';
     var padding = getEmbedPadding(node);

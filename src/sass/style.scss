@@ -1393,11 +1393,15 @@ textarea {
 		overflow: visible;
 
 		.kg-video-container {
+			position: relative;
 			border-radius: 1rem;
 			overflow: hidden;
 		}
 
 		video {
+			display: block;
+			width: 100%;
+			height: auto;
 			border-radius: 1rem;
 			object-fit: contain;
 		}
@@ -1407,9 +1411,12 @@ textarea {
 			background: transparent;
 
 			.kg-video-container {
+				aspect-ratio: var(--kg-video-aspect-ratio, 9 / 16);
 				max-width: min(100%, 45vh);
 				max-height: 80vh;
+				height: auto;
 				margin: 0 auto;
+				padding-bottom: 0 !important;
 			}
 
 			video {
