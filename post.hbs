@@ -63,20 +63,12 @@
 		<div class="post-cover cover">
 			<picture>
 				<source
-					type="image/avif"
-					srcset="{{> "srcset" image=feature_image format="avif" quality="50"}}"
-					sizes="(max-width: 1100px) 100vw, 1100px" />
-				<source
-					type="image/webp"
-					srcset="{{> "srcset" image=feature_image format="webp" quality="50"}}"
-					sizes="(max-width: 1100px) 100vw, 1100px" />
-				<source
-					srcset="{{> "srcset" image=feature_image quality="50"}}"
-					sizes="(max-width: 1100px) 100vw, 1100px" />
+					srcset="{{> "srcset" image=feature_image quality="50" include_xl=true}}"
+					sizes="100vw" />
 				<img
-					srcset="{{> "srcset" image=feature_image quality="50"}}"
-					sizes="(max-width: 1100px) 100vw, 1100px"
-					src="{{img_url feature_image size="l" quality="50"}}"
+					srcset="{{> "srcset" image=feature_image quality="50" include_xl=true}}"
+					sizes="100vw"
+					src="{{img_url feature_image size="xl" quality="50"}}"
 					alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
 					loading="eager"
 					decoding="async"
@@ -201,9 +193,9 @@
 {{#contentFor "head"}}
 <link rel="preload"
 	as="image"
-	href="{{img_url feature_image size="l" quality="50"}}"
-	imagesrcset="{{> "srcset" image=feature_image quality="50"}}"
-	imagesizes="(max-width: 1100px) 100vw, 1100px">
+	href="{{img_url feature_image size="xl" quality="50"}}"
+	imagesrcset="{{> "srcset" image=feature_image quality="50" include_xl=true}}"
+	imagesizes="100vw">
 {{/contentFor}}
 {{/if}}
 {{#contentFor "scripts"}}
