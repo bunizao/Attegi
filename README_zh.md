@@ -33,6 +33,7 @@
 ### 内容功能
 
 - **诗歌卡片** - 优雅的诗歌展示，支持 Markdown 语法
+- **Agent 友好文章** - 为直接 GET 抽取提供稳定的文章选择器
 - **标签页面模板** - 浏览所有标签的自定义页面，显示文章数
 - **友链页面模板** - 友情链接展示，带莫比乌斯符号动画
 - **增强脚注** - 改进的导航和样式
@@ -95,6 +96,14 @@ Attegi 在 [Google PageSpeed Insights](https://pagespeed.web.dev/analysis/https-
 - 正文图片延迟加载
 - 使用 GLightbox 的灯箱画廊
 - 增强移动端触摸交互
+
+### Agent 友好文章
+
+> 为抓取文章并转成 Markdown 的工具提供稳定 HTML 标记
+
+- 文章页在 `<head>` 暴露 `attegi:agent-*` 元数据
+- 正文节点带有 `data-agent-content="post"`
+- Agent 可以直接获取文章 URL，并把该 HTML 节点转为 Markdown
 
 ### 目录导航
 

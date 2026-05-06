@@ -18,6 +18,13 @@
 {{#contentFor "html_class"}}cover-active{{/contentFor}}
 {{/if}}
 
+{{#contentFor "head"}}
+<meta name="attegi:agent-readable" content="post">
+<meta name="attegi:agent-content-selector" content="[data-agent-content='post']">
+<meta name="attegi:agent-title-selector" content="[data-agent-title]">
+<link rel="alternate" type="text/html" title="Agent-readable article content" href="{{url absolute="true"}}#attegi-agent-content">
+{{/contentFor}}
+
 <header class="post-header {{#if feature_image}} has-cover {{/if}}">
 	<div class="inner">
 		<span class="post-info">
@@ -26,7 +33,7 @@
 			<span class="post-count">{{primary_tag.name}}</span>
 			{{/if}}
 		</span>
-		<h1 class="post-title">{{{title}}}</h1>
+		<h1 class="post-title" data-agent-title>{{{title}}}</h1>
 		<div class="post-meta">
 			<div class="post-meta-avatars">
 				{{#foreach authors}}
@@ -78,7 +85,7 @@
 </header>
 
 <main class="content" role="main">
-	<article class="{{post_class}}">
+	<article class="{{post_class}}" data-agent-readable="post" data-agent-slug="{{slug}}" data-agent-url="{{url absolute="true"}}">
 		<div class="inner">
 
 			{{!-- Feature image caption/credit --}}
@@ -87,7 +94,7 @@
 			{{/if}}
 
 			{{!-- Add no-toc class if #no-toc tag is present --}}
-			<section class="post-content{{#has tag="#no-toc"}} no-toc{{/has}}">
+			<section id="attegi-agent-content" class="post-content{{#has tag="#no-toc"}} no-toc{{/has}}" data-agent-content="post">
 				{{content}}
 			</section>
 
