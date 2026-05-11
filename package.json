@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.4",
-    "archiver": "^7.0.0",
+    "archiver": "^8.0.0",
     "autoprefixer": "^10.5.0",
     "browser-sync": "^3.0.4",
     "cssnano": "^7.1.8",
