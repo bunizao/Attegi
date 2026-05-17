@@ -185,10 +185,8 @@
 		})();
 	</script>
 
-	{{ghost_head}}
-
 	{{!-- Optional OG image service override (post/page/tag/author) --}}
-	{{!-- Note: Ghost outputs og:image before this, Cloudflare Worker removes duplicates --}}
+	{{!-- Emit before ghost_head so crawlers that pick the first image use the custom service. --}}
 	{{!-- Using format="jpeg" to ensure compatibility with @vercel/og (WebP not supported) --}}
 	{{#if @custom.og_service_url}}
 		{{#is "post"}}
@@ -222,6 +220,8 @@
 			{{/primary_author}}
 		{{/is}}
 	{{/if}}
+
+	{{ghost_head}}
 </head>
 
 <body class="{{body_class}}"
