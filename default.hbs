@@ -197,6 +197,9 @@
 	{{#if @custom.og_service_url}}
 		<meta property="og:site_name" content="{{@site.title}}">
 		<meta property="og:locale" content="{{@site.locale}}">
+		{{#if @site.icon}}
+			<meta property="og:logo" content="{{img_url @site.icon size="s" format="png" absolute="true"}}">
+		{{/if}}
 		<meta name="twitter:card" content="summary_large_image">
 		{{#is "home"}}
 			<meta property="og:type" content="website">
