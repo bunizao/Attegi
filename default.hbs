@@ -185,11 +185,34 @@
 		})();
 	</script>
 
-	{{!-- Optional OG image service override (post/page/tag/author) --}}
-	{{!-- Emit before ghost_head so crawlers that pick the first image use the custom service. --}}
+	{{#if @custom.og_service_url}}
+		{{ghost_head exclude="social_data"}}
+	{{else}}
+		{{ghost_head}}
+	{{/if}}
+
+	{{!-- Optional social metadata override (home/post/page/tag/author) --}}
+	{{!-- Keep Ghost runtime assets while replacing its default OG/Twitter tags. --}}
 	{{!-- Using format="jpeg" to ensure compatibility with @vercel/og (WebP not supported) --}}
 	{{#if @custom.og_service_url}}
+		<meta property="og:site_name" content="{{@site.title}}">
+		<meta property="og:locale" content="{{@site.locale}}">
+		<meta name="twitter:card" content="summary_large_image">
 		{{#is "home"}}
+			<meta property="og:type" content="website">
+			<meta property="og:title" content="{{meta_title property="og"}}">
+			{{#if @site.og_description}}
+				<meta property="og:description" content="{{@site.og_description}}">
+			{{else}}
+				<meta property="og:description" content="{{@site.meta_description}}">
+			{{/if}}
+			<meta property="og:url" content="{{@site.url}}">
+			<meta name="twitter:title" content="{{meta_title property="twitter"}}">
+			{{#if @site.twitter_description}}
+				<meta name="twitter:description" content="{{@site.twitter_description}}">
+			{{else}}
+				<meta name="twitter:description" content="{{@site.meta_description}}">
+			{{/if}}
 			<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode @site.title}}&site={{encode @site.title}}{{#if @site.description}}&excerpt={{encode @site.description}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}">
 			<meta property="og:image:width" content="1200">
 			<meta property="og:image:height" content="630">
@@ -197,37 +220,99 @@
 		{{/is}}
 		{{#is "post"}}
 			{{#post}}
-				<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode title}}&site={{encode @site.title}}{{#if primary_author}}&author={{encode primary_author.name}}{{#if primary_author.profile_image}}&avatar={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if primary_tag}}&tag={{encode primary_tag.name}}{{/if}}&date={{encode (date format="YYYY-MM-DD")}}&reading={{encode (reading_time)}}{{#if feature_image}}&image={{encode (img_url feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if updated_at}}&ts={{date updated_at format="x"}}{{/if}}">
+				<meta property="og:type" content="article">
+				<meta property="og:title" content="{{title}}">
+				<meta property="og:description" content="{{excerpt}}">
+				<meta property="og:url" content="{{url absolute="true"}}">
+				<meta property="article:published_time" content="{{date published_at format="YYYY-MM-DDTHH:mm:ss.SSSZ"}}">
+				<meta property="article:modified_time" content="{{date updated_at format="YYYY-MM-DDTHH:mm:ss.SSSZ"}}">
+				{{#foreach tags}}
+					<meta property="article:tag" content="{{name}}">
+				{{/foreach}}
+				<meta name="twitter:title" content="{{title}}">
+				<meta name="twitter:description" content="{{excerpt}}">
+				<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode title}}&site={{encode @site.title}}{{#if excerpt}}&excerpt={{encode (excerpt characters="50")}}{{/if}}{{#if primary_author}}&author={{encode primary_author.name}}{{#if primary_author.profile_image}}&avatar={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if primary_tag}}&tag={{encode primary_tag.name}}{{/if}}&date={{encode (date format="YYYY-MM-DD")}}&reading={{encode (reading_time)}}{{#if feature_image}}&image={{encode (img_url feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if updated_at}}&ts={{date updated_at format="x"}}{{/if}}">
 				<meta property="og:image:width" content="1200">
 				<meta property="og:image:height" content="630">
-				<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode title}}&site={{encode @site.title}}{{#if primary_author}}&author={{encode primary_author.name}}{{#if primary_author.profile_image}}&avatar={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if primary_tag}}&tag={{encode primary_tag.name}}{{/if}}&date={{encode (date format="YYYY-MM-DD")}}&reading={{encode (reading_time)}}{{#if feature_image}}&image={{encode (img_url feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if updated_at}}&ts={{date updated_at format="x"}}{{/if}}">
+				<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode title}}&site={{encode @site.title}}{{#if excerpt}}&excerpt={{encode (excerpt characters="50")}}{{/if}}{{#if primary_author}}&author={{encode primary_author.name}}{{#if primary_author.profile_image}}&avatar={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if primary_tag}}&tag={{encode primary_tag.name}}{{/if}}&date={{encode (date format="YYYY-MM-DD")}}&reading={{encode (reading_time)}}{{#if feature_image}}&image={{encode (img_url feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if updated_at}}&ts={{date updated_at format="x"}}{{/if}}">
 			{{/post}}
 		{{/is}}
 		{{#is "page"}}
 			{{#post}}
-				<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode title}}&site={{encode @site.title}}{{#if primary_author}}&author={{encode primary_author.name}}{{#if primary_author.profile_image}}&avatar={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if primary_tag}}&tag={{encode primary_tag.name}}{{/if}}&date={{encode (date format="YYYY-MM-DD")}}&reading={{encode (reading_time)}}{{#if feature_image}}&image={{encode (img_url feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if updated_at}}&ts={{date updated_at format="x"}}{{/if}}">
+				<meta property="og:type" content="article">
+				<meta property="og:title" content="{{title}}">
+				<meta property="og:description" content="{{excerpt}}">
+				<meta property="og:url" content="{{url absolute="true"}}">
+				<meta property="article:published_time" content="{{date published_at format="YYYY-MM-DDTHH:mm:ss.SSSZ"}}">
+				<meta property="article:modified_time" content="{{date updated_at format="YYYY-MM-DDTHH:mm:ss.SSSZ"}}">
+				{{#foreach tags}}
+					<meta property="article:tag" content="{{name}}">
+				{{/foreach}}
+				<meta name="twitter:title" content="{{title}}">
+				<meta name="twitter:description" content="{{excerpt}}">
+				<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode title}}&site={{encode @site.title}}{{#if excerpt}}&excerpt={{encode (excerpt characters="50")}}{{/if}}{{#if primary_author}}&author={{encode primary_author.name}}{{#if primary_author.profile_image}}&avatar={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if primary_tag}}&tag={{encode primary_tag.name}}{{/if}}&date={{encode (date format="YYYY-MM-DD")}}&reading={{encode (reading_time)}}{{#if feature_image}}&image={{encode (img_url feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if updated_at}}&ts={{date updated_at format="x"}}{{/if}}">
 				<meta property="og:image:width" content="1200">
 				<meta property="og:image:height" content="630">
-				<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode title}}&site={{encode @site.title}}{{#if primary_author}}&author={{encode primary_author.name}}{{#if primary_author.profile_image}}&avatar={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if primary_tag}}&tag={{encode primary_tag.name}}{{/if}}&date={{encode (date format="YYYY-MM-DD")}}&reading={{encode (reading_time)}}{{#if feature_image}}&image={{encode (img_url feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if updated_at}}&ts={{date updated_at format="x"}}{{/if}}">
+				<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode title}}&site={{encode @site.title}}{{#if excerpt}}&excerpt={{encode (excerpt characters="50")}}{{/if}}{{#if primary_author}}&author={{encode primary_author.name}}{{#if primary_author.profile_image}}&avatar={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if primary_tag}}&tag={{encode primary_tag.name}}{{/if}}&date={{encode (date format="YYYY-MM-DD")}}&reading={{encode (reading_time)}}{{#if feature_image}}&image={{encode (img_url feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if updated_at}}&ts={{date updated_at format="x"}}{{/if}}">
 			{{/post}}
 		{{/is}}
 		{{#is "tag"}}
-			<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode tag.name}}&site={{encode @site.title}}&tag={{encode tag.name}}{{#if tag.feature_image}}&image={{encode (img_url tag.feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if tag.updated_at}}&ts={{date tag.updated_at format="x"}}{{/if}}">
+			<meta property="og:type" content="website">
+			<meta property="og:title" content="{{meta_title property="og"}}">
+			{{#if tag.description}}
+				<meta property="og:description" content="{{tag.description}}">
+			{{else}}
+				{{#if @site.og_description}}
+					<meta property="og:description" content="{{@site.og_description}}">
+				{{else}}
+					<meta property="og:description" content="{{@site.meta_description}}">
+				{{/if}}
+			{{/if}}
+			<meta property="og:url" content="{{url absolute="true"}}">
+			<meta name="twitter:title" content="{{meta_title property="twitter"}}">
+			{{#if tag.description}}
+				<meta name="twitter:description" content="{{tag.description}}">
+			{{else}}
+				{{#if @site.twitter_description}}
+					<meta name="twitter:description" content="{{@site.twitter_description}}">
+				{{else}}
+					<meta name="twitter:description" content="{{@site.meta_description}}">
+				{{/if}}
+			{{/if}}
+			<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode tag.name}}&site={{encode @site.title}}{{#if tag.description}}&excerpt={{encode tag.description}}{{/if}}&tag={{encode tag.name}}{{#if tag.feature_image}}&image={{encode (img_url tag.feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if tag.updated_at}}&ts={{date tag.updated_at format="x"}}{{/if}}">
 			<meta property="og:image:width" content="1200">
 			<meta property="og:image:height" content="630">
-			<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode tag.name}}&site={{encode @site.title}}&tag={{encode tag.name}}{{#if tag.feature_image}}&image={{encode (img_url tag.feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if tag.updated_at}}&ts={{date tag.updated_at format="x"}}{{/if}}">
+			<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode tag.name}}&site={{encode @site.title}}{{#if tag.description}}&excerpt={{encode tag.description}}{{/if}}&tag={{encode tag.name}}{{#if tag.feature_image}}&image={{encode (img_url tag.feature_image size="l" format="jpeg" absolute="true")}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if tag.updated_at}}&ts={{date tag.updated_at format="x"}}{{/if}}">
 		{{/is}}
 		{{#is "author"}}
-			{{#primary_author}}
-				<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode name}}&site={{encode @site.title}}&author={{encode name}}{{#if profile_image}}&avatar={{encode (img_url profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{#if cover_image}}&image={{encode (img_url cover_image size="l" format="jpeg" absolute="true")}}{{else}}{{#if profile_image}}&image={{encode (img_url profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if updated_at}}&ts={{date updated_at format="x"}}{{/if}}">
-				<meta property="og:image:width" content="1200">
-				<meta property="og:image:height" content="630">
-				<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode name}}&site={{encode @site.title}}&author={{encode name}}{{#if profile_image}}&avatar={{encode (img_url profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{#if cover_image}}&image={{encode (img_url cover_image size="l" format="jpeg" absolute="true")}}{{else}}{{#if profile_image}}&image={{encode (img_url profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if updated_at}}&ts={{date updated_at format="x"}}{{/if}}">
-			{{/primary_author}}
+			<meta property="og:type" content="profile">
+			<meta property="og:title" content="{{meta_title property="og"}}">
+			{{#if primary_author.bio}}
+				<meta property="og:description" content="{{primary_author.bio}}">
+			{{else}}
+				{{#if @site.og_description}}
+					<meta property="og:description" content="{{@site.og_description}}">
+				{{else}}
+					<meta property="og:description" content="{{@site.meta_description}}">
+				{{/if}}
+			{{/if}}
+			<meta property="og:url" content="{{url absolute="true"}}">
+			<meta name="twitter:title" content="{{meta_title property="twitter"}}">
+			{{#if primary_author.bio}}
+				<meta name="twitter:description" content="{{primary_author.bio}}">
+			{{else}}
+				{{#if @site.twitter_description}}
+					<meta name="twitter:description" content="{{@site.twitter_description}}">
+				{{else}}
+					<meta name="twitter:description" content="{{@site.meta_description}}">
+				{{/if}}
+			{{/if}}
+			<meta property="og:image" content="{{@custom.og_service_url}}?title={{encode primary_author.name}}&site={{encode @site.title}}{{#if primary_author.bio}}&excerpt={{encode primary_author.bio}}{{/if}}&author={{encode primary_author.name}}{{#if primary_author.profile_image}}&avatar={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{#if primary_author.cover_image}}&image={{encode (img_url primary_author.cover_image size="l" format="jpeg" absolute="true")}}{{else}}{{#if primary_author.profile_image}}&image={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if primary_author.updated_at}}&ts={{date primary_author.updated_at format="x"}}{{/if}}">
+			<meta property="og:image:width" content="1200">
+			<meta property="og:image:height" content="630">
+			<meta name="twitter:image" content="{{@custom.og_service_url}}?title={{encode primary_author.name}}&site={{encode @site.title}}{{#if primary_author.bio}}&excerpt={{encode primary_author.bio}}{{/if}}&author={{encode primary_author.name}}{{#if primary_author.profile_image}}&avatar={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{#if primary_author.cover_image}}&image={{encode (img_url primary_author.cover_image size="l" format="jpeg" absolute="true")}}{{else}}{{#if primary_author.profile_image}}&image={{encode (img_url primary_author.profile_image size="s" format="jpeg" absolute="true")}}{{/if}}{{/if}}{{#if @site.icon}}&icon={{encode (img_url @site.icon size="s" format="png" absolute="true")}}{{/if}}{{#if @custom.og_service_theme}}&theme={{encode @custom.og_service_theme}}{{/if}}{{#if primary_author.updated_at}}&ts={{date primary_author.updated_at format="x"}}{{/if}}">
 		{{/is}}
 	{{/if}}
-
-	{{ghost_head}}
 </head>
 
 <body class="{{body_class}}"
