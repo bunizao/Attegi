@@ -9,12 +9,18 @@ import { initParallax } from '../features/parallax.js';
 import { initStickyLogo } from '../features/sticky-logo.js';
 import { initGallery } from '../features/gallery.js';
 import { initThemeSwitcher } from '../features/theme-switcher.js';
+import { initExcerptClean } from '../features/excerpt-clean.js';
+import { initTagCards } from '../features/tag-cards.js';
+import { initLinksMotion } from '../features/links-motion.js';
 
 onReady(function() {
   // Initialize core site features
   initMenu();
   initParallax();
   initStickyLogo();
+  initExcerptClean();
+  initTagCards();
+  initLinksMotion();
 
   // Defer non-critical features
   setTimeout(function() {
