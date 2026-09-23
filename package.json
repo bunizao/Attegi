@@ -67,7 +67,7 @@
     "postcss-cli": "^11.0.0",
     "sass": "^1.99.0",
     "tailwindcss": "^4.2.4",
-    "tocbot": "^4.36.4"
+    "tocbot": "^4.36.8"
   },
   "config": {
     "posts_per_page": 8,
