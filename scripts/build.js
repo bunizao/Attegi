@@ -58,28 +58,6 @@ async function copyVendorFiles() {
 }
 
 /**
- * Copy font files
- */
-async function copyFonts() {
-  const srcDir = path.resolve('src/font');
-  const destDir = path.resolve('assets/font');
-
-  if (!fs.existsSync(srcDir)) {
-    console.warn('  Warning: src/font directory not found');
-    return;
-  }
-
-  fs.mkdirSync(destDir, { recursive: true });
-
-  const files = fs.readdirSync(srcDir);
-  for (const file of files) {
-    await copyFile(path.join(srcDir, file), path.join(destDir, file));
-  }
-
-  console.log(`  Copied ${files.length} font files`);
-}
-
-/**
  * Copy CSS vendor files
  */
 async function copyCssVendor() {
@@ -139,7 +117,6 @@ async function build() {
     // Copy assets
     console.log('\n[Assets] Copying static files...');
     await copyVendorFiles();
-    await copyFonts();
     await copyCssVendor();
 
     // Build JavaScript
