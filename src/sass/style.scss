@@ -920,10 +920,6 @@ textarea {
 		border-radius: var(--radius-sm);
 	}
 
-	.fluid-width-video-wrapper {
-		margin: 0 0 2.5rem;
-	}
-
 	/* Enhanced Video Responsive Support (Reframe-style) */
 	.js-reframe {
 		position: relative;
@@ -932,39 +928,6 @@ textarea {
 		padding-bottom: 56.25%; /* 16:9 aspect ratio */
 		overflow: hidden;
 		margin: 0 0 2.5rem;
-
-		iframe,
-		object,
-		embed,
-		video {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			border: 0;
-		}
-	}
-
-	/* Responsive embeds for various aspect ratios */
-	.video-responsive {
-		position: relative;
-		width: 100%;
-		height: 0;
-		margin: 0 0 2.5rem;
-		overflow: hidden;
-
-		&.ratio-16-9 {
-			padding-bottom: 56.25%;
-		}
-
-		&.ratio-4-3 {
-			padding-bottom: 75%;
-		}
-
-		&.ratio-21-9 {
-			padding-bottom: 42.857%;
-		}
 
 		iframe,
 		object,
@@ -2426,50 +2389,6 @@ textarea {
 }
 
 /* Enhanced Social Media Icon Support */
-.social-icons {
-	display: flex;
-	gap: 1.5rem;
-	align-items: center;
-
-	.icon-link {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 2.5rem;
-		height: 2.5rem;
-		border-radius: 50%;
-		color: var(--color-content-secondary);
-		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
-		transition: color ease-out 0.2s, background-color ease-out 0.2s, border-color ease-out 0.2s, transform ease-out 0.2s;
-		text-decoration: none;
-
-		&:hover,
-		&:focus {
-			color: var(--color-background-main);
-			background: var(--ghost-accent-color);
-			border-color: var(--ghost-accent-color);
-			transform: translateY(-2px);
-			box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-		}
-
-		.icon {
-			font-size: 1.2rem;
-		}
-	}
-
-	&.large .icon-link {
-		width: 3rem;
-		height: 3rem;
-
-		.icon {
-			font-size: 1.4rem;
-		}
-	}
-}
-
-/* Social Media Icons - unified color, inherits from parent */
-
 @keyframes fadein {
 	0% {
 		opacity: 0.2;
@@ -2765,13 +2684,6 @@ textarea {
 	}
 
 	&.archive-tag {}
-
-	.archive-taglist {
-		display: block;
-		margin: 2rem 0 1rem;
-		max-width: none;
-		float: none;
-	}
 }
 
 .has-cover {
@@ -6524,16 +6436,6 @@ a.post-tag-chip {
 
 	&:hover .tag-card-name {
 		color: #fff;
-	}
-}
-
-// Description link for cards with image
-.tag-card-link-desc {
-	padding: 1.25rem 1.5rem;
-	border-bottom: 1px solid var(--color-background-contrast);
-
-	.tag-card-description {
-		margin: 0;
 	}
 }
 
