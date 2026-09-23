@@ -1,10 +1,12 @@
+@use "mixins" as *;
+
 /*
  * Modern Syntax Highlighting Theme
  * Inspired by One Dark Pro with custom enhancements
  */
 
-/* Light theme colors */
 :root {
+    /* Light theme colors */
     --code-bg: #f8f9fa;
     --code-border: #e1e4e8;
     --code-text: #24292e;
@@ -31,41 +33,8 @@
     --code-label-bg: #f8f9fa;
     --code-label-text: #5a6570;
     --code-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
 
-/* Dark theme colors */
-html.theme-dark {
-    --code-bg: #282c34;
-    --code-border: #3e4451;
-    --code-text: #abb2bf;
-    --code-comment: #7f848e;
-    --code-keyword: #c678dd;
-    --code-string: #98c379;
-    --code-number: #d19a66;
-    --code-function: #61afef;
-    --code-variable: #e06c75;
-    --code-operator: #56b6c2;
-    --code-class: #e5c07b;
-    --code-constant: #d19a66;
-    --code-tag: #e06c75;
-    --code-attribute: #d19a66;
-    --code-selector: #e06c75;
-    --code-property: #61afef;
-    --code-punctuation: #abb2bf;
-    --code-builtin: #e5c07b;
-    --code-type: #e5c07b;
-    --code-meta: #7f848e;
-    --code-regexp: #98c379;
-    --code-deletion: #e06c75;
-    --code-addition: #98c379;
-    --code-label-bg: #282c34;
-    --code-label-text: #9da5b4;
-    --code-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-}
-
-/* System dark mode */
-@media (prefers-color-scheme: dark) {
-    html:not(.theme-light) {
+    @include dark($root: true) {
         --code-bg: #282c34;
         --code-border: #3e4451;
         --code-text: #abb2bf;

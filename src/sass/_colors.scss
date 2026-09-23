@@ -1,13 +1,21 @@
+@use "mixins" as *;
+
 :root {
   --color-background-main: #FFF;
   --color-background-secondary: #F7F8FA;
   --color-background-contrast: #E1E3E6;
-  --color-background-overlay: rgba(37,40,43,0.9);
   --color-content-lead: #000;
   --color-content-main: #374151;
-  --color-content-secondary: #73777D;
+  // AA on bg-main (6.42:1), bg-secondary (6.04:1) and bg-contrast (4.99:1)
+  --color-content-secondary: #5B5F66;
 
-  /* Mobile menu colors - Always dark style */
+  // Text/icon color for content painted on top of an accent-colored fill.
+  // Ghost admins can pick any accent, so the real value is computed at
+  // runtime from the accent's luminance (see default.hbs); these are the
+  // pre-JS/no-JS fallbacks for the shipped default accent colors.
+  --color-on-accent: #fff;
+
+  /* Mobile menu colors - Always dark style, same in both themes */
   --color-menu-bg: rgba(28, 30, 32, 0.88);
   --color-menu-bg-solid: rgba(28, 30, 32, 0.98);
   --color-menu-text: rgba(255, 255, 255, 0.9);
@@ -19,6 +27,7 @@
 
   /* Semantic colors */
   --color-highlight: #FEF3C7;
+  --color-highlight-ink: #000;
   --color-social-twitter: #1da1f2;
   --color-social-facebook: #3b5998;
   --color-social-instagram: #e4405f;
@@ -27,68 +36,40 @@
   --color-social-youtube: #ff0000;
   --color-social-rss: #ff6600;
 
+  /* Callout card hues (Koenig callout/blockquote emoji auto-detection) */
+  --color-callout-info: #3b82f6;
+  --color-callout-danger: #ef4444;
+  --color-callout-warning: #f59e0b;
+  --color-callout-success: #10b981;
+  --color-callout-purple: #a855f7;
+
   /* Liquid glass gradient base */
   --liquid-glass-bg:
     radial-gradient(180% 140% at 20% 20%, rgba(255,255,255,0.18), rgba(255,255,255,0.02)),
     linear-gradient(135deg, #6a7cff, #7bf3d0, #ff9fd3);
 
-  /* Ghost portal/comments brand color - mirror accent */
-  --brandcolor: var(--ghost-accent-color, #14b8a6);
-  --brand-color: var(--ghost-accent-color, #14b8a6); /* some Portal builds read this name */
-}
+  /* Ghost portal/comments brand color - mirror accent.
+     Kept as two names because some Portal builds read `--brand-color`
+     instead of `--brandcolor`; both derive from the same source. */
+  --brandcolor: var(--ghost-accent-color, #3A6B7E);
+  --brand-color: var(--brandcolor);
 
-.theme-dark:root {
-  --color-background-main: #1D1F21;
-  --color-background-secondary: #25282D;
-  --color-background-contrast: #353A40;
-  --color-background-overlay: rgba(12,14,16,0.92);
-  --color-content-lead: #F6F7FA;
-  --color-content-main: #E2E6EB;
-  --color-content-secondary: #B6BBC4;
+  color-scheme: light;
 
-  /* Mobile menu colors - Dark theme */
-  --color-menu-bg: rgba(28, 30, 32, 0.88);
-  --color-menu-bg-solid: rgba(28, 30, 32, 0.98);
-  --color-menu-text: rgba(255, 255, 255, 0.9);
-  --color-menu-text-hover: #fff;
-  --color-menu-border: rgba(255, 255, 255, 0.08);
-  --color-menu-shadow: rgba(0, 0, 0, 0.25);
-  --color-menu-item-line: rgba(255, 255, 255, 0.25);
-  --color-menu-item-hover-bg: rgba(255, 255, 255, 0.05);
-
-  /* Semantic colors - adjusted for dark mode */
-  --color-highlight: #fbbf24;
-  --color-social-twitter: #1da1f2;
-  --color-social-facebook: #3b5998;
-  --color-social-instagram: #e4405f;
-  --color-social-linkedin: #0077b5;
-  --color-social-github: #555; /* Lighter for dark mode */
-  --color-social-youtube: #ff0000;
-  --color-social-rss: #ff6600;
-
-  /* Ghost portal/comments brand color - mirror accent */
-  --brandcolor: var(--ghost-accent-color, #14b8a6);
-  --brand-color: var(--ghost-accent-color, #14b8a6);
-}
-
-@media (prefers-color-scheme: dark) {
-  html:not(.theme-light):root {
+  @include dark($root: true) {
     --color-background-main: #1D1F21;
     --color-background-secondary: #25282D;
     --color-background-contrast: #353A40;
-    --color-background-overlay: rgba(12,14,16,0.92);
     --color-content-lead: #F6F7FA;
     --color-content-main: #E2E6EB;
     --color-content-secondary: #B6BBC4;
 
-    /* Mobile menu colors - Dark theme (system preference) */
-    --color-menu-bg: rgba(28, 30, 32, 0.88);
-    --color-menu-bg-solid: rgba(28, 30, 32, 0.98);
-    --color-menu-text: rgba(255, 255, 255, 0.9);
-    --color-menu-text-hover: #fff;
-    --color-menu-border: rgba(255, 255, 255, 0.08);
-    --color-menu-shadow: rgba(0, 0, 0, 0.25);
-    --color-menu-item-line: rgba(255, 255, 255, 0.25);
-    --color-menu-item-hover-bg: rgba(255, 255, 255, 0.05);
+    --color-on-accent: #1D1F21;
+
+    --color-highlight: #fbbf24;
+    --color-highlight-ink: #1D1F21;
+    --color-social-github: #555; /* Lighter for dark mode */
+
+    color-scheme: dark;
   }
 }
