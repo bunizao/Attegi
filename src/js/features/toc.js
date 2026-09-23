@@ -5,7 +5,7 @@
 
 import { doc, qs } from '../core/index.js';
 import { getI18n } from '../core/i18n.js';
-import { onScroll, getReadingProgress } from '../core/scroll.js';
+import { onScroll, getReadingProgress, getFooterAvoidingBottom } from '../core/scroll.js';
 import { openDialog, closeDialog } from '../core/dialog.js';
 
 var config = { minHeadings: 2 };
@@ -336,18 +336,11 @@ function updateTriggerPosition() {
   if (!elements.mobileTrigger || !footer) return;
   setTriggerDefaultBottom();
 
-  var footerRect = footer.getBoundingClientRect();
-  var windowHeight = window.innerHeight;
   var defaultBottom = getTriggerDefaultBottom();
   var btnHeight = elements.mobileTrigger.getBoundingClientRect().height || 0;
-  var btnTop = windowHeight - defaultBottom - btnHeight;
 
-  if (footerRect.top < windowHeight && footerRect.top < btnTop + btnHeight + triggerSafeMargin) {
-    var newBottom = windowHeight - footerRect.top + triggerSafeMargin;
-    elements.mobileTrigger.style.bottom = newBottom + 'px';
-  } else {
-    elements.mobileTrigger.style.bottom = defaultBottom + 'px';
-  }
+  elements.mobileTrigger.style.bottom =
+    getFooterAvoidingBottom(footer, defaultBottom, btnHeight, triggerSafeMargin) + 'px';
 }
 
 function updateTOCVisibility() {

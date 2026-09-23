@@ -66,3 +66,26 @@ export function getReadingProgress(content) {
   var viewportMiddle = scrollY + window.innerHeight / 2;
   return Math.max(0, (viewportMiddle - contentTop) / contentHeight);
 }
+
+/**
+ * `bottom` offset (px) for a fixed floating button that should lift above
+ * the footer instead of overlapping it once the footer scrolls into view.
+ * Shared by the TOC mobile trigger and the back-to-top button.
+ * @param {Element} footer
+ * @param {number} defaultBottom - resting `bottom` offset in px
+ * @param {number} btnHeight - button height in px
+ * @param {number} margin - gap to keep above the footer in px
+ * @returns {number} the `bottom` offset to apply, in px
+ */
+export function getFooterAvoidingBottom(footer, defaultBottom, btnHeight, margin) {
+  if (!footer) return defaultBottom;
+
+  var footerTop = footer.getBoundingClientRect().top;
+  var windowHeight = window.innerHeight;
+  var btnTop = windowHeight - defaultBottom - btnHeight;
+
+  if (footerTop < windowHeight && footerTop < btnTop + btnHeight + margin) {
+    return windowHeight - footerTop + margin;
+  }
+  return defaultBottom;
+}
