@@ -229,7 +229,6 @@ textarea {
 		margin: 1.2em 0 0.5em;
 		line-height: var(--line-height-heading, 1.35);
 		font-family: var(--gh-font-heading);
-		text-rendering: optimizeLegibility;
 		color: var(--color-content-lead);
 		letter-spacing: var(--letter-spacing-tight, -0.022em);
 		text-wrap: balance;
@@ -1564,7 +1563,6 @@ textarea {
 	}
 
 	.kg-bookmark-content {
-		text-rendering: optimizeLegibility;
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
@@ -1709,7 +1707,6 @@ textarea {
 	}
 
 	.kg-bookmark-metadata {
-		text-rendering: optimizeLegibility;
 		display: flex;
 		align-items: center;
 		font-size: 1.4rem;
@@ -5367,7 +5364,6 @@ a.post-tag-chip {
 	}
 
 	.kg-bookmark-content {
-		text-rendering: optimizeLegibility;
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
@@ -5448,7 +5444,6 @@ a.post-tag-chip {
 	}
 
 	.kg-bookmark-metadata {
-		text-rendering: optimizeLegibility;
 		display: flex;
 		align-items: center;
 		font-size: 1.4rem;
