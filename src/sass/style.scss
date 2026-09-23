@@ -10,7 +10,7 @@
 @use "highlight";
 @use "toc";
 @use "poem-card";
-$inner: calc(64rem + 8vw);
+$inner: min(calc(64rem + 8vw), 76rem);
 /* ==========================================================================
    Basics
    ========================================================================== */
@@ -5909,7 +5909,7 @@ a.post-tag-chip {
 }
 
 /* Mobile adjustments */
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $breakpoint-medium) {
 	.glightbox-container .gslide {
 		padding: 20px !important;
 		// Enhanced touch handling on mobile
@@ -6068,7 +6068,7 @@ a.post-tag-chip {
 }
 
 /* Mobile adjustments */
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: $breakpoint-medium) {
 	.back-to-top {
 		bottom: 24px;
 		right: 24px;
