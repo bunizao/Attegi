@@ -94,13 +94,6 @@ img {
 	}
 }
 
-// Author avatars - fixed size to prevent CLS
-.post-meta-avatar {
-	width: 3.6rem;
-	height: 3.6rem;
-	flex-shrink: 0;
-}
-
 // Navigation logo - fixed height to prevent CLS
 .nav-header .logo img {
 	width: auto;
@@ -221,7 +214,7 @@ textarea {
 		box-shadow: inset 0 -2px 0 var(--ghost-accent-color);
 		transition: box-shadow ease-out 0.1s;
 
-		&:focus,
+		&:focus-visible,
 		&:hover {
 			box-shadow: inset 0 -3px 0 var(--ghost-accent-color);
 		}
@@ -1047,11 +1040,11 @@ textarea {
 		box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 	}
 
-	input[type="reset"]:focus,
-	input[type="submit"]:focus,
-	input[type="button"]:focus,
-	.kg-button-card a.kg-btn:focus,
-	.button:focus {
+	input[type="reset"]:focus-visible,
+	input[type="submit"]:focus-visible,
+	input[type="button"]:focus-visible,
+	.kg-button-card a.kg-btn:focus-visible,
+	.button:focus-visible {
 		outline: 2px solid var(--ghost-accent-color);
 		outline-offset: 2px;
 		box-shadow: 0 0 0 3px rgba(var(--ghost-accent-color), 0.2);
@@ -1107,7 +1100,7 @@ textarea {
 		a {
 			box-shadow: inset 0 -1px 0 var(--color-background-contrast);
 
-			&:focus,
+			&:focus-visible,
 			&:hover {
 				box-shadow: inset 0 -2px 0 var(--color-background-contrast);
 			}
@@ -1852,6 +1845,8 @@ textarea {
 	}
 
 	// KG Header Card
+	// Always renders over its own background image + gradient scrim,
+	// so text stays literal white regardless of theme.
 	.kg-header-card {
 		position: relative;
 		padding: 6rem var(--space-8);
@@ -2036,7 +2031,7 @@ textarea {
 			margin: 0;
 		}
 
-		// With background image
+		// With background image: literal white text over the image, not theme color.
 		&.kg-signup-card-image {
 			.kg-signup-card-heading,
 			.kg-signup-card-subheading,
@@ -2641,7 +2636,7 @@ textarea {
 		color: var(--ghost-accent-color);
 		transition: color linear 0.1s;
 
-		&:focus,
+		&:focus-visible,
 		&:hover {
 			opacity: 0.92;
 		}
@@ -2707,7 +2702,7 @@ textarea {
 		a {
 			color: rgba(255,255,255,0.8);
 
-			&:focus,
+			&:focus-visible,
 			&:hover {
 				color: white;
 			}
@@ -3115,7 +3110,7 @@ textarea {
 		transition: color 0.2s ease;
 
 		&:hover,
-		&:focus {
+		&:focus-visible {
 			color: var(--color-content-main);
 		}
 	}
@@ -3222,7 +3217,7 @@ textarea {
 	transition: color 0.2s ease, background-color 0.2s ease;
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		color: var(--color-content-main);
 		background: var(--color-background-contrast);
 	}
@@ -3255,7 +3250,7 @@ textarea {
 	transition: color 0.2s ease, background-color 0.2s ease;
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		color: var(--color-content-main);
 		background: var(--color-background-contrast);
 	}
@@ -3556,12 +3551,14 @@ textarea {
 	position: static;
 }
 
+// Fixed size (prevents CLS), shrink disabled so it never squeezes in flex rows.
 .post-meta-avatar {
 	position: relative;
 	display: block;
 	width: 3.6rem;
 	height: 3.6rem;
 	margin: 0;
+	flex-shrink: 0;
 	border-radius: 50%;
 	border: 2px solid var(--color-background-contrast);
 	box-sizing: border-box;
@@ -3831,7 +3828,7 @@ textarea {
 		font-weight: 400;
 		transition: color ease-out 0.2s;
 
-		&:focus,
+		&:focus-visible,
 		&:hover {
 			color: var(--color-content-main);
 		}
@@ -4094,7 +4091,7 @@ textarea {
 		inset: -0.7rem;
 	}
 
-	&:focus,
+	&:focus-visible,
 	&:hover {
 		background: var(--ghost-accent-color);
 		color: var(--color-on-accent);
@@ -4149,7 +4146,7 @@ textarea {
 		inset: -0.7rem;
 	}
 
-	&:focus,
+	&:focus-visible,
 	&:hover {
 		background: var(--ghost-accent-color);
 		color: var(--color-on-accent);
@@ -4174,6 +4171,72 @@ textarea {
 		border-left: 0;
 		border-right: 0;
 		border-radius: 0;
+	}
+
+	/* Ghost Comments / Portal buttons - keep in sync with accent color */
+	.gh-btn,
+	.gh-btn-icon {
+		background: var(--ghost-accent-color);
+		border-color: var(--ghost-accent-color);
+		color: var(--color-on-accent);
+
+		&:hover,
+		&:focus-visible {
+			filter: brightness(0.92);
+			color: var(--color-on-accent);
+		}
+	}
+
+	.gh-btn-outline {
+		background: transparent;
+		color: var(--ghost-accent-color);
+		border-color: color-mix(in srgb, var(--ghost-accent-color) 60%, transparent);
+
+		&:hover,
+		&:focus-visible {
+			background: color-mix(in srgb, var(--ghost-accent-color) 10%, transparent);
+		}
+	}
+
+	/* Ghost Comments CTA buttons */
+	.gh-comments {
+		.gh-btn,
+		.gh-btn-icon {
+			background: var(--ghost-accent-color);
+			border-color: var(--ghost-accent-color);
+			color: var(--color-on-accent);
+
+			&:hover,
+			&:focus-visible {
+				filter: brightness(0.92);
+				color: var(--color-on-accent);
+			}
+		}
+
+		.gh-btn-outline,
+		.gh-comments-cta-signin,
+		.gh-comments-cta-signup {
+			color: var(--ghost-accent-color);
+
+			a {
+				color: var(--ghost-accent-color);
+
+				&:hover,
+				&:focus-visible {
+					opacity: 0.85;
+				}
+			}
+		}
+
+		.gh-btn-outline {
+			background: transparent;
+			border-color: color-mix(in srgb, var(--ghost-accent-color) 60%, transparent);
+
+			&:hover,
+			&:focus-visible {
+				background: color-mix(in srgb, var(--ghost-accent-color) 10%, transparent);
+			}
+		}
 	}
 }
 
@@ -4227,7 +4290,7 @@ textarea {
 	appearance: none;
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		transform: translateY(-1px);
 		box-shadow: 0 12px 30px color-mix(in srgb, var(--ghost-accent-color) 28%, transparent);
 	}
@@ -4248,74 +4311,6 @@ textarea {
 
 .post-comments-container {
 	margin-top: var(--space-5);
-}
-
-/* Ghost Comments / Portal buttons - keep in sync with accent color */
-.post-comments {
-	.gh-btn,
-	.gh-btn-icon {
-		background: var(--ghost-accent-color);
-		border-color: var(--ghost-accent-color);
-		color: var(--color-on-accent);
-
-		&:hover,
-		&:focus {
-			filter: brightness(0.92);
-			color: var(--color-on-accent);
-		}
-	}
-
-	.gh-btn-outline {
-		background: transparent;
-		color: var(--ghost-accent-color);
-		border-color: color-mix(in srgb, var(--ghost-accent-color) 60%, transparent);
-
-		&:hover,
-		&:focus {
-			background: color-mix(in srgb, var(--ghost-accent-color) 10%, transparent);
-		}
-	}
-
-	/* Ghost Comments CTA buttons */
-	.gh-comments {
-		.gh-btn,
-		.gh-btn-icon {
-			background: var(--ghost-accent-color);
-			border-color: var(--ghost-accent-color);
-			color: var(--color-on-accent);
-
-			&:hover,
-			&:focus {
-				filter: brightness(0.92);
-				color: var(--color-on-accent);
-			}
-		}
-
-		.gh-btn-outline,
-		.gh-comments-cta-signin,
-		.gh-comments-cta-signup {
-			color: var(--ghost-accent-color);
-
-			a {
-				color: var(--ghost-accent-color);
-
-				&:hover,
-				&:focus {
-					opacity: 0.85;
-				}
-			}
-		}
-
-		.gh-btn-outline {
-			background: transparent;
-			border-color: color-mix(in srgb, var(--ghost-accent-color) 60%, transparent);
-
-			&:hover,
-			&:focus {
-				background: color-mix(in srgb, var(--ghost-accent-color) 10%, transparent);
-			}
-		}
-	}
 }
 
 /* ==========================================================================
@@ -4436,7 +4431,7 @@ textarea {
 			background: var(--ghost-accent-color) !important;
 			transition: filter ease-out 0.2s;
 
-			&:focus,
+			&:focus-visible,
 			&:hover {
 				opacity: inherit;
 				filter: brightness(0.9);
@@ -4689,7 +4684,7 @@ textarea {
 	transition-timing-function: ease;
 	border-radius: 4rem;
 	box-sizing: border-box;
-	&:focus,
+	&:focus-visible,
 	&:hover {
 		color: var(--color-content-main);
 		border-color: var(--ghost-accent-color);
@@ -5739,6 +5734,8 @@ a.post-tag-chip {
 
 /* ==========================================================================
    GLightbox - Clean Style (like Format theme)
+   The lightbox always sits on its own dark scrim regardless of site theme,
+   so controls and captions below intentionally stay literal white.
    ========================================================================== */
 
 /* Gallery image hover effect */
@@ -6716,6 +6713,7 @@ a.post-tag-chip {
 		display: none !important;
 	}
 
+	// Always literal white paper/black ink here, independent of theme.
 	html,
 	body {
 		background: #fff;
