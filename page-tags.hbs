@@ -15,18 +15,18 @@
 
 <header class="blog-header">
     <div class="inner">
-        <div class="tags-page-header tw:relative tw:z-10 tw:mb-[calc(2rem+1vw)] tw:border-b tw:border-[var(--color-background-contrast)] tw:pb-[calc(3rem+1.5vw)] tw:text-center">
-            <span class="tags-page-label tw:mb-[1rem] tw:inline-block tw:text-[1.4em] tw:font-[500] tw:uppercase tw:tracking-[0.1em] tw:text-[var(--ghost-accent-color)]">{{t "Browse"}}</span>
-            <h1 class="tags-page-title tw:m-[0_0_1rem] tw:font-heading tw:text-[4em] tw:font-[700] tw:leading-[1.1] tw:text-[var(--color-content-lead)] tw:max-[640px]:text-[3em]">{{t "Topics"}}</h1>
-            <p class="tags-page-description tw:m-[0_auto] tw:max-w-[50rem] tw:text-[1.8em] tw:leading-[1.5] tw:text-[var(--color-content-secondary)] tw:max-[640px]:text-[1.6em]">{{t "Explore all topics and discover content that interests you"}}</p>
+        <div class="tags-page-header">
+            <span class="tags-page-label">{{t "Browse"}}</span>
+            <h1 class="tags-page-title">{{t "Topics"}}</h1>
+            <p class="tags-page-description">{{t "Explore all topics and discover content that interests you"}}</p>
         </div>
     </div>
 </header>
 
 <div id="tags-index" class="container">
-    <main class="content" role="main">
+    <div class="content">
         <div class="inner">
-            <div class="tags-grid tw:grid tw:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] tw:gap-[2rem] tw:max-[480px]:grid-cols-1 tw:max-[480px]:gap-[1.5rem]">
+            <div class="tags-grid">
                 {{#get "tags" limit="100" include="count.posts,codeinjection_head" filter="visibility:public" order="created_at desc"}}
                     {{#foreach tags}}
                         <article class="tag-card{{#if feature_image}} has-image{{/if}}{{#if accent_color}} has-accent{{/if}}"
@@ -43,15 +43,14 @@
                                 <a href="{{url}}" class="tag-card-bg">
                                     <img
                                         src="{{img_url feature_image size="m"}}"
-                                        alt="{{name}}"
+                                        alt=""
                                         loading="lazy"
-                                        crossorigin="anonymous"
                                     />
                                     <div class="tag-card-header">
                                         <div class="tag-card-image">
                                             <img
                                                 src="{{img_url feature_image size="s"}}"
-                                                alt="{{name}}"
+                                                alt=""
                                                 loading="lazy"
                                             />
                                         </div>
@@ -123,144 +122,5 @@
                 {{/get}}
             </div>
         </div>
-    </main>
+    </div>
 </div>
-
-{{!-- Tag Icons Script: Extract icons from each tag's Code Injection --}}
-<script>
-(function() {
-    document.querySelectorAll('.tag-card').forEach(card => {
-        const codeInjection = card.querySelector('.tag-code-injection');
-        const iconContainer = card.querySelector('.tag-card-icon');
-
-        if (codeInjection && iconContainer) {
-            // Look for <template data-tag-icon> or <svg data-tag-icon>
-            const source = codeInjection.content || codeInjection;
-            const iconTemplate = source.querySelector('[data-tag-icon]');
-            if (iconTemplate) {
-                const defaultIcon = iconContainer.querySelector('.tag-icon-default');
-                if (defaultIcon) {
-                    // Get icon content (from template or direct SVG)
-                    const iconContent = iconTemplate.tagName === 'TEMPLATE'
-                        ? iconTemplate.innerHTML
-                        : iconTemplate.outerHTML;
-                    defaultIcon.outerHTML = iconContent;
-                }
-            }
-            // Clean up
-            codeInjection.remove();
-        }
-    });
-})();
-</script>
-
-{{!-- Extract dominant color from background images for has-image cards --}}
-<script>
-(function() {
-    // Extract dominant color from image using canvas
-    function getDominantColor(img, callback) {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const size = 50; // Sample size for performance
-        canvas.width = size;
-        canvas.height = size;
-
-        try {
-            ctx.drawImage(img, 0, 0, size, size);
-            const imageData = ctx.getImageData(0, 0, size, size).data;
-
-            let r = 0, g = 0, b = 0, count = 0;
-
-            // Sample pixels, skip very dark and very light ones
-            for (let i = 0; i < imageData.length; i += 16) { // Sample every 4th pixel
-                const pr = imageData[i];
-                const pg = imageData[i + 1];
-                const pb = imageData[i + 2];
-                const brightness = (pr + pg + pb) / 3;
-
-                // Skip very dark or very light pixels
-                if (brightness > 30 && brightness < 220) {
-                    r += pr;
-                    g += pg;
-                    b += pb;
-                    count++;
-                }
-            }
-
-            if (count > 0) {
-                r = Math.round(r / count);
-                g = Math.round(g / count);
-                b = Math.round(b / count);
-
-                // Boost saturation slightly for more vibrant border
-                const max = Math.max(r, g, b);
-                const min = Math.min(r, g, b);
-                const satBoost = 1.2;
-
-                if (max !== min) {
-                    const mid = (max + min) / 2;
-                    r = Math.min(255, Math.round(mid + (r - mid) * satBoost));
-                    g = Math.min(255, Math.round(mid + (g - mid) * satBoost));
-                    b = Math.min(255, Math.round(mid + (b - mid) * satBoost));
-                }
-
-                callback(`rgb(${r}, ${g}, ${b})`);
-            } else {
-                callback(null);
-            }
-        } catch (e) {
-            // CORS or other error
-            callback(null);
-        }
-    }
-
-    // Process each has-image card
-    document.querySelectorAll('.tag-card.has-image').forEach(card => {
-        const img = card.querySelector('.tag-card-bg > img');
-        if (!img) return;
-
-        const processImage = () => {
-            getDominantColor(img, (color) => {
-                if (color) {
-                    card.style.setProperty('--tag-image-color', color);
-                }
-            });
-        };
-
-        if (img.complete) {
-            processImage();
-        } else {
-            img.addEventListener('load', processImage);
-        }
-    });
-})();
-</script>
-
-{{!-- Scrollable posts container --}}
-<script>
-(function() {
-    const VISIBLE_COUNT = 3;
-
-    document.querySelectorAll('.tag-card-posts').forEach(container => {
-        const posts = container.querySelectorAll('.tag-post-preview');
-        const total = posts.length;
-
-        if (total <= VISIBLE_COUNT) return;
-
-        // Wrap posts in a scrollable container
-        const scrollWrapper = document.createElement('div');
-        scrollWrapper.className = 'tag-posts-scroll';
-
-        // Move all posts into the scroll wrapper
-        posts.forEach(post => {
-            scrollWrapper.appendChild(post);
-        });
-
-        // Insert scroll wrapper at the beginning of container
-        container.insertBefore(scrollWrapper, container.firstChild);
-
-        // Add scrollable class to container
-        container.classList.add('is-scrollable');
-    });
-})();
-</script>
