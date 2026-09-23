@@ -188,6 +188,35 @@ textarea {
 		font-size: 1.65rem;
 	}
 
+	// CJK content: the site-wide `<html lang>` doesn't vary per bilingual
+	// post, so `src/js/features/lang-detect.js` marks the actual language
+	// on `.post-content` for these rules to match via inheritance.
+	// Negative tracking squeezes CJK glyphs, so drop it everywhere for zh.
+	:lang(zh) {
+		letter-spacing: 0;
+	}
+
+	p:lang(zh),
+	li:lang(zh) {
+		line-height: 1.8;
+	}
+
+	h1:lang(zh),
+	h2:lang(zh),
+	h3:lang(zh),
+	h4:lang(zh),
+	h5:lang(zh),
+	h6:lang(zh) {
+		line-height: 1.5;
+	}
+
+	em:lang(zh),
+	i:lang(zh) {
+		// CJK typefaces have no true italic; a synthetic slant just distorts
+		// the glyphs, so drop it instead of faking it.
+		font-style: normal;
+	}
+
 	a:not([class]) {
 		color: inherit;
 		text-decoration: none;
@@ -207,14 +236,21 @@ textarea {
 	h4,
 	h5,
 	h6 {
-		margin: 2em 0 0.8em;
+		margin: 1.2em 0 0.5em;
 		line-height: var(--line-height-heading, 1.35);
 		font-family: var(--gh-font-heading);
 		text-rendering: optimizeLegibility;
 		color: var(--color-content-lead);
 		letter-spacing: var(--letter-spacing-tight, -0.022em);
+		text-wrap: balance;
+
+		@media only screen and (max-width: $breakpoint-small) {
+			margin: 0.9em 0 0.4em;
+		}
 	}
 
+	// 1.2-1.25 step scale so adjacent levels stay visually distinct
+	// all the way down (h3/h4 used to differ by only 1.11x).
 	h1 {
 		font-size: 2.2em;
 		font-weight: 700;
@@ -232,13 +268,17 @@ textarea {
 	}
 
 	h4 {
-		font-size: 1.35em;
+		font-size: 1.2em;
 		font-weight: 600;
 	}
 
-	h5,
+	h5 {
+		font-size: 1.05em;
+		font-weight: 600;
+	}
+
 	h6 {
-		font-size: 1.2em;
+		font-size: 1em;
 		font-weight: 600;
 	}
 
@@ -253,6 +293,7 @@ textarea {
 
 	p {
 		margin: 0 0 1.5em;
+		text-wrap: pretty;
 	}
 
 	ol,
@@ -260,6 +301,12 @@ textarea {
 		margin: 0 0 1.5em;
 		padding-left: 1.8em;
 		box-sizing: border-box;
+
+		@media only screen and (max-width: $breakpoint-small) {
+			// The em-dash/number markers plus 1.8em indent wraps list text
+			// early on narrow screens; tighten it below the small breakpoint.
+			padding-left: 1.2em;
+		}
 	}
 
 	ol {
@@ -285,6 +332,11 @@ textarea {
 		line-height: inherit;
 		text-align: right;
 		color: var(--ghost-accent-color);
+
+		@media only screen and (max-width: $breakpoint-small) {
+			width: 1em;
+			margin-left: -1.4em;
+		}
 	}
 
 	ul > li:before {
@@ -301,8 +353,8 @@ textarea {
 	ol ul,
 	ul ol,
 	ul ul {
-		padding-left: 30px;
-		margin: 15px 0;
+		padding-left: 1.6em;
+		margin: 0.8em 0;
 	}
 
 	hr {
@@ -316,6 +368,14 @@ textarea {
 		&.footnote-separator {
 			display: none;
 		}
+	}
+
+	// Footnote jump targets (see src/js/features/footnotes.js): clear the
+	// fixed reading-progress bar and sticky-logo badge so a jump doesn't
+	// land flush against the viewport edge.
+	sup[id^="fnref"],
+	li[id^="fn"] {
+		scroll-margin-top: 8rem;
 	}
 
 	blockquote {
@@ -341,20 +401,6 @@ textarea {
 
 	blockquote > :last-child {
 		margin-bottom: 0;
-	}
-
-	// Legacy callout support (for blockquotes with emoji)
-	blockquote {
-		// Detect callouts by emoji at start
-		&:has(> :first-child:first-letter) {
-			display: flex;
-			padding: 1.5rem 2rem;
-			border-left: none;
-			border-radius: var(--radius-md);
-			background: var(--color-background-secondary);
-			border: 1px solid var(--color-background-contrast);
-			font-style: normal;
-		}
 	}
 
 	// Callout styles - Emoji-based color detection
@@ -448,33 +494,6 @@ textarea {
 		&.kg-callout-card-white {
 			background: var(--color-background-main);
 			border-color: var(--color-background-contrast);
-		}
-	}
-
-	// Auto-detect emoji and apply colors (for blockquotes used as callouts)
-	blockquote {
-		// Light bulb - Blue/Info
-		&:has(> :first-child::first-letter:is([data-emoji="💡"], [data-emoji="ℹ️"])) {
-			background: color-mix(in srgb, var(--color-callout-info) 8%, var(--color-background-secondary));
-			border-color: color-mix(in srgb, var(--color-callout-info) 20%, var(--color-background-contrast));
-		}
-
-		// Warning emojis - Red
-		&:has(> :first-child::first-letter:is([data-emoji="🚫"], [data-emoji="⚠️"], [data-emoji="❌"])) {
-			background: color-mix(in srgb, var(--color-callout-danger) 8%, var(--color-background-secondary));
-			border-color: color-mix(in srgb, var(--color-callout-danger) 20%, var(--color-background-contrast));
-		}
-
-		// Success emojis - Green
-		&:has(> :first-child::first-letter:is([data-emoji="✅"], [data-emoji="✔️"])) {
-			background: color-mix(in srgb, var(--color-callout-success) 8%, var(--color-background-secondary));
-			border-color: color-mix(in srgb, var(--color-callout-success) 20%, var(--color-background-contrast));
-		}
-
-		// Caution emojis - Yellow
-		&:has(> :first-child::first-letter:is([data-emoji="⚡"], [data-emoji="⭐"])) {
-			background: color-mix(in srgb, var(--color-callout-warning) 8%, var(--color-background-secondary));
-			border-color: color-mix(in srgb, var(--color-callout-warning) 20%, var(--color-background-contrast));
 		}
 	}
 
@@ -671,6 +690,7 @@ textarea {
 
 		/* Copy button */
 		.code-copy-btn {
+			position: relative;
 			display: flex;
 			align-items: center;
 			gap: 0.35em;
@@ -685,6 +705,18 @@ textarea {
 			transition: color 0.15s ease;
 			user-select: none;
 			-webkit-user-select: none;
+
+			// Visuals stay compact; the pseudo-element grows the tap target
+			// to the 44px minimum without affecting layout.
+			&::after {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: max(100%, 44px);
+				height: max(100%, 44px);
+				transform: translate(-50%, -50%);
+			}
 
 			svg {
 				width: 1.1em;
@@ -818,7 +850,7 @@ textarea {
 		}
 
 		tbody tr {
-			transition: all ease-out 0.2s;
+			transition: background-color ease-out 0.2s, box-shadow ease-out 0.2s, transform ease-out 0.2s;
 			background: var(--color-background-main);
 
 			// Zebra striping for better readability
@@ -826,10 +858,20 @@ textarea {
 				background: color-mix(in srgb, var(--color-background-secondary) 40%, var(--color-background-main));
 			}
 
-			&:hover {
-				background: color-mix(in srgb, var(--ghost-accent-color) 8%, var(--color-background-secondary));
-				transform: scale(1.005);
-				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+			@media (hover: hover) and (pointer: fine) {
+				&:hover {
+					background: color-mix(in srgb, var(--ghost-accent-color) 8%, var(--color-background-secondary));
+					transform: scale(1.005);
+					box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+				}
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				transition: none;
+
+				&:hover {
+					transform: none;
+				}
 			}
 		}
 
@@ -1018,7 +1060,11 @@ textarea {
 	input[type="reset"],
 	input[type="submit"],
 	input[type="button"],
-	a.kg-btn,
+	// Scoped under .kg-button-card: Ghost core's own `.kg-button-card a.kg-btn`
+	// rule in the auto-injected cards.min.css ties this on raw specificity
+	// and loads after the theme's stylesheet, so a bare `a.kg-btn` here
+	// never wins.
+	.kg-button-card a.kg-btn,
 	.button {
 		display: block;
 		padding: 1rem;
@@ -1039,7 +1085,7 @@ textarea {
 	input[type="reset"]:hover,
 	input[type="submit"]:hover,
 	input[type="button"]:hover,
-	.kg-btn:hover,
+	.kg-button-card a.kg-btn:hover,
 	.button:hover {
 		opacity: 0.9;
 		transform: translateY(-1px);
@@ -1049,11 +1095,30 @@ textarea {
 	input[type="reset"]:focus,
 	input[type="submit"]:focus,
 	input[type="button"]:focus,
-	.kg-btn:focus,
+	.kg-button-card a.kg-btn:focus,
 	.button:focus {
 		outline: 2px solid var(--ghost-accent-color);
 		outline-offset: 2px;
 		box-shadow: 0 0 0 3px rgba(var(--ghost-accent-color), 0.2);
+	}
+
+	// Cap the reading measure on wide screens; images, tables, code blocks
+	// and wide/full-bleed cards are excluded so they can break out further.
+	// Declared last so it wins over this block's other margin shorthands.
+	> p,
+	> ul,
+	> ol,
+	> dl,
+	> h1,
+	> h2,
+	> h3,
+	> h4,
+	> h5,
+	> h6,
+	> blockquote:not(.kg-blockquote-alt) {
+		max-width: 68ch;
+		margin-left: auto;
+		margin-right: auto;
 	}
 }
 
@@ -1145,12 +1210,20 @@ textarea {
 			border: 1px solid var(--color-background-contrast);
 			border-radius: var(--radius-lg);
 			text-decoration: none;
-			transition: all ease-out 0.2s;
+			transition: transform ease-out 0.2s, box-shadow ease-out 0.2s, border-color ease-out 0.2s;
 
 			&:hover {
 				transform: translateY(-2px);
 				box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 				border-color: var(--ghost-accent-color);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				transition: none;
+
+				&:hover {
+					transform: none;
+				}
 			}
 
 			.kg-file-card-contents {
@@ -1211,7 +1284,7 @@ textarea {
 				);
 				border-radius: var(--radius-md);
 				border: 1px solid color-mix(in srgb, var(--ghost-accent-color) 15%, transparent);
-				transition: all ease-out 0.2s;
+				transition: background ease-out 0.2s, border-color ease-out 0.2s;
 
 				svg {
 					width: 60%;
@@ -1315,6 +1388,13 @@ textarea {
 
 		.kg-image {
 			margin: 0 auto;
+			// Subtle edge definition so light images don't bleed into the
+			// page background.
+			box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+
+			@include dark {
+				box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+			}
 		}
 
 		// Portrait images - limit height on desktop
@@ -1375,6 +1455,11 @@ textarea {
 		width: 100%;
 		height: 100%;
 		border-radius: var(--radius-sm);
+		box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+
+		@include dark {
+			box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+		}
 	}
 
 	// Optimized: split :not() into separate rules for better performance
@@ -1434,6 +1519,45 @@ textarea {
 		}
 	}
 
+	// KG Audio - Ghost core (cards.min.css) hardcodes a light background
+	// with zero dark-mode handling, so give it the theme's own card surface.
+	.kg-audio-card {
+		background: var(--color-background-secondary);
+		color: var(--color-content-main);
+		border: 1px solid var(--color-background-contrast);
+		border-radius: var(--radius-lg);
+
+		.kg-audio-title,
+		.kg-audio-current-time,
+		.kg-audio-duration,
+		.kg-audio-playback-rate {
+			color: inherit;
+		}
+
+		.kg-audio-play-icon,
+		.kg-audio-pause-icon,
+		.kg-audio-mute-icon,
+		.kg-audio-unmute-icon,
+		.kg-audio-thumbnail.placeholder svg {
+			fill: var(--color-content-main);
+		}
+
+		.kg-audio-seek-slider,
+		.kg-audio-volume-slider {
+			accent-color: var(--ghost-accent-color);
+		}
+	}
+
+	// KG Collection - Ghost core ships no default look for the card
+	// container itself; give it the theme's own card surface.
+	.kg-collection-card {
+		margin: 0 0 2.5rem;
+		padding: 1.5rem;
+		background: var(--color-background-secondary);
+		border: 1px solid var(--color-background-contrast);
+		border-radius: var(--radius-lg);
+	}
+
 	// KG Embed
 
 	.kg-embed-card {
@@ -1468,7 +1592,7 @@ textarea {
 		margin: 0 0 2.5rem;
 		border-radius: var(--radius-xl);
 		overflow: hidden;
-		transition: all ease-out 0.3s;
+		transition: transform ease-out 0.3s, box-shadow ease-out 0.3s, border-color ease-out 0.3s;
 		background: var(--color-background-secondary);
 		border: 1px solid var(--color-background-contrast);
 		box-shadow: var(--shadow-sm);
@@ -1495,6 +1619,15 @@ textarea {
 			&:active {
 				transform: scale(0.98);
 				box-shadow: var(--shadow-md);
+			}
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			transition: none;
+
+			&:hover,
+			&:active {
+				transform: none;
 			}
 		}
 
@@ -1635,9 +1768,19 @@ textarea {
 		margin: 0; // Override .post-content img margin
 		transition: transform ease-out 0.3s;
 
+		// Most bookmarked pages ship a white/light thumbnail; dim it
+		// slightly so it doesn't glare against the dark card surface.
+		@include dark {
+			filter: brightness(0.9);
+		}
+
 		@media only screen and (max-width: $breakpoint-small) {
 			// Ensure image displays correctly on mobile
 			display: block;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			transition: none;
 		}
 	}
 
@@ -1645,6 +1788,12 @@ textarea {
 	@media (hover: hover) and (pointer: fine) {
 		.kg-bookmark-card:hover .kg-bookmark-thumbnail img {
 			transform: scale(1.05);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.kg-bookmark-card:hover .kg-bookmark-thumbnail img {
+			transform: none;
 		}
 	}
 
@@ -1714,7 +1863,7 @@ textarea {
 		border-radius: var(--radius-lg);
 		padding: 1.5rem 2rem;
 		margin: 0 0 2.5rem;
-		transition: all ease-out 0.2s;
+		transition: border-color ease-out 0.2s, background ease-out 0.2s, box-shadow ease-out 0.2s;
 		box-shadow: var(--shadow-xs);
 
 		&:hover {
@@ -1829,15 +1978,23 @@ textarea {
 			display: inline-block;
 			padding: 1rem 2.5rem;
 			background: var(--ghost-accent-color);
-			color: #fff;
+			color: var(--color-on-accent);
 			text-decoration: none;
 			border-radius: var(--radius-sm);
 			font-weight: 600;
-			transition: all ease-out 0.2s;
+			transition: transform ease-out 0.2s, box-shadow ease-out 0.2s;
 
 			&:hover {
 				transform: translateY(-2px);
 				box-shadow: var(--shadow-pop);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				transition: none;
+
+				&:hover {
+					transform: none;
+				}
 			}
 		}
 
@@ -1923,23 +2080,32 @@ textarea {
 			&:focus {
 				outline: none;
 				border-color: var(--ghost-accent-color);
+				box-shadow: 0 0 0 3px color-mix(in srgb, var(--ghost-accent-color) 30%, transparent);
 			}
 		}
 
 		.kg-signup-card-button {
 			padding: 1rem 2.5rem;
 			background: var(--ghost-accent-color);
-			color: #fff;
+			color: var(--color-on-accent);
 			border: none;
 			border-radius: var(--radius-sm);
 			font-weight: 600;
 			cursor: pointer;
-			transition: all ease-out 0.2s;
+			transition: transform ease-out 0.2s, box-shadow ease-out 0.2s;
 			white-space: nowrap;
 
 			&:hover {
 				transform: translateY(-2px);
 				box-shadow: var(--shadow-pop);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				transition: none;
+
+				&:hover {
+					transform: none;
+				}
 			}
 		}
 
@@ -2093,7 +2259,7 @@ textarea {
 			padding: 0.9rem 1.2rem;
 			margin: 0.2rem 0 0;
 			background: var(--ghost-accent-color);
-			color: #fff;
+			color: var(--color-on-accent);
 			text-decoration: none;
 			text-align: center;
 			border-radius: 0.6rem;
@@ -2108,6 +2274,15 @@ textarea {
 
 			&:active {
 				transform: translateY(0);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				transition: none;
+
+				&:hover,
+				&:active {
+					transform: none;
+				}
 			}
 		}
 
@@ -2161,11 +2336,19 @@ textarea {
 		background: var(--ghost-accent-color);
 		border-radius: var(--radius-sm);
 		text-align: center;
-		transition: all ease-out 0.2s;
+		transition: transform ease-out 0.2s, box-shadow ease-out 0.2s;
 
 		&:hover {
 			transform: translateY(-2px);
 			box-shadow: 0 8px 24px color-mix(in srgb, var(--ghost-accent-color) 40%, transparent);
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			transition: none;
+
+			&:hover {
+				transform: none;
+			}
 		}
 
 		.kg-cta-content {
@@ -2179,12 +2362,13 @@ textarea {
 			p {
 				font-size: 0.95em;
 				line-height: 1.6;
-				color: rgba(255, 255, 255, 0.95);
+				color: var(--color-on-accent);
+				opacity: 0.95;
 				margin: 0;
 			}
 
 			strong {
-				color: #fff;
+				color: var(--color-on-accent);
 				font-weight: 600;
 			}
 		}
@@ -2194,17 +2378,25 @@ textarea {
 			align-items: center;
 			gap: 0.5rem;
 			padding: 0.5rem 1.125rem;
-			background: rgba(255, 255, 255, 0.95);
+			background: var(--color-on-accent);
 			color: var(--ghost-accent-color);
 			text-decoration: none;
 			border-radius: 0.25rem;
 			font-weight: 600;
 			font-size: 0.875em;
-			transition: all ease-out 0.2s;
+			transition: opacity ease-out 0.2s, transform ease-out 0.2s;
 
 			&:hover {
-				background: #fff;
+				opacity: 0.9;
 				transform: translateY(-1px);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				transition: none;
+
+				&:hover {
+					transform: none;
+				}
 			}
 
 			&:active {
@@ -2228,7 +2420,7 @@ textarea {
 
 			.kg-cta-button {
 				background: var(--ghost-accent-color);
-				color: #fff;
+				color: var(--color-on-accent);
 
 				&:hover {
 					background: color-mix(in srgb, var(--ghost-accent-color) 90%, #000);
@@ -6271,8 +6463,10 @@ a.post-tag-chip {
 	border-radius: 8px;
 }
 
-.kg-gallery-image img:hover {
-	transform: scale(1.01);
+@media (hover: hover) and (pointer: fine) {
+	.kg-gallery-image img:hover {
+		transform: scale(1.01);
+	}
 }
 
 /* GLightbox - Semi-transparent background */
@@ -6305,7 +6499,6 @@ a.post-tag-chip {
 	-webkit-user-select: none;
 	user-select: none;
 	transform-origin: center center;
-	will-change: transform;
 }
 
 /* Navigation arrows - glassmorphism style */
@@ -6374,10 +6567,23 @@ a.post-tag-chip {
 	}
 }
 
-/* Counter - bottom center */
-.glightbox-container .gslide-title,
+/* Caption: keep the figcaption context once inside the lightbox */
+.glightbox-container .gslide-title {
+	font-family: var(--gh-font-heading);
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: #fff;
+	margin: 0 0 0.4rem;
+}
+
 .glightbox-container .gslide-desc {
-	display: none;
+	font-family: var(--gh-font-body);
+	font-size: 1.3rem;
+	line-height: 1.5;
+	color: rgba(255, 255, 255, 0.85);
+	max-width: 60ch;
+	margin: 0 auto;
+	text-align: center;
 }
 
 /* Show slide counter */
@@ -6427,6 +6633,29 @@ a.post-tag-chip {
 		height: 38px !important;
 		top: 15px !important;
 		right: 15px !important;
+	}
+}
+
+/* GLightbox ships its own open/close fades and arrow hover transforms;
+   none of them check prefers-reduced-motion, so neutralize them here. */
+@media (prefers-reduced-motion: reduce) {
+	.glightbox-container,
+	.glightbox-container * {
+		transition-duration: 0.001ms !important;
+		animation-duration: 0.001ms !important;
+	}
+
+	.glightbox-container .gnext:hover,
+	.glightbox-container .gprev:hover,
+	.glightbox-container .gclose:hover,
+	.glightbox-clean-dark .gnext:hover,
+	.glightbox-clean-dark .gprev:hover,
+	.glightbox-clean-dark .gclose:hover {
+		transform: none;
+	}
+
+	.kg-gallery-image img {
+		transition: none;
 	}
 }
 
