@@ -2415,7 +2415,7 @@ textarea {
 	top: 0;
 	z-index: var(--z-cover-base);
 	background: no-repeat scroll center center / cover #000;
-	animation: 0.5s ease-in forwards fadein;
+	animation: 0.5s var(--ease-standard) forwards fadein;
 	display: flex;
 	align-items: center;
 
@@ -3579,7 +3579,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	top: 0;
 	z-index: var(--z-floating-ui);
 	background: transparent;
-	transition: all ease-out 0.2s;
+	transition: transform 0.2s ease-out;
 
 	&.complete {
 		transform: translateY(-3px);
@@ -4001,7 +4001,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	flex-wrap: wrap;
 	font-size: 16px;
 	line-height: 20px;
-	color: rgb(115, 119, 125);
+	color: var(--color-content-secondary);
 	margin: 4px 0 12px;
 	padding: 0;
 	border-bottom: none;
@@ -4135,7 +4135,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	top: 0;
 	z-index: var(--z-cover-base);
 	background: no-repeat scroll center center / cover #000;
-	animation: 0.5s ease-in forwards fadein;
+	animation: 0.5s var(--ease-standard) forwards fadein;
 	display: flex;
 	align-items: center;
 
@@ -4157,41 +4157,48 @@ iframe.gh-portal-triggerbtn-iframe {
 		object-fit: cover;
 	}
 
+	// Baseline scrim behind the title/meta text, always on: brightness
+	// detection (`.light-cover`, below) only adds to this, since JS
+	// detection can fail silently (a cross-origin cover image taints the
+	// canvas) and text must stay readable either way.
 	&:after {
 		content: '';
 		position: absolute;
 		width: 100%;
-		height: 66.666%;
+		height: 75%;
 		left: 0;
 		bottom: 0;
 		z-index: var(--z-cover-overlay);
-		background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.333) 100%);
-		background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.333) 100%);
+		background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 100%);
 	}
 }
 
-// Feature image caption/credit - subtle, integrated design
+// Feature image caption/credit - sits on the cover's bottom scrim (pulled up
+// by the negative margin), so it always uses light text with a shadow rather
+// than the theme-dependent secondary color, regardless of light/dark mode.
 .post-cover-credit {
 	display: block;
 	margin: calc(-3rem - 2vw) 0 2.5rem;
 	padding: 1rem 0;
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 	line-height: 1.4;
-	color: color-mix(in srgb, var(--color-content-secondary) 60%, transparent);
+	color: rgba(255, 255, 255, 0.85);
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 	text-align: center;
 
 	a {
-		color: color-mix(in srgb, var(--color-content-secondary) 80%, transparent);
-		text-decoration: none;
+		color: #fff;
+		text-decoration: underline;
+		text-decoration-color: rgba(255, 255, 255, 0.4);
 		transition: color 0.15s ease;
 
 		&:hover {
-			color: var(--color-content-main);
+			color: rgba(255, 255, 255, 0.75);
 		}
 	}
 
 	@media only screen and (max-width: $breakpoint-small) {
-		font-size: 1.1rem;
+		font-size: 1.2rem;
 		padding: 0.75rem 0;
 		margin: calc(-3rem - 2vw) 0 2rem;
 	}
@@ -4200,26 +4207,6 @@ iframe.gh-portal-triggerbtn-iframe {
 .post {
 	position: relative;
 	z-index: var(--z-content);
-}
-
-.post-info {
-	position: relative;
-	z-index: var(--z-content);
-	display: none;
-}
-
-.has-cover .post-info {
-	.post-count {
-		color: white;
-
-		&:after {
-			background: white;
-		}
-	}
-
-	.post-type {
-		color: white;
-	}
 }
 
 .post-title {
@@ -4270,14 +4257,14 @@ iframe.gh-portal-triggerbtn-iframe {
 
 // Light cover contrast enhancement - applied when cover image is bright
 .has-cover.light-cover {
-	// Stronger gradient overlay for light images
+	// Stronger gradient overlay for light images, on top of the baseline scrim
 	.post-cover:after {
 		height: 80%;
 		background: linear-gradient(
 			to bottom,
 			rgba(0, 0, 0, 0) 0%,
-			rgba(0, 0, 0, 0.15) 30%,
-			rgba(0, 0, 0, 0.5) 100%
+			rgba(0, 0, 0, 0.25) 30%,
+			rgba(0, 0, 0, 0.65) 100%
 		);
 	}
 
@@ -4297,13 +4284,6 @@ iframe.gh-portal-triggerbtn-iframe {
 			0 1px 2px rgba(0, 0, 0, 0.4),
 			0 2px 6px rgba(0, 0, 0, 0.25);
 	}
-
-	.post-info .post-type,
-	.post-info .post-count {
-		text-shadow:
-			0 1px 2px rgba(0, 0, 0, 0.4),
-			0 2px 6px rgba(0, 0, 0, 0.25);
-	}
 }
 
 .post-meta {
@@ -4312,7 +4292,6 @@ iframe.gh-portal-triggerbtn-iframe {
 	line-height: 1.6em;
 	color: var(--color-content-secondary);
 	margin: 0.5em 0 1.5em;
-	opacity: 0.85;
 
 	a {
 		color: var(--color-content-secondary);
@@ -4560,6 +4539,7 @@ iframe.gh-portal-triggerbtn-iframe {
 
 .post-share-button,
 .post-share a {
+	position: relative;
 	display: flex;
 	width: 3rem;
 	height: 3rem;
@@ -4573,12 +4553,19 @@ iframe.gh-portal-triggerbtn-iframe {
 	align-items: center;
 	text-decoration: none;
 	border-radius: 2em;
-	transition: all ease 0.2s;
+	transition: background-color 0.2s ease, color 0.2s ease;
+
+	// Expand the tap target to 44px without growing the visible circle.
+	&::before {
+		content: '';
+		position: absolute;
+		inset: -0.7rem;
+	}
 
 	&:focus,
 	&:hover {
 		background: var(--ghost-accent-color);
-		color: var(--color-background-main);
+		color: var(--color-on-accent);
 	}
 }
 
@@ -4602,6 +4589,7 @@ iframe.gh-portal-triggerbtn-iframe {
 }
 
 .post-tags a {
+	position: relative;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -4618,14 +4606,21 @@ iframe.gh-portal-triggerbtn-iframe {
 	text-align: center;
 	text-decoration: none;
 	border-radius: 2em;
-	transition: all ease 0.2s;
+	transition: background-color 0.2s ease, color 0.2s ease;
 	box-sizing: border-box;
 	white-space: nowrap;
+
+	// Expand the tap target to 44px without growing the visible chip.
+	&::before {
+		content: '';
+		position: absolute;
+		inset: -0.7rem;
+	}
 
 	&:focus,
 	&:hover {
 		background: var(--ghost-accent-color);
-		color: var(--color-background-main);
+		color: var(--color-on-accent);
 	}
 }
 /* ==========================================================================
@@ -4715,9 +4710,8 @@ iframe.gh-portal-triggerbtn-iframe {
 		pointer-events: none;
 	}
 
-	&.is-loaded {
-		display: none;
-	}
+	// No `.is-loaded { display: none }` here: the JS also sets the `hidden`
+	// attribute, which the UA stylesheet already hides.
 }
 
 .post-comments-container {
@@ -4842,7 +4836,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	background: var(--color-background-main);
 	border: 1px solid var(--color-background-contrast);
 	border-radius: var(--radius-sm);
-	transition: all ease-out 0.2s;
+	transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
 	box-sizing: border-box;
 
 	&::placeholder {
@@ -4876,7 +4870,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	border: none;
 	border-radius: var(--radius-sm);
 	cursor: pointer;
-	transition: all ease-out 0.2s;
+	transition: background-color 0.2s ease-out, transform 0.2s ease-out;
 	white-space: nowrap;
 	box-sizing: border-box;
 
@@ -4888,10 +4882,8 @@ iframe.gh-portal-triggerbtn-iframe {
 		transform: scale(0.98);
 	}
 
-	&:focus {
-		outline: none;
-		box-shadow: 0 0 0 2px color-mix(in srgb, var(--ghost-accent-color) 20%, transparent);
-	}
+	// No custom :focus override: the global :focus-visible ring
+	// (style.scss top, "Focus" section) already gives this a visible ring.
 
 	@media only screen and (max-width: $breakpoint-small) {
 		padding: 0.85rem 1.75rem;
@@ -4946,7 +4938,7 @@ iframe.gh-portal-triggerbtn-iframe {
 	border-radius: var(--radius-lg);
 	background: var(--color-background-secondary);
 	border: 1px solid var(--color-background-contrast);
-	transition: all 0.25s ease;
+	transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 
 	.post-nav-teaser {
 		flex: 1;
@@ -4958,12 +4950,16 @@ iframe.gh-portal-triggerbtn-iframe {
 		flex: 1;
 	}
 
-	&:focus,
+	&:focus-visible,
 	&:hover {
 		color: inherit;
 		transform: translateY(-2px);
 		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 		border-color: color-mix(in srgb, var(--ghost-accent-color) 30%, transparent);
+
+		.theme-dark & {
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+		}
 
 		i {
 			color: var(--ghost-accent-color);
@@ -5120,7 +5116,6 @@ iframe.gh-portal-triggerbtn-iframe {
 	font-size: 1.3em;
 	line-height: 1.4;
 	color: var(--color-content-secondary);
-	opacity: 0.7;
 }
 
 /* ==========================================================================
