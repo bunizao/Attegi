@@ -122,6 +122,11 @@ export function setupLazyComments() {
         trigger.setAttribute('aria-expanded', 'true');
         trigger.setAttribute('hidden', 'true');
         trigger.removeAttribute('aria-busy');
+
+        // The trigger is now hidden and unfocusable; move focus into the
+        // loaded comments instead of dropping it back to <body>.
+        placeholder.setAttribute('tabindex', '-1');
+        placeholder.focus();
       } catch (err) {
         hasLoaded = false;
         trigger.classList.remove('is-loading');

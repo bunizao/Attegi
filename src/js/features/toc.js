@@ -5,7 +5,8 @@
 
 import { doc, qs } from '../core/index.js';
 import { getI18n } from '../core/i18n.js';
-import { throttle } from '../core/perf.js';
+import { onScroll, getReadingProgress } from '../core/scroll.js';
+import { openDialog, closeDialog } from '../core/dialog.js';
 
 var config = { minHeadings: 2, tocBreakpoint: 1400 };
 var state = {
@@ -53,6 +54,7 @@ function createDesktopTOC(labels) {
 
   var list = doc.createElement('nav');
   list.className = 'toc-list';
+  list.setAttribute('aria-label', labels.tocLabel);
 
   container.appendChild(header);
   container.appendChild(list);
@@ -68,6 +70,8 @@ function createMobileTOC(labels) {
   var trigger = doc.createElement('button');
   trigger.className = 'toc-mobile-trigger';
   trigger.setAttribute('aria-label', labels.openToc);
+  trigger.setAttribute('aria-expanded', 'false');
+  trigger.setAttribute('aria-haspopup', 'dialog');
   trigger.innerHTML =
     '<svg class="toc-progress-ring" viewBox="0 0 44 44">' +
       '<circle class="toc-progress-ring__bg" cx="22" cy="22" r="20"></circle>' +
@@ -87,12 +91,14 @@ function createMobileTOC(labels) {
   var drawer = doc.createElement('div');
   drawer.className = 'toc-mobile-drawer';
   drawer.setAttribute('role', 'dialog');
-  drawer.setAttribute('aria-label', labels.tocLabel);
+  drawer.setAttribute('aria-modal', 'true');
+  drawer.setAttribute('aria-labelledby', 'toc-mobile-title');
 
   var header = doc.createElement('div');
   header.className = 'toc-mobile-header';
   var mobileTitle = doc.createElement('h3');
   mobileTitle.className = 'toc-mobile-title';
+  mobileTitle.id = 'toc-mobile-title';
   mobileTitle.textContent = labels.onThisPage;
   header.appendChild(mobileTitle);
 
@@ -108,6 +114,7 @@ function createMobileTOC(labels) {
   content.className = 'toc-mobile-content';
   var list = doc.createElement('nav');
   list.className = 'toc-mobile-list';
+  list.setAttribute('aria-label', labels.tocLabel);
   content.appendChild(list);
 
   drawer.appendChild(header);
@@ -143,7 +150,7 @@ function copyTocToMobile() {
       var targetId = link.getAttribute('href').substring(1);
       var target = doc.getElementById(targetId);
       if (target) {
-        closeMobileTOC();
+        requestCloseMobileTOC();
         setTimeout(function() {
           window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - 100, behavior: 'smooth' });
         }, 300);
@@ -171,8 +178,10 @@ function syncMobileActiveState() {
   Array.prototype.forEach.call(mobileLinks, function(link) {
     if (activeHref && link.getAttribute('href') === activeHref) {
       link.classList.add('is-active');
+      link.setAttribute('aria-current', 'location');
     } else {
       link.classList.remove('is-active');
+      link.removeAttribute('aria-current');
     }
   });
 }
@@ -197,8 +206,13 @@ function setupSidebarAutoScroll() {
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       var target = mutation.target;
-      if (target.classList.contains('toc-link') && target.classList.contains('is-active')) {
+      if (!target.classList.contains('toc-link')) return;
+      var isActive = target.classList.contains('is-active');
+      if (isActive) {
+        target.setAttribute('aria-current', 'location');
         scrollSidebarToActiveLink(target);
+      } else {
+        target.removeAttribute('aria-current');
       }
     });
   });
@@ -261,34 +275,48 @@ function openMobileTOC(event) {
   syncMobileActiveState();
   suppressHoverOnce();
   state.isOpen = true;
+
+  // Blur the trigger before hiding it: hiding a still-focused element makes
+  // the browser move focus to <body> on its own, which can race with (and
+  // undo) the focus we set into the drawer just below.
+  elements.mobileTrigger.blur();
   elements.mobileTrigger.classList.add('is-hidden');
+  elements.mobileTrigger.setAttribute('aria-expanded', 'true');
   elements.mobileOverlay.classList.add('is-open');
   elements.mobileDrawer.classList.add('is-open');
-  elements.mobileTrigger.blur();
+
+  openDialog(elements.mobileDrawer, { trigger: elements.mobileTrigger, onClose: closeMobileTOC });
 
   setTimeout(function() {
     scrollMobileTOCToActiveItem();
   }, 200);
 }
 
+// Visual/state close only. Callers pair this with `closeDialog` themselves
+// (see `requestCloseMobileTOC` below) so the trigger is un-hidden — and
+// focusable again — before focus is restored to it.
 function closeMobileTOC() {
+  if (!state.isOpen) return;
   state.isOpen = false;
   elements.mobileTrigger.classList.remove('is-hidden');
+  elements.mobileTrigger.setAttribute('aria-expanded', 'false');
   elements.mobileOverlay.classList.remove('is-open');
   elements.mobileDrawer.classList.remove('is-open');
   doc.body.classList.remove('toc-suppress-hover');
 }
 
+function requestCloseMobileTOC() {
+  closeMobileTOC();
+  closeDialog(elements.mobileDrawer);
+}
+
 function updateProgressRing() {
   if (!elements.mobileTrigger) return;
   var progressCircle = elements.mobileTrigger.querySelector('.toc-progress-ring__progress');
-  if (!progressCircle) return;
+  var postContent = qs('.post-content');
+  if (!progressCircle || !postContent) return;
 
-  var scrollTop = window.pageYOffset;
-  var viewportMiddle = scrollTop + window.innerHeight / 2;
-  var scrollableDistance = state.articleBottom - state.articleTop;
-  var progress = scrollableDistance > 0 ? Math.max(0, Math.min((viewportMiddle - state.articleTop) / scrollableDistance, 1)) : 0;
-
+  var progress = Math.min(getReadingProgress(postContent), 1);
   var circumference = 2 * Math.PI * 20;
   progressCircle.style.strokeDashoffset = circumference * (1 - progress);
 }
@@ -421,7 +449,7 @@ export function initTOC() {
       headingsOffset: 100,
       throttleTimeout: 50,
       orderedList: false,
-      onClick: function() { if (state.isOpen) closeMobileTOC(); }
+      onClick: function() { if (state.isOpen) requestCloseMobileTOC(); }
     });
     setupSidebarAutoScroll();
     setTimeout(function() {
@@ -431,23 +459,18 @@ export function initTOC() {
     }, 100);
   }
 
-  var throttledUpdate = throttle(function() {
+  // Shared scroll source: one listener drives TOC visibility, the trigger's
+  // progress ring and its footer-avoidance position.
+  onScroll(function() {
     updateTOCVisibility();
     updateProgressRing();
     updateTriggerPosition();
-  }, 100);
-
-  window.addEventListener('scroll', throttledUpdate, { passive: true });
-  window.addEventListener('resize', throttledUpdate, { passive: true });
-  updateTOCVisibility();
-  updateProgressRing();
-  updateTriggerPosition();
+  });
   updateMobileTriggerVisibility(window.pageYOffset || doc.documentElement.scrollTop);
 
   elements.mobileTrigger.addEventListener('click', openMobileTOC);
-  elements.mobileOverlay.addEventListener('click', closeMobileTOC);
-  elements.mobileDrawer.querySelector('.toc-mobile-close').addEventListener('click', closeMobileTOC);
-  doc.addEventListener('keydown', function(e) { if (e.key === 'Escape' && state.isOpen) closeMobileTOC(); });
+  elements.mobileOverlay.addEventListener('click', requestCloseMobileTOC);
+  elements.mobileDrawer.querySelector('.toc-mobile-close').addEventListener('click', requestCloseMobileTOC);
 
   doc.body.classList.add('has-toc');
   setTimeout(function() { elements.mobileTrigger.classList.add('is-visible'); }, 500);

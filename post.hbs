@@ -1,5 +1,10 @@
 {{!< default}}
 
+{{!-- Reading progress bar, filled by src/js/features/progress-bar.js --}}
+<div class="progress-container">
+	<div class="progress-bar"></div>
+</div>
+
 {{!-- Back to top button with progress ring (shown when no TOC) --}}
 <button class="back-to-top" aria-label="{{t "Back to top"}}">
 	<svg class="progress-ring" viewBox="0 0 44 44">
@@ -20,12 +25,6 @@
 
 <header class="post-header {{#if feature_image}} has-cover {{/if}}">
 	<div class="inner">
-		<span class="post-info">
-			<span class="post-type">{{t "Article"}}</span>
-			{{#if tags}}
-			<span class="post-count">{{primary_tag.name}}</span>
-			{{/if}}
-		</span>
 		<h1 class="post-title">{{{title}}}</h1>
 		<div class="post-meta">
 			<div class="post-meta-avatars">
@@ -33,15 +32,15 @@
 					{{!-- Author avatar with SVG fallback --}}
 					{{#if profile_image}}
 						<figure class="post-meta-avatar">
-							<a href="{{url}}" class="author-avatar">
+							<a href="{{url}}" class="author-avatar" aria-label="{{name}}">
 								<picture>
-									<img class="author-profile-image" src="{{img_url profile_image size="xs" quality="80"}}" alt="{{name}}" loading="lazy" decoding="async" />
+									<img class="author-profile-image" src="{{img_url profile_image size="xs" quality="80"}}" alt="" loading="lazy" decoding="async" />
 								</picture>
 							</a>
 						</figure>
 					{{else}}
 						<figure class="post-meta-avatar avatar" aria-label="{{name}}">
-							<a href="{{url}}" class="author-avatar">
+							<a href="{{url}}" class="author-avatar" aria-label="{{name}}">
 								<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 									<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
 								</svg>
@@ -50,11 +49,11 @@
 					{{/if}}
 				{{/foreach}}
 			</div>
-			<h4 class="post-meta-author">
+			<p class="post-meta-author">
 				{{#foreach authors}}
-					{{#unless @first}}{{#if @last}} & {{else}}, {{/if}}{{/unless}}<a href="{{url}}">{{name}}</a>
+					{{#unless @first}}{{#if @last}}{{t " & "}}{{else}}{{t ", "}}{{/if}}{{/unless}}<a href="{{url}}">{{name}}</a>
 				{{/foreach}}
-			</h4>
+			</p>
 			<span class="post-meta-details"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMM DD, YYYY"}}</time><span class="post-meta-sep" aria-hidden="true">•</span><span class="post-meta-reading">{{reading_time minute=(t "1 min read") minutes=(t "% min read")}}</span></span>
 		</div>
 		{{#if feature_image}}
@@ -112,13 +111,13 @@
 
 					<div class="post-share js-share-default" hidden>
 						<span class="post-info-label">{{t "Share"}}</span>
-						<a title="{{t "Twitter"}}" aria-label="{{t "Twitter"}}" class="twitter" href="https://twitter.com/share?text={{encode title}}&url={{url absolute="true"}}" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+						<a title="{{t "Twitter"}}" aria-label="{{t "Twitter"}}" class="twitter js-share-popup" data-popup-size="550,235" href="https://twitter.com/share?text={{encode title}}&url={{url absolute="true"}}">
 							<i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i>
 						</a>
-						<a title="{{t "Facebook"}}" aria-label="{{t "Facebook"}}" class="facebook" href="https://www.facebook.com/sharer/sharer.php?u={{url absolute="true"}}" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+						<a title="{{t "Facebook"}}" aria-label="{{t "Facebook"}}" class="facebook js-share-popup" data-popup-size="580,296" href="https://www.facebook.com/sharer/sharer.php?u={{url absolute="true"}}">
 							<i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i>
 						</a>
-						<a title="{{t "LinkedIn"}}" aria-label="{{t "LinkedIn"}}" class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{url absolute="true"}}&amp;title={{encode title}}" onclick="window.open(this.href, 'linkedin-share', 'width=930,height=720');return false;">
+						<a title="{{t "LinkedIn"}}" aria-label="{{t "LinkedIn"}}" class="linkedin js-share-popup" data-popup-size="930,720" href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{url absolute="true"}}&amp;title={{encode title}}">
 							<i class="icon icon-linkedin" aria-hidden="true">{{> "icons/icon-linkedin"}}</i>
 						</a>
 						<a title="{{t "Email"}}" aria-label="{{t "Email"}}" class="email" href="mailto:?subject={{encode title}}&amp;body={{url absolute="true"}}">
@@ -199,130 +198,4 @@
 {{#contentFor "scripts"}}
 <script defer src="/assets/js/tocbot.min.js"></script>
 <script defer src="/assets/js/post.js" data-highlight="/assets/js/highlight.pack.js"></script>
-<script>
-(function() {
-	var btn = document.querySelector('.back-to-top');
-	var progress = btn ? btn.querySelector('.progress-ring__progress') : null;
-	var content = document.querySelector('.post-content');
-	var footer = document.querySelector('.nav-footer');
-	if (!btn || !progress || !content) return;
-
-	var circumference = 2 * Math.PI * 20; // r=20
-	var articleTop = 0;
-	var articleHeight = 0;
-	var isVisible = false;
-	var defaultBottom = 32; // Default bottom position in px
-	var btnHeight = 48; // Button height
-	var safeMargin = 16; // Extra margin from footer
-	var lastScrollTop = 0;
-	var isScrollingDown = false;
-
-	function updateProgress() {
-		var rect = content.getBoundingClientRect();
-		articleTop = rect.top + window.pageYOffset;
-		articleHeight = rect.height;
-
-		var scrollY = window.pageYOffset;
-		var windowHeight = window.innerHeight;
-		var scrollableHeight = articleHeight - windowHeight;
-
-		// Calculate progress (0 to 1)
-		var progressValue = 0;
-		if (scrollableHeight > 0) {
-			progressValue = Math.max(0, Math.min((scrollY - articleTop + windowHeight * 0.3) / scrollableHeight, 1));
-		}
-
-		// Update progress ring
-		var offset = circumference * (1 - progressValue);
-		progress.style.strokeDashoffset = offset;
-
-		// Detect scroll direction
-		var scrollDelta = scrollY - lastScrollTop;
-		var currentScrollingDown = scrollDelta > 0;
-
-		// Only update if scroll direction changed and scrolled more than 5px
-		if (Math.abs(scrollDelta) > 5 && currentScrollingDown !== isScrollingDown) {
-			isScrollingDown = currentScrollingDown;
-			updateButtonVisibility(scrollY);
-		}
-
-		lastScrollTop = scrollY;
-
-		// Show/hide button based on scroll position
-		var shouldShow = scrollY > 200;
-		if (shouldShow !== isVisible) {
-			isVisible = shouldShow;
-			btn.classList.toggle('is-visible', shouldShow);
-		}
-
-		// Avoid footer overlap
-		if (footer) {
-			var footerRect = footer.getBoundingClientRect();
-			var footerTop = footerRect.top;
-			var btnBottom = windowHeight - defaultBottom - btnHeight;
-
-			// If button would overlap footer, move it up
-			if (footerTop < windowHeight && footerTop < btnBottom + btnHeight + safeMargin) {
-				var newBottom = windowHeight - footerTop + safeMargin;
-				btn.style.bottom = newBottom + 'px';
-			} else {
-				btn.style.bottom = defaultBottom + 'px';
-			}
-		}
-	}
-
-	function updateButtonVisibility(scrollY) {
-		// Don't hide if at the top of the page (less than 200px)
-		if (scrollY < 200) {
-			btn.classList.remove('is-hidden-scroll');
-			return;
-		}
-
-		// Hide when scrolling down, show when scrolling up
-		if (isScrollingDown) {
-			btn.classList.add('is-hidden-scroll');
-		} else {
-			btn.classList.remove('is-hidden-scroll');
-		}
-	}
-
-	// Scroll to top on click
-	btn.addEventListener('click', function() {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	});
-
-	// Throttled scroll handler
-	var ticking = false;
-	function onScroll() {
-		if (!ticking) {
-			window.requestAnimationFrame(function() {
-				updateProgress();
-				ticking = false;
-			});
-			ticking = true;
-		}
-	}
-
-	window.addEventListener('scroll', onScroll, { passive: true });
-	window.addEventListener('resize', onScroll, { passive: true });
-
-	// Handle orientation change
-	window.addEventListener('orientationchange', function() {
-		setTimeout(function() {
-			updateProgress();
-		}, 100);
-	}, { passive: true });
-
-	// Initial update
-	updateProgress();
-
-	// Show button after a short delay
-	setTimeout(function() {
-		if (window.pageYOffset > 200) {
-			btn.classList.add('is-visible');
-			isVisible = true;
-		}
-	}, 500);
-})();
-</script>
 {{/contentFor}}

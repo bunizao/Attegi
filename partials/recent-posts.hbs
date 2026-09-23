@@ -7,7 +7,7 @@
 	{{#next_post}}
 		<a class="post-nav-next" href="{{url}}">
 			<section class="post-nav-teaser">
-				<i class="icon icon-arrow-left" aria-label="{{t "Next post"}}">{{> "icons/icon-arrow-left"}}</i>
+				<i class="icon icon-arrow-left" aria-hidden="true">{{> "icons/icon-arrow-left"}}</i>
 				<h2 class="post-nav-title">{{title}}</h2>
 				<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
 				<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
@@ -16,7 +16,7 @@
 	{{else}}
 		<a class="post-nav-next post-nav-home" href="{{@site.url}}">
 			<section class="post-nav-teaser">
-				<i class="icon icon-home" aria-label="{{t "Back to home"}}">{{> "icons/icon-home"}}</i>
+				<i class="icon icon-home" aria-hidden="true">{{> "icons/icon-home"}}</i>
 				<h2 class="post-nav-title">{{t "Return to Home"}}</h2>
 				<p class="post-nav-excerpt">{{@site.description}}</p>
 			</section>
@@ -27,7 +27,7 @@
 	{{#prev_post}}
 		<a class="post-nav-prev" href="{{url}}">
 			<section class="post-nav-teaser">
-				<i class="icon icon-arrow-right" aria-label="{{t "Previous post"}}">{{> "icons/icon-arrow-right"}}</i>
+				<i class="icon icon-arrow-right" aria-hidden="true">{{> "icons/icon-arrow-right"}}</i>
 				<h2 class="post-nav-title">{{title}}</h2>
 				<p class="post-nav-excerpt">{{excerpt words="12"}}</p>
 				<p class="post-nav-meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time></p>
@@ -36,7 +36,7 @@
 	{{else}}
 		<a class="post-nav-prev post-nav-home" href="{{@site.url}}">
 			<section class="post-nav-teaser">
-				<i class="icon icon-home" aria-label="{{t "Back to home"}}">{{> "icons/icon-home"}}</i>
+				<i class="icon icon-home" aria-hidden="true">{{> "icons/icon-home"}}</i>
 				<h2 class="post-nav-title">{{t "Return to Home"}}</h2>
 				<p class="post-nav-excerpt">{{@site.description}}</p>
 			</section>
@@ -70,7 +70,7 @@
 		{{else}}
 			<a class="post-nav-next post-nav-home" href="{{@site.url}}">
 				<section class="post-nav-teaser">
-					<i class="icon icon-home" aria-label="{{t "Back to home"}}">{{> "icons/icon-home"}}</i>
+					<i class="icon icon-home" aria-hidden="true">{{> "icons/icon-home"}}</i>
 					<h2 class="post-nav-title">{{t "Return to Home"}}</h2>
 					<p class="post-nav-excerpt">{{@site.description}}</p>
 				</section>
