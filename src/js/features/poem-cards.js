@@ -48,19 +48,17 @@ function parsePoemBlockquote(blockquote) {
 
   var contentLines = lines.slice(poemLineIndex + 1);
   var author = '';
-  var verses = [];
+  var verses = contentLines;
 
-  for (var j = contentLines.length - 1; j >= 0; j--) {
-    var line = contentLines[j];
-    if (line.startsWith('—') || line.startsWith('--') || line.startsWith('- ')) {
-      author = line.replace(/^--/, '—').replace(/^- /, '— ');
-      verses = contentLines.slice(0, j);
-      break;
-    }
-  }
-
-  if (!author && contentLines.length > 0) {
-    verses = contentLines;
+  // Only the LAST line can be the author credit, and only if it reads like
+  // one (short) -- a legitimate poem line that happens to start with a dash
+  // is usually longer than a "-- Name" credit and shouldn't be misread.
+  var AUTHOR_LINE_MAX_LENGTH = 40;
+  var lastLine = contentLines[contentLines.length - 1];
+  if (lastLine && lastLine.length <= AUTHOR_LINE_MAX_LENGTH &&
+      (lastLine.startsWith('—') || lastLine.startsWith('--') || lastLine.startsWith('- '))) {
+    author = lastLine.replace(/^--/, '—').replace(/^- /, '— ');
+    verses = contentLines.slice(0, contentLines.length - 1);
   }
 
   var centered = title.includes('[center]') || title.includes('[居中]');
