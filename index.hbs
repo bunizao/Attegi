@@ -24,7 +24,7 @@
 		<div class="box blog-box">
 			<h1 class="blog-name">{{@site.title}}</h1>
 			{{#if @site.description}}
-			<span class="blog-description">{{@site.description}}</span>
+			<p class="blog-description">{{@site.description}}</p>
 			{{/if}}
 		</div>
 		{{#if @site.cover_image}}
@@ -37,7 +37,7 @@
 					srcset="{{> "srcset" image=@site.cover_image quality="50"}}"
 					sizes="(max-width: 1100px) 100vw, 1100px"
 					src="{{img_url @site.cover_image size="l" quality="50"}}"
-					alt="{{@site.title}}"
+					alt=""
 					loading="eager"
 					decoding="async"
 					fetchpriority="high" />
@@ -49,10 +49,10 @@
 
 <div id="index" class="container">
 
-	<main class="content" role="main">
+	<div class="content">
 
 		{{> "loop"}}
 
-	</main>
+	</div>
 
 </div>

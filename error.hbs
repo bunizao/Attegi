@@ -6,7 +6,7 @@
 	<div class="inner">
 		<div class="error-content">
 			{{!-- Creative 404 Animation --}}
-			<div class="error-illustration">
+			<div class="error-illustration" aria-hidden="true">
 				<div class="error-number">
 					<span class="digit digit-4">4</span>
 					<span class="digit digit-0">
@@ -33,7 +33,7 @@
 					{{t "The page you're looking for has drifted into the void. Perhaps it was moved, deleted, or never existed in the first place."}}
 				</p>
 				<a href="{{@site.url}}" class="error-button">
-					<i class="icon icon-arrow-left">{{> "icons/icon-arrow-left"}}</i>
+					<i class="icon icon-arrow-left" aria-hidden="true">{{> "icons/icon-arrow-left"}}</i>
 					<span>{{t "Return Home"}}</span>
 				</a>
 			</div>
@@ -55,7 +55,7 @@
 							<div class="recommendation-content">
 								{{#if tags}}
 								<div class="recommendation-tags">
-									{{#foreach tags limit="1"}}
+									{{#foreach tags limit="1" visibility="public"}}
 									<span class="recommendation-tag">{{name}}</span>
 									{{/foreach}}
 								</div>
