@@ -8,7 +8,12 @@ docker-compose.yml
 /.playwright-mcp
 /.lighthouseci
 /cloudflare-worker
-CLAUDE.md
+# Agent tooling is local state; settings.json is reserved for shared project config
+.claude/*
+!.claude/settings.json
+.agents
+.codex
+skills-lock.json
 /.idea
 yarn.lock
 
