@@ -1,18 +1,10 @@
 /**
  * Post Entry Point
- * Loads all features for post pages (includes site features)
+ * Loads post-specific features. Site features come from site.js,
+ * which default.hbs loads on every page.
  */
 
 import { onReady, qs, doc } from '../core/index.js';
-
-// Site features
-import { initMenu } from '../features/menu.js';
-import { initParallax } from '../features/parallax.js';
-import { initStickyLogo } from '../features/sticky-logo.js';
-import { initGallery } from '../features/gallery.js';
-import { initThemeSwitcher } from '../features/theme-switcher.js';
-
-// Post-specific features
 import { wrapEmbeds } from '../features/embeds.js';
 import { highlightCode } from '../features/code-highlight.js';
 import { setupProgress } from '../features/progress-bar.js';
@@ -25,18 +17,6 @@ import { initTOC } from '../features/toc.js';
 import { initPoemCards } from '../features/poem-cards.js';
 
 onReady(function() {
-  // Initialize site features first
-  initMenu();
-  initParallax();
-  initStickyLogo();
-
-  // Defer non-critical site features
-  setTimeout(function() {
-    initGallery();
-    initThemeSwitcher();
-  }, 0);
-
-  // Initialize post-specific features
   var postContent = qs('.post-content');
   if (!postContent) return;
 
