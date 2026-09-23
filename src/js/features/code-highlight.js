@@ -19,7 +19,13 @@ var languageNames = {
   'css': 'CSS', 'scss': 'SCSS', 'json': 'JSON',
   'yaml': 'YAML', 'yml': 'YAML', 'markdown': 'Markdown',
   'md': 'Markdown', 'bash': 'Bash', 'shell': 'Shell',
-  'sh': 'Shell', 'dockerfile': 'Dockerfile'
+  'sh': 'Shell', 'dockerfile': 'Dockerfile',
+  'powershell': 'PowerShell', 'ps1': 'PowerShell',
+  'ocaml': 'OCaml', 'fsharp': 'F#', 'matlab': 'MATLAB',
+  'objectivec': 'Objective-C', 'objc': 'Objective-C',
+  'asm': 'Assembly', 'vb': 'Visual Basic', 'vbnet': 'VB.NET',
+  'graphql': 'GraphQL', 'toml': 'TOML', 'ini': 'INI',
+  'cmake': 'CMake', 'plaintext': 'Plain Text', 'text': 'Plain Text'
 };
 
 function getLanguageDisplayName(langClass) {
@@ -38,9 +44,12 @@ function legacyCopy(text) {
       textarea.setAttribute('readonly', '');
       textarea.style.position = 'fixed';
       textarea.style.top = '-9999px';
+      textarea.style.left = '-9999px';
       doc.body.appendChild(textarea);
       textarea.focus();
       textarea.select();
+      // iOS Safari ignores select() on textareas
+      textarea.setSelectionRange(0, textarea.value.length);
       var successful = doc.execCommand && doc.execCommand('copy');
       doc.body.removeChild(textarea);
       successful ? resolve() : reject(new Error('Copy failed'));
