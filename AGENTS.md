@@ -52,8 +52,6 @@ There is no linter or test suite. `bun run validate` is the floor for every chan
   `init*` / `setup*` functions; shared helpers (`qs`, `qsa`, `onReady`,
   `throttle`, `getI18n`) come from `src/js/core/`. Two-space indent, semicolons, no jQuery.
 - Vendor scripts (`highlight.pack.js`, `glightbox`, `tocbot`) are copied, not bundled.
-- `src/js/{script,post,toc,poem}.js` are pre-module leftovers. The build only
-  uses them if the entries are missing. Do not edit them.
 - `package.json` `config.custom` defines the Ghost admin settings read as
   `@custom.*`. The preview renderer reads defaults from there too.
 - `locales/*.json` back `{{t "..."}}`. A missing key falls back to the English

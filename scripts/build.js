@@ -11,7 +11,6 @@ const path = require('path');
 
 // Configuration
 const config = {
-  srcDir: 'src/js',
   outDir: 'assets/js',
   // Entry points for different page types
   entries: {
@@ -99,37 +98,8 @@ async function copyCssVendor() {
 async function buildJS() {
   console.log('\n[JS] Building JavaScript bundles...');
 
-  // Check if entry files exist, if not use legacy files
-  const entryPoints = {};
-  let useLegacy = false;
-
-  for (const [name, entryPath] of Object.entries(config.entries)) {
-    if (fs.existsSync(entryPath)) {
-      entryPoints[name] = entryPath;
-    } else {
-      useLegacy = true;
-    }
-  }
-
-  // Fallback to legacy build if new entries don't exist yet
-  if (useLegacy) {
-    console.log('  Using legacy entry points (new modular structure not yet created)');
-    const legacyEntries = {
-      'script': 'src/js/script.js',
-      'post': 'src/js/post.js',
-      'toc': 'src/js/toc.js',
-      'poem': 'src/js/poem.js'
-    };
-
-    for (const [name, entryPath] of Object.entries(legacyEntries)) {
-      if (fs.existsSync(entryPath)) {
-        entryPoints[name] = entryPath;
-      }
-    }
-  }
-
   const buildOptions = {
-    entryPoints,
+    entryPoints: config.entries,
     bundle: true,
     outdir: config.outDir,
     format: 'iife',

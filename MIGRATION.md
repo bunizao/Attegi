@@ -48,8 +48,7 @@ Relevant official references:
 - `default.hbs` is the real control center. It owns layout, global head/meta logic, navigation/footer, search/member triggers, theme initialization, and conditional lightbox bootstrapping.
 - `post.hbs`, `page.hbs`, `page-links.hbs`, and `page-tags.hbs` are the most important content templates to port first.
 - `src/sass/style.scss` is a monolith with almost all presentation rules, including extensive `.kg-*` card styling.
-- The modern JS source of truth is the modular `src/js/core`, `src/js/features`, and `src/js/entries` tree.
-- Legacy JS still exists (`src/js/script.js`, `src/js/post.js`, `src/js/toc.js`, `src/js/poem.js`) because the build system keeps a fallback path and Grunt compatibility layer.
+- The JS source of truth is the modular `src/js/core`, `src/js/features`, and `src/js/entries` tree.
 - Several runtime behaviors live outside the main JS bundles:
   - inline scripts in `default.hbs`
   - inline scripts in `post.hbs`
@@ -408,21 +407,6 @@ Important exception:
 | highlight.js | `src/js/libs/highlight.pack.js` | Code syntax highlighting. |
 | GLightbox | `src/js/libs/glightbox.min.js` plus `src/sass/glightbox.min.css` | Lightbox for Ghost gallery images. |
 
-### Legacy JS still present
-
-| File | Status |
-| --- | --- |
-| `src/js/script.js` | Legacy monolithic site script. |
-| `src/js/post.js` | Legacy monolithic post script. |
-| `src/js/toc.js` | Legacy monolithic TOC script. |
-| `src/js/poem.js` | Legacy monolithic poem-card script. |
-
-Why they still matter:
-
-- `scripts/build.js` contains a legacy fallback path if the modular entries are missing.
-- `Gruntfile.js` still builds the legacy files directly.
-- In the Astro fork, you should treat the modular tree as the source of truth and archive or delete the legacy path once the migration is stable.
-
 ### Non-bundle JS embedded in templates
 
 - `default.hbs`
@@ -442,7 +426,7 @@ Why they still matter:
 
 ### JS migration recommendation
 
-- Port the modular feature files, not the legacy monoliths.
+- Port the modular feature files.
 - Keep inline behaviors close to the Astro pages/layouts that use them.
 - Remove or ignore orphaned logic:
   - `progress-bar.js` has styles and JS, but there is no matching template markup in the current theme.
@@ -626,10 +610,6 @@ Findings:
   - In Ghost theme mode, card assets can be injected for you.
   - In Astro, every supported card style or behavior must be shipped intentionally.
 
-- There is a modern JS architecture and a legacy JS architecture in the same repo.
-  - Do not port both.
-  - The modular `src/js/core`, `src/js/features`, and `src/js/entries` tree is the only sane starting point.
-
 - There is at least one dead feature branch.
   - `progress-bar.js` and `.progress-container` / `.progress-bar` styles still exist, but no current template outputs the matching markup.
   - This is a candidate to drop during migration.
@@ -670,7 +650,6 @@ If the goal is a clean migration with low risk, the best sequence is:
 5. Make an explicit product decision on Portal/search/comments before wiring secondary pages.
 6. Delete workaround layers after Astro owns the output:
    - duplicate OG-image filtering worker
-   - legacy JS build path
    - unused icon/font assets
 
 That path keeps the migration boring. Boring wins.
