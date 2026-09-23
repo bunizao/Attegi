@@ -337,7 +337,8 @@ own cover-active case is already covered there, so this attribute only needs the
 	data-i18n-toc-label="{{t "Table of Contents"}}"
 	data-i18n-on-this-page="{{t "On this page"}}"
 	data-i18n-open-toc="{{t "Open table of contents"}}"
-	data-i18n-close-toc="{{t "Close table of contents"}}">
+	data-i18n-close-toc="{{t "Close table of contents"}}"
+	data-i18n-open-image="{{t "Open image"}}">
 
 	<a class="skip-link" href="#main">{{t "Skip to content"}}</a>
 
@@ -501,8 +502,11 @@ own cover-active case is already covered there, so this attribute only needs the
 		// Conditionally load GLightbox only for gallery images
 		(function() {
 			function initGLightbox() {
-				var galleryImages = document.querySelectorAll('.kg-gallery-image img');
-				if (galleryImages.length === 0) return; // No gallery images, skip loading
+				// Gallery images and single kg-image-card images are both lightbox-able.
+				var galleryImages = document.querySelectorAll('.kg-gallery-image img, .kg-image-card > img');
+				if (galleryImages.length === 0) return; // No lightbox-able images, skip loading
+
+				var openImageLabel = (document.body.getAttribute('data-i18n-open-image')) || 'Open image';
 
 				function getNumericValue(value) {
 					if (!value) return null;
@@ -556,7 +560,7 @@ own cover-active case is already covered there, so this attribute only needs the
 				css.href = '/assets/css/glightbox.min.css';
 				document.head.appendChild(css);
 
-				// Wrap gallery images only
+				// Wrap gallery and single-image-card images
 				galleryImages.forEach(function(img) {
 					if (!img.closest('a')) {
 						var wrapper = document.createElement('a');
@@ -564,19 +568,24 @@ own cover-active case is already covered there, so this attribute only needs the
 						wrapper.href = lightboxSrc || img.src;
 						wrapper.classList.add('glightbox');
 						wrapper.setAttribute('data-type', 'image');
+						wrapper.setAttribute('aria-label', img.getAttribute('alt') || openImageLabel);
 						var width = getNumericValue(img.getAttribute('width')) || img.naturalWidth;
 						var height = getNumericValue(img.getAttribute('height')) || img.naturalHeight;
 						if (width && height) {
 							wrapper.setAttribute('data-width', String(width));
 							wrapper.setAttribute('data-height', String(height));
 						}
-						// Use gallery card's position as unique ID
+						// Group by gallery card so prev/next only cycles within
+						// the same gallery; standalone images get no group and
+						// open on their own.
 						var galleryCard = img.closest('.kg-gallery-card');
-						var galleryId = 'gallery-' + Array.prototype.indexOf.call(
-							document.querySelectorAll('.kg-gallery-card'),
-							galleryCard
-						);
-						wrapper.setAttribute('data-gallery', galleryId);
+						if (galleryCard) {
+							var galleryId = 'gallery-' + Array.prototype.indexOf.call(
+								document.querySelectorAll('.kg-gallery-card'),
+								galleryCard
+							);
+							wrapper.setAttribute('data-gallery', galleryId);
+						}
 						img.parentNode.insertBefore(wrapper, img);
 						wrapper.appendChild(img);
 					}
