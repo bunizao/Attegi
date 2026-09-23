@@ -119,6 +119,7 @@ export function setupLazyComments() {
         }, 50);
 
         trigger.classList.add('is-loaded');
+        trigger.setAttribute('aria-expanded', 'true');
         trigger.setAttribute('hidden', 'true');
         trigger.removeAttribute('aria-busy');
       } catch (err) {
