@@ -29,6 +29,8 @@ const excludePatterns = [
   'package-lock.json',
   'docker-compose.yml',
   'AGENTS.md',
+  'CLAUDE.md',
+  'skills-lock.json',
   'README_zh.md',
   '.DS_Store',
   '.lighthouseci/**',
