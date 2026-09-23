@@ -15,16 +15,6 @@
   // pre-JS/no-JS fallbacks for the shipped default accent colors.
   --color-on-accent: #fff;
 
-  /* Mobile menu colors - Always dark style, same in both themes */
-  --color-menu-bg: rgba(28, 30, 32, 0.88);
-  --color-menu-bg-solid: rgba(28, 30, 32, 0.98);
-  --color-menu-text: rgba(255, 255, 255, 0.9);
-  --color-menu-text-hover: #fff;
-  --color-menu-border: rgba(255, 255, 255, 0.08);
-  --color-menu-shadow: rgba(0, 0, 0, 0.25);
-  --color-menu-item-line: rgba(255, 255, 255, 0.25);
-  --color-menu-item-hover-bg: rgba(255, 255, 255, 0.05);
-
   /* Semantic colors */
   --color-highlight: #FEF3C7;
   --color-highlight-ink: #000;
@@ -42,11 +32,6 @@
   --color-callout-warning: #f59e0b;
   --color-callout-success: #10b981;
   --color-callout-purple: #a855f7;
-
-  /* Liquid glass gradient base */
-  --liquid-glass-bg:
-    radial-gradient(180% 140% at 20% 20%, rgba(255,255,255,0.18), rgba(255,255,255,0.02)),
-    linear-gradient(135deg, #6a7cff, #7bf3d0, #ff9fd3);
 
   /* Ghost portal/comments brand color - mirror accent.
      Kept as two names because some Portal builds read `--brand-color`

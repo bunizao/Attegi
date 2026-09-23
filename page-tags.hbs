@@ -24,7 +24,7 @@
 </header>
 
 <div id="tags-index" class="container">
-    <main class="content" role="main">
+    <div class="content">
         <div class="inner">
             <div class="tags-grid tw:grid tw:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] tw:gap-[2rem] tw:max-[480px]:grid-cols-1 tw:max-[480px]:gap-[1.5rem]">
                 {{#get "tags" limit="100" include="count.posts,codeinjection_head" filter="visibility:public" order="created_at desc"}}
@@ -123,7 +123,7 @@
                 {{/get}}
             </div>
         </div>
-    </main>
+    </div>
 </div>
 
 {{!-- Tag Icons Script: Extract icons from each tag's Code Injection --}}
