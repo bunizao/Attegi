@@ -3,11 +3,15 @@
    ========================================================================== */
 
 // TOC Variables
-$toc-width: 250px;
+// Width and breakpoint are tuned together: at $toc-breakpoint there must be
+// enough space left of the centered content column for $toc-width plus a
+// $toc-gap-min (48px) gap before the sidebar is shown.
+$toc-width: 220px;
+$toc-gap-min: 4.8rem;
 $toc-offset-top: 3rem;
 $toc-gap: 3rem;
 $toc-transition: all 0.25s ease;
-$toc-breakpoint: 1400px;
+$toc-breakpoint: 1300px;
 $toc-breakpoint-small: 480px;
 
 // When TOC is present, fix overflow to allow sticky positioning
@@ -19,7 +23,7 @@ $toc-breakpoint-small: 480px;
 .toc-sidebar {
   position: fixed;
   top: 7rem; // Leave space for sticky logo
-  left: calc((100vw - 64rem - 8vw) / 2 - #{$toc-width} - 2.5rem);
+  left: calc((100vw - 64rem - 8vw) / 2 - #{$toc-width} - #{$toc-gap-min});
   width: $toc-width;
   max-height: calc(100vh - 7rem - 2rem);
   overflow-y: auto;
@@ -60,7 +64,7 @@ $toc-breakpoint-small: 480px;
   font-family: var(--gh-font-body);
   font-size: 1.2rem;
   font-weight: 500;
-  color: color-mix(in srgb, var(--color-content-main) 60%, transparent);
+  color: var(--color-content-secondary);
   margin: 0;
   line-height: 1.4;
   letter-spacing: 0.15em;
@@ -97,14 +101,14 @@ $toc-breakpoint-small: 480px;
   font-size: 1.45rem;
   line-height: 1.4;
   font-weight: 400;
-  color: color-mix(in srgb, var(--color-content-main) 45%, transparent);
+  color: var(--color-content-secondary);
   text-decoration: none;
   border-left: 1.5px solid transparent;
   transition: color 0.15s ease, border-color 0.15s ease;
   word-break: break-word;
 
   &:hover {
-    color: color-mix(in srgb, var(--color-content-main) 75%, transparent);
+    color: var(--color-content-main);
   }
 
   &.is-active {
@@ -314,7 +318,7 @@ $toc-breakpoint-small: 480px;
   position: fixed;
   inset: 0;
   z-index: var(--z-toc-overlay);
-  background: transparent;
+  background: rgba(0, 0, 0, 0.35);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
@@ -347,7 +351,7 @@ $toc-breakpoint-small: 480px;
   font-family: var(--gh-font-body);
   font-size: 1.2rem;
   font-weight: 500;
-  color: color-mix(in srgb, var(--color-content-main) 60%, transparent);
+  color: var(--color-content-secondary);
   margin: 0;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -358,6 +362,7 @@ $toc-breakpoint-small: 480px;
 }
 
 .toc-mobile-close {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -370,6 +375,13 @@ $toc-breakpoint-small: 480px;
   cursor: pointer;
   transition: $toc-transition;
 
+  // Expand the tap target to 44px without growing the visible button.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -0.8rem;
+  }
+
   &:hover {
     background: var(--color-background-contrast);
     color: var(--color-content-main);
@@ -379,11 +391,6 @@ $toc-breakpoint-small: 480px;
     width: 1.6rem;
     height: 1.6rem;
   }
-}
-
-// Handle - hidden in mini panel
-.toc-mobile-handle {
-  display: none;
 }
 
 // Content area
@@ -430,7 +437,7 @@ $toc-breakpoint-small: 480px;
   padding: 0.7rem 1.4rem 0.7rem 1.4rem;
   font-size: 1.4rem;
   line-height: 1.4;
-  color: color-mix(in srgb, var(--color-content-main) 70%, transparent);
+  color: var(--color-content-secondary);
   text-decoration: none;
   border-left: 2px solid transparent;
   transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
