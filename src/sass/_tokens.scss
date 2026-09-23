@@ -47,7 +47,21 @@
 	--ease-standard: ease-out;
 	--ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 
+	/* ---- spacing ----------------------------------------------------------
+	   The 8 rem values already used most for padding/margin/gap across the
+	   stylesheet. One-off values and em-based typographic spacing are left
+	   as literals; see findings-foundations.md. */
+	--space-1: 0.5rem;
+	--space-2: 0.75rem;
+	--space-3: 1rem;
+	--space-4: 1.5rem;
+	--space-5: 2rem;
+	--space-6: 2.5rem;
+	--space-7: 3rem;
+	--space-8: 4rem;
+
 	/* ---- radius ---------------------------------------------------------- */
+	--radius-xs: 0.4rem;
 	--radius-sm: 0.5rem;
 	--radius-md: 0.75rem;
 	--radius-lg: 1rem;
