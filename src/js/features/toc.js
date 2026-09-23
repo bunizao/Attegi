@@ -87,6 +87,7 @@ function createMobileTOC(labels) {
   var drawer = doc.createElement('div');
   drawer.className = 'toc-mobile-drawer';
   drawer.setAttribute('role', 'dialog');
+  drawer.setAttribute('aria-label', labels.tocLabel);
 
   var header = doc.createElement('div');
   header.className = 'toc-mobile-header';
@@ -174,6 +175,35 @@ function syncMobileActiveState() {
       link.classList.remove('is-active');
     }
   });
+}
+
+// Keep the active link centered in the desktop sidebar, which scrolls with a hidden scrollbar
+function scrollSidebarToActiveLink(activeLink) {
+  var sidebar = elements.sidebar;
+  var sidebarRect = sidebar.getBoundingClientRect();
+  var linkRect = activeLink.getBoundingClientRect();
+  var linkTop = linkRect.top - sidebarRect.top + sidebar.scrollTop;
+  var targetScroll = linkTop - sidebarRect.height / 2 + linkRect.height / 2;
+  var maxScroll = sidebar.scrollHeight - sidebarRect.height;
+
+  sidebar.scrollTo({ top: Math.max(0, Math.min(targetScroll, maxScroll)), behavior: 'smooth' });
+}
+
+// tocbot has no active-change callback, so watch for its class toggles
+function setupSidebarAutoScroll() {
+  var tocList = qs('.toc-sidebar .toc-list');
+  if (!tocList || !elements.sidebar) return;
+
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      var target = mutation.target;
+      if (target.classList.contains('toc-link') && target.classList.contains('is-active')) {
+        scrollSidebarToActiveLink(target);
+      }
+    });
+  });
+
+  observer.observe(tocList, { attributes: true, subtree: true, attributeFilter: ['class'] });
 }
 
 function smoothScrollContainer(container, target, duration) {
@@ -393,6 +423,7 @@ export function initTOC() {
       orderedList: false,
       onClick: function() { if (state.isOpen) closeMobileTOC(); }
     });
+    setupSidebarAutoScroll();
     setTimeout(function() {
       copyTocToMobile();
       syncMobileActiveState();
