@@ -1,11 +1,16 @@
 /* ==========================================================================
    Table of Contents - Using tocbot
    ========================================================================== */
+@use "breakpoints" as *;
 
 // TOC Variables
 // Width and breakpoint are tuned together: at $toc-breakpoint there must be
 // enough space left of the centered content column for $toc-width plus a
-// $toc-gap-min (48px) gap before the sidebar is shown.
+// $toc-gap-min (48px) gap before the sidebar is shown. That space requirement
+// is why $toc-breakpoint is its own value (1300px) instead of one of the
+// shared $breakpoint-* tokens: it's not a content-reflow point, it's the
+// viewport width where the sidebar starts fitting beside the fixed-width
+// content column, and it comfortably clears $breakpoint-large (960px).
 $toc-width: 220px;
 $toc-gap-min: 4.8rem;
 $toc-offset-top: 3rem;

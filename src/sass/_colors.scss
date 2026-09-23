@@ -15,6 +15,13 @@
   // pre-JS/no-JS fallbacks for the shipped default accent colors.
   --color-on-accent: #fff;
 
+  // Accent color for TEXT (links, etc.), as opposed to accent-colored fills.
+  // Ghost admins can pick a light or low-contrast accent that reads fine as
+  // a small fill but fails as text on the page background; default.hbs
+  // checks that at runtime and overrides this with a darkened/lightened
+  // variant when needed. Static fallback: same as the fill color.
+  --color-accent-text: var(--ghost-accent-color);
+
   /* Semantic colors */
   --color-highlight: #FEF3C7;
   --color-highlight-ink: #000;

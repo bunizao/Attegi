@@ -37,6 +37,11 @@ own cover-active case is already covered there, so this attribute only needs the
 			//   colors from their luminance, since a Ghost admin can pick any
 			//   accent; the CSS fallbacks in _colors.scss only cover the
 			//   shipped defaults.
+			// - Also derives --color-accent-text: if the picked accent has
+			//   under 3:1 contrast against the page background, this is a
+			//   darkened/lightened variant readable as text (links etc.);
+			//   otherwise it's just the accent itself. Accent-colored fills
+			//   keep using --ghost-accent-color directly.
 			// - Keeps <meta name="theme-color"> in sync with the resolved theme.
 			// src/js/features/theme-switcher.js repeats the same theme-color
 			// and localStorage update when the visitor uses the toggle.
@@ -71,27 +76,62 @@ own cover-active case is already covered there, so this attribute only needs the
 					updateThemeColor(dark);
 				}
 
+				function lin(c) {
+					c = c / 255;
+					return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+				}
+
+				function luminanceOf(hex) {
+					var m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+					if (!m) return null;
+					var n = parseInt(m[1], 16);
+					return 0.2126 * lin((n >> 16) & 255) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255);
+				}
+
 				// Relative luminance -> pick whichever of near-black/white has
 				// more contrast against the given accent color.
 				function onAccentFor(hex) {
-					var m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
-					if (!m) return '#fff';
-					var n = parseInt(m[1], 16);
-					var r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
-					function lin(c) {
-						c = c / 255;
-						return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-					}
-					var luminance = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+					var luminance = luminanceOf(hex);
+					if (luminance === null) return '#fff';
 					// Luminance where contrast(white, L) === contrast(black, L).
 					return luminance > 0.1791 ? '#1D1F21' : '#fff';
 				}
 
+				function contrastOf(l1, l2) {
+					var lighter = Math.max(l1, l2), darker = Math.min(l1, l2);
+					return (lighter + 0.05) / (darker + 0.05);
+				}
+
+				// Nudge an accent toward black/white, in steps, until it clears a
+				// 3:1 contrast against the page background - only for TEXT use
+				// (links etc.); accent-colored fills keep the raw admin color.
+				function readableAccentFor(hex, bgHex) {
+					var bgLum = luminanceOf(bgHex);
+					var lum = luminanceOf(hex);
+					if (lum === null || bgLum === null || contrastOf(lum, bgLum) >= 3) return hex;
+					var m = /^#?([0-9a-f]{6})$/i.exec(hex);
+					var n = parseInt(m[1], 16);
+					var r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+					var target = bgLum > 0.5 ? 0 : 255;
+					for (var i = 1; i <= 10; i++) {
+						var amount = i / 10;
+						var cr = Math.round(r + (target - r) * amount);
+						var cg = Math.round(g + (target - g) * amount);
+						var cb = Math.round(b + (target - b) * amount);
+						var candidate = '#' + ((1 << 24) + (cr << 16) + (cg << 8) + cb).toString(16).slice(1);
+						if (contrastOf(luminanceOf(candidate), bgLum) >= 3) return candidate;
+					}
+					return target === 0 ? '#000' : '#fff';
+				}
+
+				var lightAccentText = readableAccentFor(lightAccent, '#ffffff');
+				var darkAccentText = readableAccentFor(darkAccent, '#1D1F21');
+
 				var accentStyle = document.createElement('style');
 				accentStyle.textContent =
-					':root { --color-on-accent: ' + onAccentFor(lightAccent) + '; }' +
-					'.theme-dark:root { --color-on-accent: ' + onAccentFor(darkAccent) + '; --ghost-accent-color: ' + darkAccent + '; }' +
-					'@media (prefers-color-scheme: dark) { html:not(.theme-light):root { --color-on-accent: ' + onAccentFor(darkAccent) + '; --ghost-accent-color: ' + darkAccent + '; } }';
+					':root { --color-on-accent: ' + onAccentFor(lightAccent) + '; --color-accent-text: ' + lightAccentText + '; }' +
+					'.theme-dark:root { --color-on-accent: ' + onAccentFor(darkAccent) + '; --ghost-accent-color: ' + darkAccent + '; --color-accent-text: ' + darkAccentText + '; }' +
+					'@media (prefers-color-scheme: dark) { html:not(.theme-light):root { --color-on-accent: ' + onAccentFor(darkAccent) + '; --ghost-accent-color: ' + darkAccent + '; --color-accent-text: ' + darkAccentText + '; } }';
 				document.head.appendChild(accentStyle);
 
 				// Hide the toggle when @custom.color_scheme forces a theme.
@@ -122,13 +162,16 @@ own cover-active case is already covered there, so this attribute only needs the
 			})();
 		</script>
 
-	{{!-- Critical CSS - Inlined for faster FCP and reduced CLS --}}
+	{{!-- Critical CSS - Inlined for faster FCP and reduced CLS.
+	This is a hand-maintained subset of src/sass/style.scss (the "CLS
+	prevention rules" section and .nav-header) that has to paint before the
+	real stylesheet loads; keep the two in sync by hand when either changes. --}}
 	<style>
 		/* Critical layout styles to prevent CLS */
 		html{font-size:62.5%}
 		body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;margin:0;background:var(--color-background-main,#fff)}
 		img{max-width:100%;height:auto}
-		.nav-header{position:fixed;top:0;left:0;width:100%;z-index:400}
+		.nav-header{position:fixed;top:0;left:0;width:100%;z-index:var(--z-nav,400)}
 		.nav-header .logo img{width:auto;height:4rem}
 		.skip-link{position:absolute;top:-100%;left:0;z-index:9999}
 		.skip-link:focus{top:0}

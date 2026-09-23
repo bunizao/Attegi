@@ -321,8 +321,7 @@ textarea {
 		font-weight: 500;
 		line-height: inherit;
 		text-align: right;
-		color: var(--ghost-accent-color);
-
+		color: var(--color-accent-text);
 		@media only screen and (max-width: $breakpoint-small) {
 			width: 1em;
 			margin-left: -1.4em;
@@ -423,8 +422,7 @@ textarea {
 			}
 
 			a {
-				color: var(--ghost-accent-color);
-				text-decoration: underline;
+				color: var(--color-accent-text);				text-decoration: underline;
 				font-weight: 500;
 
 				&:hover {
@@ -1519,8 +1517,7 @@ textarea {
 				border-color: color-mix(in srgb, var(--ghost-accent-color) 50%, var(--color-background-contrast));
 
 				.kg-bookmark-title {
-					color: var(--ghost-accent-color);
-				}
+					color: var(--color-accent-text);				}
 
 				.kg-bookmark-description {
 					opacity: 1;
@@ -2202,7 +2199,7 @@ textarea {
 		}
 
 		// Responsive
-		@media only screen and (max-width: 640px) {
+		@media only screen and (max-width: $breakpoint-medium) {
 			max-width: 100%;
 			margin-bottom: 2.6rem;
 
@@ -2294,8 +2291,7 @@ textarea {
 			gap: var(--space-1);
 			padding: var(--space-1) 1.125rem;
 			background: var(--color-on-accent);
-			color: var(--ghost-accent-color);
-			text-decoration: none;
+			color: var(--color-accent-text);			text-decoration: none;
 			border-radius: 0.25rem;
 			font-weight: 600;
 			font-size: 0.875em;
@@ -2573,8 +2569,7 @@ textarea {
 		line-height: 1em;
 
 		.archive-type {
-			color: var(--ghost-accent-color);
-		}
+			color: var(--color-accent-text);		}
 
 		.archive-count {
 			position: relative;
@@ -2631,8 +2626,7 @@ textarea {
 	}
 
 	a {
-		color: var(--ghost-accent-color);
-		transition: color linear 0.1s;
+		color: var(--color-accent-text);		transition: color linear 0.1s;
 
 		&:focus-visible,
 		&:hover {
@@ -3042,8 +3036,7 @@ textarea {
 	}
 
 	li.active a {
-		color: var(--ghost-accent-color);
-	}
+		color: var(--color-accent-text);	}
 }
 
 .site-menu-members {
@@ -3393,8 +3386,7 @@ textarea {
 				}
 
 				.post-title a {
-					color: var(--ghost-accent-color);
-				}
+					color: var(--color-accent-text);				}
 
 				.post-excerpt {
 					color: var(--color-content-main);
@@ -3487,8 +3479,7 @@ textarea {
 	font-size: 2em;
 	height: 2.4em;
 	line-height: 2.4em;
-	color: var(--ghost-accent-color);
-	align-items: center;
+	color: var(--color-accent-text);	align-items: center;
 	transform: translateY(0.15em);
 }
 
@@ -3500,8 +3491,7 @@ textarea {
 	font-size: 1.15em;
 	font-weight: 600;
 	line-height: 1.5;
-	color: var(--ghost-accent-color);
-	background: color-mix(in srgb, var(--ghost-accent-color) 10%, transparent);
+	color: var(--color-accent-text);	background: color-mix(in srgb, var(--ghost-accent-color) 10%, transparent);
 	border: 1px solid color-mix(in srgb, var(--ghost-accent-color) 25%, transparent);
 	border-radius: 0.35em;
 	white-space: nowrap;
@@ -3761,8 +3751,7 @@ textarea {
 		position: relative;
 
 		&:hover {
-			color: var(--ghost-accent-color);
-		}
+			color: var(--color-accent-text);		}
 	}
 }
 
@@ -3950,9 +3939,6 @@ textarea {
 		margin-top: 0;
 	}
 }
-/* ==========================================================================
-   Post Info
-   ========================================================================== */
 .post-footer {
 	margin: 12rem 0 6rem;
 }
@@ -4187,8 +4173,7 @@ textarea {
 
 	.gh-btn-outline {
 		background: transparent;
-		color: var(--ghost-accent-color);
-		border-color: color-mix(in srgb, var(--ghost-accent-color) 60%, transparent);
+		color: var(--color-accent-text);		border-color: color-mix(in srgb, var(--ghost-accent-color) 60%, transparent);
 
 		&:hover,
 		&:focus-visible {
@@ -4214,11 +4199,9 @@ textarea {
 		.gh-btn-outline,
 		.gh-comments-cta-signin,
 		.gh-comments-cta-signup {
-			color: var(--ghost-accent-color);
-
+			color: var(--color-accent-text);
 			a {
-				color: var(--ghost-accent-color);
-
+				color: var(--color-accent-text);
 				&:hover,
 				&:focus-visible {
 					opacity: 0.85;
@@ -4487,13 +4470,11 @@ textarea {
 		}
 
 		i {
-			color: var(--ghost-accent-color);
-			transform: translateX(-3px);
+			color: var(--color-accent-text);			transform: translateX(-3px);
 		}
 
 		.post-nav-title {
-			color: var(--ghost-accent-color);
-		}
+			color: var(--color-accent-text);		}
 	}
 }
 
@@ -4553,8 +4534,7 @@ textarea {
 		padding: 0.6rem;
 		background: color-mix(in srgb, var(--ghost-accent-color) 15%, transparent);
 		border-radius: 50%;
-		color: var(--ghost-accent-color);
-
+		color: var(--color-accent-text);
 		svg {
 			width: 100%;
 			height: 100%;
@@ -4563,8 +4543,7 @@ textarea {
 
 	.post-nav-title {
 		margin-bottom: var(--space-1);
-		color: var(--ghost-accent-color);
-		display: block;
+		color: var(--color-accent-text);		display: block;
 		-webkit-line-clamp: unset;
 		-webkit-box-orient: unset;
 		overflow: visible;
@@ -4790,8 +4769,7 @@ a.post-tag-chip {
 	}
 
 	&:hover {
-		color: var(--ghost-accent-color);
-		border-color: var(--ghost-accent-color);
+		color: var(--color-accent-text);		border-color: var(--ghost-accent-color);
 		background: color-mix(in srgb, var(--ghost-accent-color) 8%, transparent);
 	}
 }
@@ -5188,8 +5166,7 @@ a.post-tag-chip {
 	display: inline-block;
 	font-size: 1.1em;
 	font-weight: 500;
-	color: var(--ghost-accent-color);
-	text-transform: uppercase;
+	color: var(--color-accent-text);	text-transform: uppercase;
 	letter-spacing: 0.5px;
 }
 
@@ -5251,8 +5228,7 @@ a.post-tag-chip {
 .links-symbol {
 	width: 12rem;
 	height: 6rem;
-	color: var(--ghost-accent-color);
-	filter: drop-shadow(0 10px 30px color-mix(in srgb, var(--ghost-accent-color) 20%, transparent));
+	color: var(--color-accent-text);	filter: drop-shadow(0 10px 30px color-mix(in srgb, var(--ghost-accent-color) 20%, transparent));
 	animation: symbol-float 6s ease-in-out infinite;
 	overflow: visible;
 
@@ -5349,8 +5325,7 @@ a.post-tag-chip {
 				border-color: color-mix(in srgb, var(--ghost-accent-color) 50%, var(--color-background-contrast));
 
 				.kg-bookmark-title {
-					color: var(--ghost-accent-color);
-				}
+					color: var(--color-accent-text);				}
 
 				.kg-bookmark-description {
 					opacity: 1;
@@ -6077,8 +6052,7 @@ a.post-tag-chip {
 	font-weight: 500;
 	text-transform: uppercase;
 	letter-spacing: 0.1em;
-	color: var(--ghost-accent-color);
-}
+	color: var(--color-accent-text);}
 
 .tags-page-title {
 	margin: 0 0 var(--space-3);
