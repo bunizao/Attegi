@@ -6,6 +6,7 @@
  */
 
 import { qs, docEl } from '../core/index.js';
+import { onScroll } from '../core/scroll.js';
 
 var NAV_SCROLL_THRESHOLD = 4;
 var REDUCE_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
@@ -18,7 +19,6 @@ export function initParallax() {
   var coverImage = cover ? cover.querySelector('img') : null;
   var coverPosition = 0;
   var coverHeight = cover ? cover.offsetHeight : 0;
-  var ticking = false;
   var coverPreActive = docEl.classList.contains('cover-active');
   var prefersReducedMotion = window.matchMedia && window.matchMedia(REDUCE_MOTION_QUERY).matches;
 
@@ -41,18 +41,6 @@ export function initParallax() {
     docEl.classList.toggle('cover-active', withinCover);
   }
 
-  function requestPrlx() {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(function() {
-      prlx();
-      ticking = false;
-    });
-  }
-
-  updateCoverMetrics();
-  prlx();
-
   if (coverImage) {
     coverImage.addEventListener('load', function() {
       updateCoverMetrics();
@@ -60,13 +48,10 @@ export function initParallax() {
     });
   }
 
-  window.addEventListener('scroll', requestPrlx, { passive: true });
-  window.addEventListener('resize', function() {
+  // core/scroll.js batches scroll/resize/orientationchange with one
+  // rAF-throttled listener and calls back immediately on subscribe.
+  onScroll(function() {
     updateCoverMetrics();
-    requestPrlx();
-  }, { passive: true });
-  window.addEventListener('orientationchange', function() {
-    updateCoverMetrics();
-    requestPrlx();
-  }, { passive: true });
+    prlx();
+  });
 }
