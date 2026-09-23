@@ -86,7 +86,10 @@ function parsePoemBlockquote(blockquote) {
  * Create poem card HTML element
  */
 function createPoemCard(data) {
-  var card = doc.createElement('div');
+  // <figure>/<blockquote>/<figcaption> keeps native quotation semantics;
+  // a plain <p> for the title avoids skipping a heading level depending on
+  // where the poem lands in the post's own h1-h6 outline.
+  var card = doc.createElement('figure');
   card.className = 'kg-poem-card';
 
   if (data.centered) card.classList.add('kg-poem-centered');
@@ -95,7 +98,7 @@ function createPoemCard(data) {
   if (data.title) {
     var header = doc.createElement('div');
     header.className = 'kg-poem-header';
-    var titleEl = doc.createElement('h4');
+    var titleEl = doc.createElement('p');
     titleEl.className = 'kg-poem-title';
     titleEl.textContent = data.title;
     header.appendChild(titleEl);
@@ -107,7 +110,7 @@ function createPoemCard(data) {
   }
 
   if (data.verses.length > 0) {
-    var content = doc.createElement('div');
+    var content = doc.createElement('blockquote');
     content.className = 'kg-poem-content';
     data.verses.forEach(function(verse) {
       var line = doc.createElement('p');
@@ -123,7 +126,7 @@ function createPoemCard(data) {
     divider2.className = 'kg-poem-divider';
     card.appendChild(divider2);
 
-    var authorEl = doc.createElement('p');
+    var authorEl = doc.createElement('figcaption');
     authorEl.className = 'kg-poem-author';
     authorEl.textContent = data.author;
     card.appendChild(authorEl);

@@ -68,9 +68,24 @@
 		border: none;
 	}
 
-	// Poem content container
+	// Poem content container. It's a real <blockquote> for quotation
+	// semantics, so reset the generic .post-content blockquote styling
+	// (border, padding, italics) that would otherwise double up here.
 	.kg-poem-content {
 		margin: 0;
+		padding: 0;
+		border-left: none;
+		font-style: normal;
+		font-weight: inherit;
+	}
+
+	.kg-poem-content > * {
+		margin: 0 0 0.5em;
+		color: inherit;
+	}
+
+	.kg-poem-content > :last-child {
+		margin-bottom: 0;
 	}
 
 	// Individual verse lines
