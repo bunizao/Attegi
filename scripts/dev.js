@@ -16,23 +16,19 @@ const COLORS = {
 
 const MODES = {
   css: [
-    { name: 'sass', color: COLORS.magenta, script: 'css:sass:watch' },
-    { name: 'tw', color: COLORS.green, script: 'css:utilities:watch' }
+    { name: 'sass', color: COLORS.magenta, script: 'css:sass:watch' }
   ],
   default: [
     { name: 'sass', color: COLORS.magenta, script: 'css:sass:watch' },
-    { name: 'tw', color: COLORS.green, script: 'css:utilities:watch' },
     { name: 'js', color: COLORS.cyan, script: 'js:watch' }
   ],
   hot: [
     { name: 'sass', color: COLORS.magenta, script: 'css:sass:watch' },
-    { name: 'tw', color: COLORS.green, script: 'css:utilities:watch' },
     { name: 'js', color: COLORS.cyan, script: 'js:watch' },
     { name: 'hot', color: COLORS.green, script: 'serve:hot' }
   ],
   preview: [
     { name: 'sass', color: COLORS.magenta, script: 'css:sass:watch' },
-    { name: 'tw', color: COLORS.green, script: 'css:utilities:watch' },
     { name: 'js', color: COLORS.cyan, script: 'js:watch' },
     { name: 'preview', color: COLORS.green, script: 'serve:preview' }
   ]

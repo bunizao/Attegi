@@ -23,7 +23,7 @@ own cover-active case is already covered there, so this attribute only needs the
 
 	{{!-- Resource Hints --}}
 	{{!-- Preload critical CSS to reduce render-blocking --}}
-	<link rel="preload" href="/assets/css/style.css" as="style" />
+	<link rel="preload" href="{{asset "css/style.css"}}" as="style" />
 	{{!-- Note: GLightbox and JetBrains Mono are NOT loaded here; both are
 	injected only when the rendered body actually needs them (see the
 	conditional-load scripts near the closing </body>). --}}
@@ -159,8 +159,7 @@ own cover-active case is already covered there, so this attribute only needs the
 		.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:skeleton-loading 1.5s ease-in-out infinite;border-radius:4px}
 		@keyframes skeleton-loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
 	</style>
-	<link rel="stylesheet" href="/assets/css/style.css" />
-	<link rel="stylesheet" href="/assets/css/utilities.css" />
+	<link rel="stylesheet" href="{{asset "css/style.css"}}" />
 	<script>
 		/* Avoid noisy analytics calls in local/dev */
 		(function () {
@@ -486,7 +485,7 @@ own cover-active case is already covered there, so this attribute only needs the
 	</div>
 
 	{{!-- Load basic scripts (no defer, placed before </body> for reliability) --}}
-	<script src="/assets/js/site.js"></script>
+	<script src="{{asset "js/site.js"}}"></script>
 	<script>
 		// Load the JetBrains Mono webfont only on pages that actually render
 		// a code block; every other page skips the request entirely.

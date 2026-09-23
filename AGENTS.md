@@ -1,8 +1,7 @@
 # AGENTS.md
 
-Attegi is a Ghost theme: Handlebars templates, SCSS, a prefixed Tailwind v4
-utility layer, and vanilla ES modules bundled by esbuild. Tooling runs on Bun.
-`CLAUDE.md` is a symlink to this file.
+Attegi is a Ghost theme: Handlebars templates, SCSS, and vanilla ES modules
+bundled by esbuild. Tooling runs on Bun. `CLAUDE.md` is a symlink to this file.
 
 ## Rules
 
@@ -10,8 +9,8 @@ utility layer, and vanilla ES modules bundled by esbuild. Tooling runs on Bun.
 - Conventional Commits with a scope, imperative, no rationale tail
   ("to improve", "for clarity"). Examples from history:
   `fix(theme): prioritize custom og images`, `feat(dev): add local Ghost preview renderer`.
-- Edit sources, never build output. `assets/css/style.css`,
-  `assets/css/utilities.css`, and `assets/js/*.js` are generated and gitignored.
+- Edit sources, never build output. `assets/css/style.css` and
+  `assets/js/*.js` are generated and gitignored.
 - The shipped artifact is `dist/attegi.zip`. It must pass GScan.
 
 ## Commands
@@ -44,9 +43,7 @@ There is no linter or test suite. `bun run validate` is the floor for every chan
   `partials/`, inline SVG icons in `partials/icons/`.
 - `src/sass/style.scss` is the main stylesheet: one large file split by
   `/* ===== */` banners, tab-indented. Modules: `_colors`, `_fonts`,
-  `_highlight`, `_toc`, `_poem-card`, `_normalize`.
-- `src/sass/utilities.css` is the Tailwind layer, prefixed `tw:`
-  (`tw:grid`, `tw:max-[640px]:text-[3em]`). It scans `*.hbs`, `partials/`, and `src/js/`.
+  `_highlight`, `_toc`, `_poem-card`, `_normalize`, `_breakpoints`.
 - JS: `src/js/entries/{site,post,page}.js` bundle to `assets/js/` via
   `scripts/build.js`. Features live in `src/js/features/` and export
   `init*` / `setup*` functions; shared helpers (`qs`, `qsa`, `onReady`,
