@@ -15,10 +15,19 @@ import { setupPortraitVideos, setupPortraitImages } from '../features/portrait-m
 import { setupFootnotes } from '../features/footnotes.js';
 import { initTOC } from '../features/toc.js';
 import { initPoemCards } from '../features/poem-cards.js';
+import { detectContentLanguage } from '../features/lang-detect.js';
+import { initToggleCards } from '../features/toggle-cards.js';
 
 onReady(function() {
   var postContent = qs('.post-content');
   if (!postContent) return;
+
+  detectContentLanguage(postContent);
+
+  // Runs first and synchronously: unlike the other features below it needs
+  // no external script, so doing it first cuts the flash of raw `[!poem]`
+  // bracket syntax before the card renders.
+  initPoemCards();
 
   // Get highlight.js URL from script tag
   var currentScript = doc.currentScript || null;
@@ -35,10 +44,8 @@ onReady(function() {
   setupPortraitVideos();
   setupPortraitImages();
   setupFootnotes(postContent);
+  initToggleCards(postContent);
 
   // Initialize TOC (uses tocbot from external script)
   initTOC();
-
-  // Initialize poem cards
-  initPoemCards();
 });
