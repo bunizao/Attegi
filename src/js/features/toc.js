@@ -8,7 +8,7 @@ import { getI18n } from '../core/i18n.js';
 import { onScroll, getReadingProgress } from '../core/scroll.js';
 import { openDialog, closeDialog } from '../core/dialog.js';
 
-var config = { minHeadings: 2, tocBreakpoint: 1400 };
+var config = { minHeadings: 2 };
 var state = {
   isOpen: false,
   isVisible: false,
