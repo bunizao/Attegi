@@ -392,6 +392,7 @@ function buildSite(settings) {
     cover_image: absolutizeUrl(settings.cover_image, api.siteUrl),
     twitter: settings.twitter || '',
     facebook: settings.facebook || '',
+    accent_color: settings.accent_color || '',
     members_enabled: Boolean(settings.members_enabled),
     members_invite_only: Boolean(settings.members_invite_only),
     navigation: settings.navigation || []

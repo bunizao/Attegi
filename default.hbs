@@ -10,6 +10,12 @@
 	<title>{{meta_title}}</title>
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	{{!-- Mobile browser chrome color. Both default to the matching theme's
+	--color-background-main; the bootstrap script below keeps them correct
+	when the visitor or @custom.color_scheme forces a theme against the OS
+	preference. --}}
+	<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+	<meta name="theme-color" content="#1D1F21" media="(prefers-color-scheme: dark)" />
 	{{{block "head"}}}
 
 	{{!-- Resource Hints --}}
@@ -26,42 +32,92 @@
 	{{!-- Note: GLightbox is NOT preloaded here, it's loaded conditionally only when images exist --}}
 
 		<script>
-			// Preload theme class ASAP to avoid light flash
-			(function instantTheme() {
+			// Theme bootstrap - runs once, before first paint.
+			// - Resolves the theme from localStorage / @custom.color_scheme / OS
+			//   preference and applies .theme-dark or .theme-light immediately
+			//   (no flash of the wrong theme).
+			// - Computes --color-on-accent for both the light and dark accent
+			//   colors from their luminance, since a Ghost admin can pick any
+			//   accent; the CSS fallbacks in _colors.scss only cover the
+			//   shipped defaults.
+			// - Keeps <meta name="theme-color"> in sync with the resolved theme.
+			// src/js/features/theme-switcher.js repeats the same theme-color
+			// and localStorage update when the visitor uses the toggle.
+			(function () {
 				var docEl = document.documentElement;
-				var customScheme = '{{@custom.color_scheme}}';
+				var customScheme = ('{{@custom.color_scheme}}' || 'System').toLowerCase();
+				var lightAccent = '{{@site.accent_color}}' || '#3A6B7E';
+				var darkAccent = '{{@custom.darkmode_accent_color}}' || '#82C0CC';
 				var mql = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
-				function applyTheme(choice) {
-					docEl.classList.remove('theme-dark', 'theme-light');
-					if (choice === 'dark') {
-						docEl.classList.add('theme-dark');
-					} else if (choice === 'light') {
-						docEl.classList.add('theme-light');
-					} else if (choice === 'system') {
-						if (mql && mql.matches) {
-							docEl.classList.add('theme-dark');
-						} else {
-							docEl.classList.add('theme-light');
-						}
+				function isDark(choice) {
+					if (choice === 'dark') return true;
+					if (choice === 'light') return false;
+					return !!(mql && mql.matches);
+				}
+
+				function updateThemeColor(dark) {
+					var color = dark ? '#1D1F21' : '#FFFFFF';
+					var metas = document.querySelectorAll('meta[name="theme-color"]');
+					for (var i = 0; i < metas.length; i++) {
+						metas[i].setAttribute('content', color);
 					}
 				}
 
-				var stored = localStorage.getItem('attegi_theme') || (customScheme ? customScheme.toLowerCase() : 'system') || 'system';
-				applyTheme(stored);
+				function applyTheme(choice) {
+					var dark = isDark(choice);
+					docEl.classList.remove('theme-dark', 'theme-light');
+					docEl.classList.add(dark ? 'theme-dark' : 'theme-light');
+					updateThemeColor(dark);
+				}
 
+				// Relative luminance -> pick whichever of near-black/white has
+				// more contrast against the given accent color.
+				function onAccentFor(hex) {
+					var m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+					if (!m) return '#fff';
+					var n = parseInt(m[1], 16);
+					var r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+					function lin(c) {
+						c = c / 255;
+						return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+					}
+					var luminance = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+					// Luminance where contrast(white, L) === contrast(black, L).
+					return luminance > 0.1791 ? '#1D1F21' : '#fff';
+				}
+
+				var accentStyle = document.createElement('style');
+				accentStyle.textContent =
+					':root { --color-on-accent: ' + onAccentFor(lightAccent) + '; }' +
+					'.theme-dark:root { --color-on-accent: ' + onAccentFor(darkAccent) + '; --ghost-accent-color: ' + darkAccent + '; }' +
+					'@media (prefers-color-scheme: dark) { html:not(.theme-light):root { --color-on-accent: ' + onAccentFor(darkAccent) + '; --ghost-accent-color: ' + darkAccent + '; } }';
+				document.head.appendChild(accentStyle);
+
+				// Hide the toggle when @custom.color_scheme forces a theme.
+				if (customScheme === 'dark' || customScheme === 'light') {
+					var hideThemeStyle = document.createElement('style');
+					hideThemeStyle.textContent = '.js-theme {display:none!important;}';
+					document.head.appendChild(hideThemeStyle);
+				}
+
+				var hasStored = !!localStorage.getItem('attegi_theme');
+				var stored = localStorage.getItem('attegi_theme') || customScheme;
+				applyTheme(stored);
+				if (!hasStored) {
+					localStorage.setItem('attegi_theme', stored);
+				}
+
+				// Track the OS preference while "system" is active.
+				function onSystemChange() {
+					if ((localStorage.getItem('attegi_theme') || 'system') === 'system') {
+						applyTheme('system');
+					}
+				}
 				if (mql && mql.addEventListener) {
-					mql.addEventListener('change', function () {
-						if ((localStorage.getItem('attegi_theme') || 'system') === 'system') {
-							applyTheme('system');
-						}
-					});
+					mql.addEventListener('change', onSystemChange);
 				} else if (mql && mql.addListener) {
-					mql.addListener(function () {
-						if ((localStorage.getItem('attegi_theme') || 'system') === 'system') {
-							applyTheme('system');
-						}
-					});
+					mql.addListener(onSystemChange);
 				}
 			})();
 		</script>
@@ -98,7 +154,9 @@
 			color: inherit;
 			text-decoration: none;
 		}
-		/* Skeleton loading animation */
+		/* Skeleton loading animation - kept in sync by hand with the real
+		   rule in src/sass/style.scss (.skeleton / @keyframes skeleton-loading);
+		   this copy has to paint before style.css loads. */
 		.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:skeleton-loading 1.5s ease-in-out infinite;border-radius:4px}
 		@keyframes skeleton-loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
 	</style>
@@ -139,50 +197,6 @@
 
 	<script>
 			var siteUrl = '{{@site.url}}';
-	</script>
-
-	<script>
-		(function () {
-			var colorScheme = '{{@custom.color_scheme}}';
-			var darkAccent = '{{@custom.darkmode_accent_color}}';
-			var hasStored = !!localStorage.getItem('attegi_theme');
-
-			if (!hasStored) {
-				if (colorScheme === 'Dark') {
-					localStorage.setItem('attegi_theme', 'dark');
-					document.documentElement.classList.add('theme-dark');
-				} else if (colorScheme === 'Light') {
-					localStorage.setItem('attegi_theme', 'light');
-					document.documentElement.classList.add('theme-light');
-				} else if (colorScheme === 'System') {
-					localStorage.setItem('attegi_theme', 'system');
-					document.documentElement.classList.remove('theme-dark', 'theme-light');
-				}
-			}
-
-			// Hide theme toggle if a fixed scheme is enforced
-			if (colorScheme === 'Dark' || colorScheme === 'Light') {
-				var hideThemeStyle = document.createElement('style');
-				hideThemeStyle.textContent = '.js-theme {display:none!important;}';
-				document.head.appendChild(hideThemeStyle);
-			}
-
-			// Apply dark accent color when not forcing Light
-			if (darkAccent && colorScheme !== 'Light') {
-				var accentStyle = document.createElement('style');
-				accentStyle.textContent = `
-					.theme-dark:root {
-					  --ghost-accent-color: ${darkAccent};
-					}
-					@media (prefers-color-scheme: dark) {
-					  html:not(.theme-light):root {
-					    --ghost-accent-color: ${darkAccent};
-					  }
-					}
-				`;
-				document.head.appendChild(accentStyle);
-			}
-		})();
 	</script>
 
 	{{#if @custom.og_service_url}}

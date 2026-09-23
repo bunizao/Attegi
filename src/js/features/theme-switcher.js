@@ -3,7 +3,19 @@
  * Handles light/dark/system theme toggling with localStorage persistence
  */
 
-import { qs, docEl } from '../core/index.js';
+import { qs, qsa, each, docEl } from '../core/index.js';
+
+/**
+ * Keep <meta name="theme-color"> in sync with the resolved theme.
+ * Mirrors the same update the inline bootstrap script in default.hbs runs
+ * before first paint.
+ */
+function updateThemeColor(isDark) {
+  var color = isDark ? '#1D1F21' : '#FFFFFF';
+  each(qsa('meta[name="theme-color"]'), function(meta) {
+    meta.setAttribute('content', color);
+  });
+}
 
 /**
  * Initialize theme switcher
@@ -22,6 +34,7 @@ export function initThemeSwitcher() {
       if (toggleText) {
         toggleText.textContent = toggle.getAttribute('data-system');
       }
+      updateThemeColor(prefersDark);
     });
     localStorage.setItem('attegi_theme', 'system');
   }
@@ -33,6 +46,7 @@ export function initThemeSwitcher() {
       if (toggleText) {
         toggleText.textContent = toggle.getAttribute('data-dark');
       }
+      updateThemeColor(true);
     });
     localStorage.setItem('attegi_theme', 'dark');
   }
@@ -44,6 +58,7 @@ export function initThemeSwitcher() {
       if (toggleText) {
         toggleText.textContent = toggle.getAttribute('data-light');
       }
+      updateThemeColor(false);
     });
     localStorage.setItem('attegi_theme', 'light');
   }
