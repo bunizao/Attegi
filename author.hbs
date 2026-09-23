@@ -33,7 +33,7 @@
 				</figure>
 			{{/if}}
 			
-			<h2 class="archive-title">{{name}}</h2>
+			<h1 class="archive-title">{{name}}</h1>
 			{{!-- Author bio with fallback message --}}
 			{{#if bio}}
 				<span class="archive-description">{{{bio}}}</span>
@@ -42,13 +42,13 @@
 		{{/if}}
 			<span class="archive-links">
 				{{#if website}}
-					<a target="_blank" rel="noopener noreferrer" href="{{website}}" title="{{t "Website"}}"><i class="icon icon-globe">{{> "icons/icon-globe"}}</i><span>{{t "Website"}}</span></a>
+					<a target="_blank" rel="noopener noreferrer" href="{{website}}" title="{{t "Website"}}"><i class="icon icon-globe" aria-hidden="true">{{> "icons/icon-globe"}}</i><span class="sr-only">{{t "Website"}}</span></a>
 				{{/if}}
 				{{#if twitter}}
-					<a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{twitter}}" title="{{t "Twitter"}}"><i class="icon icon-twitter">{{> "icons/icon-twitter"}}</i><span>{{t "Twitter"}}</span></a>
+					<a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{twitter}}" title="{{t "Twitter"}}"><i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i><span class="sr-only">{{t "Twitter"}}</span></a>
 				{{/if}}
 				{{#if facebook}}
-					<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/{{facebook}}" title="{{t "Facebook"}}"><i class="icon icon-facebook">{{> "icons/icon-facebook"}}</i><span>{{t "Facebook"}}</span></a>
+					<a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/{{facebook}}" title="{{t "Facebook"}}"><i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i><span class="sr-only">{{t "Facebook"}}</span></a>
 				{{/if}}
 			</span>
 	</div>

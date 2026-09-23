@@ -22,13 +22,13 @@
 				{{#if tags}}{{#if featured}}
 				<div class="post-tags-inline">
 					<span class="post-feature-tag">#{{t "Featured"}}</span>
-					{{#foreach tags limit="3"}}
+					{{#foreach tags limit="3" visibility="public"}}
 					<a href="{{url}}" class="post-tag-chip">{{name}}</a>
 					{{/foreach}}
 				</div>
 				{{else}}
 				<div class="post-tags-inline">
-					{{#foreach tags limit="3"}}
+					{{#foreach tags limit="3" visibility="public"}}
 					<a href="{{url}}" class="post-tag-chip">{{name}}</a>
 					{{/foreach}}
 				</div>
@@ -38,12 +38,12 @@
 				</div>
 				{{/if}}{{/if}}
 			</div>
-			<a class="post-box-link" href="{{url}}" aria-label="{{title}}">
+			<div class="post-box-link">
 				<span class="post-meta">
-					<time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM DD, YYYY"}}</time>
+					<time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM D, YYYY"}}</time>
 				</span>
 				<p class="post-excerpt">{{excerpt characters="300"}}</p>
-			</a>
+			</div>
 		</div>
 	</div>
 </article>

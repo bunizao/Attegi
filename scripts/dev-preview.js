@@ -697,6 +697,7 @@ function dateHelper(value, options) {
   if (format === 'MMM D') return formatDate(date, { month: 'short', day: 'numeric' });
   if (format === 'MMM DD, YYYY') return formatDate(date, { month: 'short', day: '2-digit', year: 'numeric' });
   if (format === 'MMMM DD, YYYY') return formatDate(date, { month: 'long', day: '2-digit', year: 'numeric' });
+  if (format === 'MMMM D, YYYY') return formatDate(date, { month: 'long', day: 'numeric', year: 'numeric' });
   return formatDate(date, { month: 'short', day: '2-digit', year: 'numeric' });
 }
 
@@ -705,8 +706,12 @@ function formatDate(date, options) {
 }
 
 function foreachHelper(collection, options) {
-  const items = Array.isArray(collection) ? collection : [];
-  const limit = Number(options.hash && options.hash.limit) || items.length;
+  const hash = options.hash || {};
+  let items = Array.isArray(collection) ? collection : [];
+  if (hash.visibility === 'public') {
+    items = items.filter((item) => !item || item.visibility !== 'internal');
+  }
+  const limit = Number(hash.limit) || items.length;
   const visibleItems = items.slice(0, limit);
 
   if (!visibleItems.length) {
@@ -771,6 +776,18 @@ function matchHelper(left, operator, right, options) {
     case '==':
     case '===':
       result = left === right;
+      break;
+    case '>':
+      result = Number(left) > Number(right);
+      break;
+    case '<':
+      result = Number(left) < Number(right);
+      break;
+    case '>=':
+      result = Number(left) >= Number(right);
+      break;
+    case '<=':
+      result = Number(left) <= Number(right);
       break;
     default:
       result = left === operator;

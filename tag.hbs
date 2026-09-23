@@ -15,7 +15,7 @@
 				<span class="archive-type">{{t "Topic"}}</span>
 				<span class="archive-count">{{plural pagination.total empty=(t "No Posts") singular=(t "% Post") plural=(t "% Posts")}}</span>
 			</span>
-			<h2 class="archive-title">{{tag.name}}</h2>
+			<h1 class="archive-title">{{tag.name}}</h1>
 			{{!-- Tag description with fallback message --}}
 			{{#if tag.description}}
 				<span class="archive-description">{{{tag.description}}}</span>
@@ -33,7 +33,7 @@
 				<img
 					srcset="{{> "srcset" image=tag.feature_image quality="50" include_xl=true}}"
 					src="{{img_url tag.feature_image size="xl" quality="50"}}"
-					alt="{{tag.name}}"
+					alt=""
 					loading="eager"
 					decoding="async"
 					fetchpriority="high"
