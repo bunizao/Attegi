@@ -106,22 +106,22 @@
 
 					<div class="post-share js-share-native" hidden>
 						<span class="post-info-label">{{t "Share"}}</span>
-						<button aria-label="{{t "Share"}} {{t "Article"}}" class="post-share-button" id="share-button"><i class="icon icon-share" aria-hidden="true">{{> "icons/icon-share"}}</i></button>
+						<button aria-label="{{t "Share"}} {{t "Article"}}" class="post-share-button" id="share-button"><span class="icon icon-share" aria-hidden="true">{{> "icons/icon-share"}}</span></button>
 					</div>
 
 					<div class="post-share js-share-default" hidden>
 						<span class="post-info-label">{{t "Share"}}</span>
 						<a title="{{t "Twitter"}}" aria-label="{{t "Twitter"}}" class="twitter js-share-popup" data-popup-size="550,235" href="https://twitter.com/share?text={{encode title}}&url={{url absolute="true"}}">
-							<i class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</i>
+							<span class="icon icon-twitter" aria-hidden="true">{{> "icons/icon-twitter"}}</span>
 						</a>
 						<a title="{{t "Facebook"}}" aria-label="{{t "Facebook"}}" class="facebook js-share-popup" data-popup-size="580,296" href="https://www.facebook.com/sharer/sharer.php?u={{url absolute="true"}}">
-							<i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i>
+							<span class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</span>
 						</a>
 						<a title="{{t "LinkedIn"}}" aria-label="{{t "LinkedIn"}}" class="linkedin js-share-popup" data-popup-size="930,720" href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{url absolute="true"}}&amp;title={{encode title}}">
-							<i class="icon icon-linkedin" aria-hidden="true">{{> "icons/icon-linkedin"}}</i>
+							<span class="icon icon-linkedin" aria-hidden="true">{{> "icons/icon-linkedin"}}</span>
 						</a>
 						<a title="{{t "Email"}}" aria-label="{{t "Email"}}" class="email" href="mailto:?subject={{encode title}}&amp;body={{url absolute="true"}}">
-							<i class="icon icon-mail" aria-hidden="true">{{> "icons/icon-mail"}}</i>
+							<span class="icon icon-mail" aria-hidden="true">{{> "icons/icon-mail"}}</span>
 						</a>
 					</div>
 				</div>

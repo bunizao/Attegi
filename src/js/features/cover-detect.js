@@ -41,7 +41,11 @@ export function setupCoverBrightnessDetection() {
         postHeader.classList.add('light-cover');
       }
     } catch (e) {
-      // Canvas security error - skip detection
+      // Cross-origin images without CORS headers taint the canvas and throw
+      // here on getImageData -- this is the common case (content CDN,
+      // Unsplash, custom storage adapters), so detection silently no-ops
+      // rather than adding crossorigin to the <img> and risking it failing
+      // to load entirely on hosts that don't send CORS headers.
     }
   }
 

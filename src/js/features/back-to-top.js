@@ -5,7 +5,7 @@
  * `.has-toc .back-to-top` hides this button in CSS).
  */
 import { qs, doc } from '../core/index.js';
-import { onScroll, getReadingProgress } from '../core/scroll.js';
+import { onScroll, getReadingProgress, getFooterAvoidingBottom } from '../core/scroll.js';
 
 var DEFAULT_BOTTOM = 32; // px
 var BUTTON_HEIGHT = 48; // px
@@ -48,14 +48,7 @@ export function setupBackToTop() {
     }
 
     if (footer) {
-      var footerTop = footer.getBoundingClientRect().top;
-      var windowHeight = window.innerHeight;
-      var btnBottom = windowHeight - DEFAULT_BOTTOM - BUTTON_HEIGHT;
-      if (footerTop < windowHeight && footerTop < btnBottom + BUTTON_HEIGHT + FOOTER_MARGIN) {
-        btn.style.bottom = (windowHeight - footerTop + FOOTER_MARGIN) + 'px';
-      } else {
-        btn.style.bottom = DEFAULT_BOTTOM + 'px';
-      }
+      btn.style.bottom = getFooterAvoidingBottom(footer, DEFAULT_BOTTOM, BUTTON_HEIGHT, FOOTER_MARGIN) + 'px';
     }
   }
 

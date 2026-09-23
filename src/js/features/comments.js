@@ -95,7 +95,9 @@ export function setupLazyComments() {
     trigger.setAttribute('aria-busy', 'true');
     trigger.classList.add('is-loading');
 
-    setTimeout(function() {
+    // Wait for the loading state to actually paint before the synchronous
+    // clone/insert work below, instead of guessing at a timeout.
+    requestAnimationFrame(function() {
       try {
         var content = cloneTemplateContent(template);
         if (!content) {
@@ -112,11 +114,10 @@ export function setupLazyComments() {
           if (script.parentNode) script.parentNode.removeChild(script);
         });
 
+        // appendChild is synchronous, so the content is already in the DOM
+        // by the next line -- no need to wait before activating scripts.
         placeholder.appendChild(content);
-
-        setTimeout(function() {
-          activateScripts(placeholder, storedScripts);
-        }, 50);
+        activateScripts(placeholder, storedScripts);
 
         trigger.classList.add('is-loaded');
         trigger.setAttribute('aria-expanded', 'true');
@@ -132,7 +133,7 @@ export function setupLazyComments() {
         trigger.classList.remove('is-loading');
         trigger.removeAttribute('aria-busy');
       }
-    }, 100);
+    });
   }
 
   trigger.addEventListener('click', loadComments);

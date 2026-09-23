@@ -36,22 +36,22 @@ export function wrapEmbeds(container) {
     return numberValue > 0 ? numberValue : null;
   }
 
-  function getEmbedPadding(node) {
+  function getEmbedRatio(node) {
     var width = getNumericAttribute(node, 'width');
     var height = getNumericAttribute(node, 'height');
     if (!width || !height) return null;
-    return (height / width) * 100;
+    return width + ' / ' + height;
   }
 
-  function applyWrapperPadding(wrapper, padding) {
-    if (!wrapper || !padding) return;
-    wrapper.style.paddingBottom = padding.toFixed(4) + '%';
+  function applyWrapperRatio(wrapper, ratio) {
+    if (!wrapper || !ratio) return;
+    wrapper.style.aspectRatio = ratio;
   }
 
-  function applyVideoPadding(video, wrapper) {
+  function applyVideoRatio(video, wrapper) {
     if (!video || !wrapper) return;
     if (!video.videoWidth || !video.videoHeight) return;
-    applyWrapperPadding(wrapper, (video.videoHeight / video.videoWidth) * 100);
+    applyWrapperRatio(wrapper, video.videoWidth + ' / ' + video.videoHeight);
   }
 
   // youtube-nocookie.com skips third-party cookies/tracking (doubleclick,
@@ -72,16 +72,16 @@ export function wrapEmbeds(container) {
 
     var wrapper = doc.createElement('div');
     wrapper.className = 'js-reframe';
-    var padding = getEmbedPadding(node);
-    if (padding) {
-      applyWrapperPadding(wrapper, padding);
+    var ratio = getEmbedRatio(node);
+    if (ratio) {
+      applyWrapperRatio(wrapper, ratio);
     }
     node.parentNode.insertBefore(wrapper, node);
     wrapper.appendChild(node);
 
-    if (!padding && node.tagName && node.tagName.toLowerCase() === 'video') {
+    if (!ratio && node.tagName && node.tagName.toLowerCase() === 'video') {
       var applyOnce = function() {
-        applyVideoPadding(node, wrapper);
+        applyVideoRatio(node, wrapper);
         node.removeEventListener('loadedmetadata', applyOnce);
       };
       if (node.readyState >= 1) {
