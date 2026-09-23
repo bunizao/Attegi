@@ -54,9 +54,21 @@ export function wrapEmbeds(container) {
     applyWrapperPadding(wrapper, (video.videoHeight / video.videoWidth) * 100);
   }
 
+  // youtube-nocookie.com skips third-party cookies/tracking (doubleclick,
+  // googleads) until the viewer actually presses play.
+  function useNoCookieDomain(node) {
+    var src = node.getAttribute('src') || '';
+    if (src.indexOf('youtube.com/embed/') === -1) return;
+    node.setAttribute('src', src.replace('youtube.com/embed/', 'youtube-nocookie.com/embed/'));
+  }
+
   function wrapNode(node) {
     if (node.closest('.js-reframe')) return;
     if (node.tagName && node.tagName.toLowerCase() === 'video' && node.closest('.kg-video-card')) return;
+
+    if (node.tagName && node.tagName.toLowerCase() === 'iframe') {
+      useNoCookieDomain(node);
+    }
 
     var wrapper = doc.createElement('div');
     wrapper.className = 'js-reframe';
