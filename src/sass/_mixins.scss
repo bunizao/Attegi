@@ -1,0 +1,48 @@
+// ==========================================================================
+// Shared mixins and placeholders
+// ==========================================================================
+
+// Dark-mode variant. Emits the rule once for the manual toggle
+// (`.theme-dark`) and once for the OS-level fallback
+// (`prefers-color-scheme: dark`, only when no manual theme is forced).
+// Write the dark-mode declarations once, next to their light-mode source,
+// instead of hand-copying a selector pair everywhere a dark value is needed.
+//
+// $root: true  -> compound selector, for use directly inside `:root { }`
+//                 (`.theme-dark:root`, `html:not(.theme-light):root`)
+// $root: false -> descendant selector (default), for use nested inside a
+//                 component rule (`.theme-dark &`, `html:not(.theme-light) &`)
+@mixin dark($root: false) {
+	@if $root {
+		// Escape the enclosing `:root { }` nesting: without @at-root, Sass
+		// would prefix this with the outer selector as an ancestor
+		// (`:root .theme-dark:root`), which can never match anything.
+		@at-root .theme-dark:root {
+			@content;
+		}
+	} @else {
+		.theme-dark & {
+			@content;
+		}
+	}
+
+	@media (prefers-color-scheme: dark) {
+		@if $root {
+			@at-root html:not(.theme-light):root {
+				@content;
+			}
+		} @else {
+			html:not(.theme-light) & {
+				@content;
+			}
+		}
+	}
+}
+
+// Shared keyboard focus ring. Global `:focus-visible` in style.scss already
+// applies this; reach for the placeholder only when a component needs the
+// same ring on a selector the global rule doesn't cover (e.g. a state class).
+%focus-ring {
+	outline: 2px solid var(--ghost-accent-color);
+	outline-offset: 2px;
+}

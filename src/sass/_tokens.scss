@@ -1,0 +1,68 @@
+// ==========================================================================
+// Design tokens: z-index, motion, radius, shadow
+// Color tokens live in _colors.scss.
+// ==========================================================================
+
+:root {
+	/* ---- z-index ------------------------------------------------------- */
+	// Local paint-order layers: stacking a decorative pseudo-element,
+	// an image and its overlay/content within a single component.
+	--z-behind: -1;
+	--z-base: 1;
+	--z-raised: 2;
+	--z-elevated: 3;
+
+	// Cover image stack (blog cover, post cover): image -> gradient -> content.
+	--z-cover-base: 5;
+	--z-cover-image: 6;
+	--z-cover-overlay: 8;
+	--z-content: 10;
+
+	// In-page fixed/sticky chrome.
+	--z-footer: 20;
+	--z-pagination-info: 50;
+	--z-pagination: 100;
+	--z-toc-sidebar: 100;
+	--z-toc-trigger: 200;
+	--z-toc-overlay: 300;
+	--z-toc-panel: 350;
+
+	// Site header. --z-nav-scrim sits between the TOC panel and the nav
+	// itself so the mobile menu always wins over a post's TOC drawer.
+	--z-nav: 400;
+	--z-nav-scrim: 390;
+	--z-nav-fixed: 500;
+
+	// Floating widgets and top-level overlays.
+	--z-floating-ui: 1000;
+	--z-top: 9999;
+
+	/* ---- motion ---------------------------------------------------------
+	   A handful of shared durations/easings. Existing transitions are not
+	   migrated wholesale; use these for new or touched motion. */
+	--duration-fast: 0.15s;
+	--duration-base: 0.2s;
+	--duration-slow: 0.3s;
+	--duration-slower: 0.4s;
+	--ease-standard: ease-out;
+	--ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+	/* ---- radius ---------------------------------------------------------- */
+	--radius-sm: 0.5rem;
+	--radius-md: 0.75rem;
+	--radius-lg: 1rem;
+	--radius-xl: 1.5rem;
+	--radius-pill: 999px;
+
+	/* ---- shadow ----------------------------------------------------------
+	   Named after the repeated values they replace, not a strict elevation
+	   order. One-off shadows are left alone (see findings-foundations.md). */
+	--shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.04);
+	--shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.04);
+	--shadow-md: 0 1px 8px rgba(0, 0, 0, 0.06);
+	--shadow-pop: 0 8px 20px rgba(0, 0, 0, 0.2);
+	--shadow-pop-soft: 0 4px 20px rgba(0, 0, 0, 0.2);
+	--shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.1);
+	--shadow-lg-soft: 0 15px 40px rgba(0, 0, 0, 0.1);
+	--shadow-xl: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
