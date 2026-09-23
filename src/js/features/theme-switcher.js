@@ -1,6 +1,9 @@
 /**
  * Theme Switcher Feature
- * Handles light/dark/system theme toggling with localStorage persistence
+ * Handles light/dark/system theme toggling with localStorage persistence.
+ * A page can have more than one toggle button (footer + mobile menu); all
+ * of them share state through the same `.theme-dark`/`.theme-light`/
+ * `.theme-system` classes on <html>.
  */
 
 import { qs, qsa, each, docEl } from '../core/index.js';
@@ -18,76 +21,53 @@ function updateThemeColor(isDark) {
 }
 
 /**
+ * Update every toggle button's accessible name to include the resolved
+ * state, so a screen reader user hears confirmation after activating it.
+ */
+function updateToggleLabels(toggles, stateLabel) {
+  var base = toggles.length ? toggles[0].getAttribute('data-label') : '';
+  each(toggles, function(toggle) {
+    toggle.setAttribute('aria-label', base + ': ' + stateLabel);
+  });
+}
+
+/**
  * Initialize theme switcher
  */
 export function initThemeSwitcher() {
-  var toggle = qs('.js-theme');
-  var toggleText = toggle ? toggle.querySelector('.theme-text') : null;
+  var toggles = qsa('.js-theme');
+  if (!toggles.length) return;
+
+  // Cache the static aria-label ("Toggle theme") once, before it gets
+  // rewritten to include the current state.
+  each(toggles, function(toggle) {
+    if (!toggle.getAttribute('data-label')) {
+      toggle.setAttribute('data-label', toggle.getAttribute('aria-label'));
+    }
+  });
+
   var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-  function system() {
-    requestAnimationFrame(function() {
-      docEl.classList.remove('theme-dark', 'theme-light');
-      if (prefersDark) {
-        docEl.classList.add('theme-dark');
-      }
-      if (toggleText) {
-        toggleText.textContent = toggle.getAttribute('data-system');
-      }
-      updateThemeColor(prefersDark);
-    });
-    localStorage.setItem('attegi_theme', 'system');
-  }
-
-  function dark() {
-    requestAnimationFrame(function() {
-      docEl.classList.remove('theme-light');
-      docEl.classList.add('theme-dark');
-      if (toggleText) {
-        toggleText.textContent = toggle.getAttribute('data-dark');
-      }
-      updateThemeColor(true);
-    });
-    localStorage.setItem('attegi_theme', 'dark');
-  }
-
-  function light() {
-    requestAnimationFrame(function() {
-      docEl.classList.remove('theme-dark');
-      docEl.classList.add('theme-light');
-      if (toggleText) {
-        toggleText.textContent = toggle.getAttribute('data-light');
-      }
-      updateThemeColor(false);
-    });
-    localStorage.setItem('attegi_theme', 'light');
+  function apply(mode) {
+    docEl.classList.remove('theme-dark', 'theme-light', 'theme-system');
+    var dark = mode === 'dark' || (mode === 'system' && prefersDark);
+    docEl.classList.add(dark ? 'theme-dark' : 'theme-light');
+    if (mode === 'system') docEl.classList.add('theme-system');
+    updateThemeColor(dark);
+    updateToggleLabels(toggles, toggles[0].getAttribute('data-' + mode));
+    localStorage.setItem('attegi_theme', mode);
   }
 
   // Apply saved theme
-  switch (localStorage.getItem('attegi_theme')) {
-    case 'dark':
-      dark();
-      break;
-    case 'light':
-      light();
-      break;
-    default:
-      system();
-      break;
-  }
+  var stored = localStorage.getItem('attegi_theme');
+  apply(stored === 'dark' || stored === 'light' ? stored : 'system');
 
-  // Toggle click handler
-  if (toggle) {
+  // Cycle: system -> dark -> light -> system
+  each(toggles, function(toggle) {
     toggle.addEventListener('click', function(e) {
       e.preventDefault();
-
-      if (!docEl.classList.contains('theme-dark') && !docEl.classList.contains('theme-light')) {
-        dark();
-      } else if (docEl.classList.contains('theme-dark')) {
-        light();
-      } else {
-        system();
-      }
+      var current = localStorage.getItem('attegi_theme') || 'system';
+      apply(current === 'system' ? 'dark' : current === 'dark' ? 'light' : 'system');
     });
-  }
+  });
 }

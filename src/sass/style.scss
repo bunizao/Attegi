@@ -1057,39 +1057,6 @@ textarea {
 	}
 }
 
-.menu-active .nav-members .nav-button-secondary {
-	color: #fff;
-	border-color: rgba(255,255,255,0.6);
-	background: rgba(255,255,255,0.08);
-
-	&:link,
-	&:visited {
-		color: #fff;
-	}
-}
-
-.theme-dark {
-	.nav-header a.nav-button-secondary {
-		color: #f5f7fa;
-		border: 1px solid rgba(255,255,255,0.35);
-		background: rgba(255,255,255,0.14);
-		box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-		text-shadow: 0 1px 1px rgba(0,0,0,0.2);
-
-		&:before {
-			background: radial-gradient(65% 65% at 70% 70%, rgba(255,255,255,0.24), rgba(255,255,255,0) 58%);
-			opacity: 0.35;
-		}
-
-		&:focus,
-		&:hover {
-			color: #f9fbff;
-			border-color: rgba(255,255,255,0.6);
-			background: rgba(255,255,255,0.2);
-		}
-	}
-}
-
 /* Raw HTML cards or standalone badge links */
 .post-content > a {
 	display: inline-block;
@@ -2650,924 +2617,345 @@ textarea {
 
 /* ==========================================================================
    Navigation
+   A quiet, solid header: no glass, no blur, no gradients (besides the one
+   scrim over a cover image), no pills. Fixed to the viewport so it stays
+   put while scrolling; `.nav-scrolled` (toggled from the scroll handler
+   already running in parallax.js) draws the bottom border once the page
+   has moved under it.
    ========================================================================== */
 .nav-header {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	z-index: var(--z-nav);
-	-webkit-transition: none;
-	transition: none;
-	font-size: 1.6rem; // keep nav sizing steady regardless of body scale
-	@media only screen and (max-width: $breakpoint-medium) {
-		-webkit-transform: translate3d(0,-100%,0);
-		transform: translate3d(0,-100%,0);
-	}
+	background: var(--color-background-main);
+	border-bottom: 1px solid transparent;
+	transition: background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
 }
 
-.menu-ready .nav-header {
-	-webkit-transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-out;
-	transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-out;
+.nav-scrolled .nav-header {
+	border-bottom-color: var(--color-background-contrast);
 }
 
-.menu-active .nav-header {
-	-webkit-transform: translate3d(0,0,0);
-	transform: translate3d(0,0,0);
-}
-
-.nav-close {
-	position: fixed;
-	z-index: var(--z-nav-scrim);
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	display: none;
-	opacity: 0;
-	background: rgba(0, 0, 0, 0.5);
-	-webkit-backdrop-filter: blur(4px);
-	backdrop-filter: blur(4px);
-	-webkit-transition: opacity 0.3s ease-out;
-	transition: opacity 0.3s ease-out;
-
-	// Fallback for browsers without backdrop-filter
-	@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-		background: rgba(0, 0, 0, 0.7);
-	}
-}
-
-.menu-active .nav-close {
-	@media only screen and (max-width: $breakpoint-medium) {
-		display: block;
-		opacity: 1;
-	}
-}
-
-.nav-header .nav-wrapper-control {
-	position: absolute;
-	z-index: var(--z-nav-fixed);
-	left: 0;
-	top: 100%;
-	width: 100%;
-	cursor: pointer;
-	display: none;
-	color: var(--color-content-secondary);
-	border-top: 1px solid rgba(0,0,0,0);
-	box-sizing: border-box;
-	-webkit-transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-	transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-
-	@media only screen and (max-width: $breakpoint-medium) {
-		display: block;
-	}
-
-	.inner {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		height: 6rem;
-		padding: 0 4rem;
-		max-width: none;
-
-		@media only screen and (max-width: $breakpoint-small) {
-			padding: 0 2.5rem;
-			height: 5.5rem;
-		}
-
-		@media only screen and (max-width: $breakpoint-xsmall) {
-			padding: 0 2rem;
-			height: 5rem;
-		}
-	}
-
-	a {
-		position: relative;
-		display: flex;
-		align-items: center;
-		padding: 1rem 0;
-		font-size: 1.5rem;
-		line-height: 2rem;
-		color: var(--color-content-secondary);
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		text-decoration: none;
-		font-weight: 400;
-		cursor: pointer;
-		-webkit-transition: color 0.2s ease-out;
-		transition: color 0.2s ease-out;
-
-		&:focus,
-		&:hover {
-			color: var(--color-content-main);
-		}
-
-		// Hamburger icon container
-		.icon {
-			position: relative;
-			margin-right: 1rem;
-			width: 2rem;
-			height: 2rem;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-		}
-
-		span {
-			display: inline;
-		}
-	}
-
-	// Hamburger lines styling
-	.icon.icon-menu {
-		width: 2rem;
-		height: 1.4rem;
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		align-items: stretch;
-
-		.hamburger-line {
-			display: block;
-			width: 100%;
-			height: 2px;
-			background: currentColor;
-			border-radius: 2px;
-			-webkit-transform-origin: center;
-			transform-origin: center;
-			-webkit-transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease-out;
-			transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease-out;
-		}
-	}
-}
-
-.cover-active .nav-header .nav-wrapper-control {
-	color: rgba(255,255,255,0.8);
-	border-top-color: rgba(255,255,255,0.1);
-
-	a {
-		color: rgba(255,255,255,0.8);
-
-		&:focus,
-		&:hover {
-			color: white;
-		}
-	}
-}
-
-.menu-active .nav-header .nav-wrapper-control {
-	background: var(--color-menu-bg);
-	-webkit-backdrop-filter: blur(16px) saturate(180%);
-	backdrop-filter: blur(16px) saturate(180%);
-	color: var(--color-menu-text);
-	border-top: 1px solid var(--color-menu-border);
-	box-shadow: none;
-
-	// Fallback for browsers without backdrop-filter
-	@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-		background: var(--color-menu-bg-solid);
-	}
-
-	a {
-		color: var(--color-menu-text);
-
-		&:focus,
-		&:hover {
-			color: var(--color-menu-text-hover);
-		}
-	}
-
-	// Hamburger to X transformation
-	.icon-menu {
-		.hamburger-line:nth-child(1) {
-			-webkit-transform: translateY(6px) rotate(45deg);
-			transform: translateY(6px) rotate(45deg);
-		}
-
-		.hamburger-line:nth-child(2) {
-			opacity: 0;
-			-webkit-transform: scaleX(0);
-			transform: scaleX(0);
-		}
-
-		.hamburger-line:nth-child(3) {
-			-webkit-transform: translateY(-6px) rotate(-45deg);
-			transform: translateY(-6px) rotate(-45deg);
-		}
-	}
-}
-
-.nav-header .nav-wrapper {
+.nav-bar {
 	display: flex;
 	align-items: center;
-	max-height: calc(100vh - 6rem);
-	padding: 2rem 4rem;
-	overflow-y: auto;
+	gap: 2rem;
+	height: 6.4rem;
 
 	@media only screen and (max-width: $breakpoint-medium) {
-		background: var(--color-menu-bg);
-		-webkit-backdrop-filter: blur(20px) saturate(180%);
-		backdrop-filter: blur(20px) saturate(180%);
-		flex-direction: column;
-		align-items: flex-start;
-		padding: 2rem 4rem 3rem;
-		box-shadow: none;
-
-		// Fallback for browsers without backdrop-filter
-		@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-			background: var(--color-menu-bg-solid);
-		}
-	}
-
-	@media only screen and (max-width: $breakpoint-small) {
-		padding: 1.5rem 2.5rem 2.5rem;
-	}
-
-	@media only screen and (max-width: $breakpoint-xsmall) {
-		padding: 1.2rem 2rem 2rem;
+		height: 6rem;
 	}
 }
 
-.menu-active .nav-header .nav-wrapper {
-	@media only screen and (max-width: $breakpoint-medium) {
-		display: flex;
-	}
-}
-
-// Staggered animation - show items when menu is active
-.menu-active .nav-header li {
-	@media only screen and (max-width: $breakpoint-medium) {
-		opacity: 1;
-		-webkit-transform: translateY(0);
-		transform: translateY(0);
-	}
-}
-
-// Also animate nav-members with stagger
-.nav-members {
-	@media only screen and (max-width: $breakpoint-medium) {
-		opacity: 0;
-		-webkit-transform: translateY(12px);
-		transform: translateY(12px);
-		-webkit-transition: opacity 0.35s ease-out, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-		transition: opacity 0.35s ease-out, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-		-webkit-transition-delay: 0.25s;
-		transition-delay: 0.25s;
-	}
-}
-
-.menu-active .nav-members {
-	@media only screen and (max-width: $breakpoint-medium) {
-		opacity: 1;
-		-webkit-transform: translateY(0);
-		transform: translateY(0);
-	}
-}
-
-.nav-header .nav-menu,
-.nav-header .nav-search {
-	color: inherit;
-	text-decoration: none;
-	-webkit-tap-highlight-color: transparent;
-
-	&:link,
-	&:visited {
-		color: inherit;
-		text-decoration: none;
-	}
-}
-
-.post-meta-author a,
-.post-meta-avatars a {
-	color: inherit;
-
-	&:link,
-	&:visited {
-		color: inherit;
-	}
-}
-
-.nav-header .logo {
-	margin-right: 3rem;
-	@media only screen and (max-width: $breakpoint-medium) {
-		display: none;
-	}
-
-	a {
-		display: block;
-		height: 4rem;
-		padding: 0;
-
-		img {
-			display: block;
-			width: auto;
-			height: 4rem;
-		}
-	}
-}
-
-// Sticky logo - appears on scroll, clean and minimal
-.sticky-logo {
-	position: fixed;
-	top: 1.5rem;
-	left: 1.5rem;
-	z-index: var(--z-nav-fixed);
-	opacity: 0;
-	visibility: hidden;
-	transform: translateY(-8px);
-	transition:
-		opacity 0.25s ease-out,
-		visibility 0.25s ease-out,
-		transform 0.25s ease-out;
-
-	// Hide on tablet and mobile
-	@media only screen and (max-width: $breakpoint-medium) {
-		display: none;
-	}
-
-	// Smaller logo on medium screens (720px - 1100px) to avoid content overlap
-	@media only screen and (min-width: $breakpoint-medium) and (max-width: 1100px) {
-		top: 0.8rem;
-		left: 0.8rem;
-
-		img {
-			height: 2.4rem;
-		}
-	}
-
-	// Medium-large screens (1100px - 1400px)
-	@media only screen and (min-width: 1100px) and (max-width: 1400px) {
-		top: 1rem;
-		left: 1rem;
-
-		img {
-			height: 3rem;
-		}
-	}
-
-	&.is-visible {
-		opacity: 1;
-		visibility: visible;
-		transform: translateY(0);
-	}
+.nav-brand {
+	flex-shrink: 0;
+	margin-right: 1rem;
 
 	a {
 		display: block;
 		text-decoration: none;
-		transition: transform 0.2s ease-out;
-
-		&:hover {
-			transform: scale(1.05);
-		}
-
-		&:active {
-			transform: scale(0.98);
-		}
 	}
 
-	img {
+	.logo img {
 		display: block;
 		width: auto;
-		height: 3.6rem;
-		filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
-		transition: filter 0.2s ease-out;
+		height: 4rem;
 	}
 
-	a:hover img {
-		filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+	.wordmark {
+		font-family: var(--gh-font-heading);
+		font-weight: 600;
+		font-size: 1.8rem;
+		color: var(--color-content-lead);
 	}
 }
 
-.nav-header {
+.nav-links {
+	flex: 1;
+	min-width: 0;
+
+	@media only screen and (max-width: $breakpoint-large) {
+		display: none;
+	}
 
 	ul {
-		position: relative;
 		display: flex;
-		width: auto;
-		flex: 1;
+		align-items: center;
+		gap: 0.5rem;
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		@media only screen and (max-width: $breakpoint-medium) {
-			flex-direction: column;
-			flex-shrink: 0;
-			width: 100%;
-			padding: 0;
-			align-items: flex-start;
-			gap: 0;
-		}
 	}
 
 	li {
 		position: relative;
-	margin-right: 3rem;
-
-	// Staggered animation for mobile menu items
-	@media only screen and (max-width: $breakpoint-medium) {
-		opacity: 0;
-		-webkit-transform: translateY(12px);
-		transform: translateY(12px);
-		-webkit-transition: opacity 0.35s ease-out, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-		transition: opacity 0.35s ease-out, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-
-		// Staggered delays for each item
-		@for $i from 1 through 10 {
-			&:nth-child(#{$i}) {
-				-webkit-transition-delay: #{0.05 + ($i * 0.04)}s;
-				transition-delay: #{0.05 + ($i * 0.04)}s;
-			}
-		}
 	}
-
-	&.active {
-		font-weight: 700;
-
-		a:before {
-			position: absolute;
-			content: '';
-			width: 100%;
-			height: 3px;
-			left: 0;
-			top: 0;
-			padding: 0 1rem;
-			margin-left: -1rem;
-			margin-top: -2rem;
-			background: var(--ghost-accent-color);
-			@media only screen and (max-width: $breakpoint-medium) {
-				content: '—';
-				left: 0;
-				top: 50%;
-				width: auto;
-				height: auto;
-				margin-left: 0;
-				margin-top: 0;
-				transform: translateY(-50%);
-				border-radius: 0;
-				padding: 0;
-				background: transparent;
-				color: var(--ghost-accent-color);
-			}
-		}
-
-		a {
-			@media only screen and (max-width: $breakpoint-medium) {
-				color: var(--color-menu-text-hover);
-				font-weight: 700;
-			}
-		}
-	}
-
-		a {
-			cursor: pointer;
-			color: var(--color-content-main);
-			font-weight: 400;
-
-			@media only screen and (max-width: $breakpoint-medium) {
-				color: var(--color-menu-text);
-				font-size: 2rem;
-				font-weight: 400;
-				padding: 1rem 0 1rem 4rem;
-				display: block;
-				position: relative;
-
-				&:before {
-					content: '';
-					position: absolute;
-					left: 0;
-					top: 50%;
-					width: 1.5rem;
-					height: 2px;
-					margin-left: 6px;
-					margin-top: -1px;
-					border-radius: 2px;
-					background: var(--color-menu-item-line);
-				}
-
-				&:focus,
-				&:hover {
-					color: var(--color-menu-text-hover);
-				}
-			}
-		}
-}
 
 	a {
-		display: block;
-		padding: 1rem 0;
-		font-size: 1.6rem;
-		line-height: 2rem;
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0 1.2rem;
+		font-size: 1.5rem;
+		font-weight: 500;
+		line-height: 1.2;
 		color: var(--color-content-secondary);
-		white-space: nowrap;
-		text-overflow: ellipsis;
 		text-decoration: none;
-		font-weight: 400;
-		cursor: pointer;
-		transition: color linear 0.1s;
+		white-space: nowrap;
 
-		&:focus,
-		&:hover {
-			color: var(--color-content-main);
-
-			@media only screen and (max-width: $breakpoint-medium) {
-				color: var(--color-menu-text);
+		@media (hover: hover) and (pointer: fine) {
+			&:hover {
+				color: var(--color-content-main);
 			}
 		}
 	}
 
-	&:last-child {
-		margin-right: 0;
+	li.active a {
+		color: var(--color-content-main);
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: 6px;
 	}
 }
 
-.nav-header .nav-wrapper > .nav-search {
+.nav-actions {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-shrink: 0;
+}
+
+.nav-search {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	height: 4rem;
-	width: 4rem;
-	/* margin: 0 1.25rem 0 0; */
-	padding: 0;
-	font-size: 2.4rem;
-	order: 2;
+	width: 44px;
+	height: 44px;
+	color: var(--color-content-secondary);
+
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			color: var(--color-content-main);
+		}
+	}
+
+	.icon {
+		width: 2rem;
+		height: 2rem;
+	}
 }
 
 .nav-members {
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	margin-left: auto;
-	gap: 0rem;
-	flex-wrap: nowrap;
-	order: 3;
+	gap: 1rem;
 
-	@media only screen and (max-width: $breakpoint-medium) {
-		width: 100%;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-		flex-wrap: nowrap;
-		margin: 1.5rem 0 0;
-		padding: 0;
-		gap: 1.5rem;
+	@media only screen and (max-width: $breakpoint-large) {
+		display: none;
 	}
 }
 
-.nav-header a.nav-button-primary {
-	position: relative;
-	height: 4rem;
-	margin: 0 0.5rem;
-	padding: 0 2rem;
-	width: auto;
-	min-width: 0;
+.nav-link-text {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	padding: 0 0.5rem;
+	font-size: 1.5rem;
+	font-weight: 500;
+	color: var(--color-content-secondary);
+	text-decoration: none;
+
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			color: var(--color-content-main);
+		}
+	}
+}
+
+.nav-button-primary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	padding: 0 1.8rem;
+	font-size: 1.5rem;
+	font-weight: 500;
 	color: var(--color-on-accent);
-	text-shadow: 0 1px 2px rgba(0,0,0,0.14);
-	background: color-mix(in srgb, var(--ghost-accent-color) 65%, #ffffff 35%);
-	border: 1px solid color-mix(in srgb, var(--ghost-accent-color) 60%, #ffffff 40%);
-	border-radius: 4rem;
-	line-height: 4rem;
-	text-align: center;
-	box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-	font-size: 1.6rem;
-	transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease, border-color 0.18s ease;
-	overflow: hidden;
-	-webkit-backdrop-filter: blur(8px);
-	backdrop-filter: blur(8px);
-	isolation: isolate;
+	background: var(--ghost-accent-color);
+	border-radius: var(--radius-sm);
+	text-decoration: none;
+	transition: opacity var(--duration-fast) var(--ease-standard);
 
 	&:link,
 	&:visited {
 		color: var(--color-on-accent);
 	}
 
-	&:before {
-		content: '';
-		position: absolute;
-		inset: -25%;
-		background: radial-gradient(55% 55% at 30% 30%, rgba(255,255,255,0.18), rgba(255,255,255,0) 58%);
-		opacity: 0.35;
-		animation: glass-flow 12s ease-in-out infinite;
-		pointer-events: none;
-		z-index: var(--z-behind);
-	}
-
-	&:focus,
-	&:hover {
-		opacity: 1;
-		border-color: color-mix(in srgb, var(--ghost-accent-color) 55%, #ffffff 45%);
-		background: color-mix(in srgb, var(--ghost-accent-color) 45%, #ffffff 55%);
-	}
-
-	@media only screen and (max-width: $breakpoint-medium) {
-		margin: 0;
-		padding: 0 2.4rem;
-		font-size: 1.6rem;
-		height: 4.4rem;
-		line-height: 4.4rem;
-		box-shadow: none;
-	}
-
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
-			transform: translateY(-1px);
-			box-shadow: rgba(0,0,0,0.22) 0 10px 20px -6px;
+			opacity: 0.85;
 		}
 	}
 }
 
-.nav-header a.nav-button-secondary {
-	height: 4rem;
-	margin: 0 0.5rem;
-	padding: 0 2rem;
-	width: auto;
-	min-width: 0;
-	border: 1px solid rgba(0,0,0,0.08);
-	font-size: 1.6rem;
-	line-height: 4rem;
+.nav-menu {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	padding: 0 1.4rem;
+	font-family: inherit;
+	font-size: 1.5rem;
 	font-weight: 500;
 	color: var(--color-content-main);
-	border-radius: 4rem;
-	box-sizing: border-box;
-	text-align: center;
-	background: rgba(255,255,255,0.82);
-	box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-	transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease, border-color 0.18s ease;
-	overflow: hidden;
-	-webkit-backdrop-filter: blur(8px);
-	backdrop-filter: blur(8px);
-	isolation: isolate;
+	background: transparent;
+	border: 1px solid var(--color-background-contrast);
+	border-radius: var(--radius-sm);
+	cursor: pointer;
 
-	&:link,
-	&:visited {
-		color: var(--color-content-main);
+	@media only screen and (max-width: $breakpoint-large) {
+		display: inline-flex;
+	}
+}
+
+/* ---- Cover image state -------------------------------------------------
+   The transparent header over a home/post/page cover: white text on a
+   scrim, no blur. Once scrolled past the cover, parallax.js clears
+   `.cover-active` and the solid header (above) takes over. */
+.cover-active .nav-header {
+	background: linear-gradient(to bottom, rgb(0 0 0 / .45), transparent);
+	border-bottom-color: transparent;
+
+	.wordmark,
+	.nav-links a,
+	.nav-search,
+	.nav-link-text,
+	.nav-menu {
+		color: rgba(255, 255, 255, 0.9);
 	}
 
-	&:before {
-		content: '';
-		position: absolute;
-		inset: -25%;
-		background: radial-gradient(65% 65% at 70% 70%, rgba(255,255,255,0.16), rgba(255,255,255,0) 58%);
-		opacity: 0.3;
-		animation: glass-flow 12s ease-in-out infinite reverse;
-		pointer-events: none;
-		z-index: var(--z-behind);
+	.nav-menu {
+		border-color: rgba(255, 255, 255, 0.4);
 	}
 
-	&:focus,
-	&:hover {
-		color: var(--color-content-main);
-		border-color: color-mix(in srgb, var(--ghost-accent-color) 30%, rgba(0,0,0,0.12));
-		background: rgba(255,255,255,0.9);
-	}
-
-	@media only screen and (max-width: $breakpoint-medium) {
-		margin: 0;
-		padding: 0 2.4rem;
-		font-size: 1.6rem;
-		height: 4.4rem;
-		line-height: 4.4rem;
-		color: rgba(255,255,255,0.8);
-		border: 1px solid rgba(255,255,255,0.8);
-		background: transparent;
-		box-shadow: none;
-
-		&:focus,
-		&:hover {
-			color: white;
-			border-color: white;
-			background: transparent;
-		}
+	.nav-links li.active a {
+		color: #fff;
 	}
 
 	@media (hover: hover) and (pointer: fine) {
-		&:hover {
-			transform: translateY(-1px);
-			box-shadow: inset 0 0 0 1px var(--ghost-accent-color), 0 8px 16px -8px rgba(0,0,0,0.25);
+		.nav-links a:hover,
+		.nav-search:hover,
+		.nav-link-text:hover {
+			color: #fff;
 		}
 	}
 }
 
-%liquid-glass {
-	position: relative;
-	overflow: hidden;
-	color: #fff;
-	border: 1px solid rgba(255,255,255,0.35);
-	background: rgba(0,0,0,0.15);
-	box-shadow: 0 14px 38px rgba(0,0,0,0.18);
-	-webkit-backdrop-filter: blur(18px);
-	backdrop-filter: blur(18px);
-	isolation: isolate;
-	z-index: var(--z-base);
+/* ---- Mobile menu sheet --------------------------------------------------
+   Full-screen solid dialog, opened/closed by src/js/features/menu.js via
+   src/js/core/dialog.js. Hidden by default with opacity+transform so the
+   open/close transition can play; the reduced-motion block in the Basics
+   section already collapses both to 0.01ms. */
+.site-menu {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-nav-fixed);
+	display: flex;
+	flex-direction: column;
+	padding: 2rem;
+	background: var(--color-background-main);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-8px);
+	transition: opacity var(--duration-slow) var(--ease-standard),
+		transform var(--duration-slow) var(--ease-standard),
+		visibility 0s linear var(--duration-slow);
 
-	&:before {
+	@media only screen and (min-width: #{$breakpoint-large + 1}) {
 		display: none;
 	}
+}
 
-	&:after {
-		display: none;
+.menu-active .site-menu {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+	transition-delay: 0s;
+}
+
+.site-menu-bar {
+	display: flex;
+	justify-content: flex-end;
+	height: 6rem;
+	flex-shrink: 0;
+}
+
+.site-menu-close {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	color: var(--color-content-main);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+
+	.icon {
+		width: 2.4rem;
+		height: 2.4rem;
 	}
 }
 
-.cover-active .nav-header a.nav-button-primary {
-	@extend %liquid-glass;
-	color: #fff;
-	border-color: rgba(255,255,255,0.35);
-	background: rgba(255,255,255,0.18);
-	box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-	text-shadow: none;
+.site-menu-nav {
+	flex: 1;
+	overflow-y: auto;
 
-	&:link,
-	&:visited {
-		color: #fff;
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
 	}
-
-	&:before {
-		display: none;
-	}
-
-	&:focus,
-	&:hover {
-		color: #fff;
-		border-color: rgba(255,255,255,0.55);
-		background: rgba(255,255,255,0.22);
-		opacity: 1;
-		box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-	}
-}
-
-.cover-active .nav-header a.nav-button-secondary {
-	@extend %liquid-glass;
-	color: #fff;
-	border-color: rgba(255,255,255,0.3);
-	background: rgba(255,255,255,0.14);
-	box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-	text-shadow: none;
-
-	&:link,
-	&:visited {
-		color: #fff;
-	}
-
-	&:before {
-		display: none;
-	}
-
-	&:focus,
-	&:hover {
-		color: #fff;
-		border-color: rgba(255,255,255,0.5);
-		background: rgba(255,255,255,0.18);
-		box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-	}
-}
-
-@keyframes glass-flow {
-	0% {
-		transform: translate(-10%, -10%) scale(1);
-	}
-	50% {
-		transform: translate(20%, 10%) scale(1.12);
-	}
-	100% {
-		transform: translate(-10%, -10%) scale(1);
-	}
-}
-
-.gh-portal-triggerbtn-container {
-	display: none !important;
-}
-
-iframe.gh-portal-triggerbtn-iframe {
-	display: none !important;
-	visibility: hidden !important;
-	opacity: 0 !important;
-	pointer-events: none !important;
-}
-
-.cover-active {
-
-	.nav-wrapper-control a {
-		color: rgba(255,255,255,0.8);
-
-		&:focus,
-		&:hover {
-			color: white;
-		}
-	}
-
-	.nav-header a {
-		@media only screen and (min-width: $breakpoint-medium) {
-			color: rgba(255,255,255,0.8);
-			border-color: rgba(255,255,255,0.8);
-		}
-
-		&:focus,
-		&:hover {
-			@media only screen and (min-width: $breakpoint-medium) {
-				color: white;
-				border-color: white;
-			}
-		}
-	}
-
-	&.active a {
-		@media only screen and (min-width: $breakpoint-medium) {
-			color: white;
-		}
-	}
-
-	.nav-menu,
-	.nav-search {
-		color: rgba(255,255,255,0.8);
-		text-decoration: none;
-		-webkit-tap-highlight-color: transparent;
-
-		&:link,
-		&:visited {
-			color: rgba(255,255,255,0.8);
-			text-decoration: none;
-		}
-
-		&:focus,
-		&:hover {
-			color: white;
-		}
-	}
-}
-
-/* Navigation Button Enhancements */
-.nav-header .nav-wrapper-control a {
-	border-radius: var(--radius-sm);
-	transition: all ease-out 0.2s;
-	font-size: 1.6rem;
-
-	&:active {
-		transform: scale(0.98);
-	}
-}
-
-.nav-header .nav-wrapper-control a .icon {
-	margin-right: 1.5rem;
-	font-size: 2rem;
-	width: 2rem;
-	height: 2rem;
-}
-
-.nav-header li a {
-	position: relative;
-	transition: all ease-out 0.2s;
-	font-weight: 500;
-
-	&:hover {
-		transform: translateX(2px);
-	}
-
-	@media only screen and (max-width: $breakpoint-medium) {
-		// Pre-set background to transparent to avoid layout shift on hover
-		background: transparent;
-		border-radius: var(--radius-md);
-		margin: 0 -1rem;
-		padding-left: calc(4rem + 1rem); // Original 4rem + margin compensation
-		padding-right: 1rem;
-
-		&:hover {
-			background: var(--color-menu-item-hover-bg);
-			transform: none;
-		}
-	}
-}
-
-/* Mobile Navigation Optimizations */
-@media only screen and (max-width: $breakpoint-medium) {
-	.nav-header .nav-wrapper .nav-search {
-		display: none;
-	}
-
-	.nav-header .nav-wrapper-control .nav-menu {
-		font-size: 2rem;
-	}
-}
-
-/* Touch-friendly navigation improvements */
-.nav-header .nav-wrapper-control {
-	touch-action: manipulation;
 
 	a {
-		min-height: 44px; /* iOS recommended minimum touch target */
-		padding: 1.5rem 0;
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 1rem 0;
+		font-family: var(--gh-font-heading);
+		font-size: 2.6rem;
+		font-weight: 500;
+		color: var(--color-content-main);
+		text-decoration: none;
+	}
+
+	li.active a {
+		color: var(--ghost-accent-color);
 	}
 }
 
-@keyframes slideInFromTop {
-	0% {
-		transform: translate3d(0, -100%, 0);
-	}
-	100% {
-		transform: translate3d(0, 0, 0);
+.site-menu-members {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 1.5rem 0;
+
+	.nav-link-text,
+	.nav-button-primary {
+		justify-content: center;
+		width: 100%;
+		min-height: 4.8rem;
+		font-size: 1.6rem;
 	}
 }
 
+.site-menu .theme-toggle {
+	align-self: center;
+	margin-top: 1rem;
+}
 /* ==========================================================================
    Reading Progress
    ========================================================================== */
@@ -3710,8 +3098,8 @@ iframe.gh-portal-triggerbtn-iframe {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 3.6rem;
-	height: 3.6rem;
+	width: 44px;
+	height: 44px;
 	border-radius: 50%;
 	color: var(--color-content-secondary);
 	transition: all 0.2s ease;
@@ -3739,8 +3127,8 @@ iframe.gh-portal-triggerbtn-iframe {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 3.6rem;
-	height: 3.6rem;
+	width: 44px;
+	height: 44px;
 	padding: 0;
 	border: none;
 	border-radius: 50%;
@@ -3761,7 +3149,9 @@ iframe.gh-portal-triggerbtn-iframe {
 	}
 }
 
-/* Theme icon visibility */
+/* Theme icon visibility - three states, not just two: `.theme-system` marks
+   "following the OS" independently of which color it currently resolved
+   to, so a system user always sees the monitor icon, never sun/moon. */
 .theme-icon-sun,
 .theme-icon-moon {
 	display: none;
@@ -3772,21 +3162,21 @@ iframe.gh-portal-triggerbtn-iframe {
 	display: block;
 }
 
-/* Dark mode: show moon */
-.theme-dark .theme-icon-monitor {
+/* Explicit dark: show moon */
+.theme-dark:not(.theme-system) .theme-icon-monitor {
 	display: none;
 }
 
-.theme-dark .theme-icon-moon {
+.theme-dark:not(.theme-system) .theme-icon-moon {
 	display: block;
 }
 
-/* Light mode: show sun */
-.theme-light .theme-icon-monitor {
+/* Explicit light: show sun */
+.theme-light:not(.theme-system) .theme-icon-monitor {
 	display: none;
 }
 
-.theme-light .theme-icon-sun {
+.theme-light:not(.theme-system) .theme-icon-sun {
 	display: block;
 }
 
@@ -7104,7 +6494,7 @@ a.post-tag-chip {
    Reduced Motion Support - Accessibility
    One global rule collapses every animation/transition duration to near-zero
    instead of hand-listing components (the old nav-only block this replaced
-   covered `.nav-header`/`.nav-close`/`.nav-members`; those are now covered
+   covered `.nav-header`/`.nav-members`; those are now covered
    here along with everything else on the page).
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
@@ -7123,7 +6513,6 @@ a.post-tag-chip {
    ========================================================================== */
 @media print {
 	.nav-header,
-	.nav-close,
 	.nav-footer,
 	.post-share,
 	.post-comments-container,
@@ -7136,8 +6525,7 @@ a.post-tag-chip {
 	.toc-mobile-overlay,
 	.back-to-top,
 	.progress-container,
-	#announcement-bar-root,
-	.liquid-glass-filter {
+	#announcement-bar-root {
 		display: none !important;
 	}
 

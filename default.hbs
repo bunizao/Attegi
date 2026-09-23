@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="{{@site.locale}}" class="{{#is "home"}}{{#if @site.cover_image}}cover-active{{/if}}{{/is}} {{{block "html_class"}}}">
+{{!-- `html_class` is set per-template via {{#contentFor "html_class"}} (index/post/page
+add "cover-active" when a cover image is present; error adds "is-error-page"). Home's
+own cover-active case is already covered there, so this attribute only needs the block. --}}
+<html lang="{{@site.locale}}" class="{{{block "html_class"}}}">
 <head>
 
 	{{!-- Document Settings --}}
@@ -19,17 +22,11 @@
 	{{{block "head"}}}
 
 	{{!-- Resource Hints --}}
-	{{!-- Preconnect to external CDNs used by Ghost and theme --}}
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-	<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 	{{!-- Preload critical CSS to reduce render-blocking --}}
 	<link rel="preload" href="/assets/css/style.css" as="style" />
-	{{!-- JetBrains Mono for code blocks --}}
-	<link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" as="style" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
-	{{!-- Note: GLightbox is NOT preloaded here, it's loaded conditionally only when images exist --}}
+	{{!-- Note: GLightbox and JetBrains Mono are NOT loaded here; both are
+	injected only when the rendered body actually needs them (see the
+	conditional-load scripts near the closing </body>). --}}
 
 		<script>
 			// Theme bootstrap - runs once, before first paint.
@@ -66,8 +63,11 @@
 
 				function applyTheme(choice) {
 					var dark = isDark(choice);
-					docEl.classList.remove('theme-dark', 'theme-light');
+					docEl.classList.remove('theme-dark', 'theme-light', 'theme-system');
 					docEl.classList.add(dark ? 'theme-dark' : 'theme-light');
+					if (choice !== 'dark' && choice !== 'light') {
+						docEl.classList.add('theme-system');
+					}
 					updateThemeColor(dark);
 				}
 
@@ -128,14 +128,15 @@
 		html{font-size:62.5%}
 		body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;margin:0;background:var(--color-background-main,#fff)}
 		img{max-width:100%;height:auto}
-		.nav-header{position:absolute;top:0;left:0;width:100%;z-index:400}
+		.nav-header{position:fixed;top:0;left:0;width:100%;z-index:400}
 		.nav-header .logo img{width:auto;height:4rem}
+		.skip-link{position:absolute;top:-100%;left:0;z-index:9999}
+		.skip-link:focus{top:0}
 		.post-meta-avatar{width:3.6rem;height:3.6rem;flex-shrink:0}
 		.blog-cover,.post-cover{contain:layout style paint;contain-intrinsic-size:100vw 50vh}
 		.kg-bookmark-thumbnail{aspect-ratio:1.2/1;min-height:160px}
 		.kg-embed-card iframe[src*="youtube"],.kg-embed-card iframe[src*="vimeo"]{aspect-ratio:16/9;width:100%;height:auto}
 		/* Link styles */
-		a.nav-menu,
 		a.nav-search,
 		.post-meta-author a,
 		.post-meta-avatars a {
@@ -143,8 +144,6 @@
 			text-decoration: none;
 			-webkit-tap-highlight-color: transparent;
 		}
-		a.nav-menu:link,
-		a.nav-menu:visited,
 		a.nav-search:link,
 		a.nav-search:visited,
 		.post-meta-author a:link,
@@ -341,21 +340,30 @@
 	data-i18n-open-toc="{{t "Open table of contents"}}"
 	data-i18n-close-toc="{{t "Close table of contents"}}">
 
+	<a class="skip-link" href="#main">{{t "Skip to content"}}</a>
+
 	<div class="viewport">
-			<div class="nav-header">
-				<nav class="nav-wrapper" aria-label="{{t "Main"}}">
+		<header class="nav-header">
+			<div class="nav-bar inner">
+				<div class="nav-brand">
 					{{#if @site.logo}}
-						<span class="logo">
-							<a href="{{@site.url}}" title="{{t "Home"}}"><img src="{{img_url @site.logo size="s"}}" alt="{{t "Logo"}}" /></a>
-						</span>
+						<a class="logo" href="{{@site.url}}" title="{{t "Home"}}"><img src="{{img_url @site.logo size="s"}}" alt="{{t "Logo"}}" /></a>
+					{{else}}
+						<a class="wordmark" href="{{@site.url}}">{{@site.title}}</a>
 					{{/if}}
+				</div>
+
+				<nav class="nav-links" aria-label="{{t "Main"}}">
 					{{navigation}}
+				</nav>
+
+				<div class="nav-actions">
 					<a class="nav-search" href="#search" role="button" aria-label="{{t "Search"}}" data-ghost-search><i class="icon icon-search" aria-hidden="true">{{> "icons/icon-search"}}</i></a>
 					{{#if @site.members_enabled}}
 						<span class="nav-members">
 							{{#unless @member}}
 								{{#unless @site.members_invite_only}}
-									<a class="nav-button-secondary" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
+									<a class="nav-link-text" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
 								{{#unless hideSubscribeButton}}
 									<a class="nav-button-primary" href="#/portal/signup" data-portal="signup">{{t "Subscribe"}}</a>
 								{{/unless}}
@@ -363,24 +371,60 @@
 								<a class="nav-button-primary" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
 							{{/unless}}
 						{{else}}
-							<a class="nav-button-secondary" href="#/portal/account" data-portal="account">{{t "Account"}}</a>
+							<a class="nav-link-text" href="#/portal/account" data-portal="account">{{t "Account"}}</a>
 						{{/unless}}
 					</span>
 				{{/if}}
-			</nav>
-
-				<div class="nav-wrapper-control">
-					<div class="inner">
-						<a class="nav-menu" href="#menu" role="button" aria-expanded="false"><i class="icon icon-menu" aria-hidden="true">{{> "icons/icon-menu"}}</i> {{t "Menu"}}</a>
-						<a class="nav-search" href="#search" role="button" aria-label="{{t "Search"}}" data-ghost-search><i class="icon icon-search" aria-hidden="true">{{> "icons/icon-search"}}</i></a>
-					</div>
+					<button type="button" class="nav-menu" aria-expanded="false" aria-controls="site-menu">{{t "Menu"}}</button>
 				</div>
 			</div>
-			<div class="nav-close" role="button" aria-label="{{t "Close"}}" tabindex="0" aria-hidden="true"></div>
+		</header>
+
+		<noscript>
+			<style>
+				/* Without JS the Menu button and the sheet it opens can't work,
+				   so unhide the nav links and member actions inline instead. */
+				.nav-menu, .site-menu { display: none !important; }
+				.nav-links, .nav-members { display: flex !important; }
+				.nav-links ul { flex-wrap: wrap; }
+			</style>
+		</noscript>
+
+		<div class="site-menu" id="site-menu" role="dialog" aria-modal="true" aria-label="{{t "Menu"}}">
+			<div class="site-menu-bar">
+				<button type="button" class="site-menu-close" aria-label="{{t "Close"}}"><i class="icon" aria-hidden="true">{{> "icons/icon-close"}}</i></button>
+			</div>
+			<nav class="site-menu-nav" aria-label="{{t "Main"}}">
+				{{navigation}}
+			</nav>
+			{{#if @site.members_enabled}}
+				<div class="site-menu-members">
+					{{#unless @member}}
+						{{#unless @site.members_invite_only}}
+							<a class="nav-link-text" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
+						{{#unless hideSubscribeButton}}
+							<a class="nav-button-primary" href="#/portal/signup" data-portal="signup">{{t "Subscribe"}}</a>
+						{{/unless}}
+					{{else}}
+						<a class="nav-button-primary" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
+					{{/unless}}
+				{{else}}
+					<a class="nav-link-text" href="#/portal/account" data-portal="account">{{t "Account"}}</a>
+				{{/unless}}
+				</div>
+			{{/if}}
+			<button class="theme-toggle js-theme" aria-label="{{t "Toggle theme"}}" data-system="{{t "System"}}" data-dark="{{t "Dark"}}" data-light="{{t "Light"}}">
+				<i class="icon theme-icon-sun" aria-hidden="true">{{> "icons/icon-sun"}}</i>
+				<i class="icon theme-icon-moon" aria-hidden="true">{{> "icons/icon-moon"}}</i>
+				<i class="icon theme-icon-monitor" aria-hidden="true">{{> "icons/icon-monitor"}}</i>
+			</button>
+		</div>
 
 		<section class="page-wrapper">
 
+			<main id="main">
 			{{{body}}}
+			</main>
 
 			<footer class="nav-footer">
 				<div class="footer-main">
@@ -441,31 +485,19 @@
 		</section>
 	</div>
 
-	<svg class="liquid-glass-filter" aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute;overflow:hidden">
-		<defs>
-			<!-- Liquid glass filter with displacement for curving effect -->
-			<filter id="liquid-glass" x="-50%" y="-50%" width="200%" height="200%">
-				<!-- Generate organic noise pattern for displacement -->
-				<feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" seed="5" result="noise" />
-				<!-- Soften the noise -->
-				<feGaussianBlur in="noise" stdDeviation="1.5" result="softNoise" />
-				<!-- Blur source for glass effect -->
-				<feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
-				<!-- Apply displacement for liquid warping -->
-				<feDisplacementMap in="blur" in2="softNoise" scale="25" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-				<!-- Boost saturation slightly -->
-				<feColorMatrix in="displaced" type="saturate" values="1.15" />
-			</filter>
-			<!-- Simple frosted blur fallback -->
-			<filter id="frosted" x="-50%" y="-50%" width="200%" height="200%">
-				<feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
-				<feColorMatrix in="blur" type="saturate" values="1.2" />
-			</filter>
-		</defs>
-	</svg>
-
 	{{!-- Load basic scripts (no defer, placed before </body> for reliability) --}}
 	<script src="/assets/js/site.js"></script>
+	<script>
+		// Load the JetBrains Mono webfont only on pages that actually render
+		// a code block; every other page skips the request entirely.
+		(function() {
+			if (!document.querySelector('.kg-card-code, pre code')) return;
+			var stylesheet = document.createElement('link');
+			stylesheet.rel = 'stylesheet';
+			stylesheet.href = 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap';
+			document.head.appendChild(stylesheet);
+		})();
+	</script>
 	<script>
 		// Conditionally load GLightbox only for gallery images
 		(function() {
