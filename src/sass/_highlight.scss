@@ -11,25 +11,25 @@
     --code-border: #e1e4e8;
     --code-text: #24292e;
     --code-comment: #5a6570;
-    --code-keyword: #d73a49;
-    --code-string: #22863a;
+    --code-keyword: #c02937;
+    --code-string: #1d7a34;
     --code-number: #005cc5;
     --code-function: #6f42c1;
-    --code-variable: #e36209;
-    --code-operator: #d73a49;
+    --code-variable: #a34a00;
+    --code-operator: #c02937;
     --code-class: #6f42c1;
     --code-constant: #005cc5;
-    --code-tag: #22863a;
+    --code-tag: #1d7a34;
     --code-attribute: #6f42c1;
     --code-selector: #6f42c1;
     --code-property: #005cc5;
     --code-punctuation: #24292e;
     --code-builtin: #005cc5;
-    --code-type: #d73a49;
+    --code-type: #c02937;
     --code-meta: #5a6570;
     --code-regexp: #032f62;
     --code-deletion: #b31d28;
-    --code-addition: #22863a;
+    --code-addition: #1d7a34;
     --code-label-bg: #f8f9fa;
     --code-label-text: #5a6570;
     --code-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -38,25 +38,25 @@
         --code-bg: #282c34;
         --code-border: #3e4451;
         --code-text: #abb2bf;
-        --code-comment: #7f848e;
+        --code-comment: #969cab;
         --code-keyword: #c678dd;
         --code-string: #98c379;
         --code-number: #d19a66;
         --code-function: #61afef;
-        --code-variable: #e06c75;
+        --code-variable: #e6858c;
         --code-operator: #56b6c2;
         --code-class: #e5c07b;
         --code-constant: #d19a66;
-        --code-tag: #e06c75;
+        --code-tag: #e6858c;
         --code-attribute: #d19a66;
-        --code-selector: #e06c75;
+        --code-selector: #e6858c;
         --code-property: #61afef;
         --code-punctuation: #abb2bf;
         --code-builtin: #e5c07b;
         --code-type: #e5c07b;
-        --code-meta: #7f848e;
+        --code-meta: #969cab;
         --code-regexp: #98c379;
-        --code-deletion: #e06c75;
+        --code-deletion: #e6858c;
         --code-addition: #98c379;
         --code-label-bg: #282c34;
         --code-label-text: #9da5b4;
@@ -103,7 +103,6 @@
 .hljs-quote {
     color: var(--code-comment);
     font-style: italic;
-    opacity: 0.85;
 }
 
 /* Keywords */

@@ -84,6 +84,7 @@ function createCodeHeader(pre, code, langName) {
   header.appendChild(lang);
 
   var btn = doc.createElement('button');
+  btn.type = 'button';
   btn.className = 'code-copy-btn';
   btn.setAttribute('aria-label', copyAria);
 
@@ -92,6 +93,9 @@ function createCodeHeader(pre, code, langName) {
     var label = doc.createElement('span');
     label.textContent = isCopied ? copiedLabel : copyLabel;
     btn.appendChild(label);
+    // Keep the announced state in sync so screen-reader users get
+    // confirmation the copy succeeded (WCAG 4.1.3 Status Messages).
+    btn.setAttribute('aria-label', isCopied ? copiedLabel : copyAria);
   }
 
   setCopyButtonState(false);
@@ -134,6 +138,8 @@ export function highlightCode(container, highlightUrl) {
 
   function applyHighlight() {
     if (!window.hljs) return;
+    // Safe only because Ghost's Koenig editor always pre-escapes code-card
+    // output before it reaches this container.
     window.hljs.configure({ ignoreUnescapedHTML: true });
     Array.prototype.forEach.call(blocks, function(code) {
       window.hljs.highlightElement(code);
