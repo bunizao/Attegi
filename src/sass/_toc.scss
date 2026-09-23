@@ -10,9 +10,8 @@ $toc-width: 220px;
 $toc-gap-min: 4.8rem;
 $toc-offset-top: 3rem;
 $toc-gap: 3rem;
-$toc-transition: all 0.25s ease;
+$toc-transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
 $toc-breakpoint: 1300px;
-$toc-breakpoint-small: 480px;
 
 // When TOC is present, fix overflow to allow sticky positioning
 .has-toc {
@@ -167,10 +166,6 @@ $toc-breakpoint-small: 480px;
   opacity: 0;
   visibility: hidden;
   transform: scale(0.9);
-
-  // WebKit optimizations
-  -webkit-transform: scale(0.9);
-  -webkit-transition: all 0.25s ease;
   will-change: transform, opacity;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -179,12 +174,10 @@ $toc-breakpoint-small: 480px;
     opacity: 1;
     visibility: visible;
     transform: scale(1);
-    -webkit-transform: scale(1);
   }
 
   &:active {
     transform: scale(0.95);
-    -webkit-transform: scale(0.95);
   }
 
   &:hover {
@@ -212,14 +205,12 @@ $toc-breakpoint-small: 480px;
     opacity: 0;
     visibility: hidden;
     transform: scale(0.8);
-    -webkit-transform: scale(0.8);
   }
 
   // Hide when scrolling down (slide to right)
   &.is-hidden-scroll {
     opacity: 0;
     transform: translateX(8rem) scale(0.9);
-    -webkit-transform: translateX(8rem) scale(0.9);
   }
 
   @media only screen and (max-width: $toc-breakpoint) {
@@ -278,23 +269,15 @@ $toc-breakpoint-small: 480px;
               visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1),
               transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-
-  // WebKit optimizations
-  -webkit-transform: translateY(1.5rem) scale(0.92);
-  -webkit-transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                      visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                      -webkit-transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, opacity;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 
   &.is-open {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
-    -webkit-transform: translateY(0) scale(1);
   }
 
   .theme-dark & {
@@ -373,7 +356,7 @@ $toc-breakpoint-small: 480px;
   border-radius: 0.6rem;
   color: var(--color-content-secondary);
   cursor: pointer;
-  transition: $toc-transition;
+  transition: background-color 0.15s ease, color 0.15s ease;
 
   // Expand the tap target to 44px without growing the visible button.
   &::before {
