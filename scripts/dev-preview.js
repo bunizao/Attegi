@@ -999,8 +999,10 @@ function renderErrorPage(error) {
 }
 
 function sendHtml(response, status, html) {
+  // An explicit length keeps BrowserSync's snippet rewrite from emitting chunked + content-length together
   response.writeHead(status, {
     'Content-Type': 'text/html; charset=UTF-8',
+    'Content-Length': Buffer.byteLength(html),
     'Cache-Control': 'no-store'
   });
   response.end(html);
