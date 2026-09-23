@@ -1626,7 +1626,7 @@ textarea {
 
 	.kg-bookmark-description {
 		display: -webkit-box;
-		font-size: 1.5rem;
+		font-size: var(--font-size-xs, 1.5rem);
 		line-height: 1.6;
 		font-weight: 400;
 		margin-top: 0;
@@ -2224,7 +2224,7 @@ textarea {
 			}
 
 			.kg-product-card-title {
-				font-size: 1.5rem;
+				font-size: var(--font-size-xs, 1.5rem);
 			}
 
 			.kg-product-card-rating {
@@ -2815,7 +2815,7 @@ textarea {
 		align-items: center;
 		min-height: 44px;
 		padding: 0 1.2rem;
-		font-size: 1.5rem;
+		font-size: var(--font-size-xs, 1.5rem);
 		font-weight: 500;
 		line-height: 1.2;
 		color: var(--color-content-secondary);
@@ -2879,7 +2879,7 @@ textarea {
 	align-items: center;
 	min-height: 44px;
 	padding: 0 0.5rem;
-	font-size: 1.5rem;
+	font-size: var(--font-size-xs, 1.5rem);
 	font-weight: 500;
 	color: var(--color-content-secondary);
 	text-decoration: none;
@@ -2897,7 +2897,7 @@ textarea {
 	justify-content: center;
 	min-height: 44px;
 	padding: 0 1.8rem;
-	font-size: 1.5rem;
+	font-size: var(--font-size-xs, 1.5rem);
 	font-weight: 500;
 	color: var(--color-on-accent);
 	background: var(--ghost-accent-color);
@@ -2924,7 +2924,7 @@ textarea {
 	min-height: 44px;
 	padding: 0 1.4rem;
 	font-family: inherit;
-	font-size: 1.5rem;
+	font-size: var(--font-size-xs, 1.5rem);
 	font-weight: 500;
 	color: var(--color-content-main);
 	background: transparent;
@@ -5450,7 +5450,7 @@ a.post-tag-chip {
 
 	.kg-bookmark-description {
 		display: -webkit-box;
-		font-size: 1.5rem;
+		font-size: var(--font-size-xs, 1.5rem);
 		line-height: 1.6;
 		font-weight: 400;
 		margin-top: 0;
@@ -5854,7 +5854,7 @@ a.post-tag-chip {
 /* Caption: keep the figcaption context once inside the lightbox */
 .glightbox-container .gslide-title {
 	font-family: var(--gh-font-heading);
-	font-size: 1.5rem;
+	font-size: var(--font-size-xs, 1.5rem);
 	font-weight: 600;
 	color: #fff;
 	margin: 0 0 0.4rem;
