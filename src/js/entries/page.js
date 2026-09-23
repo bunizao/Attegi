@@ -7,14 +7,18 @@
 import { onReady, qs, doc } from '../core/index.js';
 import { wrapEmbeds } from '../features/embeds.js';
 import { highlightCode } from '../features/code-highlight.js';
+import { setupCoverBrightnessDetection } from '../features/cover-detect.js';
 
 onReady(function() {
   var pageContent = qs('.post-content');
   if (!pageContent) return;
 
+  // Valid here because this file loads as a deferred classic script:
+  // `currentScript` is only reliable during a script's own synchronous run.
   var currentScript = doc.currentScript || null;
   var highlightUrl = currentScript ? currentScript.getAttribute('data-highlight') : '';
 
   wrapEmbeds(pageContent);
   highlightCode(pageContent, highlightUrl);
+  setupCoverBrightnessDetection();
 });
