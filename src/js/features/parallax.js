@@ -20,6 +20,7 @@ export function initParallax() {
   var coverPosition = 0;
   var coverHeight = cover ? cover.offsetHeight : 0;
   var coverPreActive = docEl.classList.contains('cover-active');
+  var header = qs('.nav-header');
   var prefersReducedMotion = window.matchMedia && window.matchMedia(REDUCE_MOTION_QUERY).matches;
 
   function updateCoverMetrics() {
@@ -37,7 +38,10 @@ export function initParallax() {
     // needs its scroll-position class kept in sync.
     coverPosition = (!prefersReducedMotion && windowPosition > 0) ? Math.floor(windowPosition * 0.25) : 0;
     cover.style.transform = 'translate3d(0, ' + coverPosition + 'px, 0)';
-    var withinCover = coverHeight ? window.pageYOffset < coverHeight : coverPreActive;
+    // The header stays in its over-cover style only while its bottom edge
+    // is still over the image; past that its white text would sit on the page.
+    var headerHeight = header ? header.offsetHeight : 0;
+    var withinCover = coverHeight ? window.pageYOffset < coverHeight - headerHeight : coverPreActive;
     docEl.classList.toggle('cover-active', withinCover);
   }
 
