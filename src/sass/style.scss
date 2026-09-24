@@ -54,7 +54,10 @@ body {
 	outline-offset: 2px;
 }
 
-:focus:not(:focus-visible) {
+:focus:not(:focus-visible),
+// Script-focused regions (focus handed to loaded content, skip targets)
+// are not controls; a ring around a whole section is just noise.
+[tabindex="-1"]:focus {
 	outline: none;
 }
 
@@ -413,13 +416,13 @@ textarea {
 		display: flex;
 		padding: 1.25rem var(--space-4);
 		margin: 0 0 var(--space-4);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-md);
 		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
+		border: 1px solid var(--color-border);
 		transition: border-color ease-out 0.2s;
 
 		&:hover {
-			border-color: color-mix(in srgb, var(--ghost-accent-color) 30%, var(--color-background-contrast));
+			border-color: var(--color-border-strong);
 		}
 
 		.kg-callout-emoji {
@@ -547,7 +550,7 @@ textarea {
 		background-color: var(--color-highlight);
 		color: var(--color-highlight-ink);
 		padding: 0.1em 0.35em;
-		border-radius: 0.25em;
+		border-radius: var(--radius-xs);
 		box-decoration-break: clone;
 	}
 
@@ -611,8 +614,8 @@ textarea {
 		font-family: var(--gh-font-mono);
 		font-size: 0.85em;
 		padding: 0.15em 0.4em;
-		border: 1px solid var(--color-background-contrast);
-		border-radius: 0.3em;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-xs);
 		background: var(--color-background-secondary);
 	}
 
@@ -621,7 +624,7 @@ textarea {
 		background: color-mix(in srgb, var(--ghost-accent-color) 12%, var(--color-background-main));
 		border-bottom: 2px solid color-mix(in srgb, var(--ghost-accent-color) 45%, transparent);
 		padding: 0 0.12em;
-		border-radius: 0.2em;
+		border-radius: var(--radius-xs);
 	}
 
 	del,
@@ -652,8 +655,8 @@ textarea {
 		font-size: 0.875em;
 		font-weight: 500;
 		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
-		border-radius: 0.3em;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-xs);
 		color: var(--color-content-main);
 		white-space: pre-wrap;
 		vertical-align: baseline;
@@ -671,7 +674,6 @@ textarea {
 		border: none;
 		border-radius: var(--radius-md);
 		box-sizing: border-box;
-		box-shadow: var(--code-shadow);
 
 		/* Header bar with language label and copy button */
 		.code-header {
@@ -756,78 +758,56 @@ textarea {
 		align-items: center;
 		justify-content: center;
 		padding: 0.1em 0.5em;
-		border: 1px solid var(--color-background-contrast);
+		border: 1px solid var(--color-border);
 		font-family: var(--gh-font-mono);
 		font-size: 0.85em;
 		font-weight: 600;
 		line-height: 1.2;
 		background: var(--color-background-secondary);
-		border-radius: 0.35em;
-		box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+		border-radius: var(--radius-xs);
+		box-shadow: inset 0 -1px 0 var(--color-border-strong);
 		vertical-align: middle;
 	}
 
+	// Editorial table: no box, no zebra, no hover. A strong rule under the
+	// header, hairlines between rows, numbers aligned. Scrolls sideways on
+	// narrow screens instead of squeezing columns.
 	table {
-		position: relative;
 		width: 100%;
 		max-width: 100%;
-		margin: 0 0 var(--space-6);
-		border: 1px solid var(--color-background-contrast);
-		background: var(--color-background-main);
-		border-radius: var(--radius-lg);
-		border-collapse: separate;
-		border-spacing: 0;
-		overflow: hidden;
-		box-shadow: var(--shadow-xs);
+		margin: 0 0 1.5em;
+		border-collapse: collapse;
+		font-size: 0.85em;
+		line-height: 1.5;
+		font-variant-numeric: tabular-nums;
 
 		@media (max-width: $breakpoint-medium) {
 			display: block;
 			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
 		}
 
-		td,
-		th {
-			position: relative;
-			padding: 1.2rem var(--space-4);
-			font-size: 0.85em;
-			line-height: 1.5;
-			border-bottom: 1px solid var(--color-background-contrast);
-			border-right: 1px solid var(--color-background-contrast);
-			vertical-align: middle;
+		th,
+		td {
+			padding: 0.75em 1em;
+			text-align: left;
+			vertical-align: top;
+			border-bottom: 1px solid var(--color-border);
+
+			&:first-child {
+				padding-left: 0;
+			}
 
 			&:last-child {
-				border-right: none;
-			}
-
-			@media (max-width: $breakpoint-small) {
-				padding: var(--space-3) 1.2rem;
-				font-size: 0.8em;
+				padding-right: 0;
 			}
 		}
 
-		thead {
-			background: color-mix(in srgb, var(--ghost-accent-color) 5%, var(--color-background-secondary));
-			position: relative;
-
-			&::after {
-				content: '';
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				height: 2px;
-				background: linear-gradient(
-					90deg,
-					transparent,
-					color-mix(in srgb, var(--ghost-accent-color) 30%, transparent) 50%,
-					transparent
-				);
-			}
-
-			tr:last-child td,
-			tr:last-child th {
-				border-bottom: none;
-			}
+		th {
+			font-weight: 600;
+			color: var(--color-content-lead);
+			white-space: nowrap;
+			border-bottom: 1px solid var(--color-border-strong);
 		}
 
 		tbody tr:last-child td,
@@ -835,48 +815,6 @@ textarea {
 			border-bottom: none;
 		}
 
-		th {
-			text-align: left;
-			font-weight: 700;
-			letter-spacing: 0.3px;
-			font-size: 0.9em;
-			line-height: 1.5;
-			color: var(--color-content-lead);
-			padding: 1.4rem var(--space-4);
-
-			@media (max-width: $breakpoint-small) {
-				padding: 1.1rem 1.2rem;
-				font-size: 0.85em;
-			}
-		}
-
-		tbody tr {
-			transition: background-color ease-out 0.2s, box-shadow ease-out 0.2s, transform ease-out 0.2s;
-			background: var(--color-background-main);
-
-			// Zebra striping for better readability
-			&:nth-child(even) {
-				background: color-mix(in srgb, var(--color-background-secondary) 40%, var(--color-background-main));
-			}
-
-			@media (hover: hover) and (pointer: fine) {
-				&:hover {
-					background: color-mix(in srgb, var(--ghost-accent-color) 8%, var(--color-background-secondary));
-					transform: scale(1.005);
-					box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-				}
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				transition: none;
-
-				&:hover {
-					transform: none;
-				}
-			}
-		}
-
-		// Better cell content styling
 		td {
 			color: var(--color-content-main);
 
@@ -885,36 +823,11 @@ textarea {
 				color: var(--color-content-lead);
 			}
 
-			em {
-				font-style: italic;
-				color: var(--color-content-secondary);
-			}
-
 			code {
 				font-size: 0.9em;
-				padding: 0.2em 0.4em;
+				padding: 0.15em 0.4em;
 				background: var(--color-background-secondary);
-				border-radius: 0.25em;
-			}
-		}
-	}
-
-	// Dark theme adjustments
-	.theme-dark table {
-		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-
-		thead {
-			background: color-mix(in srgb, var(--ghost-accent-color) 8%, rgba(255, 255, 255, 0.04));
-		}
-
-		tbody tr {
-			&:nth-child(even) {
-				background: rgba(255, 255, 255, 0.02);
-			}
-
-			&:hover {
-				background: color-mix(in srgb, var(--ghost-accent-color) 12%, rgba(255, 255, 255, 0.06));
-				box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+				border-radius: var(--radius-xs);
 			}
 		}
 	}
@@ -924,7 +837,7 @@ textarea {
 		max-width: 100%;
 		height: auto;
 		margin: 1.5em 0;
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-md);
 	}
 
 	/* Enhanced Video Responsive Support (Reframe-style) */
@@ -1027,7 +940,7 @@ textarea {
 		display: block;
 		padding: var(--space-3);
 		border: 0;
-		border-radius: 5rem;
+		border-radius: var(--radius-pill);
 		box-sizing: border-box;
 		appearance: normal;
 		transition: opacity ease-out 0.1s, transform ease-out 0.1s, box-shadow ease-out 0.1s;
@@ -1046,7 +959,6 @@ textarea {
 	.button:hover {
 		opacity: 0.9;
 		transform: translateY(-1px);
-		box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 	}
 
 	input[type="reset"]:focus-visible,
@@ -1056,7 +968,6 @@ textarea {
 	.button:focus-visible {
 		outline: 2px solid var(--ghost-accent-color);
 		outline-offset: 2px;
-		box-shadow: 0 0 0 3px rgba(var(--ghost-accent-color), 0.2);
 	}
 
 	// Cap the reading measure on wide screens; images, tables, code blocks
@@ -1131,14 +1042,13 @@ textarea {
 			justify-content: space-between;
 			padding: var(--space-5) var(--space-6);
 			background: var(--color-background-secondary);
-			border: 1px solid var(--color-background-contrast);
-			border-radius: var(--radius-lg);
+			border: 1px solid var(--color-border);
+			border-radius: var(--radius-md);
 			text-decoration: none;
 			transition: transform ease-out 0.2s, box-shadow ease-out 0.2s, border-color ease-out 0.2s;
 
 			&:hover {
-				transform: translateY(-2px);
-				box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+				border-color: var(--color-border-strong);
 				border-color: var(--ghost-accent-color);
 			}
 
@@ -1206,7 +1116,7 @@ textarea {
 					color-mix(in srgb, var(--ghost-accent-color) 12%, var(--color-background-main)),
 					color-mix(in srgb, var(--ghost-accent-color) 6%, var(--color-background-main))
 				);
-				border-radius: var(--radius-md);
+				border-radius: var(--radius-sm);
 				border: 1px solid color-mix(in srgb, var(--ghost-accent-color) 15%, transparent);
 				transition: background ease-out 0.2s, border-color ease-out 0.2s;
 
@@ -1253,7 +1163,7 @@ textarea {
 		&:not(.kg-width-wide):not(.kg-width-full) {
 			.kg-image {
 				max-width: 100%;
-				border-radius: var(--radius-lg);
+				border-radius: var(--radius-md);
 			}
 		}
 
@@ -1407,12 +1317,12 @@ textarea {
 
 	.kg-video-card {
 		margin: 0 0 var(--space-6);
-		border-radius: var(--radius-lg);
+		border-radius: var(--radius-md);
 		overflow: visible;
 
 		.kg-video-container {
 			position: relative;
-			border-radius: var(--radius-lg);
+			border-radius: var(--radius-md);
 			overflow: hidden;
 		}
 
@@ -1420,7 +1330,7 @@ textarea {
 			display: block;
 			width: 100%;
 			height: auto;
-			border-radius: var(--radius-lg);
+			border-radius: var(--radius-md);
 			object-fit: contain;
 		}
 
@@ -1448,8 +1358,8 @@ textarea {
 	.kg-audio-card {
 		background: var(--color-background-secondary);
 		color: var(--color-content-main);
-		border: 1px solid var(--color-background-contrast);
-		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
 
 		.kg-audio-title,
 		.kg-audio-current-time,
@@ -1478,8 +1388,8 @@ textarea {
 		margin: 0 0 var(--space-6);
 		padding: var(--space-4);
 		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
-		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
 	}
 
 	// KG NFT & Transistor - same gap as the collection card above: Ghost
@@ -1493,8 +1403,8 @@ textarea {
 		display: block;
 		overflow: hidden;
 		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
-		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
 		color: inherit;
 		text-decoration: none;
 	}
@@ -1536,15 +1446,15 @@ textarea {
 		margin: 0 0 2.5rem;
 		overflow: hidden;
 		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
-		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
 	}
 
 	// KG Embed
 
 	.kg-embed-card {
 		margin: 0 0 var(--space-6);
-		border-radius: var(--radius-lg);
+		border-radius: var(--radius-md);
 		overflow: hidden;
 
 		> * {
@@ -1553,7 +1463,7 @@ textarea {
 		}
 
 		iframe {
-			border-radius: var(--radius-lg);
+			border-radius: var(--radius-md);
 		}
 	}
 
@@ -1572,19 +1482,16 @@ textarea {
 	.kg-bookmark-card {
 		width: 100%;
 		margin: 0 0 var(--space-6);
-		border-radius: var(--radius-xl);
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		transition: transform ease-out 0.3s, box-shadow ease-out 0.3s, border-color ease-out 0.3s;
 		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
-		box-shadow: var(--shadow-sm);
+		border: 1px solid var(--color-border);
 
 		// Desktop hover effect
 		@media (hover: hover) and (pointer: fine) {
 			&:hover {
-				transform: translateY(-4px);
-				box-shadow: var(--shadow-lg);
-				border-color: color-mix(in srgb, var(--ghost-accent-color) 50%, var(--color-background-contrast));
+				border-color: var(--color-border-strong);
 
 				.kg-bookmark-title {
 					color: var(--color-accent-text);				}
@@ -1599,7 +1506,6 @@ textarea {
 		@media (hover: none) and (pointer: coarse) {
 			&:active {
 				transform: scale(0.98);
-				box-shadow: var(--shadow-md);
 			}
 		}
 
@@ -1719,7 +1625,7 @@ textarea {
 		max-width: 280px;
 		flex-shrink: 0;
 		overflow: hidden;
-		border-radius: 0 1rem 1rem 0; // Match card's right corners
+		border-radius: 0 var(--radius-md) var(--radius-md) 0;
 		aspect-ratio: 4 / 3; // Classic 4:3 aspect ratio for balanced display
 
 		@media only screen and (max-width: $breakpoint-medium) {
@@ -1732,7 +1638,7 @@ textarea {
 			max-width: 100%;
 			height: auto; // Changed from 0 to auto
 			aspect-ratio: 2 / 1; // Use aspect-ratio instead of padding-bottom
-			border-radius: 1.25rem 1.25rem 0 0; // Top corners on mobile
+			border-radius: var(--radius-md) var(--radius-md) 0 0;
 			order: 1; // Thumbnail above content on mobile
 		}
 	}
@@ -1767,7 +1673,7 @@ textarea {
 	// Only apply hover effect on desktop
 	@media (hover: hover) and (pointer: fine) {
 		.kg-bookmark-card:hover .kg-bookmark-thumbnail img {
-			transform: scale(1.05);
+			transform: scale(1.03);
 		}
 	}
 
@@ -1838,17 +1744,15 @@ textarea {
 
 	.kg-toggle-card {
 		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
-		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
 		padding: var(--space-4) var(--space-5);
 		margin: 0 0 var(--space-6);
 		transition: border-color ease-out 0.2s, background ease-out 0.2s, box-shadow ease-out 0.2s;
-		box-shadow: var(--shadow-xs);
 
 		&:hover {
-			border-color: color-mix(in srgb, var(--ghost-accent-color) 40%, var(--color-background-contrast));
+			border-color: var(--color-border-strong);
 			background: color-mix(in srgb, var(--ghost-accent-color) 3%, var(--color-background-secondary));
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 		}
 
 		.kg-toggle-heading {
@@ -1918,7 +1822,7 @@ textarea {
 		text-align: center;
 		background-size: cover;
 		background-position: center;
-		border-radius: var(--radius-xl);
+		border-radius: var(--radius-md);
 		overflow: hidden;
 
 		&::before {
@@ -1960,13 +1864,12 @@ textarea {
 			background: var(--ghost-accent-color);
 			color: var(--color-on-accent);
 			text-decoration: none;
-			border-radius: var(--radius-sm);
+			border-radius: var(--radius-pill);
 			font-weight: 600;
 			transition: transform ease-out 0.2s, box-shadow ease-out 0.2s;
 
 			&:hover {
-				transform: translateY(-2px);
-				box-shadow: var(--shadow-pop);
+				transform: translateY(-1px);
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -1999,10 +1902,10 @@ textarea {
 		text-align: center;
 		background-size: cover;
 		background-position: center;
-		border-radius: var(--radius-xl);
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
+		border: 1px solid var(--color-border);
 
 		&::before {
 			content: '';
@@ -2051,8 +1954,8 @@ textarea {
 		.kg-signup-card-input {
 			flex: 1;
 			padding: var(--space-3) var(--space-4);
-			border: 1px solid var(--color-background-contrast);
-			border-radius: var(--radius-sm);
+			border: 1px solid var(--color-border);
+			border-radius: var(--radius-pill);
 			background: var(--color-background-main);
 			color: var(--color-content-main);
 			font-size: 1em;
@@ -2069,15 +1972,14 @@ textarea {
 			background: var(--ghost-accent-color);
 			color: var(--color-on-accent);
 			border: none;
-			border-radius: var(--radius-sm);
+			border-radius: var(--radius-pill);
 			font-weight: 600;
 			cursor: pointer;
 			transition: transform ease-out 0.2s, box-shadow ease-out 0.2s;
 			white-space: nowrap;
 
 			&:hover {
-				transform: translateY(-2px);
-				box-shadow: var(--shadow-pop);
+				transform: translateY(-1px);
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -2125,8 +2027,8 @@ textarea {
 		min-width: 0;
 		margin: 0 auto 3.2rem;
 		background: var(--color-background-main);
-		border: 1px solid var(--color-background-contrast);
-		border-radius: 1.2rem;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
 		overflow: hidden;
 
 		// Reset Ghost's default container styles + compact grid layout
@@ -2157,7 +2059,7 @@ textarea {
 			object-fit: cover;
 			object-position: center;
 			margin: 0;
-			border-radius: 0.9rem;
+			border-radius: var(--radius-sm);
 			background: var(--color-background-contrast);
 			background: linear-gradient(135deg,
 				color-mix(in srgb, var(--color-background-contrast) 55%, transparent) 0%,
@@ -2242,7 +2144,7 @@ textarea {
 			color: var(--color-on-accent);
 			text-decoration: none;
 			text-align: center;
-			border-radius: 0.6rem;
+			border-radius: var(--radius-pill);
 			font-weight: 600;
 			font-size: 1.4rem;
 			transition: background 0.2s ease, transform 0.2s ease;
@@ -2314,13 +2216,12 @@ textarea {
 		margin: 0 0 var(--space-6);
 		padding: var(--space-6) var(--space-5);
 		background: var(--ghost-accent-color);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-md);
 		text-align: center;
 		transition: transform ease-out 0.2s, box-shadow ease-out 0.2s;
 
 		&:hover {
-			transform: translateY(-2px);
-			box-shadow: 0 8px 24px color-mix(in srgb, var(--ghost-accent-color) 40%, transparent);
+			border-color: var(--color-border-strong);
 		}
 
 		@media (prefers-reduced-motion: reduce) {
@@ -2360,7 +2261,7 @@ textarea {
 			padding: var(--space-1) 1.125rem;
 			background: var(--color-on-accent);
 			color: var(--color-accent-text);			text-decoration: none;
-			border-radius: 0.25rem;
+			border-radius: var(--radius-pill);
 			font-weight: 600;
 			font-size: 0.875em;
 			transition: opacity ease-out 0.2s, transform ease-out 0.2s;
@@ -2473,7 +2374,7 @@ textarea {
 		height: 50%;
 		bottom: 32.5%;
 		left: 25%;
-		border-radius: 100%;
+		border-radius: 50%;
 		background: var(--color-background-secondary);
 		box-sizing: border-box;
 	}
@@ -2520,7 +2421,7 @@ textarea {
 		padding-bottom: 5rem;
 		margin-bottom: var(--space-6);
 		text-align: center;
-		border-bottom: 1px solid var(--color-background-contrast);
+		border-bottom: 1px solid var(--color-border);
 
 		@media only screen and (max-width: $breakpoint-medium) {
 			padding-bottom: var(--space-8);
@@ -2554,15 +2455,14 @@ textarea {
 		align-self: stretch;
 	}
 
+	// Full-bleed scrim so white header text stays legible on bright photos
+	// without boxing the text in.
 	&:after {
 		content: '';
 		position: absolute;
-		width: 100%;
-		height: 66.666%;
-		left: 0;
-		bottom: 0;
+		inset: 0;
 		z-index: var(--z-cover-overlay);
-		background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.333) 100%);
+		background: linear-gradient(to bottom, rgb(0 0 0 / 0.1) 0%, rgb(0 0 0 / 0.2) 40%, rgb(0 0 0 / 0.5) 100%);
 	}
 
 	img {
@@ -2609,25 +2509,10 @@ textarea {
 	position: relative;
 	z-index: var(--z-content);
 
-	// Scrim behind the header text on a cover photo: the box itself
-	// establishes a stacking context (position + z-index above), so a
-	// negative z-index here still stays above the cover image.
-	.has-cover & {
-		&::before {
-			content: '';
-			position: absolute;
-			inset: -1.5rem -2rem;
-			z-index: -1;
-			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.6) 100%);
-			border-radius: var(--radius-lg);
-			pointer-events: none;
-		}
-	}
-
 	&.archive-box {
 		padding-bottom: calc(3.5rem + 1.75vw);
 		margin-bottom: calc(2.5rem + 1.25vw);
-		border-bottom: 1px solid var(--color-background-contrast);
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	.archive-info {
@@ -2716,7 +2601,7 @@ textarea {
 			width: 10rem;
 			height: 10rem;
 			margin: 0;
-			border-radius: 8rem;
+			border-radius: 50%;
 			overflow: hidden;
 
 			@media only screen and (max-width: $breakpoint-medium) {
@@ -3433,7 +3318,7 @@ textarea {
 
 	// Search results separation
 	#results .post {
-		border-bottom: 1px solid var(--color-background-contrast);
+		border-bottom: 1px solid var(--color-border);
 		padding-bottom: var(--space-8);
 
 		&:last-child {
@@ -3504,9 +3389,9 @@ textarea {
 				content: '';
 				position: absolute;
 				inset: -0.5rem -2rem;
-				border-radius: 1.25rem;
+				border-radius: var(--radius-md);
 				background: var(--color-background-secondary);
-				border: 1px solid var(--color-background-contrast);
+				border: 1px solid var(--color-border);
 				opacity: 0;
 				transform: scale(0.98);
 				transition-property: opacity, transform;
@@ -3536,7 +3421,7 @@ textarea {
 		.post .post-box {
 			&:active {
 				background: color-mix(in srgb, var(--color-background-contrast) 50%, transparent);
-				border-radius: var(--radius-lg);
+				border-radius: var(--radius-md);
 				margin: 0 -1rem;
 				padding-left: var(--space-3);
 				padding-right: var(--space-3);
@@ -3629,7 +3514,7 @@ textarea {
 	line-height: 1.5;
 	color: var(--color-accent-text);	background: color-mix(in srgb, var(--ghost-accent-color) 10%, transparent);
 	border: 1px solid color-mix(in srgb, var(--ghost-accent-color) 25%, transparent);
-	border-radius: 0.35em;
+	border-radius: var(--radius-pill);
 	white-space: nowrap;
 	flex-shrink: 0;
 }
@@ -3684,10 +3569,9 @@ textarea {
 	margin: 0;
 	flex-shrink: 0;
 	border-radius: 50%;
-	border: 2px solid var(--color-background-contrast);
+	border: 2px solid var(--color-border);
 	box-sizing: border-box;
 	overflow: hidden;
-	box-shadow: 0 6px 16px rgba(0,0,0,0.08);
 }
 
 .post-meta-avatar img {
@@ -3985,8 +3869,8 @@ textarea {
 			height: 4rem;
 			margin: 0;
 			margin-right: -1rem;
-			border-radius: 100%;
-			border: 2px solid var(--color-background-contrast);
+			border-radius: 50%;
+			border: 2px solid var(--color-border);
 			box-sizing: border-box;
 			overflow: hidden;
 
@@ -4203,7 +4087,7 @@ textarea {
 	justify-content: center;
 	align-items: center;
 	text-decoration: none;
-	border-radius: 2em;
+	border-radius: var(--radius-pill);
 	transition: background-color 0.2s ease, color 0.2s ease;
 
 	// Expand the tap target to 44px without growing the visible circle.
@@ -4256,7 +4140,7 @@ textarea {
 	min-height: 3rem;
 	text-align: center;
 	text-decoration: none;
-	border-radius: 2em;
+	border-radius: var(--radius-pill);
 	transition: background-color 0.2s ease, color 0.2s ease;
 	box-sizing: border-box;
 	white-space: nowrap;
@@ -4282,8 +4166,8 @@ textarea {
 	padding: var(--space-8);
 	text-align: left;
 	background: var(--color-background-secondary);
-	border: 1px solid var(--color-background-contrast);
-	border-radius: var(--radius-xl);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
 	box-sizing: border-box;
 
 	@media only screen and (max-width: $breakpoint-medium) {
@@ -4411,7 +4295,6 @@ textarea {
 	&:hover,
 	&:focus-visible {
 		transform: translateY(-1px);
-		box-shadow: 0 12px 30px color-mix(in srgb, var(--ghost-accent-color) 28%, transparent);
 	}
 
 	&:active {
@@ -4480,8 +4363,8 @@ textarea {
 	line-height: 1.5;
 	color: var(--color-content-main);
 	background: var(--color-background-main);
-	border: 1px solid var(--color-background-contrast);
-	border-radius: var(--radius-sm);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-pill);
 	transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
 	box-sizing: border-box;
 
@@ -4491,7 +4374,7 @@ textarea {
 	}
 
 	&:hover {
-		border-color: color-mix(in srgb, var(--ghost-accent-color) 40%, var(--color-background-contrast));
+		border-color: var(--color-border-strong);
 	}
 
 	&:focus {
@@ -4514,7 +4397,7 @@ textarea {
 	color: var(--color-on-accent);
 	background: var(--ghost-accent-color);
 	border: none;
-	border-radius: var(--radius-sm);
+	border-radius: var(--radius-pill);
 	cursor: pointer;
 	transition: background-color 0.2s ease-out, transform 0.2s ease-out;
 	white-space: nowrap;
@@ -4544,7 +4427,7 @@ textarea {
 
 		.gh-btn {
 			padding: var(--space-3) var(--space-5);
-			border-radius: var(--radius-sm);
+			border-radius: var(--radius-pill);
 			font-weight: 700;
 			color: var(--color-on-accent) !important;
 			background: var(--ghost-accent-color) !important;
@@ -4582,9 +4465,9 @@ textarea {
 	display: flex;
 	flex-direction: column;
 	padding: var(--space-4);
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-md);
 	background: var(--color-background-secondary);
-	border: 1px solid var(--color-background-contrast);
+	border: 1px solid var(--color-border);
 	transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 
 	.post-nav-teaser {
@@ -4600,12 +4483,10 @@ textarea {
 	&:focus-visible,
 	&:hover {
 		color: inherit;
-		transform: translateY(-2px);
-		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+		border-color: var(--color-border-strong);
 		border-color: color-mix(in srgb, var(--ghost-accent-color) 30%, transparent);
 
 		.theme-dark & {
-			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
 		}
 
 		i {
@@ -4788,7 +4669,7 @@ textarea {
 	gap: var(--space-3);
 	height: 4rem;
 	padding: 0 var(--space-5);
-	border: 1px solid var(--color-background-contrast);
+	border: 1px solid var(--color-border);
 	font-size: 1.6em;
 	line-height: 4rem;
 	font-weight: 500;
@@ -4798,7 +4679,7 @@ textarea {
 	transition-property: color, border-color;
 	transition-duration: 0.2s;
 	transition-timing-function: ease;
-	border-radius: 4rem;
+	border-radius: var(--radius-pill);
 	box-sizing: border-box;
 	&:focus-visible,
 	&:hover {
@@ -4890,8 +4771,8 @@ a.post-tag-chip {
 	line-height: 1.5;
 	color: var(--color-content-secondary);
 	background: transparent;
-	border: 1px solid var(--color-background-contrast);
-	border-radius: 0.35em;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-pill);
 	white-space: nowrap;
 	text-decoration: none;
 	transition-property: color, border-color, background-color;
@@ -5115,16 +4996,15 @@ a.post-tag-chip {
 /* Error Message Card */
 .error-card {
 	background: var(--color-background-secondary);
-	border: 1px solid var(--color-background-contrast);
-	border-radius: 2rem;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
 	padding: var(--space-8);
 	margin-bottom: var(--space-8);
-	box-shadow: 0 20px 60px rgba(0,0,0,0.08);
 	transition: box-shadow ease-out 0.3s;
 
 	@media only screen and (max-width: $breakpoint-small) {
 		padding: var(--space-6) var(--space-5);
-		border-radius: var(--radius-xl);
+		border-radius: var(--radius-md);
 		margin-bottom: var(--space-7);
 	}
 }
@@ -5132,7 +5012,6 @@ a.post-tag-chip {
 .theme-dark .error-card {
 	background: rgba(255, 255, 255, 0.04);
 	border-color: rgba(255, 255, 255, 0.08);
-	box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
 
 .error-title {
@@ -5173,12 +5052,11 @@ a.post-tag-chip {
 	color: var(--color-on-accent);
 	background: var(--ghost-accent-color);
 	border: none;
-	border-radius: 4rem;
+	border-radius: var(--radius-pill);
 	text-decoration: none;
 	transition-property: box-shadow, transform;
 	transition-duration: 0.2s;
 	transition-timing-function: ease-out;
-	box-shadow: 0 4px 15px color-mix(in srgb, var(--ghost-accent-color) 30%, transparent);
 
 	.icon {
 		font-size: 1.2em;
@@ -5187,8 +5065,7 @@ a.post-tag-chip {
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
-			transform: translateY(-2px);
-			box-shadow: 0 8px 25px color-mix(in srgb, var(--ghost-accent-color) 40%, transparent);
+			transform: translateY(-1px);
 
 			.icon {
 				transform: translateX(-3px);
@@ -5240,8 +5117,8 @@ a.post-tag-chip {
 
 .recommendation-card {
 	background: var(--color-background-secondary);
-	border: 1px solid var(--color-background-contrast);
-	border-radius: var(--radius-xl);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
 	overflow: hidden;
 	transition-property: transform, box-shadow, border-color;
 	transition-duration: 0.25s;
@@ -5249,8 +5126,7 @@ a.post-tag-chip {
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
-			transform: translateY(-4px);
-			box-shadow: var(--shadow-lg-soft);
+			border-color: var(--color-border-strong);
 			border-color: var(--ghost-accent-color);
 		}
 	}
@@ -5261,7 +5137,6 @@ a.post-tag-chip {
 	border-color: rgba(255, 255, 255, 0.08);
 
 	&:hover {
-		box-shadow: var(--shadow-xl);
 	}
 }
 
@@ -5287,7 +5162,7 @@ a.post-tag-chip {
 
 	@media (hover: hover) and (pointer: fine) {
 		.recommendation-card:hover & img {
-			transform: scale(1.05);
+			transform: scale(1.03);
 		}
 	}
 }
@@ -5449,19 +5324,16 @@ a.post-tag-chip {
 	/* Style Ghost's bookmark cards as friend link cards */
 	.kg-bookmark-card {
 		margin: 0;
-		border-radius: var(--radius-xl);
+		border-radius: var(--radius-md);
 		overflow: hidden;
 		transition: transform ease-out 0.3s, box-shadow ease-out 0.3s, border-color ease-out 0.3s;
 		background: var(--color-background-secondary);
-		border: 1px solid var(--color-background-contrast);
-		box-shadow: var(--shadow-sm);
+		border: 1px solid var(--color-border);
 
 		// Desktop hover effect
 		@media (hover: hover) and (pointer: fine) {
 			&:hover {
-				transform: translateY(-4px);
-				box-shadow: var(--shadow-lg);
-				border-color: color-mix(in srgb, var(--ghost-accent-color) 50%, var(--color-background-contrast));
+				border-color: var(--color-border-strong);
 
 				.kg-bookmark-title {
 					color: var(--color-accent-text);				}
@@ -5471,7 +5343,7 @@ a.post-tag-chip {
 				}
 
 				.kg-bookmark-thumbnail img {
-					transform: scale(1.05);
+					transform: scale(1.03);
 				}
 			}
 		}
@@ -5480,7 +5352,6 @@ a.post-tag-chip {
 		@media (hover: none) and (pointer: coarse) {
 			&:active {
 				transform: scale(0.98);
-				box-shadow: var(--shadow-md);
 			}
 		}
 
@@ -5648,7 +5519,7 @@ a.post-tag-chip {
 		max-width: 280px;
 		flex-shrink: 0;
 		overflow: hidden;
-		border-radius: 0 1rem 1rem 0; // Match card's right corners
+		border-radius: 0 var(--radius-md) var(--radius-md) 0;
 		aspect-ratio: 4 / 3; // Classic 4:3 aspect ratio for balanced display
 
 		@media only screen and (max-width: $breakpoint-medium) {
@@ -5661,7 +5532,7 @@ a.post-tag-chip {
 			max-width: 100%;
 			height: auto; // Changed from 0 to auto
 			aspect-ratio: 2 / 1; // Use aspect-ratio instead of padding-bottom
-			border-radius: 1.25rem 1.25rem 0 0; // Top corners on mobile
+			border-radius: var(--radius-md) var(--radius-md) 0 0;
 			order: 1; // Thumbnail above content on mobile
 		}
 
@@ -5689,10 +5560,8 @@ a.post-tag-chip {
 	.kg-bookmark-card {
 		background: rgba(255, 255, 255, 0.04);
 		border-color: rgba(255, 255, 255, 0.08);
-		box-shadow: var(--shadow-pop-soft);
 
 		&:hover {
-			box-shadow: var(--shadow-xl);
 			border-color: var(--ghost-accent-color);
 		}
 	}
@@ -5701,18 +5570,16 @@ a.post-tag-chip {
 /* Custom Link Card (for HTML card usage) */
 .link-card {
 	background: var(--color-background-secondary);
-	border: 1px solid var(--color-background-contrast);
-	border-radius: var(--radius-xl);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
 	overflow: hidden;
 	transition-property: transform, box-shadow, border-color;
 	transition-duration: 0.25s;
 	transition-timing-function: ease-out;
-	box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
-			transform: translateY(-4px);
-			box-shadow: var(--shadow-lg-soft);
+			border-color: var(--color-border-strong);
 			border-color: var(--ghost-accent-color);
 		}
 	}
@@ -5720,7 +5587,6 @@ a.post-tag-chip {
 	@media (hover: none) and (pointer: coarse) {
 		&:active {
 			transform: scale(0.98);
-			box-shadow: var(--shadow-md);
 		}
 	}
 }
@@ -5728,10 +5594,8 @@ a.post-tag-chip {
 .theme-dark .link-card {
 	background: rgba(255, 255, 255, 0.04);
 	border-color: rgba(255, 255, 255, 0.08);
-	box-shadow: var(--shadow-pop-soft);
 
 	&:hover {
-		box-shadow: var(--shadow-xl);
 	}
 }
 
@@ -5838,7 +5702,7 @@ a.post-tag-chip {
 
 @media (hover: hover) and (pointer: fine) {
 	.link-card:hover .link-card-image img {
-		transform: scale(1.05);
+		transform: scale(1.03);
 	}
 }
 
@@ -5852,12 +5716,11 @@ a.post-tag-chip {
 .kg-gallery-image img {
 	cursor: zoom-in;
 	transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1);
-	border-radius: 8px;
+	border-radius: var(--radius-sm);
 }
 
 @media (hover: hover) and (pointer: fine) {
 	.kg-gallery-image img:hover {
-		transform: scale(1.01);
 	}
 }
 
@@ -5883,7 +5746,7 @@ a.post-tag-chip {
 	height: auto !important;
 	object-fit: contain !important;
 	border-radius: var(--radius-sm);
-	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+	box-shadow: var(--shadow-overlay);
 	// WebKit gesture enhancements
 	touch-action: pan-x pan-y pinch-zoom;
 	user-select: none;
@@ -5986,7 +5849,7 @@ a.post-tag-chip {
 	transform: translateX(-50%);
 	background: rgba(0, 0, 0, 0.4);
 	padding: var(--space-1) 1.2rem;
-	border-radius: 2rem;
+	border-radius: var(--radius-pill);
 	backdrop-filter: blur(10px);
 }
 
@@ -6072,7 +5935,7 @@ a.post-tag-chip {
 	// Liquid glass effect
 	background: rgba(255,255,255,0.08);
 	border: none;
-	box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+	box-shadow: var(--shadow-float);
 	-webkit-backdrop-filter: blur(12px) saturate(180%);
 	backdrop-filter: blur(12px) saturate(180%);
 
@@ -6089,7 +5952,7 @@ a.post-tag-chip {
 	}
 
 	&:hover {
-		transform: translateY(-2px);
+		transform: translateY(-1px);
 	}
 
 	&:active {
@@ -6100,7 +5963,6 @@ a.post-tag-chip {
 // Dark theme
 .theme-dark .back-to-top {
 	background: rgba(255,255,255,0.1);
-	box-shadow: 0 16px 32px rgba(0,0,0,0.25);
 }
 
 /* Progress ring */
@@ -6178,7 +6040,7 @@ a.post-tag-chip {
 	z-index: var(--z-content);
 	margin-bottom: calc(2rem + 1vw);
 	padding-bottom: calc(3rem + 1.5vw);
-	border-bottom: 1px solid var(--color-background-contrast);
+	border-bottom: 1px solid var(--color-border);
 	text-align: center;
 }
 
@@ -6230,8 +6092,8 @@ a.post-tag-chip {
 .tag-card {
 	position: relative;
 	background: var(--color-background-secondary);
-	border: 1px solid var(--color-background-contrast);
-	border-radius: 1.25rem;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
 	overflow: hidden;
 	transition-property: transform, box-shadow, border-color;
 	transition-duration: 0.25s;
@@ -6242,8 +6104,7 @@ a.post-tag-chip {
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
-			transform: translateY(-4px);
-			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+			border-color: var(--color-border-strong);
 			border-color: var(--tag-color);
 		}
 	}
@@ -6254,7 +6115,6 @@ a.post-tag-chip {
 
 		&:hover {
 			border-color: var(--tag-color);
-			box-shadow: 0 12px 40px color-mix(in srgb, var(--tag-color) 15%, transparent);
 		}
 
 		.tag-card-name {
@@ -6284,7 +6144,6 @@ a.post-tag-chip {
 
 		&:hover {
 			border-color: color-mix(in srgb, var(--image-color) 50%, transparent);
-			box-shadow: 0 8px 24px color-mix(in srgb, var(--image-color) 25%, rgba(0, 0, 0, 0.1));
 		}
 
 		// Background image covers entire card (absolute positioned)
@@ -6350,16 +6209,15 @@ a.post-tag-chip {
 		.tag-card-image {
 			width: 5rem;
 			height: 5rem;
-			border-radius: var(--radius-lg);
+			border-radius: var(--radius-sm);
 			border: none;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 			background: rgba(255, 255, 255, 0.9);
 			backdrop-filter: blur(8px);
 			-webkit-backdrop-filter: blur(8px);
 			overflow: hidden;
 
 			img {
-				border-radius: 0.6rem;
+				border-radius: var(--radius-sm);
 				width: 100%;
 				height: 100%;
 				object-fit: cover;
@@ -6417,7 +6275,7 @@ a.post-tag-chip {
 
 					&::-webkit-scrollbar-thumb {
 						background: rgba(255, 255, 255, 0.3);
-						border-radius: 2px;
+						border-radius: var(--radius-pill);
 
 						&:hover {
 							background: rgba(255, 255, 255, 0.5);
@@ -6466,7 +6324,7 @@ a.post-tag-chip {
 		@media (hover: hover) and (pointer: fine) {
 			&:hover {
 				.tag-card-bg > img:first-of-type {
-					transform: scale(1.05);
+					transform: scale(1.03);
 				}
 			}
 		}
@@ -6508,7 +6366,7 @@ a.post-tag-chip {
 
 	@media (hover: hover) and (pointer: fine) {
 		.tag-card:hover & > img {
-			transform: scale(1.05);
+			transform: scale(1.03);
 		}
 	}
 
@@ -6524,7 +6382,6 @@ a.post-tag-chip {
 
 	.tag-card-image {
 		border: 2px solid rgba(255, 255, 255, 0.3);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 	}
 
 	.tag-card-name {
@@ -6547,11 +6404,9 @@ a.post-tag-chip {
 	border-color: rgba(255, 255, 255, 0.08);
 
 	&:hover {
-		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 	}
 
 	&.has-accent:hover {
-		box-shadow: 0 12px 40px color-mix(in srgb, var(--tag-color) 20%, rgba(0, 0, 0, 0.3));
 	}
 
 	// Dark mode for image cards
@@ -6611,7 +6466,7 @@ a.post-tag-chip {
 .tag-card-image {
 	width: 5rem;
 	height: 5rem;
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-sm);
 	overflow: hidden;
 	flex-shrink: 0;
 	background: var(--color-background-contrast);
@@ -6629,7 +6484,7 @@ a.post-tag-chip {
 	justify-content: center;
 	width: 5rem;
 	height: 5rem;
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-sm);
 	flex-shrink: 0;
 	background: linear-gradient(135deg,
 		color-mix(in srgb, var(--tag-color, var(--ghost-accent-color)) 15%, var(--color-background-main)),
@@ -6683,7 +6538,7 @@ a.post-tag-chip {
 
 /* Tag card post previews */
 .tag-card-posts {
-	border-top: 1px solid var(--color-background-contrast);
+	border-top: 1px solid var(--color-border);
 	padding: 0;
 	position: relative;
 
@@ -6708,7 +6563,7 @@ a.post-tag-chip {
 
 			&::-webkit-scrollbar-thumb {
 				background: color-mix(in srgb, var(--ghost-accent-color) 30%, transparent);
-				border-radius: 2px;
+				border-radius: var(--radius-pill);
 
 				&:hover {
 					background: color-mix(in srgb, var(--ghost-accent-color) 50%, transparent);
@@ -6743,7 +6598,7 @@ a.post-tag-chip {
 	padding: 1.25rem var(--space-5);
 	text-decoration: none;
 	color: inherit;
-	border-bottom: 1px solid var(--color-background-contrast);
+	border-bottom: 1px solid var(--color-border);
 	transition: background 0.15s ease;
 
 	&:last-child {

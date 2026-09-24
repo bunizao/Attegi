@@ -32,7 +32,6 @@
     --code-addition: #1d7a34;
     --code-label-bg: #f8f9fa;
     --code-label-text: #5a6570;
-    --code-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
     @include dark($root: true) {
         --code-bg: #282c34;
@@ -60,7 +59,6 @@
         --code-addition: #98c379;
         --code-label-bg: #282c34;
         --code-label-text: #9da5b4;
-        --code-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     }
 }
 

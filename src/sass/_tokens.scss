@@ -60,24 +60,25 @@
 	--space-7: 3rem;
 	--space-8: 4rem;
 
-	/* ---- radius ---------------------------------------------------------- */
+	/* ---- radius ----------------------------------------------------------
+	   One scale for the whole theme:
+	   xs   inline bits (code, kbd, mark, favicons)
+	   sm   controls and media nested inside a card
+	   md   every card and block: code, tables, images, embeds, bookmarks
+	   lg   sheets and drawers
+	   pill standalone buttons, tags, pagination (matches the glass nav) */
 	--radius-xs: 0.4rem;
-	--radius-sm: 0.5rem;
-	--radius-md: 0.75rem;
-	--radius-lg: 1rem;
-	--radius-xl: 1.5rem;
+	--radius-sm: 0.8rem;
+	--radius-md: 1.2rem;
+	--radius-lg: 2rem;
 	--radius-pill: 999px;
 
 	/* ---- shadow ----------------------------------------------------------
-	   Named after the repeated values they replace, not a strict elevation
-	   order. One-off shadows are left alone (see findings-foundations.md). */
-	--shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.04);
-	--shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.04);
-	--shadow-md: 0 1px 8px rgba(0, 0, 0, 0.06);
-	--shadow-pop: 0 8px 20px rgba(0, 0, 0, 0.2);
-	--shadow-pop-soft: 0 4px 20px rgba(0, 0, 0, 0.2);
-	--shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.1);
-	--shadow-lg-soft: 0 15px 40px rgba(0, 0, 0, 0.1);
-	--shadow-xl: 0 15px 40px rgba(0, 0, 0, 0.3);
+	   Cards stay flat and are outlined by --color-border. Shadows are only
+	   for things that float above the page; dark mode overrides these in
+	   _colors.scss. */
+	--shadow-float: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -8px rgb(0 0 0 / 0.16);
+	--shadow-sheet: 0 -12px 32px -12px rgb(0 0 0 / 0.18);
+	--shadow-overlay: 0 24px 48px -12px rgb(0 0 0 / 0.3);
 	--shadow-glass-hover: 0 6px 16px -6px rgb(0 0 0 / 0.2);
 }

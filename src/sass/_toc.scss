@@ -153,19 +153,12 @@ $toc-breakpoint: 1300px;
   border-radius: 50%;
   color: var(--color-content-main);
   cursor: pointer;
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.04),
-    0 4px 16px rgba(0, 0, 0, 0.06),
-    0 8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-float);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   backdrop-filter: blur(20px) saturate(180%);
 
   .theme-dark & {
     background: rgba(30,30,30,0.85);
-    box-shadow:
-      0 2px 8px rgba(0, 0, 0, 0.2),
-      0 4px 16px rgba(0, 0, 0, 0.25),
-      0 8px 32px rgba(0, 0, 0, 0.3);
   }
   transition: $toc-transition;
   opacity: 0;
@@ -185,19 +178,6 @@ $toc-breakpoint: 1300px;
     transform: scale(0.95);
   }
 
-  &:hover {
-    box-shadow:
-      0 4px 12px rgba(0, 0, 0, 0.06),
-      0 8px 24px rgba(0, 0, 0, 0.08),
-      0 16px 48px rgba(0, 0, 0, 0.1);
-
-    .theme-dark & {
-      box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.25),
-        0 8px 24px rgba(0, 0, 0, 0.3),
-        0 16px 48px rgba(0, 0, 0, 0.35);
-    }
-  }
 
   // Icon
   .toc-trigger-icon {
@@ -264,13 +244,10 @@ $toc-breakpoint: 1300px;
   max-height: 70vh;
   padding-bottom: env(safe-area-inset-bottom, 0);
   background: var(--color-background-main);
-  border: 1px solid color-mix(in srgb, var(--color-background-contrast) 50%, transparent);
+  border: 1px solid var(--color-border);
   border-bottom: none;
-  border-radius: 1.6rem 1.6rem 0 0;
-  box-shadow:
-    0 -2px 8px rgba(0, 0, 0, 0.04),
-    0 -8px 24px rgba(0, 0, 0, 0.08),
-    0 -16px 48px rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: var(--shadow-sheet);
   opacity: 0;
   visibility: hidden;
   transform: translateY(100%);
@@ -291,11 +268,7 @@ $toc-breakpoint: 1300px;
 
   .theme-dark & {
     background: var(--color-background-secondary);
-    border-color: color-mix(in srgb, var(--color-background-contrast) 30%, transparent);
-    box-shadow:
-      0 -2px 8px rgba(0, 0, 0, 0.2),
-      0 -8px 24px rgba(0, 0, 0, 0.3),
-      0 -16px 48px rgba(0, 0, 0, 0.4);
+    border-color: var(--color-border);
   }
 
   @media only screen and (max-width: $toc-breakpoint) {
@@ -332,7 +305,7 @@ $toc-breakpoint: 1300px;
   align-items: center;
   justify-content: space-between;
   padding: 1.2rem 1.4rem;
-  border-bottom: 1px solid var(--color-background-contrast);
+  border-bottom: 1px solid var(--color-border);
   flex-shrink: 0;
 }
 
@@ -362,7 +335,7 @@ $toc-breakpoint: 1300px;
   height: 2.8rem;
   background: transparent;
   border: none;
-  border-radius: 0.6rem;
+  border-radius: var(--radius-pill);
   color: var(--color-content-secondary);
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease;
