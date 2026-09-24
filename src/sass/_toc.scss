@@ -86,9 +86,11 @@ $toc-breakpoint: 1300px;
     border-left: 1px solid var(--color-border);
   }
 
+  // Nested lists clip for the fold animation; pull their box 1px left over
+  // the rail so the active link's marker (margin-left: -1px) isn't clipped.
   .toc-list {
-    margin: 0;
-    padding-left: 0;
+    margin: 0 0 0 -1px;
+    padding-left: 1px;
     border-left: 0;
   }
 
@@ -128,6 +130,12 @@ $toc-breakpoint: 1300px;
 
     > .toc-fold svg {
       transform: rotate(-90deg);
+    }
+
+    // The active sub-heading is folded away: mark its section instead
+    &:has(.toc-link.is-active) > .toc-link {
+      color: var(--color-content-lead);
+      border-left-color: var(--color-content-lead);
     }
   }
 
