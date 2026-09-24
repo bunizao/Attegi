@@ -436,7 +436,8 @@ export function initTOC() {
       activeLinkClass: 'is-active',
       listClass: 'toc-list',
       listItemClass: 'toc-item',
-      collapseDepth: 6,
+      // Show h2s only; tocbot expands the active section's h3s
+      collapseDepth: 2,
       scrollSmooth: true,
       scrollSmoothOffset: -100,
       headingsOffset: 100,

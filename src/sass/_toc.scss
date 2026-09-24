@@ -75,15 +75,26 @@ $toc-breakpoint: 1300px;
   text-transform: uppercase;
 }
 
-// TOC List
+// TOC List - one hairline rail down the left; the active link paints its
+// segment of it in the accent color.
 .toc-list {
   list-style: none;
   margin: 0;
   padding: 0;
 
+  .toc-sidebar & {
+    border-left: 1px solid var(--color-border);
+  }
+
   .toc-list {
     margin: 0;
     padding-left: 0;
+    border-left: 0;
+  }
+
+  // Sub-sections stay folded until their h2 is active (tocbot collapseDepth)
+  .toc-sidebar &.is-collapsed {
+    display: none;
   }
 }
 
@@ -98,38 +109,38 @@ $toc-breakpoint: 1300px;
   }
 }
 
-// TOC Link - clean minimal style
+// TOC Link
 .toc-link {
   display: block;
-  padding: 0.45rem 0 0.45rem 1.2rem;
+  margin-left: -1px;
+  padding: 0.5rem 0 0.5rem 1.4rem;
   font-size: var(--font-size-2xs);
   line-height: 1.4;
   font-weight: 400;
   color: var(--color-content-secondary);
   text-decoration: none;
-  border-left: 1.5px solid transparent;
+  border-left: 1px solid transparent;
   transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
   word-break: break-word;
 
   &:hover {
-    color: var(--color-content-main);
+    color: var(--color-content-lead);
   }
 
   &.is-active {
-    color: var(--color-content-main);
-    font-weight: 500;
-    border-left-color: var(--ghost-accent-color);
+    color: var(--color-content-lead);
+    border-left-color: var(--color-content-lead);
   }
 }
 
 // Nested heading levels
 .toc-list .toc-list {
   .toc-link {
-    padding-left: 2.2rem;
+    padding-left: 2.6rem;
   }
 
   .toc-list .toc-link {
-    padding-left: 3.2rem;
+    padding-left: 3.8rem;
   }
 }
 
