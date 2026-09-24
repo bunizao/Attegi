@@ -211,6 +211,7 @@ function setupSidebarAutoScroll() {
       if (isActive) {
         target.setAttribute('aria-current', 'location');
         scrollSidebarToActiveLink(target);
+        syncMobileActiveState();
       } else {
         target.removeAttribute('aria-current');
       }
@@ -372,8 +373,6 @@ function updateTOCVisibility() {
     state.isVisible = shouldShow;
     elements.sidebar.classList.toggle('is-visible', shouldShow);
   }
-
-  syncMobileActiveState();
 }
 
 function updateMobileTriggerVisibility(scrollTop) {

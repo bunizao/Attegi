@@ -92,9 +92,36 @@ $toc-breakpoint: 1300px;
     border-left: 0;
   }
 
-  // Sub-sections stay folded until their h2 is active (tocbot collapseDepth)
-  .toc-sidebar &.is-collapsed {
-    display: none;
+}
+
+// Sub-sections stay folded until their h2 is active (tocbot collapseDepth).
+// The item is a two-row grid so the fold can animate its height: the
+// sub-list row goes 0fr <-> 1fr. Visibility lags the close so collapsed
+// links drop out of the tab order once the fold finishes.
+.toc-sidebar .toc-item:has(> .toc-list) {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  transition: grid-template-rows var(--duration-slow) var(--ease-standard);
+
+  > .toc-list {
+    min-height: 0;
+    overflow: hidden;
+    transition: visibility var(--duration-slow);
+  }
+
+  &:has(> .toc-list.is-collapsed) {
+    grid-template-rows: auto 0fr;
+
+    > .toc-list {
+      visibility: hidden;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    > .toc-list {
+      transition: none;
+    }
   }
 }
 
