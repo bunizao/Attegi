@@ -2778,11 +2778,10 @@ textarea {
 
 /* ==========================================================================
    Navigation
-   A quiet, solid header: no glass, no blur, no gradients (besides the one
-   scrim over a cover image), no pills. Fixed to the viewport so it stays
-   put while scrolling; `.nav-scrolled` (toggled from the scroll handler
-   already running in parallax.js) draws the bottom border once the page
-   has moved under it.
+   Full-width fixed header with a frosted-glass surface once the page moves
+   under it, and glass pill buttons (Sign in, Subscribe, Menu). Over a cover
+   image the header is transparent and the pills turn into white "liquid
+   glass". `.nav-scrolled` (toggled from parallax.js) adds the hairline.
    ========================================================================== */
 .nav-header {
 	position: fixed;
@@ -2790,13 +2789,22 @@ textarea {
 	left: 0;
 	width: 100%;
 	z-index: var(--z-nav);
-	background: var(--color-background-main);
+	background: transparent;
+	background-repeat: no-repeat;
 	border-bottom: 1px solid transparent;
-	transition: background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
+	transition: background-color var(--duration-slow) var(--ease-standard),
+		border-color var(--duration-slow) var(--ease-standard);
 }
 
 .nav-scrolled .nav-header {
-	border-bottom-color: var(--color-background-contrast);
+	background-color: var(--glass-surface);
+	border-bottom-color: var(--glass-border);
+	-webkit-backdrop-filter: var(--glass-blur);
+	backdrop-filter: var(--glass-blur);
+
+	@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+		background-color: var(--color-background-main);
+	}
 }
 
 .nav-bar {
@@ -2804,15 +2812,16 @@ textarea {
 	align-items: center;
 	gap: var(--space-5);
 	height: 6.4rem;
+	padding: 0 var(--space-8);
 
 	@media only screen and (max-width: $breakpoint-medium) {
 		height: 6rem;
+		padding: 0 var(--space-5);
 	}
 }
 
 .nav-brand {
 	flex-shrink: 0;
-	margin-right: var(--space-3);
 
 	a {
 		display: block;
@@ -2850,10 +2859,6 @@ textarea {
 		list-style: none;
 	}
 
-	li {
-		position: relative;
-	}
-
 	a {
 		display: flex;
 		align-items: center;
@@ -2865,6 +2870,7 @@ textarea {
 		color: var(--color-content-secondary);
 		text-decoration: none;
 		white-space: nowrap;
+		transition: color var(--duration-fast) var(--ease-standard);
 
 		@media (hover: hover) and (pointer: fine) {
 			&:hover {
@@ -2874,7 +2880,7 @@ textarea {
 	}
 
 	li.active a {
-		color: var(--color-content-main);
+		color: var(--color-content-lead);
 		text-decoration: underline;
 		text-decoration-thickness: 2px;
 		text-underline-offset: 6px;
@@ -2884,7 +2890,7 @@ textarea {
 .nav-actions {
 	display: flex;
 	align-items: center;
-	gap: var(--space-1);
+	gap: var(--space-3);
 	flex-shrink: 0;
 	margin-left: auto;
 }
@@ -2896,6 +2902,7 @@ textarea {
 	width: 44px;
 	height: 44px;
 	color: var(--color-content-secondary);
+	transition: color var(--duration-fast) var(--ease-standard);
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
@@ -2918,36 +2925,80 @@ textarea {
 	}
 }
 
-.nav-link-text {
-	display: inline-flex;
-	align-items: center;
-	min-height: 44px;
-	padding: 0 var(--space-1);
-	font-size: var(--font-size-xs, 1.5rem);
-	font-weight: 500;
-	color: var(--color-content-secondary);
-	text-decoration: none;
-
-	@media (hover: hover) and (pointer: fine) {
-		&:hover {
-			color: var(--color-content-main);
-		}
-	}
-}
-
-.nav-button-primary {
+/* ---- Glass pills --------------------------------------------------------
+   Shared by Sign in, Subscribe and the mobile Menu button. The ::before
+   sheen drifts slowly; the global reduced-motion rule stops it. */
+%glass-pill {
+	position: relative;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	min-height: 44px;
-	padding: 0 1.8rem;
+	min-height: 4.4rem;
+	padding: 0 2rem;
+	font-family: inherit;
 	font-size: var(--font-size-xs, 1.5rem);
 	font-weight: 500;
-	color: var(--color-on-accent);
-	background: var(--ghost-accent-color);
-	border-radius: var(--radius-sm);
+	line-height: 1;
+	white-space: nowrap;
+	color: var(--color-content-main);
 	text-decoration: none;
-	transition: opacity var(--duration-fast) var(--ease-standard);
+	background: var(--glass-surface);
+	border: 1px solid var(--glass-border);
+	border-radius: var(--radius-pill);
+	box-shadow: inset 0 1px 0 var(--glass-highlight);
+	-webkit-backdrop-filter: var(--glass-blur);
+	backdrop-filter: var(--glass-blur);
+	overflow: hidden;
+	isolation: isolate;
+	cursor: pointer;
+	transition: transform var(--duration-base) var(--ease-spring),
+		background-color var(--duration-base) var(--ease-standard),
+		border-color var(--duration-base) var(--ease-standard),
+		box-shadow var(--duration-base) var(--ease-standard);
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset: -25%;
+		z-index: var(--z-behind);
+		background: radial-gradient(55% 55% at 30% 30%, rgb(255 255 255 / 0.14), rgb(255 255 255 / 0) 60%);
+		animation: glass-flow 12s ease-in-out infinite;
+		pointer-events: none;
+	}
+
+	&:link,
+	&:visited {
+		color: var(--color-content-main);
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			transform: translateY(-1px);
+			border-color: var(--glass-border-strong);
+			box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-glass-hover);
+		}
+	}
+
+	&:active {
+		transform: scale(0.97);
+		transition-duration: var(--duration-fast);
+	}
+}
+
+.nav-link-text {
+	@extend %glass-pill;
+}
+
+.nav-button-primary {
+	@extend %glass-pill;
+	color: var(--color-on-accent);
+	background: color-mix(in srgb, var(--ghost-accent-color) 90%, #fff);
+	border-color: color-mix(in srgb, var(--ghost-accent-color) 70%, #fff);
+	box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25);
+
+	&::before {
+		animation-direction: reverse;
+	}
 
 	&:link,
 	&:visited {
@@ -2956,60 +3007,76 @@ textarea {
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
-			opacity: 0.85;
+			border-color: color-mix(in srgb, var(--ghost-accent-color) 55%, #fff);
+			box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), var(--shadow-glass-hover);
 		}
 	}
 }
 
 .nav-menu {
+	@extend %glass-pill;
 	display: none;
-	align-items: center;
-	justify-content: center;
-	min-height: 44px;
-	padding: 0 1.4rem;
-	font-family: inherit;
-	font-size: var(--font-size-xs, 1.5rem);
-	font-weight: 500;
-	color: var(--color-content-main);
-	background: transparent;
-	border: 1px solid var(--color-background-contrast);
-	border-radius: var(--radius-sm);
-	cursor: pointer;
+	padding: 0 1.6rem;
 
 	@media only screen and (max-width: $breakpoint-large) {
 		display: inline-flex;
 	}
 }
 
+@keyframes glass-flow {
+	0%, 100% { transform: translate(-10%, -10%) scale(1); }
+	50% { transform: translate(20%, 10%) scale(1.12); }
+}
+
 /* ---- Cover image state -------------------------------------------------
-   The transparent header over a home/post/page cover: white text on a
-   scrim, no blur. Once scrolled past the cover, parallax.js clears
-   `.cover-active` and the solid header (above) takes over. */
+   Transparent header over a home/post/page cover, a soft scrim for the
+   white text, and white liquid-glass pills. Once scrolled past the cover,
+   parallax.js clears `.cover-active` and the frosted header takes over. */
 .cover-active .nav-header {
-	background: linear-gradient(to bottom, rgb(0 0 0 / .45), transparent);
+	background: linear-gradient(to bottom, rgb(0 0 0 / 0.3), rgb(0 0 0 / 0));
+	background-repeat: no-repeat;
 	border-bottom-color: transparent;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
 
 	.wordmark,
 	.site-nav a,
-	.nav-search,
-	.nav-link-text,
-	.nav-menu {
-		color: rgba(255, 255, 255, 0.9);
-	}
-
-	.nav-menu {
-		border-color: rgba(255, 255, 255, 0.4);
+	.nav-search {
+		color: rgb(255 255 255 / 0.9);
+		text-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
 	}
 
 	.site-nav li.active a {
 		color: #fff;
 	}
 
+	.nav-link-text,
+	.nav-button-primary,
+	.nav-menu {
+		color: #fff;
+		background: rgb(255 255 255 / 0.16);
+		border-color: rgb(255 255 255 / 0.35);
+		box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25);
+		text-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+		-webkit-backdrop-filter: blur(18px) saturate(180%);
+		backdrop-filter: blur(18px) saturate(180%);
+	}
+
+	.nav-button-primary {
+		background: rgb(255 255 255 / 0.24);
+	}
+
 	@media (hover: hover) and (pointer: fine) {
 		.site-nav a:hover,
-		.nav-search:hover,
-		.nav-link-text:hover {
+		.nav-search:hover {
 			color: #fff;
+		}
+
+		.nav-link-text:hover,
+		.nav-button-primary:hover,
+		.nav-menu:hover {
+			background: rgb(255 255 255 / 0.26);
+			border-color: rgb(255 255 255 / 0.55);
 		}
 	}
 }
@@ -3025,8 +3092,10 @@ textarea {
 	z-index: var(--z-nav-fixed);
 	display: flex;
 	flex-direction: column;
-	padding: var(--space-5);
-	background: var(--color-background-main);
+	padding: 0 var(--space-5) var(--space-5);
+	background: var(--glass-surface-strong);
+	-webkit-backdrop-filter: blur(24px) saturate(180%);
+	backdrop-filter: blur(24px) saturate(180%);
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY(-8px);
@@ -3104,7 +3173,6 @@ textarea {
 
 	.nav-link-text,
 	.nav-button-primary {
-		justify-content: center;
 		box-sizing: border-box;
 		width: 100%;
 		min-height: 4.8rem;
@@ -3754,7 +3822,9 @@ textarea {
 // normal theme-aware secondary text color rather than a fixed light color.
 .post-cover-credit {
 	display: block;
-	margin: 0 0 var(--space-6);
+	// Pull up into the content's top padding so the credit sits right
+	// under the cover it belongs to.
+	margin: calc(-3rem - 2vw) 0 var(--space-6);
 	padding: var(--space-3) 0;
 	font-size: 1.3rem;
 	line-height: 1.4;
@@ -3775,7 +3845,7 @@ textarea {
 	@media only screen and (max-width: $breakpoint-small) {
 		font-size: 1.2rem;
 		padding: var(--space-2) 0;
-		margin: 0 0 var(--space-5);
+		margin: calc(-3rem - 2vw) 0 var(--space-5);
 	}
 }
 

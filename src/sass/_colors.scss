@@ -22,6 +22,14 @@
   // variant when needed. Static fallback: same as the fill color.
   --color-accent-text: var(--ghost-accent-color);
 
+  /* Frosted glass: header, pill buttons, mobile menu */
+  --glass-surface: rgb(255 255 255 / 0.72);
+  --glass-surface-strong: rgb(255 255 255 / 0.86);
+  --glass-border: rgb(0 0 0 / 0.08);
+  --glass-border-strong: rgb(0 0 0 / 0.14);
+  --glass-highlight: rgb(255 255 255 / 0.7);
+  --glass-blur: blur(16px) saturate(180%);
+
   /* Semantic colors */
   --color-highlight: #FEF3C7;
   --color-highlight-ink: #000;
@@ -57,6 +65,12 @@
     --color-content-secondary: #B6BBC4;
 
     --color-on-accent: #1D1F21;
+
+    --glass-surface: rgb(29 31 33 / 0.68);
+    --glass-surface-strong: rgb(29 31 33 / 0.84);
+    --glass-border: rgb(255 255 255 / 0.1);
+    --glass-border-strong: rgb(255 255 255 / 0.18);
+    --glass-highlight: rgb(255 255 255 / 0.08);
 
     --color-highlight: #fbbf24;
     --color-highlight-ink: #1D1F21;
