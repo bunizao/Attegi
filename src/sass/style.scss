@@ -4305,10 +4305,10 @@ textarea {
 	justify-content: center;
 	align-items: center;
 	text-decoration: none;
-	border-radius: var(--radius-pill);
+	border-radius: var(--radius-xs);
 	transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 
-	// Expand the tap target to 44px without growing the visible circle.
+	// Expand the tap target to 44px without growing the visible square.
 	&::before {
 		content: '';
 		position: absolute;
