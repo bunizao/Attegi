@@ -1045,19 +1045,10 @@ textarea {
 			border: 1px solid var(--color-border);
 			border-radius: var(--radius-md);
 			text-decoration: none;
-			transition: transform ease-out 0.2s, box-shadow ease-out 0.2s, border-color ease-out 0.2s;
+			transition: border-color var(--duration-base) var(--ease-standard);
 
 			&:hover {
 				border-color: var(--color-border-strong);
-				border-color: var(--ghost-accent-color);
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				transition: none;
-
-				&:hover {
-					transform: none;
-				}
 			}
 
 			.kg-file-card-contents {
@@ -1095,6 +1086,8 @@ textarea {
 					.kg-file-card-filesize {
 						display: inline-block;
 						line-height: inherit;
+						// cards.min.css fades this to 0.6, below AA on the tinted card
+						opacity: 1;
 
 						&::before {
 							content: '•';
@@ -1112,33 +1105,19 @@ textarea {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background: linear-gradient(135deg,
-					color-mix(in srgb, var(--ghost-accent-color) 12%, var(--color-background-main)),
-					color-mix(in srgb, var(--ghost-accent-color) 6%, var(--color-background-main))
-				);
+				background: color-mix(in srgb, var(--ghost-accent-color) 10%, var(--color-background-main));
 				border-radius: var(--radius-sm);
-				border: 1px solid color-mix(in srgb, var(--ghost-accent-color) 15%, transparent);
-				transition: background ease-out 0.2s, border-color ease-out 0.2s;
+				transition: background var(--duration-base) var(--ease-standard);
 
 				svg {
 					width: 60%;
 					height: 60%;
 					fill: var(--ghost-accent-color);
-					filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
-					transition: transform 0.2s ease;
 				}
 			}
 
 			&:hover .kg-file-card-icon {
-				background: linear-gradient(135deg,
-					color-mix(in srgb, var(--ghost-accent-color) 18%, var(--color-background-main)),
-					color-mix(in srgb, var(--ghost-accent-color) 10%, var(--color-background-main))
-				);
-				border-color: color-mix(in srgb, var(--ghost-accent-color) 25%, transparent);
-
-				svg {
-					transform: scale(1.1);
-				}
+				background: color-mix(in srgb, var(--ghost-accent-color) 16%, var(--color-background-main));
 			}
 
 			@media only screen and (max-width: $breakpoint-small) {
@@ -1748,11 +1727,10 @@ textarea {
 		border-radius: var(--radius-md);
 		padding: var(--space-4) var(--space-5);
 		margin: 0 0 var(--space-6);
-		transition: border-color ease-out 0.2s, background ease-out 0.2s, box-shadow ease-out 0.2s;
+		transition: border-color var(--duration-base) var(--ease-standard);
 
 		&:hover {
 			border-color: var(--color-border-strong);
-			background: color-mix(in srgb, var(--ghost-accent-color) 3%, var(--color-background-secondary));
 		}
 
 		.kg-toggle-heading {
@@ -1777,12 +1755,14 @@ textarea {
 				flex: 1;
 			}
 
+			// cards.min.css paints the chevron at 50% gray; give it real ink.
 			svg {
 				flex-shrink: 0;
 				width: 1.25rem;
 				height: 1.25rem;
 				margin-left: var(--space-3);
-				transition: transform 0.2s ease;
+				color: var(--color-content-secondary);
+				transition: transform var(--duration-slow) var(--ease-spring);
 			}
 		}
 
