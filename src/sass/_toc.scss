@@ -94,34 +94,88 @@ $toc-breakpoint: 1300px;
 
 }
 
-// Sub-sections stay folded until their h2 is active (tocbot collapseDepth).
-// The item is a two-row grid so the fold can animate its height: the
-// sub-list row goes 0fr <-> 1fr. Visibility lags the close so collapsed
-// links drop out of the tab order once the fold finishes.
+// Sub-sections stay folded until their h2 is active (tocbot collapseDepth),
+// unless the reader overrides it with the chevron (data-fold, see toc.js).
+// The item is a grid: link and chevron on the first row, the sub-list on
+// the second, whose 0fr <-> 1fr track animates the fold. Visibility lags the
+// close so folded links leave the tab order once the fold finishes.
 .toc-sidebar .toc-item:has(> .toc-list) {
   display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   grid-template-rows: auto 1fr;
   transition: grid-template-rows var(--duration-slow) var(--ease-standard);
 
+  > .toc-fold {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
   > .toc-list {
+    grid-row: 2;
+    grid-column: 1 / -1;
     min-height: 0;
     overflow: hidden;
     transition: visibility var(--duration-slow);
   }
 
-  &:has(> .toc-list.is-collapsed) {
+  &:not([data-fold="open"]):has(> .toc-list.is-collapsed),
+  &[data-fold="closed"] {
     grid-template-rows: auto 0fr;
 
     > .toc-list {
       visibility: hidden;
     }
+
+    > .toc-fold svg {
+      transform: rotate(-90deg);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     &,
-    > .toc-list {
+    > .toc-list,
+    > .toc-fold svg {
       transition: none;
     }
+  }
+}
+
+// Fold chevron: sits on the link's first line, quiet until the row is hovered
+.toc-fold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: start;
+  width: 2.4rem;
+  height: 2.96rem; // one link line: 1.4rem * 1.4 + 1rem padding
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: none;
+  color: var(--color-content-secondary);
+  opacity: 0.55;
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+
+  .toc-item:hover > &,
+  &:focus-visible {
+    opacity: 1;
+  }
+
+  &:hover {
+    color: var(--color-content-lead);
+  }
+
+  svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+    transition: transform var(--duration-slow) var(--ease-standard);
   }
 }
 

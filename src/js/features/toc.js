@@ -33,7 +33,8 @@ function getTocLabels() {
     tocLabel: getI18n('toc-label', 'Table of Contents'),
     onThisPage: getI18n('on-this-page', 'On this page'),
     openToc: getI18n('open-toc', 'Open table of contents'),
-    closeToc: getI18n('close-toc', 'Close table of contents')
+    closeToc: getI18n('close-toc', 'Close table of contents'),
+    toggleSubsections: getI18n('toggle-subsections', 'Toggle subsections')
   };
 }
 
@@ -158,6 +159,10 @@ function copyTocToMobile() {
     });
   });
 
+  Array.prototype.forEach.call(clone.querySelectorAll('.toc-fold'), function(btn) {
+    btn.remove();
+  });
+
   var nestedLists = clone.querySelectorAll('.toc-list');
   Array.prototype.forEach.call(nestedLists, function(list) {
     list.className = list.className.replace('toc-list', 'toc-mobile-list');
@@ -186,6 +191,41 @@ function syncMobileActiveState() {
   });
 }
 
+// Sections with folded sub-headings get a chevron. tocbot folds and unfolds
+// them on scroll via .is-collapsed; the chevron adds a reader override on the
+// item (data-fold="open" | "closed") that CSS honors over tocbot's state.
+function isFoldOpen(item) {
+  if (item.dataset.fold) return item.dataset.fold === 'open';
+  var sub = item.querySelector(':scope > .toc-list');
+  return !sub.classList.contains('is-collapsed');
+}
+
+function syncFoldButton(item) {
+  var btn = item.querySelector(':scope > .toc-fold');
+  if (btn) btn.setAttribute('aria-expanded', String(isFoldOpen(item)));
+}
+
+function addFoldToggles(labels) {
+  var items = elements.sidebar.querySelectorAll('.toc-item');
+  Array.prototype.forEach.call(items, function(item) {
+    var sub = item.querySelector(':scope > .toc-list');
+    if (!sub) return;
+    var btn = doc.createElement('button');
+    btn.type = 'button';
+    btn.className = 'toc-fold';
+    btn.setAttribute('aria-label', labels.toggleSubsections);
+    btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+    btn.addEventListener('click', function() {
+      item.dataset.fold = isFoldOpen(item) ? 'closed' : 'open';
+      syncFoldButton(item);
+    });
+    // Appended, not placed after the link: tocbot finds the sub-list through
+    // link.nextSibling. CSS grid puts the chevron back on the first row.
+    item.appendChild(btn);
+    syncFoldButton(item);
+  });
+}
+
 // Keep the active link centered in the desktop sidebar, which scrolls with a hidden scrollbar
 function scrollSidebarToActiveLink(activeLink) {
   var sidebar = elements.sidebar;
@@ -206,6 +246,10 @@ function setupSidebarAutoScroll() {
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       var target = mutation.target;
+      if (target.classList.contains('toc-list') && target.parentNode.classList.contains('toc-item')) {
+        syncFoldButton(target.parentNode);
+        return;
+      }
       if (!target.classList.contains('toc-link')) return;
       var isActive = target.classList.contains('is-active');
       if (isActive) {
@@ -444,6 +488,7 @@ export function initTOC() {
       orderedList: false,
       onClick: function() { if (state.isOpen) requestCloseMobileTOC(); }
     });
+    addFoldToggles(labels);
     setupSidebarAutoScroll();
     setTimeout(function() {
       copyTocToMobile();
