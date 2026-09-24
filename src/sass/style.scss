@@ -76,7 +76,7 @@ img {
 	// Smooth fade-in for lazy-loaded images
 	&[loading="lazy"] {
 		opacity: 1;
-		transition: opacity 0.3s ease;
+		transition: opacity var(--duration-slow) var(--ease-standard);
 	}
 }
 
@@ -164,7 +164,7 @@ button,
 input,
 select,
 textarea {
-	transition: color ease-out 0.2s, background-color ease-out 0.2s, border-color ease-out 0.2s, box-shadow ease-out 0.2s;
+	transition: color var(--ease-standard) var(--duration-base), background-color var(--ease-standard) var(--duration-base), border-color var(--ease-standard) var(--duration-base), box-shadow var(--ease-standard) var(--duration-base);
 }
 
 .post-content {
@@ -215,7 +215,7 @@ textarea {
 		text-decoration: none;
 		font-weight: 400;
 		box-shadow: inset 0 -2px 0 var(--ghost-accent-color);
-		transition: box-shadow ease-out 0.1s;
+		transition: box-shadow var(--ease-standard) var(--duration-fast);
 
 		&:focus-visible,
 		&:hover {
@@ -419,7 +419,7 @@ textarea {
 		border-radius: var(--radius-md);
 		background: var(--color-background-secondary);
 		border: 1px solid var(--color-border);
-		transition: border-color ease-out 0.2s;
+		transition: border-color var(--ease-standard) var(--duration-base);
 
 		&:hover {
 			border-color: var(--color-border-strong);
@@ -707,7 +707,7 @@ textarea {
 			background: transparent;
 			border: none;
 			cursor: pointer;
-			transition: color 0.15s ease;
+			transition: color var(--duration-fast) var(--ease-standard);
 			user-select: none;
 
 			// Visuals stay compact; the pseudo-element grows the tap target
@@ -892,7 +892,7 @@ textarea {
 		height: auto;
 		padding: var(--space-3);
 		box-sizing: border-box;
-		transition: border-color ease-out 0.1s, box-shadow ease-out 0.1s;
+		transition: border-color var(--ease-standard) var(--duration-fast), box-shadow var(--ease-standard) var(--duration-fast);
 		box-shadow: none;
 		appearance: normal;
 		border-radius: 0;
@@ -943,7 +943,7 @@ textarea {
 		border-radius: var(--radius-pill);
 		box-sizing: border-box;
 		appearance: normal;
-		transition: opacity ease-out 0.1s, transform ease-out 0.1s, box-shadow ease-out 0.1s;
+		transition: opacity var(--ease-standard) var(--duration-fast), transform var(--ease-standard) var(--duration-fast), box-shadow var(--ease-standard) var(--duration-fast);
 		background: var(--ghost-accent-color);
 		font-weight: 600;
 		color: var(--color-on-accent);
@@ -1463,7 +1463,7 @@ textarea {
 		margin: 0 0 var(--space-6);
 		border-radius: var(--radius-md);
 		overflow: hidden;
-		transition: transform ease-out 0.3s, box-shadow ease-out 0.3s, border-color ease-out 0.3s;
+		transition: transform var(--ease-standard) var(--duration-slow), box-shadow var(--ease-standard) var(--duration-slow), border-color var(--ease-standard) var(--duration-slow);
 		background: var(--color-background-secondary);
 		border: 1px solid var(--color-border);
 
@@ -1551,7 +1551,7 @@ textarea {
 		overflow-wrap: break-word;
 		hyphens: auto;
 		// Smooth transition for hover effects
-		transition: color 0.2s ease;
+		transition: color var(--duration-base) var(--ease-standard);
 
 		@media only screen and (max-width: $breakpoint-medium) {
 			font-size: 1.8rem;
@@ -1584,7 +1584,7 @@ textarea {
 		word-break: break-word;
 		overflow-wrap: break-word;
 		// Smooth transition
-		transition: opacity 0.2s ease;
+		transition: opacity var(--duration-base) var(--ease-standard);
 
 		@media only screen and (max-width: $breakpoint-medium) {
 			font-size: 1.4rem;
@@ -1631,7 +1631,7 @@ textarea {
 		object-fit: cover;
 		border-radius: 0;
 		margin: 0; // Override .post-content img margin
-		transition: transform ease-out 0.3s;
+		transition: transform var(--ease-standard) var(--duration-slow);
 
 		// Most bookmarked pages ship a white/light thumbnail; dim it
 		// slightly so it doesn't glare against the dark card surface.
@@ -1846,7 +1846,7 @@ textarea {
 			text-decoration: none;
 			border-radius: var(--radius-pill);
 			font-weight: 600;
-			transition: transform ease-out 0.2s, box-shadow ease-out 0.2s;
+			transition: transform var(--ease-standard) var(--duration-base), box-shadow var(--ease-standard) var(--duration-base);
 
 			&:hover {
 				transform: translateY(-1px);
@@ -1955,7 +1955,7 @@ textarea {
 			border-radius: var(--radius-pill);
 			font-weight: 600;
 			cursor: pointer;
-			transition: transform ease-out 0.2s, box-shadow ease-out 0.2s;
+			transition: transform var(--ease-standard) var(--duration-base), box-shadow var(--ease-standard) var(--duration-base);
 			white-space: nowrap;
 
 			&:hover {
@@ -2127,7 +2127,7 @@ textarea {
 			border-radius: var(--radius-pill);
 			font-weight: 600;
 			font-size: 1.4rem;
-			transition: background 0.2s ease, transform 0.2s ease;
+			transition: background var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
 
 			&:hover {
 				transform: translateY(-1px);
@@ -2198,7 +2198,7 @@ textarea {
 		background: var(--ghost-accent-color);
 		border-radius: var(--radius-md);
 		text-align: center;
-		transition: transform ease-out 0.2s, box-shadow ease-out 0.2s;
+		transition: transform var(--ease-standard) var(--duration-base), box-shadow var(--ease-standard) var(--duration-base);
 
 		&:hover {
 			border-color: var(--color-border-strong);
@@ -2244,7 +2244,7 @@ textarea {
 			border-radius: var(--radius-pill);
 			font-weight: 600;
 			font-size: 0.875em;
-			transition: opacity ease-out 0.2s, transform ease-out 0.2s;
+			transition: opacity var(--ease-standard) var(--duration-base), transform var(--ease-standard) var(--duration-base);
 
 			&:hover {
 				opacity: 0.9;
@@ -2559,7 +2559,7 @@ textarea {
 	}
 
 	a {
-		color: var(--color-accent-text);		transition: color linear 0.1s;
+		color: var(--color-accent-text);		transition: color var(--ease-standard) var(--duration-fast);
 
 		&:focus-visible,
 		&:hover {
@@ -2977,7 +2977,7 @@ textarea {
 	transform: translateY(-8px);
 	transition: opacity var(--duration-slow) var(--ease-standard),
 		transform var(--duration-slow) var(--ease-standard),
-		visibility 0s linear var(--duration-slow);
+		visibility 0s var(--ease-standard) var(--duration-slow);
 
 	@media only screen and (min-width: #{$breakpoint-large + 1}) {
 		display: none;
@@ -3071,7 +3071,7 @@ textarea {
 	top: 0;
 	z-index: var(--z-floating-ui);
 	background: transparent;
-	transition: transform 0.2s ease-out;
+	transition: transform var(--duration-base) var(--ease-standard);
 
 	&.complete {
 		transform: translateY(-3px);
@@ -3099,7 +3099,7 @@ textarea {
 	a {
 		color: var(--color-content-secondary);
 		text-decoration: none;
-		transition: color 0.2s ease;
+		transition: color var(--duration-base) var(--ease-standard);
 
 		&:hover,
 		&:focus-visible {
@@ -3206,7 +3206,7 @@ textarea {
 	height: 44px;
 	border-radius: 50%;
 	color: var(--color-content-secondary);
-	transition: color 0.2s ease, background-color 0.2s ease;
+	transition: color var(--duration-base) var(--ease-standard), background-color var(--duration-base) var(--ease-standard);
 
 	&:hover,
 	&:focus-visible {
@@ -3239,7 +3239,7 @@ textarea {
 	background: transparent;
 	color: var(--color-content-secondary);
 	cursor: pointer;
-	transition: color 0.2s ease, background-color 0.2s ease;
+	transition: color var(--duration-base) var(--ease-standard), background-color var(--duration-base) var(--ease-standard);
 
 	&:hover,
 	&:focus-visible {
@@ -3313,8 +3313,8 @@ textarea {
 		padding: var(--space-6) 0;
 		background: transparent;
 		transition-property: background-color, padding, margin, border-radius;
-		transition-duration: 0.25s;
-		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+		transition-duration: var(--duration-slow);
+		transition-timing-function: var(--ease-spring);
 		-webkit-tap-highlight-color: transparent;
 
 		.post-box-link {
@@ -3375,8 +3375,8 @@ textarea {
 				opacity: 0;
 				transform: scale(0.98);
 				transition-property: opacity, transform;
-				transition-duration: 0.25s;
-				transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+				transition-duration: var(--duration-slow);
+				transition-timing-function: var(--ease-spring);
 				z-index: var(--z-behind);
 			}
 
@@ -3432,7 +3432,7 @@ textarea {
 	line-height: 1.75;
 	max-height: calc(1.75em * 2); // Fallback for browsers without line-clamp support
 	color: var(--color-content-secondary);
-	transition: color 0.25s ease;
+	transition: color var(--duration-slow) var(--ease-standard);
 	text-overflow: ellipsis;
 	word-break: break-word;
 
@@ -3450,7 +3450,7 @@ textarea {
 	line-height: 1.3;
 
 	a {
-		transition: color 0.2s ease;
+		transition: color var(--duration-base) var(--ease-standard);
 	}
 
 	@media only screen and (max-width: $breakpoint-medium) {
@@ -3710,7 +3710,7 @@ textarea {
 		color: inherit;
 		text-decoration: underline;
 		text-decoration-color: var(--color-background-contrast);
-		transition: color 0.15s ease;
+		transition: color var(--duration-fast) var(--ease-standard);
 
 		&:hover {
 			color: var(--color-content-main);
@@ -3739,7 +3739,7 @@ textarea {
 	font-weight: 600;
 	text-indent: 0;
 	color: var(--color-content-lead);
-	transition: color ease-out 0.2s;
+	transition: color var(--ease-standard) var(--duration-base);
 
 	@media only screen and (max-width: $breakpoint-small) {
 		hyphens: auto;
@@ -3815,7 +3815,7 @@ textarea {
 		color: var(--color-content-secondary);
 		text-decoration: none;
 		font-weight: 400;
-		transition: color ease-out 0.2s;
+		transition: color var(--ease-standard) var(--duration-base);
 
 		&:focus-visible,
 		&:hover {
@@ -4068,7 +4068,7 @@ textarea {
 	align-items: center;
 	text-decoration: none;
 	border-radius: var(--radius-pill);
-	transition: background-color 0.2s ease, color 0.2s ease;
+	transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 
 	// Expand the tap target to 44px without growing the visible circle.
 	&::before {
@@ -4121,7 +4121,7 @@ textarea {
 	text-align: center;
 	text-decoration: none;
 	border-radius: var(--radius-pill);
-	transition: background-color 0.2s ease, color 0.2s ease;
+	transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 	box-sizing: border-box;
 	white-space: nowrap;
 
@@ -4269,7 +4269,7 @@ textarea {
 	font-weight: 700;
 	font-size: 1.5em;
 	cursor: pointer;
-	transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+	transition: transform var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard);
 	appearance: none;
 
 	&:hover,
@@ -4345,7 +4345,7 @@ textarea {
 	background: var(--color-background-main);
 	border: 1px solid var(--color-border);
 	border-radius: var(--radius-pill);
-	transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+	transition: border-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard);
 	box-sizing: border-box;
 
 	&::placeholder {
@@ -4379,7 +4379,7 @@ textarea {
 	border: none;
 	border-radius: var(--radius-pill);
 	cursor: pointer;
-	transition: background-color 0.2s ease-out, transform 0.2s ease-out;
+	transition: background-color var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
 	white-space: nowrap;
 	box-sizing: border-box;
 
@@ -4411,7 +4411,7 @@ textarea {
 			font-weight: 700;
 			color: var(--color-on-accent) !important;
 			background: var(--ghost-accent-color) !important;
-			transition: filter ease-out 0.2s;
+			transition: filter var(--ease-standard) var(--duration-base);
 
 			&:focus-visible,
 			&:hover {
@@ -4448,7 +4448,7 @@ textarea {
 	border-radius: var(--radius-md);
 	background: var(--color-background-secondary);
 	border: 1px solid var(--color-border);
-	transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+	transition: transform var(--duration-slow) var(--ease-standard), box-shadow var(--duration-slow) var(--ease-standard), border-color var(--duration-slow) var(--ease-standard);
 
 	.post-nav-teaser {
 		flex: 1;
@@ -4583,7 +4583,7 @@ textarea {
 	font-size: 1.8rem;
 	line-height: 2rem;
 	text-align: center;
-	transition: color ease-out 0.2s;
+	transition: color var(--ease-standard) var(--duration-base);
 	color: var(--color-content-secondary);
 }
 
@@ -4600,7 +4600,7 @@ textarea {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	color: var(--color-content-lead);
-	transition: color 0.25s ease;
+	transition: color var(--duration-slow) var(--ease-standard);
 }
 
 .post-nav-excerpt {
@@ -4657,8 +4657,8 @@ textarea {
 	text-decoration: none;
 	color: var(--color-content-secondary);
 	transition-property: color, border-color;
-	transition-duration: 0.2s;
-	transition-timing-function: ease;
+	transition-duration: var(--duration-base);
+	transition-timing-function: var(--ease-standard);
 	border-radius: var(--radius-pill);
 	box-sizing: border-box;
 	&:focus-visible,
@@ -4756,8 +4756,8 @@ a.post-tag-chip {
 	white-space: nowrap;
 	text-decoration: none;
 	transition-property: color, border-color, background-color;
-	transition-duration: 0.2s;
-	transition-timing-function: ease;
+	transition-duration: var(--duration-base);
+	transition-timing-function: var(--ease-standard);
 	cursor: pointer;
 
 	// Extend the hit area to the 44px touch target floor without
@@ -4980,7 +4980,7 @@ a.post-tag-chip {
 	border-radius: var(--radius-md);
 	padding: var(--space-8);
 	margin-bottom: var(--space-8);
-	transition: box-shadow ease-out 0.3s;
+	transition: box-shadow var(--ease-standard) var(--duration-slow);
 
 	@media only screen and (max-width: $breakpoint-small) {
 		padding: var(--space-6) var(--space-5);
@@ -5035,12 +5035,12 @@ a.post-tag-chip {
 	border-radius: var(--radius-pill);
 	text-decoration: none;
 	transition-property: box-shadow, transform;
-	transition-duration: 0.2s;
-	transition-timing-function: ease-out;
+	transition-duration: var(--duration-base);
+	transition-timing-function: var(--ease-standard);
 
 	.icon {
 		font-size: 1.2em;
-		transition: transform ease-out 0.2s;
+		transition: transform var(--ease-standard) var(--duration-base);
 	}
 
 	@media (hover: hover) and (pointer: fine) {
@@ -5101,8 +5101,8 @@ a.post-tag-chip {
 	border-radius: var(--radius-md);
 	overflow: hidden;
 	transition-property: transform, box-shadow, border-color;
-	transition-duration: 0.25s;
-	transition-timing-function: ease-out;
+	transition-duration: var(--duration-slow);
+	transition-timing-function: var(--ease-standard);
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
@@ -5137,7 +5137,7 @@ a.post-tag-chip {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform ease-out 0.3s;
+		transition: transform var(--ease-standard) var(--duration-slow);
 	}
 
 	@media (hover: hover) and (pointer: fine) {
@@ -5306,7 +5306,7 @@ a.post-tag-chip {
 		margin: 0;
 		border-radius: var(--radius-md);
 		overflow: hidden;
-		transition: transform ease-out 0.3s, box-shadow ease-out 0.3s, border-color ease-out 0.3s;
+		transition: transform var(--ease-standard) var(--duration-slow), box-shadow var(--ease-standard) var(--duration-slow), border-color var(--ease-standard) var(--duration-slow);
 		background: var(--color-background-secondary);
 		border: 1px solid var(--color-border);
 
@@ -5389,7 +5389,7 @@ a.post-tag-chip {
 		overflow-wrap: break-word;
 		hyphens: auto;
 		// Smooth transition for hover effects
-		transition: color 0.2s ease;
+		transition: color var(--duration-base) var(--ease-standard);
 
 		@media only screen and (max-width: $breakpoint-medium) {
 			font-size: 1.8rem;
@@ -5422,7 +5422,7 @@ a.post-tag-chip {
 		word-break: break-word;
 		overflow-wrap: break-word;
 		// Smooth transition
-		transition: opacity 0.2s ease;
+		transition: opacity var(--duration-base) var(--ease-standard);
 
 		@media only screen and (max-width: $breakpoint-medium) {
 			font-size: 1.4rem;
@@ -5525,7 +5525,7 @@ a.post-tag-chip {
 			object-fit: cover;
 			border-radius: 0;
 			margin: 0; // Override .post-content img margin
-			transition: transform ease-out 0.3s;
+			transition: transform var(--ease-standard) var(--duration-slow);
 
 			@media only screen and (max-width: $breakpoint-small) {
 				// Ensure image displays correctly on mobile
@@ -5554,8 +5554,8 @@ a.post-tag-chip {
 	border-radius: var(--radius-md);
 	overflow: hidden;
 	transition-property: transform, box-shadow, border-color;
-	transition-duration: 0.25s;
-	transition-timing-function: ease-out;
+	transition-duration: var(--duration-slow);
+	transition-timing-function: var(--ease-standard);
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
@@ -5676,7 +5676,7 @@ a.post-tag-chip {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform ease-out 0.3s;
+		transition: transform var(--ease-standard) var(--duration-slow);
 	}
 }
 
@@ -5695,7 +5695,7 @@ a.post-tag-chip {
 /* Gallery image hover effect */
 .kg-gallery-image img {
 	cursor: zoom-in;
-	transition: transform 300ms cubic-bezier(0.2, 0, 0.2, 1);
+	transition: transform var(--duration-slow) var(--ease-spring);
 	border-radius: var(--radius-sm);
 }
 
@@ -5745,7 +5745,7 @@ a.post-tag-chip {
 	-webkit-backdrop-filter: blur(10px);
 	border-radius: 50% !important;
 	border: 1px solid rgba(255, 255, 255, 0.2) !important;
-	transition: background-color 0.25s ease !important, transform 0.25s ease !important;
+	transition: background-color var(--duration-slow) var(--ease-standard) !important, transform var(--duration-slow) var(--ease-standard) !important;
 	opacity: 1 !important;
 
 	svg {
@@ -5783,7 +5783,7 @@ a.post-tag-chip {
 	border: 1px solid rgba(255, 255, 255, 0.2) !important;
 	top: 20px !important;
 	right: 20px !important;
-	transition: background-color 0.25s ease !important, transform 0.25s ease !important;
+	transition: background-color var(--duration-slow) var(--ease-standard) !important, transform var(--duration-slow) var(--ease-standard) !important;
 	opacity: 1 !important;
 
 	svg {
@@ -5910,7 +5910,7 @@ a.post-tag-chip {
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY(20px);
-	transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, bottom 0.3s ease;
+	transition: opacity var(--duration-slow) var(--ease-standard), visibility var(--duration-slow) var(--ease-standard), transform var(--duration-slow) var(--ease-standard), bottom var(--duration-slow) var(--ease-standard);
 
 	// Liquid glass effect
 	background: rgba(255,255,255,0.08);
@@ -5970,7 +5970,7 @@ a.post-tag-chip {
 	stroke-linecap: round;
 	stroke-dasharray: 125.6; /* 2 * PI * 20 */
 	stroke-dashoffset: 125.6;
-	transition: stroke-dashoffset 0.1s ease-out;
+	transition: stroke-dashoffset var(--duration-fast) var(--ease-standard);
 }
 
 /* Arrow icon */
@@ -6076,8 +6076,8 @@ a.post-tag-chip {
 	border-radius: var(--radius-md);
 	overflow: hidden;
 	transition-property: transform, box-shadow, border-color;
-	transition-duration: 0.25s;
-	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: var(--duration-slow);
+	transition-timing-function: var(--ease-spring);
 
 	// Use tag's custom accent color if available
 	--tag-color: var(--tag-accent-color, var(--ghost-accent-color));
@@ -6142,7 +6142,7 @@ a.post-tag-chip {
 				width: 100%;
 				height: 100%;
 				object-fit: cover;
-				transition: transform 0.4s ease;
+				transition: transform var(--duration-slower) var(--ease-standard);
 			}
 
 			// Hide the small thumbnail image in header
@@ -6292,7 +6292,7 @@ a.post-tag-chip {
 			font-weight: 500;
 			font-size: 1.5em;
 			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-			transition: color 0.15s ease;
+			transition: color var(--duration-fast) var(--ease-standard);
 		}
 
 		.tag-post-date {
@@ -6325,7 +6325,7 @@ a.post-tag-chip {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform 0.4s ease;
+		transition: transform var(--duration-slower) var(--ease-standard);
 	}
 
 	// Gradient overlay for text readability
@@ -6491,7 +6491,7 @@ a.post-tag-chip {
 	line-height: 1.3;
 	margin: 0 0 0.25rem;
 	color: var(--color-content-lead);
-	transition: color 0.2s ease;
+	transition: color var(--duration-base) var(--ease-standard);
 
 	// Only change color on hover for cards WITHOUT image
 	.tag-card:not(.has-image):hover & {
@@ -6579,7 +6579,7 @@ a.post-tag-chip {
 	text-decoration: none;
 	color: inherit;
 	border-bottom: 1px solid var(--color-border);
-	transition: background 0.15s ease;
+	transition: background var(--duration-fast) var(--ease-standard);
 
 	&:last-child {
 		border-bottom: none;
@@ -6604,7 +6604,7 @@ a.post-tag-chip {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	transition: color 0.15s ease;
+	transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .tag-post-date {

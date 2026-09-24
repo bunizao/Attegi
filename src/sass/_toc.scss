@@ -15,7 +15,7 @@ $toc-width: 220px;
 $toc-gap-min: 4.8rem;
 $toc-offset-top: 3rem;
 $toc-gap: 3rem;
-$toc-transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
+$toc-transition: opacity var(--duration-slow) var(--ease-standard), visibility var(--duration-slow) var(--ease-standard), transform var(--duration-slow) var(--ease-standard);
 $toc-breakpoint: 1300px;
 
 // When TOC is present, fix overflow to allow sticky positioning
@@ -35,7 +35,7 @@ $toc-breakpoint: 1300px;
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  transition: opacity var(--duration-slow) var(--ease-standard), visibility var(--duration-slow) var(--ease-standard), transform var(--duration-slow) var(--ease-standard);
   z-index: var(--z-toc-sidebar);
 
   &.is-visible {
@@ -108,7 +108,7 @@ $toc-breakpoint: 1300px;
   color: var(--color-content-secondary);
   text-decoration: none;
   border-left: 1.5px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
   word-break: break-word;
 
   &:hover {
@@ -227,7 +227,7 @@ $toc-breakpoint: 1300px;
   stroke: var(--ghost-accent-color);
   stroke-width: 2;
   stroke-linecap: round;
-  transition: stroke-dashoffset 0.15s ease;
+  transition: stroke-dashoffset var(--duration-fast) var(--ease-standard);
 }
 
 // Bottom sheet - full width, anchored to the viewport's bottom edge with a
@@ -251,9 +251,9 @@ $toc-breakpoint: 1300px;
   opacity: 0;
   visibility: hidden;
   transform: translateY(100%);
-  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-              visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity var(--duration-slow) var(--ease-spring),
+              visibility var(--duration-slow) var(--ease-spring),
+              transform var(--duration-slow) var(--ease-spring);
   overflow: hidden;
   will-change: transform, opacity;
   -webkit-font-smoothing: antialiased;
@@ -286,8 +286,8 @@ $toc-breakpoint: 1300px;
   background: rgba(0, 0, 0, 0.35);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-              visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity var(--duration-slow) var(--ease-spring),
+              visibility var(--duration-slow) var(--ease-spring);
 
   &.is-open {
     opacity: 1;
@@ -338,7 +338,7 @@ $toc-breakpoint: 1300px;
   border-radius: var(--radius-pill);
   color: var(--color-content-secondary);
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
 
   // Expand the tap target to 44px without growing the visible button.
   &::before {
@@ -405,7 +405,7 @@ $toc-breakpoint: 1300px;
   color: var(--color-content-secondary);
   text-decoration: none;
   border-left: 2px solid transparent;
-  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  transition: color var(--duration-fast) var(--ease-standard), background var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
 
   @media (hover: hover) and (pointer: fine) {
     body:not(.toc-suppress-hover) &:hover {

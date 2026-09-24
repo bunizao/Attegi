@@ -38,13 +38,15 @@
 	--z-top: 9999;
 
 	/* ---- motion ---------------------------------------------------------
-	   A handful of shared durations/easings. Existing transitions are not
-	   migrated wholesale; use these for new or touched motion. */
+	   Every transition uses these. fast: color/hover feedback. base: borders,
+	   backgrounds, small moves. slow: panels, drawers, fades. slower: large
+	   image moves. standard eases out hard so feedback lands immediately;
+	   spring is a long expo-out for things that enter. */
 	--duration-fast: 0.15s;
 	--duration-base: 0.2s;
 	--duration-slow: 0.3s;
 	--duration-slower: 0.4s;
-	--ease-standard: ease-out;
+	--ease-standard: cubic-bezier(0.25, 1, 0.5, 1);
 	--ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 
 	/* ---- spacing ----------------------------------------------------------
