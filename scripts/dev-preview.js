@@ -56,7 +56,6 @@ const packageConfig = readJson('package.json');
 const themeCustom = packageConfig.config && packageConfig.config.custom ? packageConfig.config.custom : {};
 const postsPerPage = Number(packageConfig.config && packageConfig.config.posts_per_page) || DEFAULT_POSTS_PER_PAGE;
 
-registerPartials();
 registerHelpers();
 
 const renderServer = http.createServer((request, response) => {
@@ -530,6 +529,9 @@ async function renderRoute(model) {
     collections
   };
   const data = buildHandlebarsData(model, context);
+  // Templates are re-read per request; partials must be too, or partial edits
+  // only show up after a restart.
+  registerPartials();
   const body = compileTemplate(model.template)(context, { data });
   const layoutContext = {
     ...context,
