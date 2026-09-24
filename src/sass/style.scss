@@ -3495,7 +3495,7 @@ textarea {
 	line-height: 1.5;
 	color: var(--color-accent-text);	background: color-mix(in srgb, var(--ghost-accent-color) 10%, transparent);
 	border: 1px solid color-mix(in srgb, var(--ghost-accent-color) 25%, transparent);
-	border-radius: var(--radius-pill);
+	border-radius: var(--radius-xs);
 	white-space: nowrap;
 	flex-shrink: 0;
 }
@@ -4250,7 +4250,7 @@ textarea {
 	align-items: center;
 	gap: var(--space-1);
 	padding: 0.6rem 1.2rem;
-	border-radius: var(--radius-pill);
+	border-radius: var(--radius-xs);
 	background: var(--color-background-contrast);
 	color: var(--color-content-secondary);
 	font-size: 1.4em;
@@ -4753,7 +4753,7 @@ a.post-tag-chip {
 	color: var(--color-content-secondary);
 	background: transparent;
 	border: 1px solid var(--color-border);
-	border-radius: var(--radius-pill);
+	border-radius: var(--radius-xs);
 	white-space: nowrap;
 	text-decoration: none;
 	transition-property: color, border-color, background-color;
@@ -4776,8 +4776,6 @@ a.post-tag-chip {
 }
 
 .theme-dark a.post-tag-chip {
-	border-color: rgba(255, 255, 255, 0.15);
-
 	&:hover {
 		background: color-mix(in srgb, var(--ghost-accent-color) 15%, transparent);
 		border-color: var(--ghost-accent-color);
