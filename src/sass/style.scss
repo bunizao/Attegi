@@ -220,22 +220,21 @@ textarea {
 		}
 	}
 
+	// Heading margins are in the heading's own em, so each level's value is
+	// tuned to land near the same body-relative rhythm: about 2.2 body em
+	// above an h2 (collapsing with the paragraph's 1.5em), tight below.
 	h1,
 	h2,
 	h3,
 	h4,
 	h5,
 	h6 {
-		margin: 1.2em 0 0.5em;
-		line-height: var(--line-height-heading, 1.35);
+		margin: 1.5em 0 0.4em;
+		line-height: var(--line-height-heading, 1.3);
 		font-family: var(--gh-font-heading);
 		color: var(--color-content-lead);
 		letter-spacing: var(--letter-spacing-tight, -0.022em);
 		text-wrap: balance;
-
-		@media only screen and (max-width: $breakpoint-small) {
-			margin: 0.9em 0 0.4em;
-		}
 	}
 
 	// 1.2-1.25 step scale so adjacent levels stay visually distinct
@@ -243,17 +242,19 @@ textarea {
 	h1 {
 		font-size: 2.2em;
 		font-weight: 700;
-		margin-top: 1.5em;
+		margin: 1.1em 0 0.35em;
 	}
 
 	h2 {
 		font-size: 1.85em;
 		font-weight: 600;
+		margin: 1.2em 0 0.35em;
 	}
 
 	h3 {
 		font-size: 1.5em;
 		font-weight: 600;
+		margin: 1.3em 0 0.4em;
 	}
 
 	h4 {
@@ -269,6 +270,16 @@ textarea {
 	h6 {
 		font-size: 1em;
 		font-weight: 600;
+	}
+
+	// A heading straight after another heading (section title + first
+	// subsection) reads as one block, so it only needs a small gap.
+	:is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
+		margin-top: 0.3em;
+	}
+
+	> :first-child {
+		margin-top: 0;
 	}
 
 	h1 a,
@@ -4046,10 +4057,11 @@ textarea {
 	max-width: 100%;
 }
 
+// flow-root, not flex: flex items never collapse margins, which doubled
+// every paragraph-to-heading gap. Wide/full cards break out with negative
+// margins, so they don't need flex centering.
 .post-content {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+	display: flow-root;
 }
 
 .post-content > * {
