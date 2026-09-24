@@ -4381,21 +4381,10 @@ textarea {
    ========================================================================== */
 .post-comments {
 	position: relative;
-	padding: var(--space-8);
+	padding-top: var(--space-8);
 	text-align: left;
-	background: var(--color-background-secondary);
-	border: 1px solid var(--color-border);
-	border-radius: var(--radius-md);
+	border-top: 1px solid var(--color-border);
 	box-sizing: border-box;
-
-	@media only screen and (max-width: $breakpoint-medium) {
-		padding-left: 0;
-		padding-right: 0;
-		background: transparent;
-		border-left: 0;
-		border-right: 0;
-		border-radius: 0;
-	}
 
 	/* Ghost Comments / Portal buttons - keep in sync with accent color */
 	.gh-btn,
@@ -4463,7 +4452,7 @@ textarea {
 
 .post-comments-header {
 	display: flex;
-	align-items: center;
+	align-items: baseline;
 	justify-content: space-between;
 	gap: var(--space-3);
 	margin: 0 0 var(--space-5);
@@ -4483,31 +4472,28 @@ textarea {
 }
 
 .post-comments-count {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-1);
-	padding: 0.6rem 1.2rem;
-	border-radius: var(--radius-pill);
-	background: var(--color-background-contrast);
 	color: var(--color-content-secondary);
-	font-size: 1.4em;
-	line-height: 1.2;
+	font-size: var(--font-size-2xs);
+	font-variant-numeric: tabular-nums;
 }
 
 .post-comments-load {
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	gap: 0.8rem;
-	margin: 0 0 1.6rem;
-	padding: 1.1rem 1.8rem;
+	min-height: 4.4rem;
+	margin: 0 0 var(--space-5);
+	padding: 0 var(--space-6);
 	border-radius: var(--radius-pill);
-	border: 1px solid var(--ghost-accent-color);
+	border: 0;
 	background: var(--ghost-accent-color);
 	color: var(--color-on-accent);
-	font-weight: 700;
-	font-size: 1.5em;
+	font-size: var(--font-size-xs);
+	font-weight: 600;
+	line-height: 1.2;
 	cursor: pointer;
-	transition: transform var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard);
+	transition: transform var(--duration-base) var(--ease-standard), opacity var(--duration-base) var(--ease-standard);
 	appearance: none;
 
 	&:hover,
@@ -4516,8 +4502,7 @@ textarea {
 	}
 
 	&:active {
-		transform: translateY(0);
-		box-shadow: none;
+		transform: scale(0.97);
 	}
 
 	&.is-loading {
@@ -4525,12 +4510,21 @@ textarea {
 		pointer-events: none;
 	}
 
-	// No `.is-loaded { display: none }` here: the JS also sets the `hidden`
-	// attribute, which the UA stylesheet already hides.
+	// JS sets `hidden` once comments load; the display above would beat the
+	// UA's [hidden] rule, so restate it.
+	&[hidden] {
+		display: none;
+	}
 }
 
 .post-comments-container {
 	margin-top: var(--space-5);
+
+	// The comments-ui document declares no color-scheme. When the page is dark,
+	// the mismatch makes browsers paint an opaque white canvas behind the iframe.
+	iframe {
+		color-scheme: light;
+	}
 }
 
 /* ==========================================================================
