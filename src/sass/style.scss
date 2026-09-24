@@ -1065,6 +1065,7 @@ textarea {
 
 				.kg-file-card-caption {
 					margin: 0.25rem 0 0;
+					opacity: 1;
 					font-size: 0.9em;
 					line-height: 1.4;
 					color: var(--color-content-secondary);
@@ -1759,6 +1760,10 @@ textarea {
 			svg {
 				flex-shrink: 0;
 				width: 1.25rem;
+
+				path {
+					stroke-width: 2;
+				}
 				height: 1.25rem;
 				margin-left: var(--space-3);
 				color: var(--color-content-secondary);
