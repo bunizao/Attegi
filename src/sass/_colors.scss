@@ -26,13 +26,14 @@
   --color-border: rgb(0 0 0 / 0.08);
   --color-border-strong: rgb(0 0 0 / 0.16);
 
-  /* Frosted glass: header, pill buttons, mobile menu */
-  --glass-surface: rgb(255 255 255 / 0.72);
+  /* Glass: nav pills and sticky logo (surface), mobile menu (strong) */
+  --glass-surface: rgb(255 255 255 / 0.82);
   --glass-surface-strong: rgb(255 255 255 / 0.86);
   --glass-border: rgb(0 0 0 / 0.08);
   --glass-border-strong: rgb(0 0 0 / 0.14);
   --glass-highlight: rgb(255 255 255 / 0.7);
-  --glass-blur: blur(16px) saturate(180%);
+  --glass-shadow: 0 3px 10px rgb(0 0 0 / 0.05);
+  --glass-blur: blur(12px) saturate(180%);
 
   /* Semantic colors */
   --color-highlight: #FEF3C7;
@@ -77,11 +78,12 @@
     --shadow-sheet: 0 -12px 32px -12px rgb(0 0 0 / 0.6);
     --shadow-overlay: 0 24px 48px -12px rgb(0 0 0 / 0.6);
 
-    --glass-surface: rgb(29 31 33 / 0.68);
+    --glass-surface: rgb(255 255 255 / 0.12);
     --glass-surface-strong: rgb(29 31 33 / 0.84);
-    --glass-border: rgb(255 255 255 / 0.1);
-    --glass-border-strong: rgb(255 255 255 / 0.18);
-    --glass-highlight: rgb(255 255 255 / 0.08);
+    --glass-border: rgb(255 255 255 / 0.2);
+    --glass-border-strong: rgb(255 255 255 / 0.34);
+    --glass-highlight: rgb(255 255 255 / 0.12);
+    --glass-shadow: 0 4px 14px rgb(0 0 0 / 0.35);
 
     --color-highlight: #fbbf24;
     --color-highlight-ink: #1D1F21;

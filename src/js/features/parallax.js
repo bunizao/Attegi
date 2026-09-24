@@ -1,14 +1,14 @@
 /**
  * Parallax Cover Feature
  * Applies parallax effect to cover images on scroll. Also owns the one
- * site-wide scroll listener that toggles `.nav-scrolled` (the nav header's
- * scrolled-state border) so nothing else needs to register its own.
+ * site-wide scroll listener that toggles `.nav-offscreen` once the nav
+ * header has scrolled out of view (shows the sticky logo), so nothing else
+ * needs to register its own.
  */
 
 import { qs, docEl } from '../core/index.js';
 import { onScroll } from '../core/scroll.js';
 
-var NAV_SCROLL_THRESHOLD = 4;
 var REDUCE_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
 /**
@@ -29,7 +29,8 @@ export function initParallax() {
   }
 
   function prlx() {
-    docEl.classList.toggle('nav-scrolled', window.pageYOffset > NAV_SCROLL_THRESHOLD);
+    var headerHeight = header ? header.offsetHeight : 0;
+    docEl.classList.toggle('nav-offscreen', window.pageYOffset > headerHeight);
 
     if (!cover) return;
     if (!coverHeight) updateCoverMetrics();
@@ -40,7 +41,6 @@ export function initParallax() {
     cover.style.transform = 'translate3d(0, ' + coverPosition + 'px, 0)';
     // The header stays in its over-cover style only while its bottom edge
     // is still over the image; past that its white text would sit on the page.
-    var headerHeight = header ? header.offsetHeight : 0;
     var withinCover = coverHeight ? window.pageYOffset < coverHeight - headerHeight : coverPreActive;
     docEl.classList.toggle('cover-active', withinCover);
   }

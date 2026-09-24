@@ -2655,33 +2655,18 @@ textarea {
 
 /* ==========================================================================
    Navigation
-   Full-width fixed header with a frosted-glass surface once the page moves
-   under it, and glass pill buttons (Sign in, Subscribe, Menu). Over a cover
-   image the header is transparent and the pills turn into white "liquid
-   glass". `.nav-scrolled` (toggled from parallax.js) adds the hairline.
+   The header sits over the top of the page and scrolls away with it. Once it
+   is gone, a small glass chip with the logo (.sticky-logo) fades in at the
+   top left. `.nav-offscreen` on <html> is toggled from parallax.js. Over a
+   cover image the header gets a scrim and the pills turn into white glass.
    ========================================================================== */
 .nav-header {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	z-index: var(--z-nav);
-	background: transparent;
 	background-repeat: no-repeat;
-	border-bottom: 1px solid transparent;
-	transition: background-color var(--duration-slow) var(--ease-standard),
-		border-color var(--duration-slow) var(--ease-standard);
-}
-
-.nav-scrolled .nav-header {
-	background-color: var(--glass-surface);
-	border-bottom-color: var(--glass-border);
-	-webkit-backdrop-filter: var(--glass-blur);
-	backdrop-filter: var(--glass-blur);
-
-	@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-		background-color: var(--color-background-main);
-	}
 }
 
 .nav-bar {
@@ -2708,7 +2693,10 @@ textarea {
 	.logo img {
 		display: block;
 		width: auto;
+		max-width: 20rem;
 		height: 4rem;
+		object-fit: contain;
+		object-position: left center;
 	}
 
 	.wordmark {
@@ -2767,7 +2755,7 @@ textarea {
 .nav-actions {
 	display: flex;
 	align-items: center;
-	gap: var(--space-3);
+	gap: var(--space-2);
 	flex-shrink: 0;
 	margin-left: auto;
 }
@@ -2776,26 +2764,26 @@ textarea {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 44px;
-	height: 44px;
-	color: var(--color-content-secondary);
+	width: 4.4rem;
+	height: 4.4rem;
+	color: var(--color-content-main);
 	transition: color var(--duration-fast) var(--ease-standard);
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
-			color: var(--color-content-main);
+			color: var(--color-content-lead);
 		}
 	}
 
 	.icon {
-		font-size: 2rem;
+		font-size: 2.2rem;
 	}
 }
 
 .nav-members {
 	display: flex;
 	align-items: center;
-	gap: var(--space-3);
+	gap: var(--space-2);
 
 	@media only screen and (max-width: $breakpoint-large) {
 		display: none;
@@ -2803,15 +2791,39 @@ textarea {
 }
 
 /* ---- Glass pills --------------------------------------------------------
-   Shared by Sign in, Subscribe and the mobile Menu button. The ::before
-   sheen drifts slowly; the global reduced-motion rule stops it. */
-%glass-pill {
+   Sign in, Subscribe, the mobile Menu button and the sticky logo share one
+   surface: a translucent fill, hairline border, a top highlight and a soft
+   drop shadow, with a slow drifting sheen (::before). The global
+   reduced-motion rule stops the sheen. */
+%glass-surface {
 	position: relative;
+	background: var(--glass-surface);
+	border: 1px solid var(--glass-border);
+	box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
+	-webkit-backdrop-filter: var(--glass-blur);
+	backdrop-filter: var(--glass-blur);
+	overflow: hidden;
+	isolation: isolate;
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset: -25%;
+		z-index: var(--z-behind);
+		background: radial-gradient(60% 60% at 30% 30%, rgb(255 255 255 / 0.18), rgb(255 255 255 / 0) 60%);
+		opacity: 0.5;
+		animation: glass-flow 12s ease-in-out infinite;
+		pointer-events: none;
+	}
+}
+
+%glass-pill {
+	@extend %glass-surface;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	min-height: 4.4rem;
-	padding: 0 2rem;
+	height: 3.8rem;
+	padding: 0 1.8rem;
 	font-family: inherit;
 	font-size: var(--font-size-xs, 1.5rem);
 	font-weight: 500;
@@ -2819,29 +2831,12 @@ textarea {
 	white-space: nowrap;
 	color: var(--color-content-main);
 	text-decoration: none;
-	background: var(--glass-surface);
-	border: 1px solid var(--glass-border);
 	border-radius: var(--radius-pill);
-	box-shadow: inset 0 1px 0 var(--glass-highlight);
-	-webkit-backdrop-filter: var(--glass-blur);
-	backdrop-filter: var(--glass-blur);
-	overflow: hidden;
-	isolation: isolate;
 	cursor: pointer;
 	transition: transform var(--duration-base) var(--ease-spring),
 		background-color var(--duration-base) var(--ease-standard),
 		border-color var(--duration-base) var(--ease-standard),
 		box-shadow var(--duration-base) var(--ease-standard);
-
-	&::before {
-		content: '';
-		position: absolute;
-		inset: -25%;
-		z-index: var(--z-behind);
-		background: radial-gradient(55% 55% at 30% 30%, rgb(255 255 255 / 0.14), rgb(255 255 255 / 0) 60%);
-		animation: glass-flow 12s ease-in-out infinite;
-		pointer-events: none;
-	}
 
 	&:link,
 	&:visited {
@@ -2866,12 +2861,15 @@ textarea {
 	@extend %glass-pill;
 }
 
+// Accent glass: the accent thinned with white so the fill stays translucent
+// rather than a solid brand block.
 .nav-button-primary {
 	@extend %glass-pill;
 	color: var(--color-on-accent);
-	background: color-mix(in srgb, var(--ghost-accent-color) 90%, #fff);
-	border-color: color-mix(in srgb, var(--ghost-accent-color) 70%, #fff);
-	box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25);
+	text-shadow: 0 1px 2px rgb(0 0 0 / 0.14);
+	background: color-mix(in srgb, var(--ghost-accent-color) 72%, #fff);
+	border-color: color-mix(in srgb, var(--ghost-accent-color) 60%, #fff);
+	box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), var(--glass-shadow);
 
 	&::before {
 		animation-direction: reverse;
@@ -2884,8 +2882,9 @@ textarea {
 
 	@media (hover: hover) and (pointer: fine) {
 		&:hover {
-			border-color: color-mix(in srgb, var(--ghost-accent-color) 55%, #fff);
-			box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), var(--shadow-glass-hover);
+			background: color-mix(in srgb, var(--ghost-accent-color) 62%, #fff);
+			border-color: color-mix(in srgb, var(--ghost-accent-color) 50%, #fff);
+			box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), var(--shadow-glass-hover);
 		}
 	}
 }
@@ -2893,7 +2892,8 @@ textarea {
 .nav-menu {
 	@extend %glass-pill;
 	display: none;
-	padding: 0 1.6rem;
+	height: 4.4rem;
+	padding: 0 1.8rem;
 
 	@media only screen and (max-width: $breakpoint-large) {
 		display: inline-flex;
@@ -2906,15 +2906,11 @@ textarea {
 }
 
 /* ---- Cover image state -------------------------------------------------
-   Transparent header over a home/post/page cover, a soft scrim for the
-   white text, and white liquid-glass pills. Once scrolled past the cover,
-   parallax.js clears `.cover-active` and the frosted header takes over. */
+   Header over a home/post/page cover: a soft scrim for the white text and
+   white liquid-glass pills. parallax.js clears `.cover-active` once the
+   header's bottom edge leaves the cover. */
 .cover-active .nav-header {
-	background: linear-gradient(to bottom, rgb(0 0 0 / 0.3), rgb(0 0 0 / 0));
-	background-repeat: no-repeat;
-	border-bottom-color: transparent;
-	-webkit-backdrop-filter: none;
-	backdrop-filter: none;
+	background-image: linear-gradient(to bottom, rgb(0 0 0 / 0.3), rgb(0 0 0 / 0));
 
 	.wordmark,
 	.site-nav a,
@@ -2931,16 +2927,17 @@ textarea {
 	.nav-button-primary,
 	.nav-menu {
 		color: #fff;
-		background: rgb(255 255 255 / 0.16);
-		border-color: rgb(255 255 255 / 0.35);
-		box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25);
+		background: rgb(255 255 255 / 0.14);
+		border-color: rgb(255 255 255 / 0.3);
+		box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), 0 4px 14px rgb(0 0 0 / 0.1);
 		text-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
 		-webkit-backdrop-filter: blur(18px) saturate(180%);
 		backdrop-filter: blur(18px) saturate(180%);
 	}
 
 	.nav-button-primary {
-		background: rgb(255 255 255 / 0.24);
+		background: rgb(255 255 255 / 0.2);
+		border-color: rgb(255 255 255 / 0.4);
 	}
 
 	@media (hover: hover) and (pointer: fine) {
@@ -2952,9 +2949,83 @@ textarea {
 		.nav-link-text:hover,
 		.nav-button-primary:hover,
 		.nav-menu:hover {
-			background: rgb(255 255 255 / 0.26);
+			background: rgb(255 255 255 / 0.24);
 			border-color: rgb(255 255 255 / 0.55);
 		}
+	}
+}
+
+/* ---- Sticky logo --------------------------------------------------------
+   Glass chip with the logo (or the site title when there is no logo) that
+   takes over once the header has scrolled away. Edge cases:
+   - Only shown from 1200px, where the gutter beside the content column is
+     wider than the chip; below that it would sit on top of the text.
+   - The desktop TOC starts at top: 7rem on the same side, so the chip stays
+     within the top 6rem.
+   - Wide or tall logos are boxed to 2.8rem high and 16rem wide.
+   - Hidden while the mobile menu is open and in print. */
+.sticky-logo {
+	@extend %glass-surface;
+	position: fixed;
+	top: calc(1.2rem + env(safe-area-inset-top, 0px));
+	left: 1.6rem;
+	z-index: var(--z-nav);
+	display: none;
+	align-items: center;
+	height: 4.4rem;
+	max-width: 20rem;
+	padding: 0 1.6rem;
+	border-radius: var(--radius-pill);
+	text-decoration: none;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-6px);
+	transition: opacity var(--duration-slow) var(--ease-standard),
+		visibility var(--duration-slow) var(--ease-standard),
+		transform var(--duration-slow) var(--ease-spring);
+
+	@media only screen and (min-width: 1200px) {
+		display: inline-flex;
+	}
+
+	img {
+		display: block;
+		width: auto;
+		max-width: 16rem;
+		height: 2.8rem;
+		object-fit: contain;
+		object-position: left center;
+	}
+
+	span {
+		overflow: hidden;
+		font-family: var(--gh-font-heading);
+		font-size: var(--font-size-xs, 1.5rem);
+		font-weight: 600;
+		color: var(--color-content-lead);
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	&:has(img) {
+		padding: 0 1.2rem;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			border-color: var(--glass-border-strong);
+			box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-glass-hover);
+		}
+	}
+
+	.nav-offscreen:not(.menu-active) & {
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+	}
+
+	@media print {
+		display: none;
 	}
 }
 
@@ -4121,7 +4192,7 @@ textarea {
 	min-height: 3rem;
 	text-align: center;
 	text-decoration: none;
-	border-radius: var(--radius-pill);
+	border-radius: var(--radius-xs);
 	transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 	box-sizing: border-box;
 	white-space: nowrap;
@@ -4250,7 +4321,7 @@ textarea {
 	align-items: center;
 	gap: var(--space-1);
 	padding: 0.6rem 1.2rem;
-	border-radius: var(--radius-xs);
+	border-radius: var(--radius-pill);
 	background: var(--color-background-contrast);
 	color: var(--color-content-secondary);
 	font-size: 1.4em;

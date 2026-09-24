@@ -171,7 +171,7 @@ own cover-active case is already covered there, so this attribute only needs the
 		html{font-size:62.5%}
 		body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;margin:0;background:var(--color-background-main,#fff)}
 		img{max-width:100%;height:auto}
-		.nav-header{position:fixed;top:0;left:0;width:100%;z-index:var(--z-nav,400)}
+		.nav-header{position:absolute;top:0;left:0;width:100%;z-index:var(--z-nav,400)}
 		.nav-header .logo img{width:auto;height:4rem}
 		.skip-link{position:absolute;top:-100%;left:0;z-index:9999}
 		.skip-link:focus{top:0}
@@ -422,6 +422,12 @@ own cover-active case is already covered there, so this attribute only needs the
 				</div>
 			</div>
 		</header>
+
+		{{!-- Duplicate of the header brand for pointer users once the header has
+		scrolled away; hidden from assistive tech and the tab order. --}}
+		<a class="sticky-logo" href="{{@site.url}}" tabindex="-1" aria-hidden="true">
+			{{#if @site.logo}}<img src="{{img_url @site.logo size="s"}}" alt="" />{{else}}<span>{{@site.title}}</span>{{/if}}
+		</a>
 
 		<noscript>
 			<style>
