@@ -66,7 +66,7 @@ $toc-breakpoint: 1300px;
 // TOC Title - uppercase with letter spacing
 .toc-title {
   font-family: var(--gh-font-body);
-  font-size: 1.2rem;
+  font-size: var(--font-size-3xs);
   font-weight: 500;
   color: var(--color-content-secondary);
   margin: 0;
@@ -102,7 +102,7 @@ $toc-breakpoint: 1300px;
 .toc-link {
   display: block;
   padding: 0.45rem 0 0.45rem 1.2rem;
-  font-size: 1.45rem;
+  font-size: var(--font-size-2xs);
   line-height: 1.4;
   font-weight: 400;
   color: var(--color-content-secondary);
@@ -126,12 +126,10 @@ $toc-breakpoint: 1300px;
 .toc-list .toc-list {
   .toc-link {
     padding-left: 2.2rem;
-    font-size: 1.4rem;
   }
 
   .toc-list .toc-link {
     padding-left: 3.2rem;
-    font-size: 1.35rem;
   }
 }
 
@@ -314,7 +312,7 @@ $toc-breakpoint: 1300px;
   align-items: center;
   gap: 0.6rem;
   font-family: var(--gh-font-body);
-  font-size: 1.2rem;
+  font-size: var(--font-size-3xs);
   font-weight: 500;
   color: var(--color-content-secondary);
   margin: 0;
@@ -400,7 +398,7 @@ $toc-breakpoint: 1300px;
 .toc-mobile-link {
   display: block;
   padding: 0.7rem 1.4rem 0.7rem 1.4rem;
-  font-size: 1.4rem;
+  font-size: var(--font-size-2xs);
   line-height: 1.4;
   color: var(--color-content-secondary);
   text-decoration: none;
@@ -426,12 +424,10 @@ $toc-breakpoint: 1300px;
 .toc-mobile-list .toc-mobile-list {
   .toc-mobile-link {
     padding-left: 2.4rem;
-    font-size: 1.35rem;
   }
 
   .toc-mobile-list .toc-mobile-link {
     padding-left: 3.4rem;
-    font-size: 1.3rem;
   }
 }
 
