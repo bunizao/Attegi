@@ -154,7 +154,9 @@
     }
   },
   "browserslist": [
-    "defaults"
+    "defaults",
+    "safari >= 16",
+    "ios_saf >= 16"
   ],
   "dependencies": {
     "handlebars": "^4.7.9"
