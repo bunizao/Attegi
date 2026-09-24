@@ -4305,7 +4305,7 @@ textarea {
 	justify-content: center;
 	align-items: center;
 	text-decoration: none;
-	border-radius: var(--radius-xs);
+	border-radius: var(--radius-sm);
 	transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 
 	// Expand the tap target to 44px without growing the visible square.
@@ -4358,7 +4358,7 @@ textarea {
 	min-height: 3rem;
 	text-align: center;
 	text-decoration: none;
-	border-radius: var(--radius-xs);
+	border-radius: var(--radius-sm);
 	transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 	box-sizing: border-box;
 	white-space: nowrap;
