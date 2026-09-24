@@ -4317,10 +4317,10 @@ textarea {
 	justify-content: center;
 	align-items: center;
 	text-decoration: none;
-	border-radius: var(--radius-sm);
+	border-radius: var(--radius-pill);
 	transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 
-	// Expand the tap target to 44px without growing the visible square.
+	// Expand the tap target to 44px without growing the visible circle.
 	&::before {
 		content: '';
 		position: absolute;
@@ -4337,8 +4337,8 @@ textarea {
 .post-tags {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: baseline;
-	gap: 0.5em;
+	align-items: center;
+	gap: var(--space-3);
 	flex: 1;
 	order: 1;
 
@@ -4358,8 +4358,6 @@ textarea {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	margin-right: 0.5em;
-	margin-bottom: 0.5em;
 	padding: 0 var(--space-4);
 	background: var(--color-background-contrast);
 	color: var(--color-content-main);
@@ -4370,7 +4368,7 @@ textarea {
 	min-height: 3rem;
 	text-align: center;
 	text-decoration: none;
-	border-radius: var(--radius-sm);
+	border-radius: var(--radius-pill);
 	transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
 	box-sizing: border-box;
 	white-space: nowrap;
