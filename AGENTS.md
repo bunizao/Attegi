@@ -49,6 +49,10 @@ There is no linter or test suite. `bun run validate` is the floor for every chan
   `init*` / `setup*` functions; shared helpers (`qs`, `qsa`, `onReady`,
   `throttle`, `getI18n`) come from `src/js/core/`. Two-space indent, semicolons, no jQuery.
 - Vendor scripts (`highlight.pack.js`, `glightbox`, `tocbot`) are copied, not bundled.
+- Cover `<img>` tags deliberately omit `crossorigin`: it blanks covers on
+  storage adapters without CORS headers. So `cover-detect.js` brightness
+  sampling only works for same-origin images; the baseline scrim must carry
+  contrast on its own.
 - `package.json` `config.custom` defines the Ghost admin settings read as
   `@custom.*`. The preview renderer reads defaults from there too.
 - `locales/*.json` back `{{t "..."}}`. A missing key falls back to the English

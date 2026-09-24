@@ -1,6 +1,10 @@
 /**
  * Cover Brightness Detection Feature
- * Detects if cover image is bright and applies contrast enhancement
+ * Detects if cover image is bright and applies contrast enhancement.
+ *
+ * Best-effort only: it works for same-origin cover images and is a no-op
+ * for everything else. The baseline scrim in style.scss keeps text readable
+ * without it, so `.light-cover` is an enhancement, never a requirement.
  */
 
 import { doc, qs } from '../core/index.js';
@@ -41,11 +45,15 @@ export function setupCoverBrightnessDetection() {
         postHeader.classList.add('light-cover');
       }
     } catch (e) {
-      // Cross-origin images without CORS headers taint the canvas and throw
-      // here on getImageData -- this is the common case (content CDN,
-      // Unsplash, custom storage adapters), so detection silently no-ops
-      // rather than adding crossorigin to the <img> and risking it failing
-      // to load entirely on hosts that don't send CORS headers.
+      // SecurityError from getImageData: the canvas is tainted. The cover
+      // <img> has no `crossorigin` attribute, so any cross-origin image is
+      // fetched in no-cors mode and taints the canvas even when its host
+      // does send Access-Control-Allow-Origin (Unsplash, Ghost(Pro) CDN).
+      // In practice that is most covers; only same-origin local storage
+      // gets analyzed. Adding `crossorigin="anonymous"` would fix CORS-enabled
+      // hosts but make the cover fail to load entirely on storage adapters
+      // (S3, GCS, ...) that don't send CORS headers, so it is deliberately
+      // left off. See the note in post.hbs.
     }
   }
 

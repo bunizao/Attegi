@@ -14,6 +14,9 @@
 		<div class="inner">
 			<h1 class="post-title">{{{title}}}</h1>
 			{{#if feature_image}}
+			{{!-- No crossorigin on the cover <img>: it would let cover-detect.js read
+			     pixels on CORS-enabled hosts, but blanks the cover on storage adapters
+			     that don't send CORS headers. Brightness detection stays best-effort. --}}
 			<div class="post-cover cover">
 				<picture>
 					<source

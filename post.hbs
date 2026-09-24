@@ -57,6 +57,9 @@
 			<span class="post-meta-details"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMM DD, YYYY"}}</time><span class="post-meta-sep" aria-hidden="true">•</span><span class="post-meta-reading">{{reading_time minute=(t "1 min read") minutes=(t "% min read")}}</span></span>
 		</div>
 		{{#if feature_image}}
+		{{!-- No crossorigin on the cover <img>: it would let cover-detect.js read
+		     pixels on CORS-enabled hosts, but blanks the cover on storage adapters
+		     that don't send CORS headers. Brightness detection stays best-effort. --}}
 		<div class="post-cover cover">
 			<picture>
 				<source
