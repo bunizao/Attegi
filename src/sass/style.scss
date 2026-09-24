@@ -937,9 +937,14 @@ textarea {
 	// never wins.
 	.kg-button-card a.kg-btn,
 	.button {
-		display: block;
-		padding: var(--space-3);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 4.4rem;
+		padding: 0 var(--space-6);
 		border: 0;
+		font-size: var(--font-size-xs);
+		line-height: 1.2;
 		border-radius: var(--radius-pill);
 		box-sizing: border-box;
 		appearance: normal;
