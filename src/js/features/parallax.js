@@ -2,7 +2,7 @@
  * Parallax Cover Feature
  * Applies parallax effect to cover images on scroll. Also owns the one
  * site-wide scroll listener that toggles `.nav-offscreen` once the nav
- * header has scrolled out of view (shows the sticky logo), so nothing else
+ * header has scrolled out of view (shows the floating menu), so nothing else
  * needs to register its own.
  */
 

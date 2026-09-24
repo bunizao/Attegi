@@ -423,11 +423,42 @@ own cover-active case is already covered there, so this attribute only needs the
 			</div>
 		</header>
 
-		{{!-- Duplicate of the header brand for pointer users once the header has
-		scrolled away; hidden from assistive tech and the tab order. --}}
-		<a class="sticky-logo" href="{{@site.url}}" tabindex="-1" aria-hidden="true">
-			{{#if @site.logo}}<img src="{{img_url @site.logo size="s"}}" alt="" />{{else}}<span>{{@site.title}}</span>{{/if}}
-		</a>
+		{{!-- Compact site menu for wide screens once the header has scrolled
+		away. The Popover API handles Escape, click-outside and focus return;
+		src/js/features/float-nav.js only closes it when an item is used. --}}
+		<div class="float-nav">
+			<button type="button" class="float-nav-trigger" popovertarget="float-nav-panel" aria-label="{{t "Menu"}}">
+				<span class="float-nav-icon" aria-hidden="true"><span></span><span></span></span>
+			</button>
+			<div class="float-nav-panel" id="float-nav-panel" popover>
+				<a class="float-nav-home" href="{{@site.url}}">
+					{{#if @site.icon}}<img src="{{img_url @site.icon size="s"}}" alt="" width="24" height="24" />{{/if}}
+					<span>{{@site.title}}</span>
+				</a>
+				<nav class="float-nav-links" aria-label="{{t "Main"}}">
+					{{navigation}}
+				</nav>
+				<div class="float-nav-footer">
+					<a class="float-nav-search" href="#search" role="button" data-ghost-search><i class="icon" aria-hidden="true">{{> "icons/icon-search"}}</i>{{t "Search"}}</a>
+					{{#if @site.members_enabled}}
+						<div class="float-nav-members">
+							{{#unless @member}}
+								{{#unless @site.members_invite_only}}
+									<a class="nav-link-text" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
+								{{#unless hideSubscribeButton}}
+									<a class="nav-button-primary" href="#/portal/signup" data-portal="signup">{{t "Subscribe"}}</a>
+								{{/unless}}
+							{{else}}
+								<a class="nav-button-primary" href="#/portal/signin" data-portal="signin">{{t "Sign in"}}</a>
+							{{/unless}}
+						{{else}}
+							<a class="nav-link-text" href="#/portal/account" data-portal="account">{{t "Account"}}</a>
+						{{/unless}}
+						</div>
+					{{/if}}
+				</div>
+			</div>
+		</div>
 
 		<noscript>
 			<style>
