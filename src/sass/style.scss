@@ -3452,15 +3452,19 @@ textarea {
 		background: var(--color-background-contrast);
 	}
 
-	svg {
-		width: 1.8rem;
-		height: 1.8rem;
+	// Size the .icon box, not the svg: an svg larger than its 1em box
+	// overflows to the bottom right and sits off center.
+	.icon {
+		font-size: 1.8rem;
 	}
 
-	.icon-rss svg {
-		width: 2.2rem;
-		height: 2.2rem;
-		transform: translate(0.22rem, -0.16rem);
+	// Solid glyph reads heavier than the stroked icons; its ink sits low-left
+	.icon-rss {
+		font-size: 1.6rem;
+
+		svg {
+			transform: translate(0.035em, -0.035em);
+		}
 	}
 }
 
@@ -3485,9 +3489,17 @@ textarea {
 		background: var(--color-background-contrast);
 	}
 
-	svg {
-		width: 1.8rem;
-		height: 1.8rem;
+	.icon {
+		font-size: 1.8rem;
+	}
+
+	// Optical nudges toward each glyph's ink centroid
+	.theme-icon-monitor svg {
+		transform: translateY(0.015em);
+	}
+
+	.theme-icon-moon svg {
+		transform: translate(0.03em, -0.025em);
 	}
 }
 
