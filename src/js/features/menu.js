@@ -4,7 +4,7 @@
  */
 
 import { qs, docEl } from '../core/index.js';
-import { openDialog, closeDialog } from '../core/dialog.js';
+import { openDialog, closeDialog, isPointerClick } from '../core/dialog.js';
 
 /**
  * Initialize menu toggle functionality
@@ -27,33 +27,33 @@ export function initMenu() {
     });
   }
 
-  function open() {
+  function open(pointer) {
     docEl.classList.add('menu-active');
     trigger.setAttribute('aria-expanded', 'true');
     setBackgroundInert(true);
-    openDialog(sheet, { trigger: trigger, onClose: close });
+    openDialog(sheet, { trigger: trigger, onClose: close, pointer: pointer });
   }
 
-  function close() {
+  function close(pointer) {
     docEl.classList.remove('menu-active');
     trigger.setAttribute('aria-expanded', 'false');
     setBackgroundInert(false);
-    closeDialog(sheet);
+    closeDialog(sheet, { pointer: pointer });
   }
 
   trigger.addEventListener('click', function(event) {
     event.preventDefault();
     if (docEl.classList.contains('menu-active')) {
-      close();
+      close(isPointerClick(event));
     } else {
-      open();
+      open(isPointerClick(event));
     }
   });
 
   if (closeButton) {
     closeButton.addEventListener('click', function(event) {
       event.preventDefault();
-      close();
+      close(isPointerClick(event));
     });
   }
 

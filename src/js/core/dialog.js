@@ -54,20 +54,33 @@ function trapTab(dialogEl, event) {
   var first = focusable[0];
   var last = focusable[focusable.length - 1];
 
-  if (event.shiftKey && document.activeElement === first) {
+  var active = document.activeElement;
+  if (event.shiftKey && (active === first || active === dialogEl)) {
     event.preventDefault();
     last.focus();
-  } else if (!event.shiftKey && document.activeElement === last) {
+  } else if (!event.shiftKey && active === last) {
     event.preventDefault();
     first.focus();
   }
 }
 
 /**
- * Open a dialog: focuses its first focusable element and starts trapping
- * Tab/Escape. Store the returned trigger so `closeDialog` can restore focus.
+ * True when a click came from a mouse or touch rather than Enter/Space on a
+ * focused button (keyboard activation reports `detail === 0`).
+ * @param {Event} [event]
+ * @returns {boolean}
+ */
+export function isPointerClick(event) {
+  return Boolean(event && event.type === 'click' && event.detail > 0);
+}
+
+/**
+ * Open a dialog: moves focus in and starts trapping Tab/Escape. Keyboard
+ * opens focus the first focusable element; pointer opens focus the dialog
+ * itself, so screen readers still land inside but no focus ring flashes on
+ * a control the user never tabbed to.
  * @param {Element} dialogEl
- * @param {{trigger?: Element, onClose?: Function}} [options]
+ * @param {{trigger?: Element, onClose?: Function, pointer?: boolean}} [options]
  */
 export function openDialog(dialogEl, options) {
   options = options || {};
@@ -94,22 +107,31 @@ export function openDialog(dialogEl, options) {
   // requestAnimationFrame nor a setTimeout(0) reliably lands after that:
   // retry across a few frames and confirm the focus actually landed, instead
   // of guessing how many frames the style flush takes.
-  focusFirstFocusable(dialogEl, 0);
+  if (options.pointer) {
+    dialogEl.setAttribute('tabindex', '-1');
+    retryFocus(dialogEl, 0);
+  } else {
+    focusFirstFocusable(dialogEl, 0);
+  }
 }
 
 /**
  * Close a dialog opened with `openDialog`: stops the Tab trap and restores
- * focus to the element that opened it.
+ * focus to the element that opened it. Pointer closes drop focus instead:
+ * a script-focused trigger shows a focus ring in WebKit after a tap.
  * @param {Element} dialogEl
+ * @param {{pointer?: boolean}} [options]
  */
-export function closeDialog(dialogEl) {
+export function closeDialog(dialogEl, options) {
   if (dialogEl._dialogKeydown) {
     dialogEl.removeEventListener('keydown', dialogEl._dialogKeydown);
     dialogEl._dialogKeydown = null;
   }
   var trigger = dialogEl._dialogTrigger;
   dialogEl._dialogTrigger = null;
-  if (trigger && typeof trigger.focus === 'function') {
+  if (options && options.pointer) {
+    if (dialogEl.contains(document.activeElement)) document.activeElement.blur();
+  } else if (trigger && typeof trigger.focus === 'function') {
     retryFocus(trigger, 0);
   }
 }

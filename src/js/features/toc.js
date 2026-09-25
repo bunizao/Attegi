@@ -6,7 +6,7 @@
 import { doc, qs } from '../core/index.js';
 import { getI18n } from '../core/i18n.js';
 import { onScroll, getReadingProgress, getFooterAvoidingBottom } from '../core/scroll.js';
-import { openDialog, closeDialog } from '../core/dialog.js';
+import { openDialog, closeDialog, isPointerClick } from '../core/dialog.js';
 
 var config = { minHeadings: 2 };
 var state = {
@@ -330,7 +330,11 @@ function openMobileTOC(event) {
   elements.mobileOverlay.classList.add('is-open');
   elements.mobileDrawer.classList.add('is-open');
 
-  openDialog(elements.mobileDrawer, { trigger: elements.mobileTrigger, onClose: closeMobileTOC });
+  openDialog(elements.mobileDrawer, {
+    trigger: elements.mobileTrigger,
+    onClose: closeMobileTOC,
+    pointer: isPointerClick(event)
+  });
 
   setTimeout(function() {
     scrollMobileTOCToActiveItem();
@@ -350,9 +354,9 @@ function closeMobileTOC() {
   doc.body.classList.remove('toc-suppress-hover');
 }
 
-function requestCloseMobileTOC() {
+function requestCloseMobileTOC(event) {
   closeMobileTOC();
-  closeDialog(elements.mobileDrawer);
+  closeDialog(elements.mobileDrawer, { pointer: isPointerClick(event) });
 }
 
 function updateProgressRing() {
