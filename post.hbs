@@ -179,7 +179,9 @@
 			</section>
 			{{/if}}
 
-      {{#if @site.members_enabled}}
+      {{!-- Free email signup only works when anyone can join; invite-only
+           and paid-only sites go through Portal from the header instead. --}}
+      {{#match @site.members_signup_access "=" "all"}}
       <section class="post-subscribe">
         {{#unless @member}}
         	<p class="post-subscribe-text">{{#if @custom.email_signup_text}}{{@custom.email_signup_text}}{{else}}{{t "Sign up for more like this."}}{{/if}}</p>
@@ -191,7 +193,7 @@
         	<p class="post-subscribe-message post-subscribe-error" role="alert">{{t "Something went wrong. Please try again."}}</p>
         {{/unless}}
       </section>
-      {{/if}}
+      {{/match}}
 
 			{{> "recent-posts"}}
 
