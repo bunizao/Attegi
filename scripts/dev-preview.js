@@ -375,7 +375,6 @@ async function getCommonContext(pathname) {
     currentPath: pathname,
     collections: {},
     member: null,
-    hideSubscribeButton: false
   };
 }
 
