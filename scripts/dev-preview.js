@@ -394,6 +394,8 @@ function buildSite(settings) {
     members_enabled: Boolean(settings.members_enabled),
     members_invite_only: Boolean(settings.members_invite_only),
     members_signup_access: settings.members_signup_access || 'all',
+    recommendations_enabled: Boolean(settings.recommendations_enabled),
+    donations_enabled: Boolean(settings.donations_enabled),
     navigation: settings.navigation || [],
     secondary_navigation: settings.secondary_navigation || []
   };

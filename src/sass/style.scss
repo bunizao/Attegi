@@ -3404,7 +3404,8 @@ textarea {
 	}
 }
 
-/* Secondary navigation from Ghost Admin, under the credits */
+/* Secondary navigation and Portal links, under the credits */
+.footer-nav,
 .footer-nav ul {
 	display: flex;
 	flex-wrap: wrap;
@@ -3417,6 +3418,18 @@ textarea {
 	@media only screen and (max-width: $breakpoint-medium) {
 		justify-content: center;
 	}
+}
+
+.footer-nav ul {
+	margin: 0;
+
+	&:not(:has(li)) {
+		display: none;
+	}
+}
+
+.footer-nav:not(:has(a)) {
+	display: none;
 }
 
 /* Footer Center (Custom Text) */

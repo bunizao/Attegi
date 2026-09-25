@@ -513,9 +513,15 @@ own cover-active case is already covered there, so this attribute only needs the
 					<div class="footer-left">
 						<span class="footer-copyright">&copy; {{date format='YYYY'}} {{@site.title}}</span>
 						<span class="footer-credits">{{t "Published with"}} <a href="https://ghost.org">Ghost</a> & <a href="https://github.com/bunizao/attegi">Attegi</a></span>
-						{{#if @site.secondary_navigation}}
-						<nav class="footer-nav" aria-label="{{t "Footer navigation"}}">{{navigation type="secondary"}}</nav>
-						{{/if}}
+						{{!-- Secondary navigation plus Portal pages Ghost Admin can switch on.
+						     Hidden by CSS when none of them render a link. --}}
+						<nav class="footer-nav" aria-label="{{t "Footer navigation"}}">
+							{{navigation type="secondary"}}
+							<ul>
+								{{#if @site.recommendations_enabled}}<li><a href="#/portal/recommendations" data-portal="recommendations">{{t "Recommendations"}}</a></li>{{/if}}
+								{{#if @site.donations_enabled}}<li><a href="#/portal/support" data-portal="support">{{t "Support"}}</a></li>{{/if}}
+							</ul>
+						</nav>
 					</div>
 
 					{{!-- Center: Custom text (supports HTML) --}}
