@@ -56,7 +56,9 @@ There is no linter or test suite. `bun run validate` is the floor for every chan
 - `package.json` `config.custom` defines the Ghost admin settings read as
   `@custom.*`. The preview renderer reads defaults from there too.
 - `locales/*.json` back `{{t "..."}}`. A missing key falls back to the English
-  key text. `en`, `zh`, and `zh_tw` are complete; some older locales lag.
+  key text. `en`, `zh`, and `zh-Hant` are complete; some older locales lag.
+  File names must match the Ghost admin locale code exactly (Ghost does
+  no fallback), e.g. `zh-Hant`, not `zh_tw`.
 
 ## Design system
 
