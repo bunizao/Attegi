@@ -380,11 +380,12 @@ textarea {
 		scroll-margin-top: 8rem;
 	}
 
-	// Also the pre-JS/no-JS fallback for `[!poem]` blockquotes (see
+	// Also the no-JS fallback for `[!poem]` blockquotes (see
 	// src/js/features/poem-cards.js): Ghost has no server-side hook to turn
-	// that syntax into a real card, so RSS readers, crawlers, and the brief
-	// pre-JS window all see this styling -- accent border, italic, indented
-	// -- rather than raw unstyled text. There's no CSS way to hide just the
+	// that syntax into a real card, so RSS readers, crawlers, and the
+	// no-JS case see this styling -- accent border, italic, indented --
+	// rather than raw unstyled text. With JS, post.hbs hides the blockquote
+	// until the card replaces it. There's no CSS way to hide just the
 	// literal "[!poem]"/"--" markers (no text-pattern selector exists), so
 	// this is the ceiling for that state; JS supersedes it once it runs.
 	blockquote {
@@ -394,6 +395,12 @@ textarea {
 		border-left: 0.25em solid var(--ghost-accent-color);
 		font-style: italic;
 		font-weight: 400;
+	}
+
+	// Set by the inline script after {{content}} in post.hbs; poem-cards.js
+	// replaces the blockquote (or drops the class) once it runs.
+	blockquote.kg-poem-pending {
+		visibility: hidden;
 	}
 
 	// Optimized: use child selector instead of universal selector

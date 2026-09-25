@@ -14,7 +14,7 @@
 		min-width: 300px;
 		max-width: 600px;
 		margin: 0 0 2.5rem;
-		padding: 3rem 3.5rem;
+		padding: 2.8rem 3.2rem;
 		background: var(--color-background-secondary);
 		border: 1px solid var(--color-background-contrast);
 		border-radius: var(--radius-md);
@@ -28,38 +28,30 @@
 			min-width: auto;
 			max-width: 100%;
 			width: 100%;
-			padding: 2.5rem 3rem;
+			padding: 2.4rem 2.8rem;
 		}
 
 		@media only screen and (max-width: $breakpoint-small) {
-			padding: 2rem 2.5rem;
+			padding: 2rem 2.2rem;
 		}
 	}
 
-	// Poem header section
-	.kg-poem-header {
-		margin-bottom: 1.5rem;
-	}
-
+	// Sizes are in em so the card tracks the post's body size: verses read at
+	// body size, the title and credit a step below.
 	.kg-poem-title {
 		font-family: var(--gh-font-heading);
-		font-size: 1.6rem;
+		font-size: 0.9em;
 		font-weight: 600;
-		line-height: 1.3;
+		line-height: 1.4;
 		margin: 0;
 		color: var(--color-content-lead);
-
-		@media only screen and (max-width: $breakpoint-small) {
-			font-size: 1.5rem;
-		}
 	}
 
-	// Divider lines
+	// Divider under the title
 	.kg-poem-divider {
 		height: 1px;
-		margin: 1.5rem 0;
-		background: var(--color-background-contrast);
-		opacity: 0.5;
+		margin: 1.2rem 0 1.6rem;
+		background: var(--color-border);
 		border: none;
 	}
 
@@ -86,43 +78,32 @@
 	// Individual verse lines
 	.kg-poem-line {
 		font-family: var(--gh-font-body);
-		font-size: 1.5rem;
+		font-size: 1em;
 		font-weight: 400;
-		line-height: 1.8;
-		margin: 0 0 0.5em;
+		line-height: 1.7;
+		margin: 0 0 0.3em;
 		color: var(--color-content-main);
 		font-style: italic;
-
-		@media only screen and (max-width: $breakpoint-medium) {
-			font-size: 1.4rem;
-		}
-
-		@media only screen and (max-width: $breakpoint-small) {
-			font-size: 1.3rem;
-			line-height: 1.75;
-		}
 
 		&:last-child {
 			margin-bottom: 0;
 		}
 	}
 
-	// Author attribution
+	// Author attribution: flush right under the verses, the usual place for
+	// an epigraph credit. Resets the generic `figure figcaption` styling
+	// (centered, padded, width-capped) meant for image captions.
 	.kg-poem-author {
+		max-width: none;
+		margin: 1.2rem 0 0;
+		padding: 0;
 		font-family: var(--gh-font-body);
-		font-size: 1.3rem;
+		font-size: 0.85em;
 		font-weight: 500;
 		line-height: 1.5;
-		margin: 1.5rem 0 0;
+		text-align: right;
 		color: var(--color-content-secondary);
 		font-style: normal;
-
-		@media only screen and (max-width: $breakpoint-small) {
-			font-size: 1.2rem;
-		}
-
-		// Em dash prefix is part of the content
-		// Users should type: — Author Name
 	}
 
 	// Centered layout variant

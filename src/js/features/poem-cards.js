@@ -120,10 +120,6 @@ function createPoemCard(data) {
   }
 
   if (data.author) {
-    var divider2 = doc.createElement('div');
-    divider2.className = 'kg-poem-divider';
-    card.appendChild(divider2);
-
     var authorEl = doc.createElement('figcaption');
     authorEl.className = 'kg-poem-author';
     authorEl.textContent = data.author;
@@ -147,6 +143,9 @@ export function initPoemCards() {
     if (poemData) {
       var poemCard = createPoemCard(poemData);
       blockquote.parentNode.replaceChild(poemCard, blockquote);
+    } else {
+      // Not a parsable poem after all: show the plain blockquote again.
+      blockquote.classList.remove('kg-poem-pending');
     }
   });
 }
