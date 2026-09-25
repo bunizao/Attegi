@@ -1,0 +1,20 @@
+{{!-- Hide `[!poem]` blockquotes until the deferred bundle turns them into
+     cards, so the raw syntax never paints. Include right after {{content}}
+     so it runs before the parser yields a frame. Deferred scripts run before
+     DOMContentLoaded, so anything still pending then means the bundle failed:
+     show the plain blockquote rather than leave it hidden. --}}
+<script>
+	(function () {
+		var pending = [];
+		document.querySelectorAll('.post-content blockquote').forEach(function (q) {
+			if (/^\s*\[!poem\]/.test(q.textContent)) {
+				q.classList.add('kg-poem-pending');
+				pending.push(q);
+			}
+		});
+		if (!pending.length) return;
+		document.addEventListener('DOMContentLoaded', function () {
+			pending.forEach(function (q) { q.classList.remove('kg-poem-pending'); });
+		});
+	})();
+</script>

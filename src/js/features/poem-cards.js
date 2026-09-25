@@ -32,21 +32,13 @@ function parsePoemBlockquote(blockquote) {
 
   if (lines.length === 0) return null;
 
-  var poemLineIndex = -1;
-  var title = '';
+  // The marker must open the quote; a quote that merely mentions `[!poem]`
+  // in its prose stays a plain blockquote.
+  var poemMatch = lines[0].match(/^\[!poem\](.*)$/);
+  if (!poemMatch) return null;
 
-  for (var i = 0; i < lines.length; i++) {
-    if (lines[i].includes('[!poem]')) {
-      poemLineIndex = i;
-      var poemMatch = lines[i].match(/\[!poem\](.*)$/);
-      if (poemMatch) title = poemMatch[1].trim();
-      break;
-    }
-  }
-
-  if (poemLineIndex === -1) return null;
-
-  var contentLines = lines.slice(poemLineIndex + 1);
+  var title = poemMatch[1].trim();
+  var contentLines = lines.slice(1);
   var author = '';
   var verses = contentLines;
 
@@ -136,8 +128,7 @@ export function initPoemCards() {
   var blockquotes = qsa('.post-content blockquote');
 
   Array.prototype.forEach.call(blockquotes, function(blockquote) {
-    var text = blockquote.textContent.trim();
-    if (!text.includes('[!poem]')) return;
+    if (!/^\s*\[!poem\]/.test(blockquote.textContent)) return;
 
     var poemData = parsePoemBlockquote(blockquote);
     if (poemData) {

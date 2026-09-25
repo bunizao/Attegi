@@ -397,7 +397,7 @@ textarea {
 		font-weight: 400;
 	}
 
-	// Set by the inline script after {{content}} in post.hbs; poem-cards.js
+	// Set by partials/poem-pending.hbs after {{content}}; poem-cards.js
 	// replaces the blockquote (or drops the class) once it runs.
 	blockquote.kg-poem-pending {
 		visibility: hidden;

@@ -9,6 +9,7 @@ import { wrapEmbeds } from '../features/embeds.js';
 import { highlightCode } from '../features/code-highlight.js';
 import { detectContentLanguage } from '../features/lang-detect.js';
 import { initToggleCards } from '../features/toggle-cards.js';
+import { initPoemCards } from '../features/poem-cards.js';
 import { setupCoverBrightnessDetection } from '../features/cover-detect.js';
 
 onReady(function() {
@@ -16,6 +17,7 @@ onReady(function() {
   if (!pageContent) return;
 
   detectContentLanguage(pageContent);
+  initPoemCards();
 
   // Valid here because this file loads as a deferred classic script:
   // `currentScript` is only reliable during a script's own synchronous run.

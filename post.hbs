@@ -92,14 +92,7 @@
 			<section class="post-content{{#has tag="#no-toc"}} no-toc{{/has}}">
 				{{content}}
 			</section>
-			{{!-- Hide `[!poem]` blockquotes until post.js (deferred) turns them
-			     into cards, so the raw syntax never paints. Inline and right
-			     after the content so it runs before the parser yields a frame. --}}
-			<script>
-				document.querySelectorAll('.post-content blockquote').forEach(function (q) {
-					if (q.textContent.indexOf('[!poem]') !== -1) q.classList.add('kg-poem-pending');
-				});
-			</script>
+			{{> "poem-pending"}}
 
 		<section class="post-footer">
 
