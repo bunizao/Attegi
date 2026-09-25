@@ -6811,6 +6811,10 @@ a.post-tag-chip {
 	padding: 0;
 	position: relative;
 
+	&:not(:has(.tag-post-preview)) {
+		display: none;
+	}
+
 	// Scrollable posts container for non-image cards
 	&.is-scrollable {
 		.tag-posts-scroll {

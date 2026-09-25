@@ -552,12 +552,8 @@ async function buildCollections(model) {
       order: 'created_at desc'
     });
     collections.tags = (tagData.tags || []).map((tag) => decorateTag(tag, api.siteUrl));
-    collections.postsByTag = {};
-
-    await Promise.all(collections.tags.map(async (tag) => {
-      const posts = await listPosts({ filter: `tag:${tag.slug}`, limit: 10 });
-      collections.postsByTag[tag.slug] = posts.items;
-    }));
+    const posts = await listPosts({ limit: 100 });
+    collections.posts = posts.items;
   }
 
   if (!collections.posts) {
@@ -1012,25 +1008,18 @@ function getHelper(resource, options) {
   const hash = options.hash || {};
 
   if (resource === 'tags') {
-    return options.fn({ tags: collections.tags || [] });
+    const tags = collections.tags || [];
+    return options.fn({ tags }, { blockParams: [tags] });
   }
 
   if (resource === 'posts') {
-    const filter = interpolateFilter(hash.filter || '', this);
-    let posts = collections.posts || [];
-    const tagMatch = filter.match(/^tag:(.+)$/);
-    if (tagMatch && collections.postsByTag) {
-      posts = collections.postsByTag[tagMatch[1]] || [];
-    }
+    const posts = collections.posts || [];
     const limit = Number(hash.limit) || posts.length;
-    return options.fn({ posts: posts.slice(0, limit) });
+    const result = posts.slice(0, limit);
+    return options.fn({ posts: result }, { blockParams: [result] });
   }
 
   return options.inverse ? options.inverse(this) : '';
-}
-
-function interpolateFilter(filter, context) {
-  return String(filter).replace(/\{\{slug\}\}/g, context.slug || '');
 }
 
 function renderErrorPage(error) {

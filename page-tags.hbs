@@ -27,6 +27,10 @@
     <div class="content">
         <div class="inner">
             <div class="tags-grid">
+                {{!-- One query for recent posts, matched to each tag below, instead
+                     of a {{#get}} per tag (up to 100 extra queries per render).
+                     Tags whose posts are all older than these show no previews. --}}
+                {{#get "posts" limit="100" include="tags" as |recent|}}
                 {{#get "tags" limit="100" include="count.posts,codeinjection_head" filter="visibility:public" order="created_at desc"}}
                     {{#foreach tags}}
                         <article class="tag-card{{#if feature_image}} has-image{{/if}}{{#if accent_color}} has-accent{{/if}}"
@@ -63,19 +67,6 @@
                                     </div>
                                 </a>
 
-                                {{!-- Post previews with glassmorphism for image cards --}}
-                                {{#get "posts" limit="10" filter="tag:{{slug}}" include="authors"}}
-                                    {{#if posts}}
-                                        <div class="tag-card-posts" data-total="{{posts.length}}">
-                                            {{#foreach posts}}
-                                                <a href="{{url}}" class="tag-post-preview">
-                                                    <span class="tag-post-title">{{title}}</span>
-                                                    <span class="tag-post-date">{{date format="MMM D"}}</span>
-                                                </a>
-                                            {{/foreach}}
-                                        </div>
-                                    {{/if}}
-                                {{/get}}
                             {{/if}}
 
                             {{!-- Standard card content (no image) --}}
@@ -102,23 +93,21 @@
                                 </a>
                             {{/unless}}
 
-                            {{!-- Post previews for cards without image --}}
-                            {{#unless feature_image}}
-                                {{#get "posts" limit="10" filter="tag:{{slug}}" include="authors"}}
-                                    {{#if posts}}
-                                        <div class="tag-card-posts" data-total="{{posts.length}}">
-                                            {{#foreach posts}}
-                                                <a href="{{url}}" class="tag-post-preview">
-                                                    <span class="tag-post-title">{{title}}</span>
-                                                    <span class="tag-post-date">{{date format="MMM D"}}</span>
-                                                </a>
-                                            {{/foreach}}
-                                        </div>
-                                    {{/if}}
-                                {{/get}}
-                            {{/unless}}
+                            {{!-- This tag's posts among the recent ones fetched above.
+                                 Hidden by CSS when none match. --}}
+                            <div class="tag-card-posts">
+                                {{#foreach recent}}
+                                    {{#has tag=../name}}
+                                        <a href="{{url}}" class="tag-post-preview">
+                                            <span class="tag-post-title">{{title}}</span>
+                                            <span class="tag-post-date">{{date format="MMM D"}}</span>
+                                        </a>
+                                    {{/has}}
+                                {{/foreach}}
+                            </div>
                         </article>
                     {{/foreach}}
+                {{/get}}
                 {{/get}}
             </div>
         </div>
