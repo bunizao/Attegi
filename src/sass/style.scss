@@ -1312,6 +1312,32 @@ textarea {
 		border-radius: var(--radius-md);
 		overflow: visible;
 
+		&.kg-width-wide {
+			max-width: calc(100% + 8rem) !important;
+			width: calc(100% + 8rem);
+			margin-left: -4rem;
+			margin-right: -4rem;
+
+			@media only screen and (max-width: $breakpoint-medium) {
+				max-width: 100% !important;
+				width: 100%;
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
+
+		&.kg-width-full {
+			max-width: none !important;
+			width: 100vw;
+			margin-left: calc(-50vw + 50%);
+			margin-right: calc(-50vw + 50%);
+			border-radius: 0;
+
+			.kg-video-container {
+				border-radius: 0;
+			}
+		}
+
 		.kg-video-container {
 			position: relative;
 			border-radius: var(--radius-md);
@@ -2701,6 +2727,7 @@ textarea {
 
 .nav-brand {
 	flex-shrink: 0;
+	min-width: 0;
 
 	a {
 		display: block;
@@ -2721,6 +2748,18 @@ textarea {
 		font-weight: 600;
 		font-size: 1.8rem;
 		color: var(--color-content-lead);
+	}
+
+	// A long title without a logo would otherwise push the menu button off
+	// narrow screens: let it shrink and truncate instead.
+	&:has(.wordmark) {
+		flex-shrink: 1;
+
+		a {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 	}
 }
 
@@ -4027,6 +4066,7 @@ textarea {
 	position: relative;
 	z-index: var(--z-content);
 	margin: 0 0 var(--space-3);
+	overflow-wrap: break-word;
 	font-family: var(--gh-font-heading);
 	font-size: 2.4em;
 	line-height: 1.2em;
