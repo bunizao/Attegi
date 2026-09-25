@@ -25,6 +25,7 @@
   /* Hairlines: card outlines, table rules, dividers */
   --color-border: rgb(0 0 0 / 0.08);
   --color-border-strong: rgb(0 0 0 / 0.16);
+  --color-error: #c5362c;
 
   /* Glass: nav pills and floating menu (surface), mobile menu (strong) */
   --glass-surface: rgb(255 255 255 / 0.82);
@@ -73,6 +74,7 @@
 
     --color-border: rgb(255 255 255 / 0.09);
     --color-border-strong: rgb(255 255 255 / 0.18);
+    --color-error: #f2857b;
 
     --shadow-float: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.6);
     --shadow-sheet: 0 -12px 32px -12px rgb(0 0 0 / 0.6);

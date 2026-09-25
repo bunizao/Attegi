@@ -628,7 +628,6 @@ function registerHelpers() {
   Handlebars.registerHelper('comments', commentsHelper);
   Handlebars.registerHelper('ghost_head', ghostHeadHelper);
   Handlebars.registerHelper('ghost_foot', ghostFootHelper);
-  Handlebars.registerHelper('subscribe_form', subscribeFormHelper);
   Handlebars.registerHelper('get', getHelper);
 }
 
@@ -974,17 +973,6 @@ function ghostFootHelper(options) {
   const root = options.data.root || {};
   const ghost = root.ghost || {};
   return new Handlebars.SafeString(ghost.codeinjectionFoot || '');
-}
-
-function subscribeFormHelper(options) {
-  const hash = options.hash || {};
-  const formClass = hash.form_class || 'subscribe-form';
-  const inputClass = hash.input_class || 'subscribe-input';
-  const buttonClass = hash.button_class || 'subscribe-button';
-  const placeholder = hash.placeholder || 'Your email address';
-  return new Handlebars.SafeString(
-    `<form class="${formClass}" data-preview-disabled><input class="${inputClass}" type="email" placeholder="${escapeHtml(placeholder)}" disabled><button class="${buttonClass}" type="button" disabled>Subscribe</button></form>`
-  );
 }
 
 function getHelper(resource, options) {

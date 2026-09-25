@@ -175,7 +175,12 @@
       <section class="post-subscribe">
         {{#unless @member}}
         	<p class="post-subscribe-text">{{#if @custom.email_signup_text}}{{@custom.email_signup_text}}{{else}}{{t "Sign up for more like this."}}{{/if}}</p>
-        	{{subscribe_form placeholder=(t "Your email address") form_class="post-subscribe-form" input_class="post-subscribe-input" button_class="post-subscribe-button"}}
+        	<form class="post-subscribe-form" data-members-form="subscribe">
+        		<input class="post-subscribe-input" data-members-email type="email" name="email" autocomplete="email" required placeholder="{{t "Your email address"}}" aria-label="{{t "Your email address"}}">
+        		<button class="post-subscribe-button" type="submit">{{t "Subscribe"}}</button>
+        	</form>
+        	<p class="post-subscribe-message post-subscribe-success" role="status">{{t "Check your inbox to confirm your subscription."}}</p>
+        	<p class="post-subscribe-message post-subscribe-error" role="alert">{{t "Something went wrong. Please try again."}}</p>
         {{/unless}}
       </section>
       {{/if}}

@@ -4565,82 +4565,104 @@ textarea {
 	}
 }
 
+// One pill at every width: the input and the button share a single
+// outline, with the button docked inside the right edge. Portal adds
+// `loading`, `success` or `error` to the form on submit.
 .post-subscribe-form {
 	display: flex;
+	align-items: center;
 	gap: var(--space-2);
 	max-width: 42rem;
 	margin: 0 auto;
-	align-items: stretch;
+	padding: 0.4rem;
+	background: var(--color-background-main);
+	border: 1px solid var(--color-border-strong);
+	border-radius: var(--radius-pill);
+	transition: border-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard);
 
-	@media only screen and (max-width: $breakpoint-small) {
-		flex-direction: column;
-		gap: var(--space-2);
+	&:focus-within {
+		border-color: var(--ghost-accent-color);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--ghost-accent-color) 18%, transparent);
+	}
+
+	&.error {
+		border-color: var(--color-error);
 	}
 }
 
 .post-subscribe-input {
 	flex: 1;
-	padding: 0.9rem 1.4rem;
-	font-size: 1.5em;
-	line-height: 1.5;
+	min-width: 0;
+	height: 4.4rem;
+	padding: 0 0 0 1.4rem;
+	// 16px minimum: iOS Safari zooms the page when a smaller input is focused.
+	font-size: 1.6rem;
 	color: var(--color-content-main);
-	background: var(--color-background-main);
-	border: 1px solid var(--color-border);
-	border-radius: var(--radius-pill);
-	transition: border-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard);
-	box-sizing: border-box;
+	background: transparent;
+	border: none;
+	border-radius: 0;
+	outline: none;
+	-webkit-appearance: none;
+	appearance: none;
 
 	&::placeholder {
 		color: var(--color-content-secondary);
-		opacity: 0.6;
-	}
-
-	&:hover {
-		border-color: var(--color-border-strong);
-	}
-
-	&:focus {
-		outline: none;
-		border-color: var(--ghost-accent-color);
-		box-shadow: 0 0 0 2px color-mix(in srgb, var(--ghost-accent-color) 12%, transparent);
-	}
-
-	@media only screen and (max-width: $breakpoint-small) {
-		padding: 0.85rem 1.2rem;
-		font-size: 1.4em;
+		opacity: 0.7;
 	}
 }
 
 .post-subscribe-button {
-	padding: 0.9rem var(--space-5);
-	font-size: 1.5em;
+	flex-shrink: 0;
+	height: 4.4rem;
+	padding: 0 var(--space-5);
+	font-family: inherit;
+	font-size: 1.5rem;
 	font-weight: 600;
-	line-height: 1.5;
+	line-height: 1;
+	white-space: nowrap;
 	color: var(--color-on-accent);
 	background: var(--ghost-accent-color);
 	border: none;
 	border-radius: var(--radius-pill);
 	cursor: pointer;
-	transition: background-color var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
-	white-space: nowrap;
-	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+	transition: background-color var(--duration-base) var(--ease-standard), opacity var(--duration-base) var(--ease-standard), transform var(--duration-fast) var(--ease-standard);
 
-	&:hover {
-		background: color-mix(in srgb, var(--ghost-accent-color) 90%, #000);
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			background: color-mix(in srgb, var(--ghost-accent-color) 90%, #000);
+		}
 	}
 
 	&:active {
-		transform: scale(0.98);
+		transform: scale(0.97);
 	}
 
-	// No custom :focus override: the global :focus-visible ring
-	// (style.scss top, "Focus" section) already gives this a visible ring.
-
-	@media only screen and (max-width: $breakpoint-small) {
-		padding: 0.85rem 1.75rem;
-		font-size: 1.4em;
-		width: 100%;
+	.loading & {
+		opacity: 0.6;
+		pointer-events: none;
 	}
+
+	@media only screen and (max-width: $breakpoint-xsmall) {
+		padding: 0 var(--space-4);
+	}
+}
+
+.post-subscribe-message {
+	display: none;
+	margin: var(--space-3) 0 0;
+	font-size: 1.4rem;
+	line-height: 1.5;
+	color: var(--color-content-secondary);
+}
+
+.post-subscribe-form.success ~ .post-subscribe-success,
+.post-subscribe-form.error ~ .post-subscribe-error {
+	display: block;
+}
+
+.post-subscribe-form.error ~ .post-subscribe-error {
+	color: var(--color-error);
 }
 
 .gh-post-upgrade-cta {
