@@ -32,6 +32,20 @@ function updateToggleLabels(toggles, stateLabel) {
 }
 
 /**
+ * Read the saved mode. Storage throws when blocked (Safari with cookies
+ * off, some private modes).
+ */
+function readMode() {
+  var stored = null;
+  try {
+    stored = localStorage.getItem('attegi_theme');
+  } catch (e) {
+    // Fall through to system.
+  }
+  return stored === 'dark' || stored === 'light' ? stored : 'system';
+}
+
+/**
  * Initialize theme switcher
  */
 export function initThemeSwitcher() {
@@ -46,27 +60,31 @@ export function initThemeSwitcher() {
     }
   });
 
-  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // The inline bootstrap in default.hbs already applied the theme before
+  // paint (including a forced @custom.color_scheme), so only sync labels here.
+  var current = readMode();
+  updateToggleLabels(toggles, toggles[0].getAttribute('data-' + current));
 
   function apply(mode) {
-    docEl.classList.remove('theme-dark', 'theme-light', 'theme-system');
+    current = mode;
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     var dark = mode === 'dark' || (mode === 'system' && prefersDark);
+    docEl.classList.remove('theme-dark', 'theme-light', 'theme-system');
     docEl.classList.add(dark ? 'theme-dark' : 'theme-light');
     if (mode === 'system') docEl.classList.add('theme-system');
     updateThemeColor(dark);
     updateToggleLabels(toggles, toggles[0].getAttribute('data-' + mode));
-    localStorage.setItem('attegi_theme', mode);
+    try {
+      localStorage.setItem('attegi_theme', mode);
+    } catch (e) {
+      // Storage blocked: the choice lasts for this page view only.
+    }
   }
-
-  // Apply saved theme
-  var stored = localStorage.getItem('attegi_theme');
-  apply(stored === 'dark' || stored === 'light' ? stored : 'system');
 
   // Cycle: system -> dark -> light -> system
   each(toggles, function(toggle) {
     toggle.addEventListener('click', function(e) {
       e.preventDefault();
-      var current = localStorage.getItem('attegi_theme') || 'system';
       apply(current === 'system' ? 'dark' : current === 'dark' ? 'light' : 'system');
     });
   });

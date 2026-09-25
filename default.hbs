@@ -52,6 +52,16 @@ own cover-active case is already covered there, so this attribute only needs the
 				var darkAccent = '{{@custom.darkmode_accent_color}}' || '#82C0CC';
 				var mql = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
+				// Storage throws when blocked (Safari with cookies off, some
+				// private modes); fall back to the OS preference.
+				function readStored() {
+					try {
+						return localStorage.getItem('attegi_theme') || 'system';
+					} catch (e) {
+						return 'system';
+					}
+				}
+
 				function isDark(choice) {
 					if (choice === 'dark') return true;
 					if (choice === 'light') return false;
@@ -141,16 +151,14 @@ own cover-active case is already covered there, so this attribute only needs the
 					document.head.appendChild(hideThemeStyle);
 				}
 
-				var hasStored = !!localStorage.getItem('attegi_theme');
-				var stored = localStorage.getItem('attegi_theme') || customScheme;
-				applyTheme(stored);
-				if (!hasStored) {
-					localStorage.setItem('attegi_theme', stored);
-				}
+				// A forced scheme beats any preference saved before the admin
+				// forced it: the toggle is hidden, so the visitor couldn't undo it.
+				var forced = customScheme === 'dark' || customScheme === 'light';
+				applyTheme(forced ? customScheme : readStored());
 
 				// Track the OS preference while "system" is active.
 				function onSystemChange() {
-					if ((localStorage.getItem('attegi_theme') || 'system') === 'system') {
+					if (!forced && readStored() === 'system') {
 						applyTheme('system');
 					}
 				}
