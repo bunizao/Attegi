@@ -349,12 +349,11 @@ async function buildRouteModel(pathname) {
   return {
     ...common,
     routeType: 'error',
-    template: 'error',
+    template: 'error-404',
     status: 404,
-    error: {
-      statusCode: 404,
-      message: 'Page not found'
-    }
+    // Ghost passes these at the top level of the error template context.
+    statusCode: 404,
+    message: 'Page not found'
   };
 }
 
