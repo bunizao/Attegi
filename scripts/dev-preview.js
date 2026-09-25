@@ -389,12 +389,13 @@ function buildSite(settings) {
     logo: absolutizeUrl(settings.logo, api.siteUrl),
     icon: absolutizeUrl(settings.icon, api.siteUrl),
     cover_image: absolutizeUrl(settings.cover_image, api.siteUrl),
-    twitter: settings.twitter || '',
-    facebook: settings.facebook || '',
+    ...Object.fromEntries(Object.keys(SOCIAL_URLS).map((key) => [key, settings[key] || ''])),
     accent_color: settings.accent_color || '',
     members_enabled: Boolean(settings.members_enabled),
     members_invite_only: Boolean(settings.members_invite_only),
-    navigation: settings.navigation || []
+    members_signup_access: settings.members_signup_access || 'all',
+    navigation: settings.navigation || [],
+    secondary_navigation: settings.secondary_navigation || []
   };
 }
 
@@ -629,6 +630,7 @@ function registerHelpers() {
   Handlebars.registerHelper('ghost_head', ghostHeadHelper);
   Handlebars.registerHelper('ghost_foot', ghostFootHelper);
   Handlebars.registerHelper('get', getHelper);
+  Handlebars.registerHelper('social_url', socialUrlHelper);
 }
 
 function translate(phrase, options) {
@@ -774,6 +776,7 @@ function matchHelper(left, operator, right, options) {
     case '!==':
       result = left !== right;
       break;
+    case '=':
     case '==':
     case '===':
       result = left === right;
@@ -826,7 +829,9 @@ function paginationHelper(options) {
 
 function navigationHelper(options) {
   const root = options.data.root || {};
-  return new Handlebars.SafeString(Handlebars.partials.navigation({ navigation: root.site.navigation || [] }, { data: options.data }));
+  const secondary = options.hash && options.hash.type === 'secondary';
+  const navigation = (secondary ? root.site.secondary_navigation : root.site.navigation) || [];
+  return new Handlebars.SafeString(Handlebars.partials.navigation({ navigation, isSecondary: secondary }, { data: options.data }));
 }
 
 function tagsHelper(options) {
@@ -973,6 +978,32 @@ function ghostFootHelper(options) {
   const root = options.data.root || {};
   const ghost = root.ghost || {};
   return new Handlebars.SafeString(ghost.codeinjectionFoot || '');
+}
+
+// Settings/author key -> profile URL. Ghost stores handles; these shapes
+// approximate Ghost's own social_url output.
+const SOCIAL_URLS = {
+  twitter: (v) => `https://x.com/${v.replace(/^@/, '')}`,
+  facebook: (v) => `https://www.facebook.com/${v}`,
+  linkedin: (v) => `https://www.linkedin.com/in/${v}`,
+  bluesky: (v) => `https://bsky.app/profile/${v.replace(/^@/, '')}`,
+  threads: (v) => `https://www.threads.net/@${v.replace(/^@/, '')}`,
+  mastodon: (v) => {
+    const [user, host] = v.replace(/^@/, '').split('@');
+    return host ? `https://${host}/@${user}` : `https://${v}`;
+  },
+  tiktok: (v) => `https://www.tiktok.com/@${v.replace(/^@/, '')}`,
+  youtube: (v) => `https://www.youtube.com/${v}`,
+  instagram: (v) => `https://www.instagram.com/${v.replace(/^@/, '')}`
+};
+
+// Same lookup order as Ghost: the current context (an author), then @site.
+function socialUrlHelper(options) {
+  const type = options.hash && options.hash.type;
+  const site = (options.data.root || {}).site || {};
+  const value = (this && this[type]) || site[type];
+  if (!value || !SOCIAL_URLS[type]) return '';
+  return /^https?:\/\//.test(value) ? value : SOCIAL_URLS[type](value);
 }
 
 function getHelper(resource, options) {

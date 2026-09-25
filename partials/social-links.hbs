@@ -1,0 +1,36 @@
+{{!--
+    social-links.hbs
+    ----------------
+    Native social accounts from Ghost Admin (Ghost 5.118+). Pass the owner as
+    `source`: `@site` in the footer, the author on author.hbs. Each link is
+    guarded on `source` itself because `social_url` falls back to the site's
+    accounts, which would leak onto an author without their own.
+    Params: source, link_class
+--}}
+{{#if source.twitter}}<a class="{{link_class}}" href="{{social_url type="twitter"}}" aria-label="X" title="X" target="_blank" rel="noopener">
+	<i class="icon icon-x" aria-hidden="true">{{> "icons/icon-x"}}</i>
+</a>{{/if}}
+{{#if source.facebook}}<a class="{{link_class}}" href="{{social_url type="facebook"}}" aria-label="Facebook" title="Facebook" target="_blank" rel="noopener">
+	<i class="icon icon-facebook" aria-hidden="true">{{> "icons/icon-facebook"}}</i>
+</a>{{/if}}
+{{#if source.linkedin}}<a class="{{link_class}}" href="{{social_url type="linkedin"}}" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
+	<i class="icon icon-linkedin" aria-hidden="true">{{> "icons/icon-linkedin"}}</i>
+</a>{{/if}}
+{{#if source.bluesky}}<a class="{{link_class}}" href="{{social_url type="bluesky"}}" aria-label="Bluesky" title="Bluesky" target="_blank" rel="noopener">
+	<i class="icon icon-bluesky" aria-hidden="true">{{> "icons/icon-bluesky"}}</i>
+</a>{{/if}}
+{{#if source.threads}}<a class="{{link_class}}" href="{{social_url type="threads"}}" aria-label="Threads" title="Threads" target="_blank" rel="noopener">
+	<i class="icon icon-threads" aria-hidden="true">{{> "icons/icon-threads"}}</i>
+</a>{{/if}}
+{{#if source.mastodon}}<a class="{{link_class}}" href="{{social_url type="mastodon"}}" aria-label="Mastodon" title="Mastodon" target="_blank" rel="noopener">
+	<i class="icon icon-mastodon" aria-hidden="true">{{> "icons/icon-mastodon"}}</i>
+</a>{{/if}}
+{{#if source.tiktok}}<a class="{{link_class}}" href="{{social_url type="tiktok"}}" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener">
+	<i class="icon icon-tiktok" aria-hidden="true">{{> "icons/icon-tiktok"}}</i>
+</a>{{/if}}
+{{#if source.youtube}}<a class="{{link_class}}" href="{{social_url type="youtube"}}" aria-label="YouTube" title="YouTube" target="_blank" rel="noopener">
+	<i class="icon icon-youtube" aria-hidden="true">{{> "icons/icon-youtube"}}</i>
+</a>{{/if}}
+{{#if source.instagram}}<a class="{{link_class}}" href="{{social_url type="instagram"}}" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener">
+	<i class="icon icon-instagram" aria-hidden="true">{{> "icons/icon-instagram"}}</i>
+</a>{{/if}}

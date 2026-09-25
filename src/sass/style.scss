@@ -2551,6 +2551,11 @@ textarea {
 
 	.archive-links {
 		display: flex;
+
+		&:not(:has(a)) {
+			display: none;
+		}
+
 		gap: var(--space-4);
 		font-size: 2em;
 		line-height: 1.5em;
@@ -3396,6 +3401,21 @@ textarea {
 
 	a {
 		font-weight: 500;
+	}
+}
+
+/* Secondary navigation from Ghost Admin, under the credits */
+.footer-nav ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem var(--space-4);
+	margin: 0.4rem 0 0;
+	padding: 0;
+	list-style: none;
+	font-size: var(--font-size-2xs);
+
+	@media only screen and (max-width: $breakpoint-medium) {
+		justify-content: center;
 	}
 }
 

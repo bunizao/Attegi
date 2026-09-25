@@ -4,7 +4,7 @@
   "demo": "https://attegi.tuuhub.com",
   "version": "6.11.0",
   "engines": {
-    "ghost": ">=5.0.0"
+    "ghost": ">=5.118.0"
   },
   "packageManager": "bun@1.3.13",
   "license": "AGPL-3.0-only",
