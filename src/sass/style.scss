@@ -4099,6 +4099,7 @@ textarea {
 	margin: 0 0 var(--space-7);
 	font-size: 3.6em;
 	line-height: 1.15em;
+	text-wrap: balance;
 
 	@media only screen and (max-width: $breakpoint-medium) {
 		font-size: 2.8em;
