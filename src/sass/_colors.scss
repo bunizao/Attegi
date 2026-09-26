@@ -87,8 +87,9 @@
     --glass-highlight: rgb(255 255 255 / 0.12);
     --glass-shadow: 0 4px 14px rgb(0 0 0 / 0.35);
 
-    --color-highlight: #fbbf24;
-    --color-highlight-ink: #1D1F21;
+    // A tint, not a solid fill: solid amber was the loudest thing on the page.
+    --color-highlight: rgb(251 191 36 / 0.28);
+    --color-highlight-ink: #F6F7FA;
     --color-social-github: #555; /* Lighter for dark mode */
 
     color-scheme: dark;
