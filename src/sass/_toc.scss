@@ -291,6 +291,7 @@ $toc-breakpoint: 1300px;
   // Hide when scrolling down (slide to right)
   &.is-hidden-scroll {
     opacity: 0;
+    visibility: hidden;
     transform: translateX(8rem) scale(0.9);
   }
 
