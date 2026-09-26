@@ -5,7 +5,7 @@
  * Creates a zip file for Ghost theme upload
  */
 
-const archiver = require('archiver');
+const { ZipArchive } = require('archiver');
 const fs = require('fs');
 const path = require('path');
 
@@ -59,7 +59,7 @@ async function compress() {
 
   // Create write stream
   const output = fs.createWriteStream(outputPath);
-  const archive = archiver('zip', {
+  const archive = new ZipArchive({
     zlib: { level: 9 } // Maximum compression
   });
 

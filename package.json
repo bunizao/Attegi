@@ -54,14 +54,14 @@
     "validate": "bun run compress && bunx gscan -z dist/attegi.zip"
   },
   "devDependencies": {
-    "archiver": "^7.0.0",
-    "autoprefixer": "^10.5.0",
+    "archiver": "^8.0.0",
+    "autoprefixer": "^10.6.1",
     "browser-sync": "^3.0.4",
-    "cssnano": "^7.1.8",
-    "esbuild": "^0.28.0",
-    "postcss": "^8.5.13",
-    "postcss-cli": "^11.0.0",
-    "sass": "^1.99.0",
+    "cssnano": "^9.0.5",
+    "esbuild": "^0.28.2",
+    "postcss": "^8.5.28",
+    "postcss-cli": "^12.0.0",
+    "sass": "^1.105.0",
     "tocbot": "^4.36.8"
   },
   "config": {
