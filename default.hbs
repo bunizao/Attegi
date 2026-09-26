@@ -24,6 +24,11 @@ own cover-active case is already covered there, so this attribute only needs the
 	{{!-- Resource Hints --}}
 	{{!-- Preload critical CSS to reduce render-blocking --}}
 	<link rel="preload" href="{{asset "css/style.css"}}" as="style" />
+	{{!-- {{ghost_head}} below always injects a deferred sodo-search script
+	(and portal's, when members are enabled) from this origin; warm the
+	connection early so those deferred scripts don't pay for DNS/TLS when
+	the parser finally reaches them. --}}
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 	{{!-- Note: GLightbox and JetBrains Mono are NOT loaded here; both are
 	injected only when the rendered body actually needs them (see the
 	conditional-load scripts near the closing </body>). --}}
