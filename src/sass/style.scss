@@ -31,13 +31,10 @@ body {
 	line-height: 1.75;
 	font-weight: 400;
 	color: var(--color-content-main);
-	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: hidden;
 	background: var(--color-background-main);
-	/* Improved text rendering for CJK */
-	font-feature-settings: "kern" 1, "liga" 1;
 	-webkit-text-size-adjust: 100%;
 }
 
@@ -110,14 +107,6 @@ img {
 	contain-intrinsic-size: 100vw 50vh;
 }
 
-// Prevent font swap CLS with size-adjust fallback
-// This is handled in _fonts.scss but we add extra protection here
-@supports (font-size-adjust: 1) {
-	body {
-		font-size-adjust: 0.5;
-	}
-}
-
 // Skeleton loading placeholder for dynamic content.
 // default.hbs keeps its own inline copy of this rule + the keyframe below
 // in its critical CSS (it has to paint before this stylesheet loads); keep
@@ -168,17 +157,18 @@ textarea {
 }
 
 .post-content {
-	font-size: var(--font-size-base, 1.9rem);
-	line-height: var(--line-height-body, 1.7);
-	letter-spacing: var(--letter-spacing-normal, 0);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-body);
+	letter-spacing: var(--letter-spacing-normal);
 
-	/* Responsive font sizing for better readability */
+	// 18 / 17 / 16px. Never below 16px, so iOS doesn't zoom form fields and
+	// phones get a real reading size.
 	@media only screen and (max-width: $breakpoint-medium) {
-		font-size: 1.75rem;
+		font-size: 1.7rem;
 	}
 
 	@media only screen and (max-width: $breakpoint-small) {
-		font-size: 1.65rem;
+		font-size: 1.6rem;
 	}
 
 	// CJK content: the site-wide `<html lang>` doesn't vary per bilingual
@@ -200,79 +190,86 @@ textarea {
 	h4:lang(zh),
 	h5:lang(zh),
 	h6:lang(zh) {
-		line-height: 1.5;
+		line-height: 1.4;
 	}
 
+	// CJK typefaces have no true italic; a synthetic slant just distorts
+	// the glyphs, so drop it instead of faking it.
 	em:lang(zh),
-	i:lang(zh) {
-		// CJK typefaces have no true italic; a synthetic slant just distorts
-		// the glyphs, so drop it instead of faking it.
+	i:lang(zh),
+	blockquote:lang(zh),
+	cite:lang(zh),
+	q:lang(zh) {
 		font-style: normal;
 	}
 
+	// Links: body-colored text with a thin accent underline that fills in on
+	// hover. The accent stays a hint, not a highlighter, and the underline
+	// skips descenders instead of cutting through them.
 	a:not([class]) {
 		color: inherit;
-		text-decoration: none;
-		font-weight: 400;
-		box-shadow: inset 0 -2px 0 var(--ghost-accent-color);
-		transition: box-shadow var(--ease-standard) var(--duration-fast);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.22em;
+		text-decoration-color: color-mix(in srgb, var(--color-accent-text) 50%, transparent);
+		transition: text-decoration-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
 
 		&:focus-visible,
 		&:hover {
-			box-shadow: inset 0 -3px 0 var(--ghost-accent-color);
+			color: var(--color-accent-text);
+			text-decoration-color: currentColor;
 		}
 	}
 
-	// Heading margins are in the heading's own em, so each level's value is
-	// tuned to land near the same body-relative rhythm: about 2.2 body em
-	// above an h2 (collapsing with the paragraph's 1.5em), tight below.
+	// One margin for every level, in the heading's own em: the larger the
+	// heading, the more room above it. h2 lands at ~2.4 body em above and
+	// ~0.75 below, so a heading clearly belongs to the text that follows.
 	h1,
 	h2,
 	h3,
 	h4,
 	h5,
 	h6 {
-		margin: 1.5em 0 0.4em;
-		line-height: var(--line-height-heading, 1.3);
+		margin: 1.6em 0 0.5em;
+		line-height: var(--line-height-heading);
 		font-family: var(--gh-font-heading);
+		font-weight: 600;
 		color: var(--color-content-lead);
-		letter-spacing: var(--letter-spacing-tight, -0.022em);
+		letter-spacing: var(--letter-spacing-tight);
 		text-wrap: balance;
 	}
 
-	// 1.2-1.25 step scale so adjacent levels stay visually distinct
-	// all the way down (h3/h4 used to differ by only 1.11x).
+	// ~1.2 step scale. Long-form sections need signposts, not billboards.
 	h1 {
-		font-size: 2.2em;
+		font-size: 1.8em;
 		font-weight: 700;
-		margin: 1.1em 0 0.35em;
 	}
 
 	h2 {
-		font-size: 1.85em;
-		font-weight: 600;
-		margin: 1.2em 0 0.35em;
+		font-size: 1.5em;
 	}
 
 	h3 {
-		font-size: 1.5em;
-		font-weight: 600;
-		margin: 1.3em 0 0.4em;
+		font-size: 1.25em;
 	}
 
 	h4 {
-		font-size: 1.2em;
-		font-weight: 600;
+		font-size: 1.075em;
 	}
 
-	h5 {
-		font-size: 1.05em;
-		font-weight: 600;
+	h5,
+	h6 {
+		font-size: 1em;
+	}
+
+	h4,
+	h5,
+	h6 {
+		letter-spacing: -0.01em;
 	}
 
 	h6 {
-		font-size: 1em;
-		font-weight: 600;
+		color: var(--color-content-secondary);
 	}
 
 	// A heading straight after another heading (section title + first
@@ -285,78 +282,65 @@ textarea {
 		margin-top: 0;
 	}
 
-	h1 a,
-	h2 a,
-	h3 a,
-	h4 a,
-	h5 a,
-	h6 a {
-		font-weight: inherit;
-	}
-
 	p {
-		margin: 0 0 1.5em;
+		margin: 0 0 1.25em;
 		text-wrap: pretty;
 	}
 
+	// Lists use native markers, so `start`, `reversed` and nesting work
+	// without counters. The marker is secondary ink: it orders the text,
+	// it doesn't compete with it.
 	ol,
 	ul {
-		margin: 0 0 1.5em;
-		padding-left: 1.8em;
-		box-sizing: border-box;
+		margin: 0 0 1.25em;
+		padding-left: 1.5em;
 
 		@media only screen and (max-width: $breakpoint-small) {
-			// The em-dash/number markers plus 1.8em indent wraps list text
-			// early on narrow screens; tighten it below the small breakpoint.
-			padding-left: 1.2em;
+			padding-left: 1.25em;
 		}
+	}
+
+	ul {
+		list-style-type: "–  ";
 	}
 
 	ol {
-		list-style-type: none;
-		counter-reset: item;
+		list-style-type: decimal;
 	}
 
-	li {
-		position: relative;
-
-		&::marker {
-			color: transparent;
-		}
+	li::marker {
+		color: var(--color-content-secondary);
+		font-variant-numeric: tabular-nums;
 	}
 
-	ol > li:before,
-	ul > li:before {
-		position: absolute;
-		width: 1.5em;
-		margin-left: -2em;
-		font-size: 1em;
-		font-weight: 500;
-		line-height: inherit;
-		text-align: right;
-		color: var(--color-accent-text);
-		@media only screen and (max-width: $breakpoint-small) {
-			width: 1em;
-			margin-left: -1.4em;
-		}
+	// Numbers carry their own period; give them the breathing room the
+	// dash marker gets from its trailing spaces.
+	ol > li {
+		padding-left: 0.25em;
 	}
 
-	ul > li:before {
-		margin-top: -1px;
-		content: '—' !important;
+	li + li {
+		margin-top: 0.25em;
 	}
 
-	ol > li:before {
-		content: counter(item) ". " !important;
-		counter-increment: item;
+	// Loose Markdown lists wrap each item in <p>; keep them list-tight.
+	li > p {
+		margin: 0;
 	}
 
-	ol ol,
-	ol ul,
-	ul ol,
-	ul ul {
-		padding-left: 1.6em;
-		margin: 0.8em 0;
+	li > p + p {
+		margin-top: 0.5em;
+	}
+
+	// A list usually finishes the sentence that introduces it.
+	p + ul,
+	p + ol {
+		margin-top: -0.5em;
+	}
+
+	li > ol,
+	li > ul {
+		margin: 0.4em 0 0;
 	}
 
 	hr {
@@ -380,6 +364,42 @@ textarea {
 		scroll-margin-top: 8rem;
 	}
 
+	// Markdown-card footnotes: accent-colored reference numbers without an
+	// underline, and a smaller, quieter note list.
+	.footnote-ref a {
+		color: var(--color-accent-text);
+		text-decoration: none;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.footnotes-sep {
+		max-width: 68ch;
+		margin: 2em auto 1.25em;
+	}
+
+	.footnotes {
+		max-width: 68ch;
+		margin: 0 auto 1.5em;
+		font-size: 0.875em;
+		color: var(--color-content-secondary);
+
+		li + li {
+			margin-top: 0.5em;
+		}
+	}
+
+	.footnote-backref {
+		margin-left: 0.25em;
+		color: var(--color-content-secondary);
+		text-decoration: none;
+		font-family: var(--gh-font-body);
+
+		&:hover,
+		&:focus-visible {
+			color: var(--color-accent-text);
+		}
+	}
+
 	// Also the no-JS fallback for `[!poem]` blockquotes (see
 	// src/js/features/poem-cards.js): Ghost has no server-side hook to turn
 	// that syntax into a real card, so RSS readers, crawlers, and the
@@ -389,12 +409,29 @@ textarea {
 	// literal "[!poem]"/"--" markers (no text-pattern selector exists), so
 	// this is the ceiling for that state; JS supersedes it once it runs.
 	blockquote {
-		margin: 0 0 var(--space-6);
-		padding: 0.25em 1em;
-		box-sizing: border-box;
-		border-left: 0.25em solid var(--ghost-accent-color);
+		margin: 0 0 1.5em;
+		padding: 0 0 0 1.25em;
+		border-left: 2px solid var(--ghost-accent-color);
 		font-style: italic;
-		font-weight: 400;
+	}
+
+	// Ghost's "alternative" quote: a pull quote. Centered and larger, so it
+	// needs no rule to stand apart.
+	blockquote.kg-blockquote-alt {
+		margin: 2em 0;
+		padding: 0 1.5em;
+		border: 0;
+		font-size: 1.25em;
+		line-height: 1.5;
+		font-style: normal;
+		color: var(--color-content-lead);
+		text-align: center;
+		text-wrap: balance;
+
+		@media only screen and (max-width: $breakpoint-small) {
+			padding: 0;
+			font-size: 1.15em;
+		}
 	}
 
 	// Set by partials/poem-pending.hbs after {{content}}; poem-cards.js
@@ -446,15 +483,6 @@ textarea {
 
 			p {
 				margin: 0;
-			}
-
-			a {
-				color: var(--color-accent-text);				text-decoration: underline;
-				font-weight: 500;
-
-				&:hover {
-					opacity: 0.8;
-				}
 			}
 
 			strong {
@@ -518,7 +546,7 @@ textarea {
 
 	b,
 	strong {
-		font-weight: 700;
+		font-weight: 600;
 		color: var(--color-content-lead);
 	}
 
@@ -527,38 +555,25 @@ textarea {
 	}
 
 	dl {
-		margin: 0 0 var(--space-6);
-		padding-left: 30px;
+		margin: 0 0 1.25em;
 	}
 
-	dl dt {
-		font-weight: 700;
-		font-size: 0.75em;
-		line-height: 1.25em;
-		margin-bottom: 0.33334em;
+	dt {
+		font-weight: 600;
+		color: var(--color-content-lead);
 	}
 
-	dl dt:before {
-		content: '';
-		position: absolute;
-		width: 1em;
-		height: 2px;
-		margin-left: -30px;
-		margin-top: 0.5em;
-		background: var(--ghost-accent-color);
-	}
-
-	dl dd {
-		margin-left: 0;
-		margin-bottom: 1em;
+	dd {
+		margin: 0 0 0.75em 1.5em;
 	}
 
 	mark {
 		background-color: var(--color-highlight);
 		color: var(--color-highlight-ink);
-		padding: 0.1em 0.35em;
-		border-radius: var(--radius-xs);
+		padding: 0.05em 0.2em;
+		border-radius: 0.25em;
 		box-decoration-break: clone;
+		-webkit-box-decoration-break: clone;
 	}
 
 	abbr[title] {
@@ -566,7 +581,7 @@ textarea {
 		text-decoration: underline dotted;
 		text-decoration-thickness: 0.12em;
 		text-underline-offset: 0.2em;
-		text-decoration-color: color-mix(in srgb, var(--color-content-secondary) 70%, var(--ghost-accent-color));
+		text-decoration-color: var(--color-content-secondary);
 		cursor: help;
 	}
 
@@ -607,7 +622,7 @@ textarea {
 		text-decoration: underline dotted;
 		text-decoration-thickness: 0.12em;
 		text-underline-offset: 0.2em;
-		text-decoration-color: color-mix(in srgb, var(--ghost-accent-color) 35%, var(--color-content-secondary));
+		text-decoration-color: var(--color-content-secondary);
 	}
 
 	var {
@@ -627,11 +642,10 @@ textarea {
 	}
 
 	ins {
-		text-decoration: none;
-		background: color-mix(in srgb, var(--ghost-accent-color) 12%, var(--color-background-main));
-		border-bottom: 2px solid color-mix(in srgb, var(--ghost-accent-color) 45%, transparent);
-		padding: 0 0.12em;
-		border-radius: var(--radius-xs);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.22em;
+		text-decoration-color: var(--color-callout-success);
 	}
 
 	del,
@@ -642,9 +656,9 @@ textarea {
 	}
 
 	u {
-		text-decoration-thickness: 0.12em;
-		text-underline-offset: 0.2em;
-		text-decoration-color: color-mix(in srgb, var(--ghost-accent-color) 35%, var(--color-content-secondary));
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.22em;
+		text-decoration-color: var(--color-content-secondary);
 	}
 
 	time,
@@ -655,19 +669,15 @@ textarea {
 
 	code,
 	tt {
-		position: relative;
-		margin: 0 0.15em;
-		padding: 0.2em 0.4em;
+		padding: 0.15em 0.35em;
 		font-family: var(--gh-font-mono);
-		font-size: 0.875em;
-		font-weight: 500;
-		background: var(--color-background-secondary);
-		border: 1px solid var(--color-border);
+		font-size: 0.85em;
+		background: color-mix(in srgb, var(--color-content-lead) 6%, transparent);
 		border-radius: var(--radius-xs);
-		color: var(--color-content-main);
-		white-space: pre-wrap;
-		vertical-align: baseline;
-		line-height: 1.4;
+		color: var(--color-content-lead);
+		overflow-wrap: break-word;
+		box-decoration-break: clone;
+		-webkit-box-decoration-break: clone;
 	}
 
 	pre {
@@ -747,17 +757,15 @@ textarea {
 	pre code,
 	pre tt {
 		display: block;
-		position: static;
-		top: auto;
 		margin: 0;
 		padding: 1em;
 		overflow-x: auto;
 		font-size: 0.75em;
 		line-height: 1.8em;
 		white-space: pre;
+		color: inherit;
 		background: transparent;
-		border: none;
-		vertical-align: inherit;
+		border-radius: 0;
 	}
 
 	kbd {
@@ -767,9 +775,9 @@ textarea {
 		padding: 0.1em 0.5em;
 		border: 1px solid var(--color-border);
 		font-family: var(--gh-font-mono);
-		font-size: 0.85em;
-		font-weight: 600;
-		line-height: 1.2;
+		font-size: 0.8em;
+		font-weight: 500;
+		line-height: 1.3;
 		background: var(--color-background-secondary);
 		border-radius: var(--radius-xs);
 		box-shadow: inset 0 -1px 0 var(--color-border-strong);
@@ -828,13 +836,6 @@ textarea {
 			strong {
 				font-weight: 600;
 				color: var(--color-content-lead);
-			}
-
-			code {
-				font-size: 0.9em;
-				padding: 0.15em 0.4em;
-				background: var(--color-background-secondary);
-				border-radius: var(--radius-xs);
 			}
 		}
 	}
@@ -1029,12 +1030,13 @@ textarea {
 		padding: 1em 0 1.5em;
 		text-align: center;
 
-		a {
-			box-shadow: inset 0 -1px 0 var(--color-background-contrast);
+		a:not([class]) {
+			text-decoration-color: var(--color-border-strong);
 
 			&:focus-visible,
 			&:hover {
-				box-shadow: inset 0 -2px 0 var(--color-background-contrast);
+				color: var(--color-content-main);
+				text-decoration-color: currentColor;
 			}
 		}
 	}
