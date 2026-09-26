@@ -34,7 +34,10 @@
 						<figure class="post-meta-avatar">
 							<a href="{{url}}" class="author-avatar" aria-label="{{name}}">
 								<picture>
-									<img class="author-profile-image" src="{{img_url profile_image size="xs" quality="80"}}" alt="" loading="lazy" decoding="async" />
+									{{!-- "xs" is not a configured image size (see package.json config.image_sizes),
+									     so img_url would silently fall back to the original, full-resolution
+									     file for every avatar; "s" (320w) is the smallest size actually defined. --}}
+									<img class="author-profile-image" src="{{img_url profile_image size="s" quality="80"}}" alt="" loading="lazy" decoding="async" />
 								</picture>
 							</a>
 						</figure>
