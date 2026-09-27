@@ -36,6 +36,17 @@ body {
 	overflow-x: hidden;
 	background: var(--color-background-main);
 	-webkit-text-size-adjust: 100%;
+	// A thin gap between Han characters and Latin letters or digits, so
+	// "用Attegi写作" doesn't need hand-typed spaces. No-op for pure English.
+	text-autospace: normal;
+}
+
+// Keep monospace text exactly as typed.
+pre,
+code,
+kbd,
+samp {
+	text-autospace: no-autospace;
 }
 
 /* ==========================================================================
