@@ -390,13 +390,11 @@ textarea {
 	}
 
 	.footnotes-sep {
-		max-width: 68ch;
-		margin: 2em auto 1.25em;
+		margin: 2em 0 1.25em;
 	}
 
 	.footnotes {
-		max-width: 68ch;
-		margin: 0 auto 1.5em;
+		margin: 0 0 1.5em;
 		font-size: 0.875em;
 		color: var(--color-content-secondary);
 
@@ -998,25 +996,6 @@ textarea {
 	.button:focus-visible {
 		outline: 2px solid var(--ghost-accent-color);
 		outline-offset: 2px;
-	}
-
-	// Cap the reading measure on wide screens; images, tables, code blocks
-	// and wide/full-bleed cards are excluded so they can break out further.
-	// Declared last so it wins over this block's other margin shorthands.
-	> p,
-	> ul,
-	> ol,
-	> dl,
-	> h1,
-	> h2,
-	> h3,
-	> h4,
-	> h5,
-	> h6,
-	> blockquote:not(.kg-blockquote-alt) {
-		max-width: 68ch;
-		margin-left: auto;
-		margin-right: auto;
 	}
 }
 
@@ -2713,6 +2692,11 @@ textarea {
 	@media only screen and (max-width: $breakpoint-medium) {
 		padding: 0 var(--space-8);
 	}
+}
+
+// Posts and pages read in a narrower column than the lists around them.
+.inner-reading {
+	max-width: $measure;
 }
 
 /* ==========================================================================

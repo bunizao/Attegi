@@ -11,7 +11,7 @@
 
 {{#if @page.show_title_and_feature_image}}
 	<header class="post-header {{#if feature_image}} has-cover {{/if}}">
-		<div class="inner">
+		<div class="inner inner-reading">
 			<h1 class="post-title">{{{title}}}</h1>
 			{{#if feature_image}}
 			{{!-- No crossorigin on the cover <img>: it would let cover-detect.js read
@@ -39,7 +39,7 @@
 
 <div class="content">
 	<article class="{{post_class}}">
-		<div class="inner">
+		<div class="inner inner-reading">
 
 			<section class="post-content">
 				{{content}}

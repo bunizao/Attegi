@@ -5,3 +5,9 @@ $breakpoint-large: 960px;
 $breakpoint-medium: 640px;
 $breakpoint-small: 480px;
 $breakpoint-xsmall: 420px;
+
+// Reading column for posts and pages: about 75 characters a line at the
+// 18px body size, never more than 80 (WCAG 1.4.8), and about 34 CJK
+// characters. `ch` would undercount: it measures "0", which is wider than
+// an average letter.
+$measure: min(calc(54rem + 6vw), 64rem);
