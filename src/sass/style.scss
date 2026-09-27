@@ -301,22 +301,28 @@ textarea {
 	}
 
 	ul {
-		list-style-type: "–  ";
+		list-style-type: disc;
+	}
+
+	ul ul {
+		list-style-type: circle;
+	}
+
+	ul ul ul {
+		list-style-type: square;
 	}
 
 	ol {
 		list-style-type: decimal;
 	}
 
+	li {
+		padding-left: 0.25em;
+	}
+
 	li::marker {
 		color: var(--color-content-secondary);
 		font-variant-numeric: tabular-nums;
-	}
-
-	// Numbers carry their own period; give them the breathing room the
-	// dash marker gets from its trailing spaces.
-	ol > li {
-		padding-left: 0.25em;
 	}
 
 	li + li {
