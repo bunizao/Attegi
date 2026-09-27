@@ -6413,6 +6413,10 @@ a.post-tag-chip {
 	border: 1px solid var(--color-border);
 	border-radius: var(--radius-md);
 	overflow: hidden;
+	// Skip layout and paint (and the glass backdrop-filter) for off-screen
+	// cards; /tags/ can list a hundred of them.
+	content-visibility: auto;
+	contain-intrinsic-size: auto 26rem;
 	transition-property: transform, box-shadow, border-color;
 	transition-duration: var(--duration-slow);
 	transition-timing-function: var(--ease-spring);
