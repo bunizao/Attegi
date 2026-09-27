@@ -2242,114 +2242,93 @@ textarea {
 		}
 	}
 
-	// KG CTA Card (Call-to-Action / Footnotes) - Redesigned
+	// KG CTA card. Ghost's cards.css already handles layout, alignment and
+	// button colors, and the author picks a background in the editor. The
+	// theme only maps that background onto its own surfaces, like callouts,
+	// so text keeps body contrast in both themes.
 	.kg-cta-card {
-		margin: 0 0 var(--space-6);
-		padding: var(--space-6) var(--space-5);
-		background: var(--ghost-accent-color);
+		--cta-tint: transparent;
+		margin: 2em 0;
 		border-radius: var(--radius-md);
-		text-align: center;
-		transition: transform var(--ease-standard) var(--duration-base), box-shadow var(--ease-standard) var(--duration-base);
+		background: color-mix(in srgb, var(--cta-tint) 8%, var(--color-background-secondary));
+		border: 1px solid color-mix(in srgb, var(--cta-tint) 20%, var(--color-border));
+		font-size: 0.95em;
 
-		&:hover {
-			border-color: var(--color-border-strong);
+		&.kg-cta-bg-blue { --cta-tint: var(--color-callout-info); }
+		&.kg-cta-bg-green { --cta-tint: var(--color-callout-success); }
+		&.kg-cta-bg-yellow { --cta-tint: var(--color-callout-warning); }
+		&.kg-cta-bg-red,
+		&.kg-cta-bg-pink { --cta-tint: var(--color-callout-danger); }
+		&.kg-cta-bg-purple { --cta-tint: var(--color-callout-purple); }
+
+		&.kg-cta-bg-white {
+			background: transparent;
 		}
 
-		@media (prefers-reduced-motion: reduce) {
-			transition: none;
+		&.kg-cta-bg-none {
+			background: none;
+			border: 0;
+			border-radius: 0;
+		}
 
-			&:hover {
-				transform: none;
+		.kg-cta-sponsor-label-wrapper {
+			border-bottom-color: var(--color-border);
+		}
+
+		.kg-cta-sponsor-label {
+			font-family: var(--gh-font-body);
+			letter-spacing: 0.06em;
+
+			span:not(a span) {
+				color: var(--color-content-secondary);
 			}
-		}
-
-		.kg-cta-content {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			gap: 1.25rem;
 		}
 
 		.kg-cta-text {
-			p {
-				font-size: 0.95em;
-				line-height: 1.6;
-				color: var(--color-on-accent);
-				opacity: 0.95;
-				margin: 0;
-			}
+			color: var(--color-content-main);
 
 			strong {
-				color: var(--color-on-accent);
-				font-weight: 600;
-			}
-		}
-
-		.kg-cta-button {
-			display: inline-flex;
-			align-items: center;
-			gap: var(--space-1);
-			padding: var(--space-1) 1.125rem;
-			background: var(--color-on-accent);
-			color: var(--color-accent-text);			text-decoration: none;
-			border-radius: var(--radius-pill);
-			font-weight: 600;
-			font-size: 0.875em;
-			transition: opacity var(--ease-standard) var(--duration-base), transform var(--ease-standard) var(--duration-base);
-
-			&:hover {
-				opacity: 0.9;
-				transform: translateY(-1px);
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				transition: none;
-
-				&:hover {
-					transform: none;
-				}
-			}
-
-			&:active {
-				transform: translateY(0);
-			}
-		}
-
-		// Minimal variant
-		&.kg-cta-minimal {
-			padding: 1.75rem var(--space-4);
-			background: color-mix(in srgb, var(--ghost-accent-color) 8%, var(--color-background-secondary));
-			border: 1px solid color-mix(in srgb, var(--ghost-accent-color) 15%, var(--color-background-contrast));
-
-			.kg-cta-text p {
-				color: var(--color-content-main);
-			}
-
-			.kg-cta-text strong {
 				color: var(--color-content-lead);
 			}
 
-			.kg-cta-button {
-				background: var(--ghost-accent-color);
-				color: var(--color-on-accent);
+			// Same treatment as body links; Ghost gives these a class, so
+			// `a:not([class])` above skips them.
+			a {
+				color: inherit;
+				text-decoration: underline;
+				text-decoration-thickness: 1px;
+				text-underline-offset: 0.22em;
+				text-decoration-color: color-mix(in srgb, var(--color-accent-text) 50%, transparent);
 
+				&:focus-visible,
 				&:hover {
-					background: color-mix(in srgb, var(--ghost-accent-color) 90%, #000);
+					color: var(--color-accent-text);
+					text-decoration-color: currentColor;
+					opacity: 1;
 				}
+			}
+
+			// Ghost wraps each text run in an inline `white-space: pre-wrap`,
+			// which keeps the space before a line break inside the link and
+			// underlines it. Only !important beats an inline style.
+			span[style*="pre-wrap"] {
+				white-space: normal !important;
 			}
 		}
 
-		@media only screen and (max-width: $breakpoint-small) {
-			padding: var(--space-5) var(--space-4);
+		&.kg-cta-link-accent .kg-cta-text a {
+			color: var(--color-accent-text);
+		}
 
-			&.kg-cta-minimal {
-				padding: var(--space-4) 1.25rem;
-			}
+		a.kg-cta-button {
+			font-family: var(--gh-font-body);
+			border-radius: var(--radius-pill);
+		}
 
-			.kg-cta-button {
-				width: 100%;
-				justify-content: center;
-			}
+		// Ghost inlines a text color picked against the admin accent, but dark
+		// mode swaps in a lighter accent, so take the computed one instead.
+		a.kg-cta-button.kg-style-accent {
+			color: var(--color-on-accent) !important;
 		}
 	}
 }
