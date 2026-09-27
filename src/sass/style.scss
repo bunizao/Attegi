@@ -2851,8 +2851,7 @@ textarea {
 /* ---- Glass pills --------------------------------------------------------
    Sign in, Subscribe, the mobile Menu button and the floating menu share one
    surface: a translucent fill, hairline border, a top highlight and a soft
-   drop shadow, with a slow drifting sheen (::before). The global
-   reduced-motion rule stops the sheen. */
+   drop shadow, with a static sheen (::before). */
 %glass-surface {
 	position: relative;
 	background: var(--glass-surface);
@@ -2870,7 +2869,6 @@ textarea {
 		z-index: var(--z-behind);
 		background: radial-gradient(60% 60% at 30% 30%, rgb(255 255 255 / 0.18), rgb(255 255 255 / 0) 60%);
 		opacity: 0.5;
-		animation: glass-flow 12s ease-in-out infinite;
 		pointer-events: none;
 	}
 }
@@ -2959,11 +2957,6 @@ textarea {
 	@media only screen and (max-width: $breakpoint-large) {
 		display: inline-flex;
 	}
-}
-
-@keyframes glass-flow {
-	0%, 100% { transform: translate(-10%, -10%) scale(1); }
-	50% { transform: translate(20%, 10%) scale(1.12); }
 }
 
 /* ---- Cover image state -------------------------------------------------
