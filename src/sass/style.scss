@@ -233,8 +233,8 @@ textarea {
 	}
 
 	// One margin for every level, in the heading's own em: the larger the
-	// heading, the more room above it. h2 lands at ~2.4 body em above and
-	// ~0.75 below, so a heading clearly belongs to the text that follows.
+	// heading, the more room above it. h2 lands at ~2.6 body em above and
+	// ~0.8 below, so a heading clearly belongs to the text that follows.
 	h1,
 	h2,
 	h3,
@@ -251,21 +251,35 @@ textarea {
 	}
 
 	// ~1.2 step scale. Long-form sections need signposts, not billboards.
+	// Phones compress the top of the scale: the post title drops to 28px
+	// there, and h1/h2 must stay below it.
 	h1 {
 		font-size: 1.8em;
 		font-weight: 700;
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			font-size: 1.6em;
+		}
 	}
 
 	h2 {
-		font-size: 1.5em;
+		font-size: 1.6em;
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			font-size: 1.45em;
+		}
 	}
 
 	h3 {
-		font-size: 1.25em;
+		font-size: 1.3em;
+
+		@media only screen and (max-width: $breakpoint-medium) {
+			font-size: 1.25em;
+		}
 	}
 
 	h4 {
-		font-size: 1.075em;
+		font-size: 1.1em;
 	}
 
 	h5,
