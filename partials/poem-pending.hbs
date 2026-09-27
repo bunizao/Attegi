@@ -2,8 +2,9 @@
      cards, so the raw syntax never paints. Include right after {{content}}
      so it runs before the parser yields a frame. Deferred scripts run before
      DOMContentLoaded, so anything still pending then means the bundle failed:
-     show the plain blockquote rather than leave it hidden. --}}
-<script>
+     show the plain blockquote rather than leave it hidden. data-cfasync
+     keeps Cloudflare Rocket Loader from deferring it past first paint. --}}
+<script data-cfasync="false">
 	(function () {
 		var pending = [];
 		document.querySelectorAll('.post-content blockquote').forEach(function (q) {

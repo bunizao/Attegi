@@ -33,7 +33,9 @@ own cover-active case is already covered there, so this attribute only needs the
 	injected only when the rendered body actually needs them (see the
 	conditional-load scripts near the closing </body>). --}}
 
-		<script>
+		{{!-- data-cfasync="false" keeps Cloudflare Rocket Loader from deferring
+		this script, which would let the wrong theme paint first. --}}
+		<script data-cfasync="false">
 			// Theme bootstrap - runs once, before first paint.
 			// - Resolves the theme from localStorage / @custom.color_scheme / OS
 			//   preference and applies .theme-dark or .theme-light immediately
