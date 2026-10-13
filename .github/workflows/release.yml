@@ -31,6 +31,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Test template rendering
+        run: bun run test:templates
+
       - name: Get version
         id: version
         run: |

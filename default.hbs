@@ -546,7 +546,7 @@ own cover-active case is already covered there, so this attribute only needs the
 								<a class="social-link" aria-label="{{t "RSS"}}" href="{{@site.url}}/rss/" title="{{t "RSS"}}">
 									<i class="icon icon-rss" aria-hidden="true">{{> "icons/icon-rss"}}</i>
 								</a>
-							{{> "social-links" source=@site link_class="social-link"}}
+							{{> "social-links" source=@site social_link_class="social-link"}}
 							{{!-- Legacy theme settings, kept for sites that set them before
 							     Ghost had native Instagram/Bluesky fields; native wins. --}}
 							{{#unless @site.instagram}}{{#if @custom.instagram_url}}<a class="social-link" aria-label="{{t "Instagram"}}" href="{{@custom.instagram_url}}" title="{{t "Instagram"}}" target="_blank" rel="noopener">
