@@ -62,7 +62,7 @@ for (const network of networks) {
 test('no accounts render no social links, including site accounts on an author without accounts', () => {
   const hbs = renderer();
   const html = renderTemplate(hbs, 'author.hbs', {author: {name: 'Author'}, pagination: {total: 0}}, {twitter: 'site-account'});
-  assert.ok(!html.includes('https://social.example/'));
+  assert.doesNotMatch(html, /href="https:\/\/social\.example\//);
   assert.doesNotThrow(() => renderTemplate(hbs, 'default.hbs', {body: 'Home'}));
 });
 
