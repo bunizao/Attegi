@@ -627,6 +627,7 @@ function registerHelpers() {
   Handlebars.registerHelper('ghost_foot', ghostFootHelper);
   Handlebars.registerHelper('get', getHelper);
   Handlebars.registerHelper('social_url', socialUrlHelper);
+  Handlebars.registerHelper('link_class', linkClassHelper);
 }
 
 function translate(phrase, options) {
@@ -1000,6 +1001,14 @@ function socialUrlHelper(options) {
   const value = (this && this[type]) || site[type];
   if (!value || !SOCIAL_URLS[type]) return '';
   return /^https?:\/\//.test(value) ? value : SOCIAL_URLS[type](value);
+}
+
+// Registered so a bare {{link_class}} fails here the way it does in Ghost,
+// instead of silently resolving a same-named context property.
+function linkClassHelper(options) {
+  const hash = (options && options.hash) || {};
+  if (!hash.for) throw new Error('The {{link_class}} helper requires a for="" attribute.');
+  return hash.class || '';
 }
 
 function getHelper(resource, options) {
