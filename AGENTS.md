@@ -21,10 +21,14 @@ bun run dev:preview   # Local .hbs render + remote Content API content, http://l
 bun run dev:hot       # BrowserSync proxy over a real Ghost (GHOST_DEV_URL), http://localhost:3010
 bun run dev           # Asset watchers only: sass, tailwind, esbuild
 bun run build         # Production CSS + JS
-bun run validate      # build, zip to dist/attegi.zip, run GScan
+bun run test:templates  # Handlebars render tests in scripts/tests
+bun run validate      # tests, build, zip to dist/attegi.zip, run GScan
 ```
 
-There is no linter or test suite. `bun run validate` is the floor for every change.
+There is no linter. `bun run validate` is the floor for every change.
+
+- Partial parameters and bare `{{names}}` must not reuse a Ghost helper name
+  (`link_class`, `url`, `title`, ...): Handlebars calls the helper first.
 
 - `dev:preview` is the default loop for template, CSS, and JS work. It needs
   `GHOST_CONTENT_API_URL` and `GHOST_CONTENT_API_KEY` in `.env.local`
