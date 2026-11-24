@@ -85,6 +85,12 @@
 		color: var(--color-content-main);
 		font-style: italic;
 
+		// CJK typefaces have no true italic, so keep Chinese verses upright
+		// instead of faking a slant (same rule as em/i in style.scss).
+		&:lang(zh) {
+			font-style: normal;
+		}
+
 		&:last-child {
 			margin-bottom: 0;
 		}
